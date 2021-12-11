@@ -9,16 +9,14 @@ import {
 import AntDesign from 'react-native-vector-icons/AntDesign';
 const ActionButton = ({action, onPress}) => {
   return (
-    <TouchableNativeFeedback onPress={onPress}>
-      <View style={styles.actionButtonContainer}>
-        <View style={styles.actionButtonIcon}>
-          <AntDesign name="plus" size={10} color={'black'} />
-        </View>
-        <View>
-          <Text style={styles.actionText}>{action}</Text>
-        </View>
+    <TouchableOpacity onPress={onPress} style={styles.actionButtonContainer}>
+      <View style={styles.actionButtonIcon}>
+        <AntDesign name="plus" size={10} color={'black'} />
       </View>
-    </TouchableNativeFeedback>
+      <View>
+        <Text style={styles.actionText}>{action}</Text>
+      </View>
+    </TouchableOpacity>
   );
 };
 
@@ -31,7 +29,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'white',
     height: 35,
-    width: '24%',
+    width: '25%',
     shadowColor: '#000000',
     borderRadius: 5,
     shadowOffset: {

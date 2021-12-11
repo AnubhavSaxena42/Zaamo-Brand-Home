@@ -13,8 +13,16 @@ import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/core';
 import {Post} from '../types';
 import contentService from '../services/content-service';
-
-const ContentActions = ({post, contentTypeItems, trigger, isTrigger}) => {
+export interface ContentActionsProps {
+  post: Post;
+  contentTypeItems: any;
+}
+const ContentActions = ({
+  post,
+  contentTypeItems,
+  trigger,
+  isTrigger,
+}: ContentActionsProps) => {
   const [showProducts, setShowProducts] = useState(false);
   const [showCollections, setShowCollections] = useState(false);
   const [contentType, setContentType] = useState(null);
@@ -66,8 +74,9 @@ const ContentActions = ({post, contentTypeItems, trigger, isTrigger}) => {
           selectedValue={contentType}
           setSelectedValue={setContentType}
           dropDownContainerStyle={{
-            width: 100,
+            width: '20%',
             alignSelf: 'center',
+            backgroundColor: 'white',
             shadowColor: '#000000',
             borderRadius: 5,
             marginTop: 5,
@@ -79,12 +88,6 @@ const ContentActions = ({post, contentTypeItems, trigger, isTrigger}) => {
             shadowOpacity: 1.0,
             elevation: 5,
             zIndex: 200,
-          }}
-          dropDownSelectContainerStyle={{
-            paddingVertical: 8,
-            borderWidth: 0,
-            borderRadius: 5,
-            height: 35,
           }}
           dropDownValuesTextStyle={{
             marginLeft: 4,
@@ -144,7 +147,7 @@ const ContentActions = ({post, contentTypeItems, trigger, isTrigger}) => {
           setShowProducts={setShowProducts}
         />
       </Modal>
-      {/*</GestureRecognizer>/*}
+      {/*</GestureRecognizer>*/}
       {/* Tag Collections Modal */}
       {/*<GestureRecognizer
         config={{directionalOffsetThreshold: 30, velocityThreshold: 0.5}}
@@ -167,11 +170,14 @@ export default ContentActions;
 const styles = StyleSheet.create({
   actionsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    width: '100%',
+    justifyContent: 'space-around',
     marginBottom: 18,
     zIndex: 200,
   },
-  contentActionsContainer: {},
+  contentActionsContainer: {
+    width: '100%',
+  },
   tagsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',

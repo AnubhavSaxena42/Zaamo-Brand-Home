@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View} from 'react-native';
 
 const Header = () => {
   return (
@@ -14,13 +14,13 @@ export default Header;
 const styles = StyleSheet.create({
   headerContainer: {
     height: 50,
-
     backgroundColor: 'black',
     paddingVertical: 5,
   },
   headerText: {
     color: 'white',
-    textAlign: 'center',
+    textAlign: Platform.OS === 'web' ? 'left' : 'center',
+    marginLeft: Platform.OS === 'web' ? '2%' : 0,
     fontFamily: 'Merriweather-Regular',
     fontWeight: '400',
     fontSize: 28,

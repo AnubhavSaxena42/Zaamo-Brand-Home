@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Modal,
   Image,
+  Dimensions,
   TouchableOpacity,
   ImageBackground,
   Text,
@@ -17,6 +18,7 @@ import contentService from '../services/content-service';
 import {useDispatch, useSelector} from 'react-redux';
 import {setPosts} from '../redux/reducers/postsReducer';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
+const windowWidth = Dimensions.get('window').width;
 const ContentOverview = ({post, source}) => {
   const [showQuickView, setShowQuickView] = useState(false);
   const posts = useSelector(state => state.posts.posts);
@@ -24,7 +26,7 @@ const ContentOverview = ({post, source}) => {
   const images = [
     {
       // Simplest usage.
-      url: post.media_url,
+      //url: post.media_url,
 
       // width: number
       // height: number
@@ -66,18 +68,19 @@ const ContentOverview = ({post, source}) => {
         ...styles.overviewContainer,
         backgroundColor: source === 'MANUAL_UPLOAD' ? '' : 'white',
       }}>
+      <TouchableOpacity
+        style={styles.crossContainer}
+        onPress={markTrashHandler}>
+        <Entypo name="cross" size={25} color="#f24e1e" />
+      </TouchableOpacity>
+
       <TouchableOpacity onPress={() => setShowQuickView(true)}>
         <ImageBackground
           source={{
             uri: post.media_url,
           }}
-          resizeMode={source === 'MANUAL_UPLOAD' ? 'cover' : 'contain'}
+          resizeMode={'cover'}
           style={styles.contentImage}>
-          <TouchableOpacity onPress={markTrashHandler}>
-            <View style={styles.crossContainer}>
-              <Entypo name="cross" size={25} color="#f24e1e" />
-            </View>
-          </TouchableOpacity>
           <View style={styles.metricsContainer}>
             <View style={styles.metric}>
               <View style={styles.icon}>
@@ -142,16 +145,17 @@ export default ContentOverview;
 const styles = StyleSheet.create({
   overviewContainer: {
     height: 381,
+    width: '100%',
     position: 'relative',
   },
   contentImage: {
     width: '100%',
-    height: '100%',
+    height: 400,
   },
   metricsContainer: {
     position: 'absolute',
-    left: 5,
-    bottom: 10,
+    left: 0,
+    bottom: 0,
   },
   metric: {
     flexDirection: 'row',

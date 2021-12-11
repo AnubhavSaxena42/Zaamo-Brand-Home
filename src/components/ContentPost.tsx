@@ -1,4 +1,6 @@
+// @ts-nocheck
 import React from 'react';
+import {Platform} from 'react-native';
 import {StyleSheet, Text, Dimensions, View} from 'react-native';
 import ContentActions from './ContentActions';
 import ContentOverview from './ContentOverview';
@@ -33,10 +35,11 @@ export default ContentPost;
 const styles = StyleSheet.create({
   postContainer: {
     backgroundColor: 'whitesmoke',
-    width: windowWidth > 500 ? windowWidth / 2 - 10 : windowWidth,
+    width: windowWidth > 500 ? windowWidth / 4 - 10 : windowWidth,
     paddingHorizontal: windowWidth > 500 ? 10 : 10,
     paddingVertical: 5,
     marginHorizontal: windowWidth > 500 ? 2.5 : 0,
-    marginVertical: 10,
+    marginTop: 10,
+    marginBottom: Platform.OS === 'web' ? 60 : 10,
   },
 });

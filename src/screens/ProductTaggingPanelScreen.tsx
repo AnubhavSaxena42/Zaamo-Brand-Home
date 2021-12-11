@@ -2,6 +2,7 @@
 import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
+  Platform,
   Dimensions,
   FlatList,
   View,
@@ -17,9 +18,10 @@ import {setPosts} from '../redux/reducers/postsReducer';
 import {setPageInfo, setProducts} from '../redux/reducers/productsReducer';
 const ProductTaggingPanelScreen = ({navigation, route}) => {
   const posts = useSelector((state: RootState) => state.posts.posts);
+
   const [trigger, isTrigger] = useState(true);
   const windowWidth = Dimensions.get('window').width;
-  const numberOfColumns = windowWidth > 500 ? 2 : 1;
+  const numberOfColumns = windowWidth > 500 ? 4 : 1;
   const [contentSourceItems, setContentSourceItems] = useState([]);
   const [contentFormatItems, setContentFormatItems] = useState([]);
   const [contentSource, setContentSource] = useState(null);
@@ -40,6 +42,7 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
       })
       .catch(err => console.log(err));
   };
+  console.log('platform', Platform.OS);
   //To be updated, implement caching of data in store and add another useEffect for pagination parameters
   const fetchContent = async () => {
     setIsActivityIndicator(true);
@@ -88,33 +91,21 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
       <Header />
       {/*Filters for posts */}
       <View style={styles.filtersContainer}>
+        {/*Dropdown Style Objects OS Specific */}
         <Dropdown
           tag="Content Source"
           items={contentSourceItems}
           selectedValue={contentSource}
           setSelectedValue={setContentSource}
           dropDownContainerStyle={{
-            width: '48%',
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
-            shadowColor: '#000000',
-            shadowRadius: 5,
-            shadowOpacity: 1.0,
-            elevation: 5,
+            height: '30%',
+            width: '10%',
+            marginLeft: '2%',
+            borderRadius: 5,
+            alignItems: 'center',
+            borderColor: 'rgba(0,0,0,0.5)',
+            borderWidth: 1,
             zIndex: 200,
-          }}
-          dropDownSelectContainerStyle={{
-            elevation: 3,
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
-            shadowColor: '#000000',
-            shadowRadius: 5,
-            shadowOpacity: 1.0,
-            borderColor: '#dbdbdb',
           }}
           dropDownTextStyle={{
             fontSize: 14,
@@ -137,17 +128,14 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
           items={contentFormatItems}
           selectedValue={contentFormat}
           setSelectedValue={setContentFormat}
-          dropDownSelectContainerStyle={{
-            elevation: 3,
-            paddingHorizontal: 10,
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
-            shadowColor: '#000000',
-            shadowRadius: 5,
-            shadowOpacity: 1.0,
-            borderColor: '#dbdbdb',
+          dropDownContainerStyle={{
+            height: '30%',
+            width: '10%',
+            marginLeft: '1%',
+            borderWidth: 1,
+            borderRadius: 5,
+            borderColor: 'rgba(0,0,0,0.5)',
+            zIndex: 200,
           }}
           dropDownValuesTextStyle={{
             fontSize: 14,
@@ -160,24 +148,43 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
             fontFamily: 'Open-Sans',
             fontWeight: '300',
           }}
-          dropDownContainerStyle={{
-            width: '48%',
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
-            shadowColor: '#000000',
-            shadowRadius: 5,
-            shadowOpacity: 1.0,
-            elevation: 10,
-            zIndex: 200,
-          }}
           dropDownValuesContainerStyle={{
             top: 33,
           }}
         />
       </View>
-
+      {/*posts && (
+        <View style={{flexDirection: 'row'}}>
+          <ContentPost
+            contentSource={contentSource}
+            contentTypeItems={contentTypeItems}
+            trigger={trigger}
+            isTrigger={isTrigger}
+            post={posts[3]}
+          />
+          <ContentPost
+            contentSource={contentSource}
+            contentTypeItems={contentTypeItems}
+            trigger={trigger}
+            isTrigger={isTrigger}
+            post={posts[3]}
+          />
+          <ContentPost
+            contentSource={contentSource}
+            contentTypeItems={contentTypeItems}
+            trigger={trigger}
+            isTrigger={isTrigger}
+            post={posts[3]}
+          />
+          <ContentPost
+            contentSource={contentSource}
+            contentTypeItems={contentTypeItems}
+            trigger={trigger}
+            isTrigger={isTrigger}
+            post={posts[3]}
+          />
+        </View>
+      )*/}
       <FlatList
         data={posts}
         keyExtractor={item => item.id.toString()}
@@ -222,9 +229,11 @@ const styles = StyleSheet.create({
   },
   filtersContainer: {
     flexDirection: 'row',
-    paddingVertical: 22,
-    paddingHorizontal: 10,
+    alignItems: 'center',
+    height: Platform.OS === 'web' ? 75 : 50,
+    width: '100%',
     zIndex: 100,
-    justifyContent: 'space-around',
+    justifyContent: Platform.OS === 'web' ? 'flex-start' : 'space-around',
   },
 });
+//justify content platform wise

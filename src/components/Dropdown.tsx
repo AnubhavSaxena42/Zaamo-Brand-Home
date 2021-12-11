@@ -24,26 +24,25 @@ const Dropdown = ({
 
   return (
     <View style={{...styles.dropdownContainer, ...dropDownContainerStyle}}>
-      <TouchableNativeFeedback
+      <TouchableOpacity
+        style={{
+          height: '100%',
+          width: '100%',
+          paddingHorizontal: '2%',
+          alignItems: 'center',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}
         onPress={() => {
           setIsOpen(!isOpen);
         }}>
-        <View
-          style={{
-            ...styles.dropdownSelectContainer,
-            ...dropDownSelectContainerStyle,
-          }}>
-          <View style={styles.dropdownTag}>
-            <Text style={{...styles.dropdownTagText, ...dropDownTextStyle}}>
-              {selectedValue ? selectedName.name : tag}
-            </Text>
-          </View>
-
-          <View style={styles.iconContainer}>
-            <Entypo name="triangle-down" size={15} color={'black'} />
-          </View>
+        <Text style={{...styles.dropdownTagText, ...dropDownTextStyle}}>
+          {selectedValue ? selectedName.name : tag}
+        </Text>
+        <View style={styles.iconContainer}>
+          <Entypo name="triangle-down" size={15} color={'black'} />
         </View>
-      </TouchableNativeFeedback>
+      </TouchableOpacity>
       {isOpen && (
         <View
           style={{
@@ -54,28 +53,26 @@ const Dropdown = ({
             return (
               <TouchableOpacity
                 key={item.id}
+                style={{
+                  backgroundColor:
+                    item.id === selectedValue ? 'black' : 'white',
+                  paddingVertical: '3%',
+                  paddingLeft: '2%',
+                }}
                 onPress={() => {
                   setSelectedValue(item.id);
                   setIsOpen(false);
                 }}>
-                <View
+                <Text
                   style={{
-                    backgroundColor:
-                      item.id === selectedValue ? 'black' : 'white',
-                    paddingVertical: '3%',
-                    paddingLeft: '2%',
+                    color:
+                      item.id === selectedValue
+                        ? 'white'
+                        : 'rgba(0, 0, 0, 0.75)',
+                    ...dropDownValuesTextStyle,
                   }}>
-                  <Text
-                    style={{
-                      color:
-                        item.id === selectedValue
-                          ? 'white'
-                          : 'rgba(0, 0, 0, 0.75)',
-                      ...dropDownValuesTextStyle,
-                    }}>
-                    {item.name}
-                  </Text>
-                </View>
+                  {item.name}
+                </Text>
               </TouchableOpacity>
             );
           })}
@@ -91,27 +88,16 @@ const styles = StyleSheet.create({
   dropdownContainer: {
     zIndex: 400,
     elevation: 20,
-    width: '50%',
-  },
-  dropdownSelectContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    width: 500,
     position: 'relative',
-    width: '100%',
-    height: 35,
-    paddingHorizontal: 5,
-    paddingVertical: 5,
-    borderColor: 'gray',
-    borderWidth: 1,
-    borderRadius: 5,
-    padding: 5,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     backgroundColor: 'white',
   },
   dropdownTag: {},
   dropdownTagText: {
     textAlign: 'center',
-    fontSize: 10,
+    fontSize: 30,
     fontFamily: 'Roboto-Black',
     color: 'rgba(0, 0, 0, 0.5)',
   },

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, {useState} from 'react';
 import {
   StyleSheet,
@@ -11,7 +12,7 @@ import Header from '../components/Header';
 import Dropdown from '../components/Dropdown';
 import Checkbox from '../components/Checkbox';
 import TaggedComponent from '../components/TaggedComponent';
-import GestureRecognizer from 'react-native-swipe-gestures';
+//import GestureRecognizer from 'react-native-swipe-gestures';
 const ErrorMessage = () => {
   return (
     <View style={styles.errorMessageContainer}>
@@ -108,174 +109,170 @@ const CreateProductScreen = ({navigation}) => {
 
   return (
     <ScrollView style={{backgroundColor: 'rgba(229, 229, 229, 0.2);'}}>
-      <GestureRecognizer
+      {/*<GestureRecognizer
         config={{directionalOffsetThreshold: 30, velocityThreshold: 0.5}}
-        onSwipeRight={() => navigation.goBack()}>
-        <Header />
-        <View style={styles.createProductContainer}>
-          <View style={styles.createProductHeaderContainer}>
-            <Text style={styles.createProductHeaderText}>Create product</Text>
+        onSwipeRight={() => navigation.goBack()}>*/}
+      <Header />
+      <View style={styles.createProductContainer}>
+        <View style={styles.createProductHeaderContainer}>
+          <Text style={styles.createProductHeaderText}>Create product</Text>
+        </View>
+        <View style={styles.productDetailsContainer}>
+          <View style={styles.productDetailsHeaderContainer}>
+            <Text style={styles.headerText}>Product Details</Text>
           </View>
-          <View style={styles.productDetailsContainer}>
-            <View style={styles.productDetailsHeaderContainer}>
-              <Text style={styles.headerText}>Product Details</Text>
-            </View>
-            <View style={styles.productNameInputContainer}>
-              <Text style={styles.labelText}>Product Name</Text>
+          <View style={styles.productNameInputContainer}>
+            <Text style={styles.labelText}>Product Name</Text>
+            <TextInput
+              onChangeText={text => {
+                setProductName(text);
+                setIsNameError(false);
+              }}
+              value={productName}
+              style={styles.input}
+            />
+            {isNameError && <ErrorMessage />}
+          </View>
+          <View style={styles.productImagesContainer}>
+            {/* product Images + add Image */}
+          </View>
+          <View style={styles.productPriceStockInputContainer}>
+            <View style={styles.priceInputContainer}>
+              <Text style={styles.labelText}>Price</Text>
               <TextInput
                 onChangeText={text => {
-                  setProductName(text);
-                  setIsNameError(false);
+                  setPrice(text);
+                  setisPriceError(false);
                 }}
-                value={productName}
-                style={styles.input}
+                value={price}
+                keyboardType="number-pad"
+                style={styles.priceInput}
               />
-              {isNameError && <ErrorMessage />}
+              {isPriceError && <ErrorMessage />}
             </View>
-            <View style={styles.productImagesContainer}>
-              {/* product Images + add Image */}
-            </View>
-            <View style={styles.productPriceStockInputContainer}>
-              <View style={styles.priceInputContainer}>
-                <Text style={styles.labelText}>Price</Text>
-                <TextInput
-                  onChangeText={text => {
-                    setPrice(text);
-                    setisPriceError(false);
-                  }}
-                  value={price}
-                  keyboardType="number-pad"
-                  style={styles.priceInput}
-                />
-                {isPriceError && <ErrorMessage />}
-              </View>
-              <View style={styles.stockInputContainer}>
-                <Text style={styles.labelText}>Stock</Text>
-                <TextInput
-                  onChangeText={text => {
-                    setStock(text);
-                    setIsStockError(false);
-                  }}
-                  keyboardType="number-pad"
-                  value={stock}
-                  style={styles.stockInput}
-                />
-                {isStockError && <ErrorMessage />}
-              </View>
-            </View>
-            <View style={styles.productDescriptionInputContainer}>
-              <Text style={styles.labelText}>Product Description</Text>
+            <View style={styles.stockInputContainer}>
+              <Text style={styles.labelText}>Stock</Text>
               <TextInput
-                multiline={true}
-                numberOfLines={10}
-                style={styles.productDescriptionInput}
                 onChangeText={text => {
-                  setProductDescription(text);
-                  setIsDescriptionError(false);
+                  setStock(text);
+                  setIsStockError(false);
                 }}
-                value={productDescription}
+                keyboardType="number-pad"
+                value={stock}
+                style={styles.stockInput}
               />
-              {isDescriptionError && <ErrorMessage />}
+              {isStockError && <ErrorMessage />}
             </View>
-            <View style={styles.selectCategoryContainer}>
-              <Text style={styles.labelText}>Select Category</Text>
-              <Dropdown
-                tag="Select Category"
-                items={contentFormatItems}
-                selectedValue={contentFormat}
-                setSelectedValue={setContentFormat}
-                dropDownStyle={{zIndex: 600}}
-              />
-            </View>
-            <View style={styles.selectSubCategoryContainer}>
-              <Text style={styles.labelText}>Select Sub Category</Text>
-              <Dropdown
-                tag="Select Sub Category"
-                items={contentFormatItems}
-                selectedValue={contentFormat}
-                setSelectedValue={setContentFormat}
-                dropDownStyle={{zIndex: 400}}
-              />
-            </View>
-            <View style={styles.codCheckboxContainer}>
-              {codCheckbox.map(item => {
-                return (
+          </View>
+          <View style={styles.productDescriptionInputContainer}>
+            <Text style={styles.labelText}>Product Description</Text>
+            <TextInput
+              multiline={true}
+              numberOfLines={10}
+              style={styles.productDescriptionInput}
+              onChangeText={text => {
+                setProductDescription(text);
+                setIsDescriptionError(false);
+              }}
+              value={productDescription}
+            />
+            {isDescriptionError && <ErrorMessage />}
+          </View>
+          <View style={styles.selectCategoryContainer}>
+            <Text style={styles.labelText}>Select Category</Text>
+            <Dropdown
+              tag="Select Category"
+              items={contentFormatItems}
+              selectedValue={contentFormat}
+              setSelectedValue={setContentFormat}
+              dropDownStyle={{zIndex: 600}}
+            />
+          </View>
+          <View style={styles.selectSubCategoryContainer}>
+            <Text style={styles.labelText}>Select Sub Category</Text>
+            <Dropdown
+              tag="Select Sub Category"
+              items={contentFormatItems}
+              selectedValue={contentFormat}
+              setSelectedValue={setContentFormat}
+              dropDownStyle={{zIndex: 400}}
+            />
+          </View>
+          <View style={styles.codCheckboxContainer}>
+            {codCheckbox.map(item => {
+              return (
+                <Checkbox
+                  key={item.value}
+                  item={item}
+                  items={codCheckbox}
+                  setItems={setCodCheckbox}
+                />
+              );
+            })}
+          </View>
+          <Text style={styles.labelText}>Variations</Text>
+          <View style={styles.variationsContainer}>
+            {variations.map(item => (
+              <View key={item} style={{marginRight: '10%', marginBottom: '2%'}}>
+                <TaggedComponent
+                  tag={item}
+                  onDelete={() => {
+                    removeVariationHandler(item);
+                  }}
+                />
+              </View>
+            ))}
+          </View>
+        </View>
+        <View style={{height: '2%', backgroundColor: 'white'}}></View>
+
+        <View style={styles.addVariantsContainer}>
+          <View style={styles.addVariantsHeaderContainer}>
+            <Text style={styles.headerText}>Add Variants(Optional)</Text>
+          </View>
+          <View style={styles.variantNameInputContainer}>
+            <Text style={styles.labelText}>Variant Name</Text>
+            <TextInput
+              value={newVariation}
+              onChangeText={text => {
+                setNewVariation(text);
+                setIsVariationNameError(false);
+              }}
+              style={styles.input}
+            />
+            {isVariationNameError && <ErrorMessage />}
+          </View>
+          <View style={styles.variantCheckboxContainer}>
+            {variationCheckboxes.map(item => {
+              return (
+                <View key={item.value} style={{margin: '3%'}}>
                   <Checkbox
                     key={item.value}
+                    items={variationCheckboxes}
                     item={item}
-                    items={codCheckbox}
-                    setItems={setCodCheckbox}
-                  />
-                );
-              })}
-            </View>
-            <Text style={styles.labelText}>Variations</Text>
-            <View style={styles.variationsContainer}>
-              {variations.map(item => (
-                <View
-                  key={item}
-                  style={{marginRight: '10%', marginBottom: '2%'}}>
-                  <TaggedComponent
-                    tag={item}
-                    onDelete={() => {
-                      removeVariationHandler(item);
-                    }}
+                    setItems={setVariationCheckboxes}
                   />
                 </View>
-              ))}
-            </View>
+              );
+            })}
           </View>
-          <View style={{height: '2%', backgroundColor: 'white'}}></View>
-
-          <View style={styles.addVariantsContainer}>
-            <View style={styles.addVariantsHeaderContainer}>
-              <Text style={styles.headerText}>Add Variants(Optional)</Text>
-            </View>
-            <View style={styles.variantNameInputContainer}>
-              <Text style={styles.labelText}>Variant Name</Text>
-              <TextInput
-                value={newVariation}
-                onChangeText={text => {
-                  setNewVariation(text);
-                  setIsVariationNameError(false);
-                }}
-                style={styles.input}
-              />
-              {isVariationNameError && <ErrorMessage />}
-            </View>
-            <View style={styles.variantCheckboxContainer}>
-              {variationCheckboxes.map(item => {
-                return (
-                  <View key={item.value} style={{margin: '3%'}}>
-                    <Checkbox
-                      key={item.value}
-                      items={variationCheckboxes}
-                      item={item}
-                      setItems={setVariationCheckboxes}
-                    />
-                  </View>
-                );
-              })}
-            </View>
-            <View style={styles.addVariationButtonContainer}>
-              <TouchableOpacity onPress={addNewVariationHandler}>
-                <View style={styles.addVariationButton}>
-                  <Text style={styles.addVariationButtonText}>
-                    Add Variation
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-          </View>
-          <TouchableOpacity onPress={onSubmitHandler}>
-            <View style={styles.nextButtonContainer}>
-              <View style={styles.nextButton}>
-                <Text style={styles.nextButtonText}>Next</Text>
+          <View style={styles.addVariationButtonContainer}>
+            <TouchableOpacity onPress={addNewVariationHandler}>
+              <View style={styles.addVariationButton}>
+                <Text style={styles.addVariationButtonText}>Add Variation</Text>
               </View>
-            </View>
-          </TouchableOpacity>
+            </TouchableOpacity>
+          </View>
         </View>
-      </GestureRecognizer>
+        <TouchableOpacity onPress={onSubmitHandler}>
+          <View style={styles.nextButtonContainer}>
+            <View style={styles.nextButton}>
+              <Text style={styles.nextButtonText}>Next</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+      </View>
+      {/*</GestureRecognizer>*/}
     </ScrollView>
   );
 };

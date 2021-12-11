@@ -1,9 +1,10 @@
+// @ts-nocheck
 import React, {useState} from 'react';
 import Header from '../components/Header';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import Dropdown from '../components/Dropdown';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import GestureRecognizer from 'react-native-swipe-gestures';
+//import GestureRecognizer from 'react-native-swipe-gestures';
 const AddProductScreen = ({navigation}) => {
   const [brandName, setbrandName] = useState();
   const [contentFormat, setContentFormat] = useState();
@@ -16,45 +17,48 @@ const AddProductScreen = ({navigation}) => {
     'Static Post',
     'Uncategorized',
   ];
-  return (
-    <GestureRecognizer
+  {
+    /*<GestureRecognizer
       config={{directionalOffsetThreshold: 30, velocityThreshold: 0.5}}
-      onSwipeRight={() => navigation.goBack()}>
-      <View style={styles.addProductContainer}>
-        <Header />
-        <View style={styles.addProductsDropdownContainer}>
-          <Dropdown
-            tag="Select Brand Name*"
-            items={contentFormatItems}
-            selectedValue={contentFormat}
-            setSelectedValue={setContentFormat}
-            dropDownContainerStyle={{zIndex: 500}}
-          />
-          <Dropdown
-            tag="Content Format"
-            items={contentFormatItems}
-            selectedValue={contentFormat}
-            setSelectedValue={setContentFormat}
-            dropDownContainerStyle={{}}
-          />
-        </View>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('createProduct');
-          }}>
-          <View style={styles.addFilesContainer}>
-            <View style={styles.iconContainer}>
-              <AntDesign name="addfile" size={50} color={'#898a8a'} />
-            </View>
-            <Text style={styles.addTitleText}>Browse your files here....</Text>
-            <Text style={styles.addSubtitleText}>Supports all files</Text>
-          </View>
-        </TouchableOpacity>
+    onSwipeRight={() => navigation.goBack()}>*/
+  }
+  return (
+    <View style={styles.addProductContainer}>
+      <Header />
+      <View style={styles.addProductsDropdownContainer}>
+        <Dropdown
+          tag="Select Brand Name*"
+          items={contentFormatItems}
+          selectedValue={contentFormat}
+          setSelectedValue={setContentFormat}
+          dropDownContainerStyle={{zIndex: 500}}
+        />
+        <Dropdown
+          tag="Content Format"
+          items={contentFormatItems}
+          selectedValue={contentFormat}
+          setSelectedValue={setContentFormat}
+          dropDownContainerStyle={{}}
+        />
       </View>
-    </GestureRecognizer>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('createProduct');
+        }}>
+        <View style={styles.addFilesContainer}>
+          <View style={styles.iconContainer}>
+            <AntDesign name="addfile" size={50} color={'#898a8a'} />
+          </View>
+          <Text style={styles.addTitleText}>Browse your files here....</Text>
+          <Text style={styles.addSubtitleText}>Supports all files</Text>
+        </View>
+      </TouchableOpacity>
+    </View>
   );
 };
-
+{
+  /*</GestureRecognizer>*/
+}
 export default AddProductScreen;
 
 const styles = StyleSheet.create({

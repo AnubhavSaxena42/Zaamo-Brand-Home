@@ -1,7 +1,7 @@
 import {AppRegistry} from 'react-native';
 import App from './App.tsx';
 
-const appName = 'Your app name';
+const appName = 'Zaamo';
 
 AppRegistry.registerComponent(appName, () => App);
 AppRegistry.runApplication(appName, {

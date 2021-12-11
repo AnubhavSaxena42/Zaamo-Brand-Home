@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, {useState} from 'react';
 import {
   StyleSheet,
@@ -11,7 +12,7 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Foundation from 'react-native-vector-icons/Foundation';
 import Entypo from 'react-native-vector-icons/Entypo';
-import ImageViewer from 'react-native-image-zoom-viewer';
+//import ImageViewer from 'react-native-image-zoom-viewer';
 import contentService from '../services/content-service';
 import {useDispatch, useSelector} from 'react-redux';
 import {setPosts} from '../redux/reducers/postsReducer';
@@ -125,10 +126,10 @@ const ContentOverview = ({post, source}) => {
             onRequestClose={() => {
               setShowQuickView(false);
             }}>
-            <ImageViewer
+            {/*<ImageViewer
               onClick={() => setShowQuickView(false)}
               imageUrls={images}
-            />
+            />*/}
           </Modal>
         </ImageBackground>
       </TouchableOpacity>

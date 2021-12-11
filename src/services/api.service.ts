@@ -1,5 +1,4 @@
 import axios from 'axios';
-import authService from './auth';
 
 export function Post(url, payload, config) {
   return new Promise((resolve, reject) => {

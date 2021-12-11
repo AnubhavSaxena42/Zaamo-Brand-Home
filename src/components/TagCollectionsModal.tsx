@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import CollectionOverview from './CollectionOverview';

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, {useState} from 'react';
 import {StyleSheet, Modal, Text, View, TouchableOpacity} from 'react-native';
 import ActionButton from './ActionButton';
@@ -5,23 +6,15 @@ import Dropdown from './Dropdown';
 import TaggedComponent from './TaggedComponent';
 import TagProductsModal from './TagProductsModal';
 import TagCollectionsModal from './TagCollectionsModal';
-import GestureRecognizer from 'react-native-swipe-gestures';
+//import GestureRecognizer from 'react-native-swipe-gestures';
 import {RootState} from '../redux/store/store';
 import {setPosts} from '../redux/reducers/postsReducer';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/core';
 import {Post} from '../types';
 import contentService from '../services/content-service';
-export interface ContentActionsProps {
-  post: Post;
-  contentTypeItems: any;
-}
-const ContentActions = ({
-  post,
-  contentTypeItems,
-  trigger,
-  isTrigger,
-}: ContentActionsProps) => {
+
+const ContentActions = ({post, contentTypeItems, trigger, isTrigger}) => {
   const [showProducts, setShowProducts] = useState(false);
   const [showCollections, setShowCollections] = useState(false);
   const [contentType, setContentType] = useState(null);
@@ -133,38 +126,38 @@ const ContentActions = ({
         ))}
       </View>
       {/* Tag Products Modal */}
-      <GestureRecognizer
+      {/*<GestureRecognizer
         config={{directionalOffsetThreshold: 30, velocityThreshold: 0.5}}
-        onSwipeRight={() => setShowProducts(false)}>
-        <Modal
-          animationType="fade"
-          visible={showProducts}
-          onRequestClose={() => {
-            setShowProducts(false);
-          }}>
-          <TagProductsModal
-            trigger={trigger}
-            isTrigger={isTrigger}
-            contentType={contentType}
-            taggedProducts={post.tagged}
-            contentId={post.id}
-            setShowProducts={setShowProducts}
-          />
-        </Modal>
-      </GestureRecognizer>
+        onSwipeRight={() => setShowProducts(false)}>*/}
+      <Modal
+        animationType="fade"
+        visible={showProducts}
+        onRequestClose={() => {
+          setShowProducts(false);
+        }}>
+        <TagProductsModal
+          trigger={trigger}
+          isTrigger={isTrigger}
+          contentType={contentType}
+          taggedProducts={post.tagged}
+          contentId={post.id}
+          setShowProducts={setShowProducts}
+        />
+      </Modal>
+      {/*</GestureRecognizer>/*}
       {/* Tag Collections Modal */}
-      <GestureRecognizer
+      {/*<GestureRecognizer
         config={{directionalOffsetThreshold: 30, velocityThreshold: 0.5}}
-        onSwipeRight={() => setShowCollections(false)}>
-        <Modal
-          animationType="slide"
-          visible={showCollections}
-          onRequestClose={() => {
-            setShowCollections(false);
-          }}>
-          <TagCollectionsModal />
-        </Modal>
-      </GestureRecognizer>
+        onSwipeRight={() => setShowCollections(false)}>*/}
+      <Modal
+        animationType="slide"
+        visible={showCollections}
+        onRequestClose={() => {
+          setShowCollections(false);
+        }}>
+        <TagCollectionsModal />
+      </Modal>
+      {/*</GestureRecognizer>*/}
     </View>
   );
 };

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import {
   StyleSheet,
@@ -7,7 +8,7 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import GestureRecognizer from 'react-native-swipe-gestures';
+//import GestureRecognizer from 'react-native-swipe-gestures';
 import Header from '../components/Header';
 const VariantRow = ({variant}) => {
   return (
@@ -36,37 +37,37 @@ const VariantScreen = ({navigation, route}) => {
   const {variations} = route.params;
   return (
     <ScrollView style={styles.variantContainer}>
-      <GestureRecognizer
+      {/*<GestureRecognizer
         config={{directionalOffsetThreshold: 30, velocityThreshold: 0.5}}
-        onSwipeRight={() => navigation.goBack()}>
-        <Header />
-        <View style={styles.variantHeaderContainer}>
-          <View style={styles.variantNameHeader}>
-            <Text style={styles.headerText}>Variants</Text>
-          </View>
-          <View style={styles.variantStockHeader}>
-            <Text style={styles.headerText}>Stock</Text>
-          </View>
-          <View style={styles.variantPriceHeader}>
-            <Text style={styles.headerText}>Price</Text>
+        onSwipeRight={() => navigation.goBack()}>*/}
+      <Header />
+      <View style={styles.variantHeaderContainer}>
+        <View style={styles.variantNameHeader}>
+          <Text style={styles.headerText}>Variants</Text>
+        </View>
+        <View style={styles.variantStockHeader}>
+          <Text style={styles.headerText}>Stock</Text>
+        </View>
+        <View style={styles.variantPriceHeader}>
+          <Text style={styles.headerText}>Price</Text>
+        </View>
+      </View>
+      <View>
+        {variations.map(variation => (
+          <VariantRow variant={variation} />
+        ))}
+      </View>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('panel');
+        }}>
+        <View style={styles.confirmButtonContainer}>
+          <View style={styles.confirmButton}>
+            <Text style={styles.confirmButtonText}>Confirm</Text>
           </View>
         </View>
-        <View>
-          {variations.map(variation => (
-            <VariantRow variant={variation} />
-          ))}
-        </View>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('panel');
-          }}>
-          <View style={styles.confirmButtonContainer}>
-            <View style={styles.confirmButton}>
-              <Text style={styles.confirmButtonText}>Confirm</Text>
-            </View>
-          </View>
-        </TouchableOpacity>
-      </GestureRecognizer>
+      </TouchableOpacity>
+      {/*</GestureRecognizer>*/}
     </ScrollView>
   );
 };

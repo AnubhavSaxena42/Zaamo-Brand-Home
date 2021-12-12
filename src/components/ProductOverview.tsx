@@ -79,48 +79,45 @@ const ProductOverview = ({
       });
   };
   return (
-    <TouchableNativeFeedback
+    <TouchableOpacity
+      style={styles.productOverviewContainer}
       onPress={() => {
         setShowProducts(false);
         navigation.navigate('productScreen', {product});
       }}>
-      <View style={styles.productOverviewContainer}>
-        {/*Image of the product */}
-        <View style={styles.imageContainer}>
-          <Image
-            style={styles.image}
-            resizeMode="cover"
-            source={{
-              uri: product.thumbnail_url,
-            }}
-          />
+      {/*Image of the product */}
+      <View style={styles.imageContainer}>
+        <Image
+          style={styles.image}
+          resizeMode="cover"
+          source={{
+            uri: product.thumbnail_url,
+          }}
+        />
+      </View>
+      {/*Product Information */}
+      <View style={styles.productInfoContainer}>
+        <View style={{}}>
+          <Text style={styles.productNameText}>{product.name}</Text>
         </View>
-        {/*Product Information */}
-        <View style={styles.productInfoContainer}>
-          <View style={{}}>
-            <Text style={styles.productNameText}>{product.name}</Text>
-          </View>
-          <View>
-            <Text style={styles.productLinkText}>
-              https://zaamo.co/blue_t_shirt
-            </Text>
-          </View>
-          <View>
-            <Text style={styles.priceText}>Rs.{product.price.toString()}</Text>
-          </View>
+        <View>
+          <Text style={styles.productLinkText}>
+            https://zaamo.co/blue_t_shirt
+          </Text>
         </View>
-        {/*Tag button */}
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={onTagHandler}>
-            <View style={isTagged ? styles.taggedButton : styles.button}>
-              <Text style={styles.buttonText}>
-                {isTagged ? 'Tagged' : 'Tag'}
-              </Text>
-            </View>
-          </TouchableOpacity>
+        <View>
+          <Text style={styles.priceText}>Rs.{product.price.toString()}</Text>
         </View>
       </View>
-    </TouchableNativeFeedback>
+      {/*Tag button */}
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={isTagged ? styles.taggedButton : styles.button}
+          onPress={onTagHandler}>
+          <Text style={styles.buttonText}>{isTagged ? 'Tagged' : 'Tag'}</Text>
+        </TouchableOpacity>
+      </View>
+    </TouchableOpacity>
   );
 };
 
@@ -130,15 +127,16 @@ const styles = StyleSheet.create({
   productOverviewContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    width: '100%',
     height: windowWidth > 500 ? 300 : 120,
     justifyContent: windowWidth > 500 ? 'space-around' : 'space-between',
     backgroundColor: '#f5f5f5',
     marginVertical: 3,
   },
   imageContainer: {
-    width: windowWidth / 3,
     paddingVertical: 11,
     height: '100%',
+    width: '30%',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -176,21 +174,23 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
   },
   buttonContainer: {
-    paddingHorizontal: 20,
+    alignItems: 'center',
+    width: '30%',
     height: '100%',
     justifyContent: 'center',
     flex: 1,
   },
   button: {
     paddingHorizontal: windowWidth > 500 ? 2 : 10,
-    paddingVertical: windowWidth > 500 ? 10 : 5,
-    width: 55,
+    paddingVertical: windowWidth > 500 ? 20 : 5,
+    width: '50%',
     alignSelf: 'center',
     backgroundColor: 'black',
   },
   taggedButton: {
+    width: '50%',
     paddingHorizontal: windowWidth > 500 ? 2 : 16,
-    paddingVertical: windowWidth > 500 ? 10 : 5,
+    paddingVertical: windowWidth > 500 ? 20 : 5,
     backgroundColor: '#0e8613',
   },
   buttonText: {

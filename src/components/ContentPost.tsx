@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React from 'react';
+import React, {useState} from 'react';
 import {Platform} from 'react-native';
 import {StyleSheet, Text, Dimensions, View} from 'react-native';
 import ContentActions from './ContentActions';
@@ -13,12 +13,22 @@ const ContentPost = ({
   trigger,
   isTrigger,
 }) => {
+  const [contentType, setContentType] = useState();
+
   return (
     <View style={styles.postContainer}>
       {/*Content Overview Component */}
-      <ContentOverview post={post} source={contentSource} />
+      <ContentOverview
+        post={post}
+        contentType={contentType}
+        setContentType={setContentType}
+        contentTypeItems={contentTypeItems}
+        source={contentSource}
+      />
       {/*Post actions/tags Component */}
       <ContentActions
+        contentType={contentType}
+        setContentType={setContentType}
         contentTypeItems={contentTypeItems}
         post={post}
         trigger={trigger}

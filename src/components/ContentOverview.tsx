@@ -18,10 +18,19 @@ import contentService from '../services/content-service';
 import {useDispatch, useSelector} from 'react-redux';
 import {setPosts} from '../redux/reducers/postsReducer';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
+import {Platform} from 'react-native';
+import Dropdown from './Dropdown';
 const windowWidth = Dimensions.get('window').width;
-const ContentOverview = ({post, source}) => {
+const ContentOverview = ({
+  post,
+  source,
+  contentType,
+  setContentType,
+  contentTypeItems,
+}) => {
   const [showQuickView, setShowQuickView] = useState(false);
   const posts = useSelector(state => state.posts.posts);
+  console.log('selected', contentType);
   const dispatch = useDispatch();
   const images = [
     {
@@ -98,7 +107,8 @@ const ContentOverview = ({post, source}) => {
                 <Text style={styles.value}>{post.comments.toString()}</Text>
               </View>
             </View>
-            {/*<View style={styles.metric}>
+          </View>
+          {/*<View style={styles.metric}>
               <View style={styles.icon}>
                 <FontAwesome5 name="share-square" size={25} color="white" />
               </View>
@@ -106,22 +116,62 @@ const ContentOverview = ({post, source}) => {
                 <Text style={styles.value}>{post.shares.toString()}</Text>
               </View>
             </View>*/}
-            <TouchableOpacity onPress={() => setShowQuickView(true)}>
-              <View style={styles.quickViewContainer}>
-                <View style={styles.icon}>
-                  <Ionicons name="eye" size={30} color="white" />
-                </View>
-                <Text
-                  style={{
-                    color: 'white',
-                    fontWeight: 'bold',
-                    fontFamily: 'Roboto-Black',
-                  }}>
+          {Platform.OS === 'web' && (
+            <View style={styles.webQuickContentContainer}>
+              <TouchableOpacity
+                onPress={() => setShowQuickView(true)}
+                style={styles.webQuickContainer}>
+                <Text style={{color: 'white', fontSize: '100%'}}>
                   Quick View
                 </Text>
+              </TouchableOpacity>
+              <Dropdown
+                tag={'Content Type'}
+                items={contentTypeItems}
+                selectedValue={contentType}
+                setSelectedValue={setContentType}
+                dropDownContainerStyle={{
+                  width: '49.5%',
+                  alignItems: 'center',
+                  backgroundColor: 'rgba(0,0,0,0.5)',
+                  elevation: 5,
+                  paddingHorizontal: '2%',
+                  zIndex: 400,
+                }}
+                dropDownTextStyle={{
+                  color: 'white',
+                  fontSize: '100%',
+                  alignSelf: 'center',
+                }}
+                dropDownValuesTextStyle={{
+                  marginLeft: 4,
+                  fontSize: 12,
+                }}
+                dropDownValuesContainerStyle={{
+                  elevation: 10,
+                  zIndex: 200,
+                }}
+              />
+            </View>
+          )}
+          {Platform.OS !== 'web' && (
+            <TouchableOpacity
+              style={styles.quickViewContainer}
+              onPress={() => setShowQuickView(true)}>
+              <View style={styles.icon}>
+                <Ionicons name="eye" size={30} color="white" />
               </View>
+              <Text
+                style={{
+                  color: 'white',
+                  fontWeight: 'bold',
+                  fontFamily: 'Roboto-Black',
+                }}>
+                Quick View
+              </Text>
             </TouchableOpacity>
-          </View>
+          )}
+
           {/* Quick View Modal */}
           <Modal
             animationType="slide"
@@ -146,6 +196,7 @@ const styles = StyleSheet.create({
   overviewContainer: {
     height: 381,
     width: '100%',
+    zIndex: 200,
     position: 'relative',
   },
   contentImage: {
@@ -156,6 +207,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     bottom: 0,
+    marginBottom: '20%',
   },
   metric: {
     flexDirection: 'row',
@@ -183,5 +235,20 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     right: 0,
+  },
+  webQuickContentContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    position: 'absolute',
+    justifyContent: 'space-between',
+    left: 0,
+    bottom: 0,
+    height: '10%',
+  },
+  webQuickContainer: {
+    width: '49.5%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
   },
 });

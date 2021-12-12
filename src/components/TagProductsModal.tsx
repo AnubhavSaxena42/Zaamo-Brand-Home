@@ -2,6 +2,7 @@
 import React, {useState} from 'react';
 import {
   StyleSheet,
+  ScrollView,
   ActivityIndicator,
   FlatList,
   Text,
@@ -50,10 +51,44 @@ const TagProductsModal = ({
     }
   };
 
+  const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
+    const paddingToBottom = 20;
+    return (
+      layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - paddingToBottom
+    );
+  };
+
   return (
-    <View style={styles.tagProductsContainer}>
+    <ScrollView
+      onScrollEndDrag={fetchMoreProducts}
+      onScroll={({nativeEvent}) => {
+        if (isCloseToBottom(nativeEvent)) {
+          fetchMoreProducts();
+        }
+      }}
+      scrollEventThrottle={400}
+      showsVerticalScrollIndicator={false}
+      style={styles.tagProductsContainer}>
       <Search placeholder={'Enter Product Name'} onSearch={() => {}} />
-      <FlatList
+      {listProducts.map(product => {
+        return (
+          <ProductOverview
+            key={product.id}
+            trigger={trigger}
+            isTrigger={isTrigger}
+            setShowProducts={setShowProducts}
+            contentType={contentType}
+            contentId={contentId}
+            product={product}
+            taggedProducts={taggedProducts}
+          />
+        );
+      })}
+      <View style={{backgroundColor: 'white'}}>
+        {isActivityIndicator && <ActivityIndicator size={40} color={'black'} />}
+      </View>
+      {/*<FlatList
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: 90}}
         data={listProducts}
@@ -79,8 +114,8 @@ const TagProductsModal = ({
             </View>
           );
         }}
-      />
-    </View>
+      />*/}
+    </ScrollView>
   );
 };
 
@@ -90,5 +125,7 @@ const styles = StyleSheet.create({
   tagProductsContainer: {
     backgroundColor: 'white',
     paddingHorizontal: 10,
+    width: '100%',
+    flex: 1,
   },
 });

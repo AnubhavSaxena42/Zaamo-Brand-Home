@@ -1,6 +1,13 @@
 // @ts-nocheck
 import React, {useState} from 'react';
-import {StyleSheet, Modal, Text, View, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  Modal,
+  Text,
+  View,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 import ActionButton from './ActionButton';
 import Dropdown from './Dropdown';
 import TaggedComponent from './TaggedComponent';
@@ -22,10 +29,12 @@ const ContentActions = ({
   contentTypeItems,
   trigger,
   isTrigger,
+  contentType,
+  setContentType,
 }: ContentActionsProps) => {
   const [showProducts, setShowProducts] = useState(false);
   const [showCollections, setShowCollections] = useState(false);
-  const [contentType, setContentType] = useState(null);
+
   const navigation = useNavigation();
   const posts = useSelector((state: RootState) => state.posts.posts);
   const products = useSelector((state: RootState) => state.products.products);
@@ -68,35 +77,38 @@ const ContentActions = ({
     <View style={styles.contentActionsContainer}>
       {/*Action buttons and dropdown*/}
       <View style={styles.actionsContainer}>
-        <Dropdown
-          tag={'Content Type'}
-          items={contentTypeItems}
-          selectedValue={contentType}
-          setSelectedValue={setContentType}
-          dropDownContainerStyle={{
-            width: '20%',
-            alignSelf: 'center',
-            backgroundColor: 'white',
-            shadowColor: '#000000',
-            borderRadius: 5,
-            marginTop: 5,
-            shadowOffset: {
-              width: 0,
-              height: 1,
-            },
-            shadowRadius: 5,
-            shadowOpacity: 1.0,
-            elevation: 5,
-            zIndex: 200,
-          }}
-          dropDownValuesTextStyle={{
-            marginLeft: 4,
-            fontSize: 12,
-          }}
-          dropDownValuesContainerStyle={{
-            elevation: 10,
-          }}
-        />
+        {Platform.OS !== 'web' && (
+          <Dropdown
+            tag={'Content Type'}
+            items={contentTypeItems}
+            selectedValue={contentType}
+            setSelectedValue={setContentType}
+            dropDownContainerStyle={{
+              width: '20%',
+              alignSelf: 'center',
+              backgroundColor: 'white',
+              shadowColor: '#000000',
+              borderRadius: 5,
+              marginTop: 5,
+              shadowOffset: {
+                width: 0,
+                height: 1,
+              },
+              shadowRadius: 5,
+              shadowOpacity: 1.0,
+              elevation: 5,
+              zIndex: 200,
+            }}
+            dropDownValuesTextStyle={{
+              marginLeft: 4,
+              fontSize: 12,
+            }}
+            dropDownValuesContainerStyle={{
+              elevation: 10,
+              zIndex: 100,
+            }}
+          />
+        )}
         <ActionButton
           onPress={() => {
             dispatch(setPosts(posts));

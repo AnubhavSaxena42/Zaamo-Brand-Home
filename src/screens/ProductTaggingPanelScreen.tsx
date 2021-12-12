@@ -105,6 +105,14 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
             alignItems: 'center',
             borderColor: 'rgba(0,0,0,0.5)',
             borderWidth: 1,
+            shadowOffset: {
+              width: 0,
+              height: 1,
+            },
+            shadowRadius: 2,
+            paddingVertical: 12,
+            shadowOpacity: 1.0,
+            elevation: 5,
             zIndex: 200,
           }}
           dropDownTextStyle={{
@@ -134,6 +142,14 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
             marginLeft: '1%',
             borderWidth: 1,
             borderRadius: 5,
+            shadowOffset: {
+              width: 0,
+              height: 1,
+            },
+            paddingVertical: 12,
+            shadowRadius: 2,
+            shadowOpacity: 1.0,
+            elevation: 5,
             borderColor: 'rgba(0,0,0,0.5)',
             zIndex: 200,
           }}

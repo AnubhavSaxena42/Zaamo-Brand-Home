@@ -24,6 +24,6 @@ const styles = StyleSheet.create({
     marginLeft: Platform.OS === 'web' ? '2%' : 0,
     fontFamily: 'Merriweather-Regular',
     fontWeight: '400',
-    fontSize: 28,
+    fontSize: Platform.OS === 'web' ? 36 : 28,
   },
 });

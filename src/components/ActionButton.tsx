@@ -29,8 +29,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
-    height: Platform.OS === 'web' ? 40 : 35,
-    width: Platform.OS === 'android' ? '24%' : '31%',
+    height: Platform.OS === 'web' ? 35 : 35,
+    width: Platform.OS === 'android' ? '24%' : '32%',
     shadowColor: '#000000',
     borderRadius: 3,
     shadowOffset: {

@@ -148,7 +148,7 @@ const ContentOverview = ({
                 }}
                 dropDownValuesTextStyle={{
                   marginLeft: 4,
-                  fontSize: '100%',
+                  fontSize: '90%',
                   color: 'white',
                 }}
                 dropDownValuesContainerStyle={{

@@ -93,7 +93,7 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
 
   const webDropdownStyle = {
     height: '30%',
-    width: '10%',
+    width: '15%',
     marginLeft: '2%',
     borderRadius: 5,
     alignItems: 'center',
@@ -148,7 +148,7 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
     marginLeft: 10,
   };
   const webDropdownValuesTextStyle = {
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: 'Roboto-Regular',
     marginVertical: 5,
     marginLeft: 10,
@@ -160,7 +160,7 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
     color: 'rgba(0, 0, 0, 0.75)',
   };
   const webDropdownTextStyle = {
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: 'Open-Sans',
     fontWeight: '300',
     color: 'rgba(0, 0, 0, 0.75)',

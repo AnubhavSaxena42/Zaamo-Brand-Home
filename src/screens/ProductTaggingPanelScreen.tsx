@@ -97,17 +97,17 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
     marginLeft: '2%',
     borderRadius: 5,
     alignItems: 'center',
-    borderColor: 'rgba(0,0,0,0.5)',
+    borderColor: 'rgba(0,0,0,0.2)',
     paddingHorizontal: 5,
     borderWidth: 1,
     shadowOffset: {
       width: 0,
       height: 1,
     },
-    shadowRadius: 2,
+    shadowRadius: 1,
     paddingVertical: 15,
     shadowOpacity: 1.0,
-    elevation: 5,
+    elevation: 2,
     zIndex: 200,
   };
 
@@ -128,6 +128,39 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
     elevation: 5,
     zIndex: 200,
   };
+  const mobileDropdownValuesContainerStyle = {
+    top: 33,
+  };
+  const webDropdownValuesContainerStyle = {
+    width: '100%',
+    top: 18,
+    borderWidth: 1,
+    borderColor: 'rgba(0,0,0,0.2)',
+  };
+  const mobileDropdownValuesTextStyle = {
+    fontSize: 14,
+    fontFamily: 'Roboto-Regular',
+    marginVertical: 2,
+    marginLeft: 10,
+  };
+  const webDropdownValuesTextStyle = {
+    fontSize: 18,
+    fontFamily: 'Roboto-Regular',
+    marginVertical: 5,
+    marginLeft: 10,
+  };
+  const mobileDropdownTextStyle = {
+    fontSize: 14,
+    fontFamily: 'Open-Sans',
+    fontWeight: '300',
+    color: 'rgba(0, 0, 0, 0.75)',
+  };
+  const webDropdownTextStyle = {
+    fontSize: 18,
+    fontFamily: 'Open-Sans',
+    fontWeight: '300',
+    color: 'rgba(0, 0, 0, 0.75)',
+  };
 
   return (
     <View style={styles.taggingPanelContainer}>
@@ -144,21 +177,21 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
           dropDownContainerStyle={
             Platform.OS === 'web' ? webDropdownStyle : mobileDropdownStyle
           }
-          dropDownTextStyle={{
-            fontSize: 14,
-            fontFamily: 'Open-Sans',
-            fontWeight: '300',
-            color: 'rgba(0, 0, 0, 0.75)',
-          }}
-          dropDownValuesTextStyle={{
-            fontSize: 14,
-            fontFamily: 'Roboto-Regular',
-            marginVertical: 2,
-            marginLeft: 10,
-          }}
-          dropDownValuesContainerStyle={{
-            top: 33,
-          }}
+          dropDownTextStyle={
+            Platform.OS === 'web'
+              ? webDropdownTextStyle
+              : mobileDropdownTextStyle
+          }
+          dropDownValuesTextStyle={
+            Platform.OS === 'web'
+              ? webDropdownValuesTextStyle
+              : mobileDropdownValuesTextStyle
+          }
+          dropDownValuesContainerStyle={
+            Platform.OS === 'web'
+              ? webDropdownValuesContainerStyle
+              : mobileDropdownValuesContainerStyle
+          }
         />
         <Dropdown
           tag="Content Format"
@@ -169,20 +202,21 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
           dropDownContainerStyle={
             Platform.OS === 'web' ? webDropdownStyle : mobileDropdownStyle
           }
-          dropDownValuesTextStyle={{
-            fontSize: 14,
-            fontFamily: 'Roboto-Regular',
-            marginLeft: 10,
-            marginVertical: 2,
-          }}
-          dropDownTextStyle={{
-            fontSize: 14,
-            fontFamily: 'Open-Sans',
-            fontWeight: '300',
-          }}
-          dropDownValuesContainerStyle={{
-            top: 33,
-          }}
+          dropDownValuesTextStyle={
+            Platform.OS === 'web'
+              ? webDropdownValuesTextStyle
+              : mobileDropdownValuesTextStyle
+          }
+          dropDownTextStyle={
+            Platform.OS === 'web'
+              ? webDropdownTextStyle
+              : mobileDropdownTextStyle
+          }
+          dropDownValuesContainerStyle={
+            Platform.OS === 'web'
+              ? webDropdownValuesContainerStyle
+              : mobileDropdownValuesContainerStyle
+          }
         />
       </View>
       <FlatList

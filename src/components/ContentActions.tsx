@@ -34,7 +34,6 @@ const ContentActions = ({
 }: ContentActionsProps) => {
   const [showProducts, setShowProducts] = useState(false);
   const [showCollections, setShowCollections] = useState(false);
-
   const navigation = useNavigation();
   const posts = useSelector((state: RootState) => state.posts.posts);
   const products = useSelector((state: RootState) => state.products.products);
@@ -137,6 +136,7 @@ const ContentActions = ({
       <View style={styles.tagsContainer}>
         {post.tagged.map(tag => (
           <TaggedComponent
+            key={tag.name}
             contentId={post.id}
             product={tag}
             tag={tag.name}
@@ -190,7 +190,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     marginBottom: 18,
-    zIndex: 200,
   },
   contentActionsContainer: {
     width: '100%',

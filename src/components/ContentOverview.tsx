@@ -129,12 +129,16 @@ const ContentOverview = ({
                 items={contentTypeItems}
                 selectedValue={contentType}
                 setSelectedValue={setContentType}
+                backgroundColorStyle={{
+                  backgroundColor: 'rgba(0,0,0,0.5)',
+                  paddingHorizontal: '2%',
+                }}
                 dropDownContainerStyle={{
                   width: '49.5%',
                   alignItems: 'center',
                   backgroundColor: 'rgba(0,0,0,0.5)',
                   elevation: 5,
-                  paddingHorizontal: '2%',
+                  paddingHorizontal: '3%',
                   zIndex: 400,
                 }}
                 dropDownTextStyle={{
@@ -144,11 +148,16 @@ const ContentOverview = ({
                 }}
                 dropDownValuesTextStyle={{
                   marginLeft: 4,
-                  fontSize: 12,
+                  fontSize: '100%',
+                  color: 'white',
                 }}
                 dropDownValuesContainerStyle={{
-                  elevation: 10,
-                  zIndex: 200,
+                  top: 0,
+                  width: '110%',
+                  elevation: 20,
+                  borderWidth: 1,
+                  borderColor: 'rgba(0,0,0,0.2)',
+                  backgroundColor: 'rgba(0,0,0,0.2)',
                 }}
               />
             </View>
@@ -173,7 +182,7 @@ const ContentOverview = ({
 
           {/* Quick View Modal */}
           <Modal
-            animationType="slide"
+            animationType="none"
             visible={showQuickView}
             onRequestClose={() => {
               setShowQuickView(false);
@@ -182,6 +191,22 @@ const ContentOverview = ({
               onClick={() => setShowQuickView(false)}
               imageUrls={images}
             />*/}
+
+            <TouchableOpacity
+              onPress={() => {
+                setShowQuickView(false);
+              }}
+              style={{alignItems: 'center'}}>
+              <Image
+                source={post.media_url}
+                style={{
+                  width: 720,
+                  height: 1280,
+                  maxWidth: '100%',
+                  maxHeight: '100%',
+                }}
+              />
+            </TouchableOpacity>
           </Modal>
         </ImageBackground>
       </TouchableOpacity>
@@ -196,6 +221,7 @@ const styles = StyleSheet.create({
     height: 381,
     width: '100%',
     zIndex: 200,
+
     position: 'relative',
   },
   contentImage: {

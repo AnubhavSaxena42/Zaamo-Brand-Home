@@ -17,6 +17,7 @@ const Dropdown = ({
   dropDownTextStyle,
   iconColor,
   webStyle,
+  down,
   dropDownValuesContainerStyle,
   dropDownValuesTextStyle,
 }) => {
@@ -42,13 +43,31 @@ const Dropdown = ({
           {selectedValue ? selectedName.name : tag}
         </Text>
         <View style={styles.iconContainer}>
-          <Entypo
-            name="triangle-up"
-            size={15}
-            color={
-              iconColor ? iconColor : Platform.OS === 'web' ? 'white' : 'black'
-            }
-          />
+          {down ? (
+            <Entypo
+              name="triangle-down"
+              size={15}
+              color={
+                iconColor
+                  ? iconColor
+                  : Platform.OS === 'web'
+                  ? 'white'
+                  : 'black'
+              }
+            />
+          ) : (
+            <Entypo
+              name="triangle-up"
+              size={15}
+              color={
+                iconColor
+                  ? iconColor
+                  : Platform.OS === 'web'
+                  ? 'white'
+                  : 'black'
+              }
+            />
+          )}
         </View>
       </TouchableOpacity>
       {isOpen && (

@@ -120,7 +120,7 @@ const ContentOverview = ({
               <TouchableOpacity
                 onPress={() => setShowQuickView(true)}
                 style={styles.webQuickContainer}>
-                <Text style={{color: 'white', fontSize: '100%'}}>
+                <Text style={{color: 'white', fontSize: '90%'}}>
                   Quick View
                 </Text>
               </TouchableOpacity>
@@ -143,7 +143,7 @@ const ContentOverview = ({
                 }}
                 dropDownTextStyle={{
                   color: 'white',
-                  fontSize: '100%',
+                  fontSize: '90%',
                   alignSelf: 'center',
                 }}
                 dropDownValuesTextStyle={{

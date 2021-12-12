@@ -178,6 +178,7 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
           selectedValue={contentSource}
           setSelectedValue={setContentSource}
           iconColor={'black'}
+          down
           dropDownContainerStyle={
             Platform.OS === 'web' ? webDropdownStyle : mobileDropdownStyle
           }
@@ -202,6 +203,7 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
           items={contentFormatItems}
           selectedValue={contentFormat}
           iconColor="black"
+          down
           setSelectedValue={setContentFormat}
           dropDownContainerStyle={
             Platform.OS === 'web' ? webDropdownStyle : mobileDropdownStyle

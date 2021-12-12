@@ -84,8 +84,8 @@ const ContentActions = ({
             selectedValue={contentType}
             setSelectedValue={setContentType}
             dropDownContainerStyle={{
-              width: '20%',
-              alignSelf: 'center',
+              width: '25%',
+              height: 35,
               backgroundColor: 'white',
               shadowColor: '#000000',
               borderRadius: 5,
@@ -94,10 +94,14 @@ const ContentActions = ({
                 width: 0,
                 height: 1,
               },
+              paddingHorizontal: '1%',
               shadowRadius: 5,
               shadowOpacity: 1.0,
               elevation: 5,
               zIndex: 200,
+            }}
+            dropDownTextStyle={{
+              fontSize: 10,
             }}
             dropDownValuesTextStyle={{
               marginLeft: 4,
@@ -184,6 +188,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-around',
+    alignItems: 'center',
     marginBottom: 18,
     zIndex: 200,
   },

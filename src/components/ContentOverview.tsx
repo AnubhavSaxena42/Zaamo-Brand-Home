@@ -30,7 +30,6 @@ const ContentOverview = ({
 }) => {
   const [showQuickView, setShowQuickView] = useState(false);
   const posts = useSelector(state => state.posts.posts);
-  console.log('selected', contentType);
   const dispatch = useDispatch();
   const images = [
     {
@@ -200,14 +199,16 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   contentImage: {
-    width: '100%',
-    height: 400,
+    maxwidth: '100%',
+    height: Platform.OS === 'web' ? 400 : '100%',
   },
+  //figure out why responsive units failing for web
   metricsContainer: {
     position: 'absolute',
     left: 0,
     bottom: 0,
-    marginBottom: '20%',
+    marginLeft: '2%',
+    marginBottom: Platform.OS === 'web' ? '20%' : '10%',
   },
   metric: {
     flexDirection: 'row',
@@ -224,6 +225,10 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Black',
   },
   quickViewContainer: {
+    position: 'absolute',
+    bottom: 15,
+    marginLeft: '2%',
+    left: 0,
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 25,

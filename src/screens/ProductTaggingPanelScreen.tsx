@@ -91,6 +91,44 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
     fetchContent();
   }, [contentSource, contentFormat, contentLimit]);
 
+  const webDropdownStyle = {
+    height: '30%',
+    width: '10%',
+    marginLeft: '2%',
+    borderRadius: 5,
+    alignItems: 'center',
+    borderColor: 'rgba(0,0,0,0.5)',
+    paddingHorizontal: 5,
+    borderWidth: 1,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowRadius: 2,
+    paddingVertical: 15,
+    shadowOpacity: 1.0,
+    elevation: 5,
+    zIndex: 200,
+  };
+
+  const mobileDropdownStyle = {
+    height: '70%',
+    width: '45%',
+    borderRadius: 5,
+    alignItems: 'center',
+    borderColor: 'rgba(0,0,0,0.2)',
+    paddingHorizontal: 5,
+    borderWidth: 1,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowRadius: 2,
+    shadowOpacity: 1.0,
+    elevation: 5,
+    zIndex: 200,
+  };
+
   return (
     <View style={styles.taggingPanelContainer}>
       <Header />
@@ -103,25 +141,9 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
           selectedValue={contentSource}
           setSelectedValue={setContentSource}
           iconColor={'black'}
-          dropDownContainerStyle={{
-            height: '30%',
-            width: '10%',
-            marginLeft: '2%',
-            borderRadius: 5,
-            alignItems: 'center',
-            borderColor: 'rgba(0,0,0,0.5)',
-            paddingHorizontal: 5,
-            borderWidth: 1,
-            shadowOffset: {
-              width: 0,
-              height: 1,
-            },
-            shadowRadius: 2,
-            paddingVertical: 15,
-            shadowOpacity: 1.0,
-            elevation: 5,
-            zIndex: 200,
-          }}
+          dropDownContainerStyle={
+            Platform.OS === 'web' ? webDropdownStyle : mobileDropdownStyle
+          }
           dropDownTextStyle={{
             fontSize: 14,
             fontFamily: 'Open-Sans',
@@ -144,24 +166,9 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
           selectedValue={contentFormat}
           iconColor="black"
           setSelectedValue={setContentFormat}
-          dropDownContainerStyle={{
-            height: '30%',
-            width: '10%',
-            marginLeft: '1%',
-            borderWidth: 1,
-            borderRadius: 5,
-            paddingHorizontal: 5,
-            shadowOffset: {
-              width: 0,
-              height: 1,
-            },
-            paddingVertical: 15,
-            shadowRadius: 2,
-            shadowOpacity: 1.0,
-            elevation: 5,
-            borderColor: 'rgba(0,0,0,0.5)',
-            zIndex: 200,
-          }}
+          dropDownContainerStyle={
+            Platform.OS === 'web' ? webDropdownStyle : mobileDropdownStyle
+          }
           dropDownValuesTextStyle={{
             fontSize: 14,
             fontFamily: 'Roboto-Regular',

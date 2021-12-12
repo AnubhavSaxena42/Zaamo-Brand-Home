@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
   dropdownTag: {},
   dropdownTagText: {
     textAlign: 'center',
-    fontSize: 30,
+    fontSize: 12,
     fontFamily: 'Roboto-Black',
     color: 'rgba(0, 0, 0, 0.5)',
   },

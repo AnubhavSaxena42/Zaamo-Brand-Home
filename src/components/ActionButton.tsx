@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Platform,
   StyleSheet,
   Text,
   TouchableNativeFeedback,
@@ -28,8 +29,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
-    height: 30,
-    width: '31%',
+    height: Platform.OS === 'web' ? 45 : 35,
+    width: Platform.OS === 'android' ? '24%' : '31%',
     shadowColor: '#000000',
     borderRadius: 3,
     shadowOffset: {
@@ -44,9 +45,9 @@ const styles = StyleSheet.create({
   },
   actionButtonIcon: {},
   actionText: {
-    color: 'rgba(0, 0, 0, 0.8)',
+    color: 'rgba(0, 0, 0, 0.5)',
     fontWeight: '500',
-    fontSize: 12,
+    fontSize: Platform.OS === 'web' ? 12 : 10,
     fontFamily: 'Roboto-Black',
     textAlign: 'center',
   },

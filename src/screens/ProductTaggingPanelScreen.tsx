@@ -130,10 +130,14 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
   };
   const mobileDropdownValuesContainerStyle = {
     top: 33,
+    width: '105%',
+    alignSelf: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(0,0,0,0.2)',
   };
   const webDropdownValuesContainerStyle = {
-    width: '100%',
     top: 18,
+    width: '100%',
     borderWidth: 1,
     borderColor: 'rgba(0,0,0,0.2)',
   };

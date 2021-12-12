@@ -93,7 +93,7 @@ const ContentOverview = ({
           <View style={styles.metricsContainer}>
             <View style={styles.metric}>
               <View style={styles.icon}>
-                <Ionicons name="heart" size={28} color="white" />
+                <Ionicons name="heart" size={28} color="rgba(255,0,0,0.6)" />
               </View>
               <View>
                 <Text style={styles.value}>{post.likes.toString()}</Text>
@@ -101,7 +101,7 @@ const ContentOverview = ({
             </View>
             <View style={styles.metric}>
               <View style={styles.icon}>
-                <Foundation name="comments" size={30} color="white" />
+                <Foundation name="comments" size={30} color="rgba(0,0,0,0.2)" />
               </View>
               <View>
                 <Text style={styles.value}>{post.comments.toString()}</Text>

@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Dimensions,
   TouchableNativeFeedback,
+  Platform,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/core';
 import {useSelector, useDispatch} from 'react-redux';
@@ -127,8 +128,9 @@ const styles = StyleSheet.create({
   productOverviewContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: '100%',
-    height: windowWidth > 500 ? 300 : 120,
+    alignSelf: 'center',
+    width: Platform.OS === 'web' ? '75%' : '100%',
+    height: windowWidth > 500 ? 250 : 120,
     justifyContent: windowWidth > 500 ? 'space-around' : 'space-between',
     backgroundColor: '#f5f5f5',
     marginVertical: 3,

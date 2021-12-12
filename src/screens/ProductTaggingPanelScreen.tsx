@@ -18,19 +18,24 @@ import {setPosts} from '../redux/reducers/postsReducer';
 import {setPageInfo, setProducts} from '../redux/reducers/productsReducer';
 const ProductTaggingPanelScreen = ({navigation, route}) => {
   const posts = useSelector((state: RootState) => state.posts.posts);
-
   const [trigger, isTrigger] = useState(true);
-  const windowWidth = Dimensions.get('window').width;
-  const numberOfColumns = windowWidth > 500 ? 4 : 1;
   const [contentSourceItems, setContentSourceItems] = useState([]);
   const [contentFormatItems, setContentFormatItems] = useState([]);
   const [contentSource, setContentSource] = useState(null);
   const [contentFormat, setContentFormat] = useState(null);
-  const [contentLimit, setContentLimit] = useState(0);
+  const [contentLimit, setContentLimit] = useState(12);
   const [contentOffset, setContentOffset] = useState(0);
   const [contentTypeItems, setContentTypeItems] = useState([]);
   const [isActivityIndicator, setIsActivityIndicator] = useState(false);
   const dispatch = useDispatch();
+  const windowWidth = Dimensions.get('window').width;
+  //Set number of columns for Web,Tablet and Mobile
+  let numberOfColumns;
+  if (Platform.OS === 'web') {
+    numberOfColumns = 4;
+  } else {
+    numberOfColumns = windowWidth > 500 ? 2 : 1;
+  }
   const setFilters = async () => {
     contentService
       .getFilters()
@@ -97,6 +102,7 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
           items={contentSourceItems}
           selectedValue={contentSource}
           setSelectedValue={setContentSource}
+          iconColor={'black'}
           dropDownContainerStyle={{
             height: '30%',
             width: '10%',
@@ -104,13 +110,14 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
             borderRadius: 5,
             alignItems: 'center',
             borderColor: 'rgba(0,0,0,0.5)',
+            paddingHorizontal: 5,
             borderWidth: 1,
             shadowOffset: {
               width: 0,
               height: 1,
             },
             shadowRadius: 2,
-            paddingVertical: 12,
+            paddingVertical: 15,
             shadowOpacity: 1.0,
             elevation: 5,
             zIndex: 200,
@@ -135,6 +142,7 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
           tag="Content Format"
           items={contentFormatItems}
           selectedValue={contentFormat}
+          iconColor="black"
           setSelectedValue={setContentFormat}
           dropDownContainerStyle={{
             height: '30%',
@@ -142,11 +150,12 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
             marginLeft: '1%',
             borderWidth: 1,
             borderRadius: 5,
+            paddingHorizontal: 5,
             shadowOffset: {
               width: 0,
               height: 1,
             },
-            paddingVertical: 12,
+            paddingVertical: 15,
             shadowRadius: 2,
             shadowOpacity: 1.0,
             elevation: 5,
@@ -169,38 +178,6 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
           }}
         />
       </View>
-      {/*posts && (
-        <View style={{flexDirection: 'row'}}>
-          <ContentPost
-            contentSource={contentSource}
-            contentTypeItems={contentTypeItems}
-            trigger={trigger}
-            isTrigger={isTrigger}
-            post={posts[3]}
-          />
-          <ContentPost
-            contentSource={contentSource}
-            contentTypeItems={contentTypeItems}
-            trigger={trigger}
-            isTrigger={isTrigger}
-            post={posts[3]}
-          />
-          <ContentPost
-            contentSource={contentSource}
-            contentTypeItems={contentTypeItems}
-            trigger={trigger}
-            isTrigger={isTrigger}
-            post={posts[3]}
-          />
-          <ContentPost
-            contentSource={contentSource}
-            contentTypeItems={contentTypeItems}
-            trigger={trigger}
-            isTrigger={isTrigger}
-            post={posts[3]}
-          />
-        </View>
-      )*/}
       <FlatList
         data={posts}
         keyExtractor={item => item.id.toString()}
@@ -228,7 +205,7 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
         }}
         showsVerticalScrollIndicator={false}
         onEndReached={() => {
-          const newContentLimit = contentLimit + 10;
+          const newContentLimit = contentLimit + 12;
           setContentLimit(newContentLimit);
         }}
       />

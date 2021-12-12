@@ -13,9 +13,10 @@ export default Header;
 
 const styles = StyleSheet.create({
   headerContainer: {
-    height: 50,
+    height: 80,
     backgroundColor: 'black',
     paddingVertical: 5,
+    justifyContent: 'center',
   },
   headerText: {
     color: 'white',

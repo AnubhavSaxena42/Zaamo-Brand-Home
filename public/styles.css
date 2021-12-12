@@ -1,19 +1,44 @@
 @font-face {
-    font-family: 'AntDesign';
-    src: url(${require(
-          'react-native-vector-icons/Fonts/AntDesign.ttf'
-        )})
-      format('truetype');
+  src: url(./Fonts/Ionicons.ttf);
+  font-family: 'Ionicons';
+}
 
-  @font-face {
-    font-family: 'MaterialIcons';
-    src: url(${require(
-          'react-native-vector-icons/Fonts/MaterialIcons.ttf'
-        )})
-      format('truetype');
-  }
-  @font-face {
-    font-family: 'FontAwesome';
-    src: url(${require('react-native-vector-icons/Fonts/FontAwesome.ttf')})
-      format('truetype');
-  }
+@font-face {
+  src: url(./Fonts/FontAwesome.ttf);
+  font-family: 'FontAwesome';
+}
+
+@font-face {
+  src: url(./Fonts/AntDesign.ttf);
+  font-family: 'AntDesign';
+}
+
+@font-face {
+  src: url(./Fonts/Entypo.ttf);
+  font-family: 'Entypo';
+}
+
+@font-face {
+  src: url(./Fonts/Foundation.ttf);
+  font-family: 'Foundation';
+}
+
+@font-face {
+  src: url(./Fonts/Roboto-Regular.ttf);
+  font-family: 'Roboto-Regular';
+}
+
+@font-face {
+  src: url(./Fonts/Roboto-Black.ttf);
+  font-family: 'Roboto-Black';
+}
+
+@font-face {
+  src: url(./Fonts/Merriweather-Black.ttf);
+  font-family: 'Merriweather-Black';
+}
+
+@font-face {
+  src: url(./Fonts/Merriweather-Regular.ttf);
+  font-family: 'Merriweather-Regular';
+}

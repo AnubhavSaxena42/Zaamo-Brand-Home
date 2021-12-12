@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   TouchableNativeFeedback,
+  Platform,
 } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 const Dropdown = ({
@@ -14,6 +15,7 @@ const Dropdown = ({
   setSelectedValue,
   dropDownContainerStyle,
   dropDownTextStyle,
+  iconColor,
   dropDownSelectContainerStyle,
   dropDownValuesContainerStyle,
   dropDownValuesTextStyle,
@@ -40,7 +42,13 @@ const Dropdown = ({
           {selectedValue ? selectedName.name : tag}
         </Text>
         <View style={styles.iconContainer}>
-          <Entypo name="triangle-down" size={15} color={'black'} />
+          <Entypo
+            name="triangle-down"
+            size={15}
+            color={
+              iconColor ? iconColor : Platform.OS === 'web' ? 'white' : 'black'
+            }
+          />
         </View>
       </TouchableOpacity>
       {isOpen && (

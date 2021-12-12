@@ -16,7 +16,7 @@ const Dropdown = ({
   dropDownContainerStyle,
   dropDownTextStyle,
   iconColor,
-  dropDownSelectContainerStyle,
+  webStyle,
   dropDownValuesContainerStyle,
   dropDownValuesTextStyle,
 }) => {
@@ -66,6 +66,7 @@ const Dropdown = ({
                     item.id === selectedValue ? 'black' : 'white',
                   paddingVertical: '3%',
                   paddingLeft: '2%',
+                  ...webStyle,
                 }}
                 onPress={() => {
                   setSelectedValue(item.id);

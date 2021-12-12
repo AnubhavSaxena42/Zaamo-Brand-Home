@@ -152,12 +152,15 @@ const ContentOverview = ({
                   color: 'white',
                 }}
                 dropDownValuesContainerStyle={{
-                  top: 0,
-                  width: '110%',
-                  elevation: 20,
+                  top: -400,
+                  width: '112%',
+                  elevation: 1,
                   borderWidth: 1,
                   borderColor: 'rgba(0,0,0,0.2)',
                   backgroundColor: 'rgba(0,0,0,0.2)',
+                }}
+                webStyle={{
+                  backgroundColor: 'rgba(0,0,0,0.5)',
                 }}
               />
             </View>

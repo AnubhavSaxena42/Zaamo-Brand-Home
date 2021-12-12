@@ -4,10 +4,13 @@ import {StyleSheet, View} from 'react-native';
 import CollectionOverview from './CollectionOverview';
 import Search from './Search';
 
-const TagCollectionsModal = () => {
+const TagCollectionsModal = ({setShowCollections}) => {
   return (
     <View style={styles.tagCollectionsContainer}>
-      <Search placeholder={'Enter Collection Name'} />
+      <Search
+        onBackPress={setShowCollections}
+        placeholder={'Enter Collection Name'}
+      />
       <CollectionOverview />
       <CollectionOverview />
       <CollectionOverview />

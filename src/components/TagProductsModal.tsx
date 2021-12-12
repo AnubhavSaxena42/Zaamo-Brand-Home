@@ -70,7 +70,11 @@ const TagProductsModal = ({
       scrollEventThrottle={400}
       showsVerticalScrollIndicator={false}
       style={styles.tagProductsContainer}>
-      <Search placeholder={'Enter Product Name'} onSearch={() => {}} />
+      <Search
+        onBackPress={setShowProducts}
+        placeholder={'Enter Product Name'}
+        onSearch={() => {}}
+      />
       {listProducts.map(product => {
         return (
           <ProductOverview

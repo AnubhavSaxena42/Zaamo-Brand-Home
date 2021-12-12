@@ -198,7 +198,7 @@ const ContentOverview = ({
               }}
               style={{alignItems: 'center'}}>
               <Image
-                source={post.media_url}
+                source={{uri: post.media_url}}
                 style={{
                   width: 720,
                   height: 1280,

@@ -43,7 +43,7 @@ const Dropdown = ({
         </Text>
         <View style={styles.iconContainer}>
           <Entypo
-            name="triangle-down"
+            name="triangle-up"
             size={15}
             color={
               iconColor ? iconColor : Platform.OS === 'web' ? 'white' : 'black'
@@ -76,7 +76,7 @@ const Dropdown = ({
                     color:
                       item.id === selectedValue
                         ? 'white'
-                        : 'rgba(0, 0, 0, 0.75)',
+                        : 'rgba(0, 0, 0, 0.5)',
                     ...dropDownValuesTextStyle,
                   }}>
                   {item.name}

@@ -98,18 +98,21 @@ const ContentActions = ({
               shadowOpacity: 1.0,
               elevation: 5,
               zIndex: 200,
+              position: 'relative',
             }}
             dropDownTextStyle={{
               fontSize: 10,
             }}
             dropDownValuesTextStyle={{
+              fontFamily: 'Roboto-Bold',
               marginLeft: 4,
               fontSize: 12,
             }}
             dropDownValuesContainerStyle={{
-              width: '108%',
-              top: 36,
-              elevation: 10,
+              width: '110%',
+              position: 'absolute',
+              top: -269,
+              elevation: 1,
               zIndex: 100,
               borderWidth: 1,
               borderColor: 'rgba(0,0,0,0.2)',
@@ -178,7 +181,7 @@ const ContentActions = ({
         onRequestClose={() => {
           setShowCollections(false);
         }}>
-        <TagCollectionsModal />
+        <TagCollectionsModal setShowCollections={setShowCollections} />
       </Modal>
       {/*</GestureRecognizer>*/}
     </View>

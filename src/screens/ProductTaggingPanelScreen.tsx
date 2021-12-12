@@ -126,7 +126,7 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
             fontSize: 14,
             fontFamily: 'Open-Sans',
             fontWeight: '300',
-            color: 'rgba(0, 0, 0, 0.75',
+            color: 'rgba(0, 0, 0, 0.75)',
           }}
           dropDownValuesTextStyle={{
             fontSize: 14,

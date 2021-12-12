@@ -185,15 +185,17 @@ const styles = StyleSheet.create({
   button: {
     paddingHorizontal: windowWidth > 500 ? 2 : 10,
     paddingVertical: windowWidth > 500 ? 20 : 5,
-    width: Platform.OS === 'web' ? '50%' : '65%',
+    width: Platform.OS === 'web' ? '50%' : '40%',
     alignSelf: 'center',
+    borderRadius: Platform.OS === 'web' ? 0 : 3,
     backgroundColor: 'black',
   },
   taggedButton: {
-    width: Platform.OS === 'web' ? '50%' : '65%',
-    paddingHorizontal: windowWidth > 500 ? 2 : 16,
+    width: Platform.OS === 'web' ? '50%' : '40%',
+    paddingHorizontal: windowWidth > 500 ? 2 : 1,
     paddingVertical: windowWidth > 500 ? 20 : 5,
     backgroundColor: '#0e8613',
+    borderRadius: Platform.OS === 'web' ? 0 : 3,
   },
   buttonText: {
     color: 'white',

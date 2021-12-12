@@ -87,7 +87,7 @@ const ContentActions = ({
               height: 35,
               backgroundColor: 'white',
               shadowColor: '#000000',
-              borderRadius: 5,
+              borderRadius: 3,
               marginTop: 5,
               shadowOffset: {
                 width: 0,
@@ -107,8 +107,12 @@ const ContentActions = ({
               fontSize: 12,
             }}
             dropDownValuesContainerStyle={{
+              width: '108%',
+              top: 36,
               elevation: 10,
               zIndex: 100,
+              borderWidth: 1,
+              borderColor: 'rgba(0,0,0,0.2)',
             }}
           />
         )}

@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
   },
   value: {
     fontWeight: 'bold',
-    color: 'white',
+    color: 'rgba(0,0,0,0.4)',
     fontFamily: 'Roboto-Black',
   },
   quickViewContainer: {

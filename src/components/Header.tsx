@@ -13,7 +13,7 @@ export default Header;
 
 const styles = StyleSheet.create({
   headerContainer: {
-    height: 80,
+    height: Platform.OS === 'web' ? 80 : 60,
     backgroundColor: 'black',
     paddingVertical: 5,
     justifyContent: 'center',

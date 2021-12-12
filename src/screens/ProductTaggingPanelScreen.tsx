@@ -234,6 +234,8 @@ const styles = StyleSheet.create({
     width: '100%',
     zIndex: 100,
     justifyContent: Platform.OS === 'web' ? 'flex-start' : 'space-around',
+    borderBottomWidth: Platform.OS === 'web' ? 0 : 1,
+    borderBottomColor: 'rgba(0,0,0,0.1)',
   },
 });
 //justify content platform wise

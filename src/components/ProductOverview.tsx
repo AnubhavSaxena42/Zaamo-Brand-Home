@@ -185,12 +185,12 @@ const styles = StyleSheet.create({
   button: {
     paddingHorizontal: windowWidth > 500 ? 2 : 10,
     paddingVertical: windowWidth > 500 ? 20 : 5,
-    width: '50%',
+    width: Platform.OS === 'web' ? '50%' : '65%',
     alignSelf: 'center',
     backgroundColor: 'black',
   },
   taggedButton: {
-    width: '50%',
+    width: Platform.OS === 'web' ? '50%' : '65%',
     paddingHorizontal: windowWidth > 500 ? 2 : 16,
     paddingVertical: windowWidth > 500 ? 20 : 5,
     backgroundColor: '#0e8613',

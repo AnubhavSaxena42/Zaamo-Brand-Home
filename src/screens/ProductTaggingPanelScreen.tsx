@@ -15,7 +15,11 @@ import {RootState} from '../redux/store/store';
 import {useSelector, useDispatch} from 'react-redux';
 import contentService from '../services/content-service';
 import {setPosts} from '../redux/reducers/postsReducer';
-import {setPageInfo, setProducts} from '../redux/reducers/productsReducer';
+import {
+  setPageInfo,
+  setCollections,
+  setProducts,
+} from '../redux/reducers/productsReducer';
 const ProductTaggingPanelScreen = ({navigation, route}) => {
   const posts = useSelector((state: RootState) => state.posts.posts);
   const [trigger, isTrigger] = useState(true);
@@ -62,6 +66,19 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
       })
       .catch(err => console.log(err));
   };
+  const fetchCollections = () => {
+    contentService
+      .getCollections('U3RvcmU6NjI=')
+      .then(res => {
+        console.log('CollectionRes', res);
+        let {data} = res;
+        console.log('collections');
+        console.log(data);
+        let {collections, pageInfo} = data;
+        dispatch(setCollections(collections));
+      })
+      .catch(err => console.log('CollectionErr', err));
+  };
 
   const fetchProducts = async () => {
     console.log('calling products fetch');
@@ -85,6 +102,7 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
   };
   useEffect(() => {
     setFilters();
+    fetchCollections();
     fetchProducts();
   }, []);
   useEffect(() => {

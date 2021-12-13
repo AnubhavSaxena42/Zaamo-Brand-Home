@@ -3,10 +3,12 @@ import {Post} from '../../types';
 export interface ProductState {
   products: any;
   pageInfo: any;
+  collections: any;
 }
 
 const initialState: ProductState = {
   products: [],
+  collections: [],
   pageInfo: {},
 };
 
@@ -30,9 +32,15 @@ export const postSlice = createSlice({
       console.log(action.payload);
       console.log('PageInfo Updated');
     },
+    setCollections: (state, action: PayloadAction<any>) => {
+      state.collections = action.payload;
+      console.log(action.payload);
+      console.log('Collections set');
+    },
   },
 });
 
-export const {setProducts, appendProducts, setPageInfo} = postSlice.actions;
+export const {setProducts, setCollections, appendProducts, setPageInfo} =
+  postSlice.actions;
 
 export default postSlice.reducer;

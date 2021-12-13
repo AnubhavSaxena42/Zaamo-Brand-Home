@@ -1,7 +1,15 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, Image, Text, View} from 'react-native';
-
-const CollectionOverview = () => {
+import {
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  Text,
+  Dimensions,
+  Platform,
+  View,
+} from 'react-native';
+const windowWidth = Dimensions.get('window').width;
+const CollectionOverview = ({imageUrl, name}) => {
   return (
     <View style={styles.collectionOverviewContainer}>
       {/*Image of the product */}
@@ -10,14 +18,14 @@ const CollectionOverview = () => {
           style={styles.image}
           resizeMode="cover"
           source={{
-            uri: 'https://i.pinimg.com/236x/a7/e0/53/a7e053c72e257cab69f8230b22e05fd8--read-books-trust-me.jpg',
+            uri: imageUrl,
           }}
         />
       </View>
       {/*Product Information */}
       <View style={styles.collectionInfoContainer}>
         <View>
-          <Text style={styles.collectionNameText}>Maldives collection</Text>
+          <Text style={styles.collectionNameText}>{name}</Text>
         </View>
         <View>
           <Text style={styles.collectionLinkText}>
@@ -43,11 +51,12 @@ const styles = StyleSheet.create({
   collectionOverviewContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    alignSelf: 'center',
+    width: Platform.OS === 'web' ? '75%' : '100%',
+    height: windowWidth > 500 ? 250 : 120,
+    justifyContent: windowWidth > 500 ? 'space-around' : 'space-between',
     backgroundColor: '#f5f5f5',
-    marginVertical: 5,
-    paddingHorizontal: 12,
-    height: 90,
+    marginVertical: 3,
   },
   imageContainer: {},
   image: {

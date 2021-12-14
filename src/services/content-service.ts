@@ -9,7 +9,7 @@ class ContentService {
     return new Promise((resolve, reject) => {
       Get(`${this._apiUrl}/get/content/filters/`, {
         headers: {
-          'Service-Token': 'xyz',
+          'Service-Token': '2900ba48-85f6-4929-b19d-0c0da14dbc14',
         },
       })
         .then(res => resolve(res))
@@ -29,7 +29,7 @@ class ContentService {
     return new Promise((resolve, reject) => {
       Get(`${this._apiUrl}/content/`, {
         headers: {
-          'Service-Token': 'xyz',
+          'Service-Token': '2900ba48-85f6-4929-b19d-0c0da14dbc14',
         },
         params: {
           content_source: contentSource,
@@ -49,7 +49,7 @@ class ContentService {
     return new Promise((resolve, reject) => {
       Get(`${this._apiUrl}/tag/content/`, {
         headers: {
-          'Service-Token': 'xyz',
+          'Service-Token': '2900ba48-85f6-4929-b19d-0c0da14dbc14',
         },
         params: {
           product_id: productId,
@@ -79,7 +79,7 @@ class ContentService {
         },
         {
           headers: {
-            'Service-Token': 'xyz',
+            'Service-Token': '2900ba48-85f6-4929-b19d-0c0da14dbc14',
             'Content-Type': 'application/json',
           },
         },
@@ -101,7 +101,7 @@ class ContentService {
         },
         {
           headers: {
-            'Service-Token': 'xyz',
+            'Service-Token': '2900ba48-85f6-4929-b19d-0c0da14dbc14',
             'Content-Type': 'application/json',
           },
         },
@@ -118,7 +118,7 @@ class ContentService {
     return new Promise((resolve, reject) => {
       Get(`${this._apiUrl}/get/products/`, {
         headers: {
-          'Service-Token': 'xyz',
+          'Service-Token': '2900ba48-85f6-4929-b19d-0c0da14dbc14',
         },
         params: {
           brand_id: brandId,
@@ -137,7 +137,7 @@ class ContentService {
     return new Promise((resolve, reject) => {
       Get(`${this._apiUrl}/get/collections/`, {
         headers: {
-          'Service-Token': 'xyz',
+          'Service-Token': '2900ba48-85f6-4929-b19d-0c0da14dbc14',
         },
         params: {
           store_id: storeId,
@@ -155,7 +155,7 @@ class ContentService {
     return new Promise((resolve, reject) => {
       Post(`${WEBSERVER_BASE_URL}/content/trash/`, trashData, {
         headers: {
-          'Service-Token': 'xyz',
+          'Service-Token': '2900ba48-85f6-4929-b19d-0c0da14dbc14',
           'Content-Type': 'application/json',
         },
       })

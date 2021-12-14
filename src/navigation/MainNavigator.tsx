@@ -1,5 +1,9 @@
 import React from 'react';
+import Entypo from 'react-native-vector-icons/Entypo';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 import {createStackNavigator} from '@react-navigation/stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import ProductTaggingPanelScreen from '../screens/ProductTaggingPanelScreen';
 import VariantScreen from '../screens/VariantScreen';
 import AddProductScreen from '../screens/AddProductScreen';
@@ -8,8 +12,71 @@ import MobileOTPScreen from '../screens/MobileOTPScreen/MobileOTPScreen';
 import VerifyOTPScreen from '../screens/VerifyOTPScreen/VerifyOTPScreen';
 import ConnectInstaScreen from '../screens/ConnectInstaScreen/ConnectInstaScreen';
 import LoginSuccessScreen from '../screens/LoginSuccessScreen/LoginSuccessScreen';
+import DashboardScreen from '../screens/DashboardScreen/DashboardScreen';
 const TaggingStack = createStackNavigator();
 const AuthStack = createStackNavigator();
+const HomeStack = createStackNavigator();
+const OrderStack = createStackNavigator();
+const ProductStack = createStackNavigator();
+const MarketingStack = createStackNavigator();
+const StoreStack = createStackNavigator();
+const HomeTabs = createBottomTabNavigator();
+export const HomeStackNavigator = () => {
+  return (
+    <HomeStack.Navigator screenOptions={{headerShown: false}}>
+      <HomeStack.Screen name="Dashboard" component={DashboardScreen} />
+    </HomeStack.Navigator>
+  );
+};
+
+export const HomeTabNavigator = () => {
+  return (
+    <HomeTabs.Navigator
+      tabBarOptions={{
+        activeTintColor: 'black',
+      }}>
+      <HomeTabs.Screen
+        name="Home"
+        component={HomeStackNavigator}
+        options={{
+          tabBarIcon: () => <Entypo name="home" size={25} color={'gray'} />,
+        }}
+      />
+      <HomeTabs.Screen
+        name="Orders"
+        component={HomeStackNavigator}
+        options={{
+          tabBarIcon: () => (
+            <Ionicons name="reorder-three" size={25} color={'gray'} />
+          ),
+        }}
+      />
+      <HomeTabs.Screen
+        name="Products"
+        component={HomeStackNavigator}
+        options={{
+          tabBarIcon: () => <Entypo name="price-tag" size={25} color="gray" />,
+        }}
+      />
+      <HomeTabs.Screen
+        name="Marketing"
+        component={HomeStackNavigator}
+        options={{
+          tabBarIcon: () => <Entypo name="line-graph" size={25} color="gray" />,
+        }}
+      />
+      <HomeTabs.Screen
+        name="Store"
+        component={HomeStackNavigator}
+        options={{
+          tabBarIcon: () => (
+            <Fontisto name="shopping-store" size={25} color="gray" />
+          ),
+        }}
+      />
+    </HomeTabs.Navigator>
+  );
+};
 
 export const AuthorizationStack = () => {
   return (

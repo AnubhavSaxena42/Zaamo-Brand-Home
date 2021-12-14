@@ -5,12 +5,13 @@ import {Provider} from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
 import {store} from './redux/store/store';
 import TaggingPanelStack from './navigation/MainNavigator';
+import {HomeTabNavigator} from './navigation/MainNavigator';
 import {AuthorizationStack} from './navigation/MainNavigator';
 const App = () => {
   return (
     <NavigationContainer>
       <Provider store={store}>
-        <AuthorizationStack />
+        <HomeTabNavigator />
       </Provider>
     </NavigationContainer>
   );

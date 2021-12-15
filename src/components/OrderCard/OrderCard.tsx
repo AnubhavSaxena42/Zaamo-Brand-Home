@@ -1,13 +1,19 @@
 import React from 'react';
-import {StyleSheet, Image, Text, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, Image, Text, View} from 'react-native';
 
-const OrderCard = () => {
+const OrderCard = ({navigation, isDetails}) => {
   return (
-    <View style={styles.orderCardContainer}>
-      <Image
-        source={require('../../assets/images/smugcat.jpg')}
-        style={styles.imageStyle}
-      />
+    <TouchableOpacity
+      onPress={() => {
+        navigation.navigate('OrderDetailsScreen');
+      }}
+      style={styles.orderCardContainer}>
+      {!isDetails && (
+        <Image
+          source={require('../../assets/images/smugcat.jpg')}
+          style={styles.imageStyle}
+        />
+      )}
       <View style={styles.orderInfo}>
         <Text style={{fontSize: 14, color: 'black'}}>#24304 Anchal Sharma</Text>
         <Text style={{fontSize: 10, color: 'rgba(0,0,0,0.5)'}}>
@@ -43,7 +49,7 @@ const OrderCard = () => {
         <Text style={{fontSize: 14, color: 'black'}}>Rs 690</Text>
         <Text style={{fontSize: 10, color: 'rgba(0,0,0,0.5)'}}>1 item</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -52,7 +58,7 @@ export default OrderCard;
 const styles = StyleSheet.create({
   orderCardContainer: {
     flexDirection: 'row',
-    width: '90%',
+    width: '95%',
     height: 100,
     justifyContent: 'space-around',
     alignItems: 'center',
@@ -70,7 +76,7 @@ const styles = StyleSheet.create({
   orderInfo: {
     paddingTop: '3%',
     height: '100%',
-    paddingHorizontal: '2%',
+    paddingLeft: '2%',
   },
   priceInfo: {
     height: '100%',

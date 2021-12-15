@@ -94,8 +94,8 @@ const styles = StyleSheet.create({
     marginBottom: '7%',
   },
   button: {
-    height: '8%',
-    borderRadius: 10,
+    height: '10%',
+    borderRadius: 5,
     width: '90%',
     backgroundColor: 'black',
     alignItems: 'center',

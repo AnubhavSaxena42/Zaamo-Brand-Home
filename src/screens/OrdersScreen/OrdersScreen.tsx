@@ -10,7 +10,7 @@ import {
 import OrderCard from '../../components/OrderCard/OrderCard';
 import OrdersOverviewCard from '../../components/OrdersOverviewCard/OrdersOverviewCard';
 
-const OrdersScreen = () => {
+const OrdersScreen = ({navigation}) => {
   const windowWidth = Dimensions.get('window').width;
   return (
     <View style={styles.ordersContainer}>
@@ -54,7 +54,7 @@ const OrdersScreen = () => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <OrderCard />
+        <OrderCard navigation={navigation} />
         <OrderCard />
         <OrderCard />
         <OrderCard />

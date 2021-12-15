@@ -15,6 +15,7 @@ import LoginSuccessScreen from '../screens/LoginSuccessScreen/LoginSuccessScreen
 import DashboardScreen from '../screens/DashboardScreen/DashboardScreen';
 import OrdersScreen from '../screens/OrdersScreen/OrdersScreen';
 import OrderDetailsScreen from '../screens/OrderDetailsScreen/OrderDetailsScreen';
+import ProductsTabScreen from '../screens/ProductsTabScreen/ProductsTabScreen';
 const TaggingStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 const HomeStack = createStackNavigator();
@@ -23,6 +24,16 @@ const ProductStack = createStackNavigator();
 const MarketingStack = createStackNavigator();
 const StoreStack = createStackNavigator();
 const HomeTabs = createBottomTabNavigator();
+export const ProductStackNavigator = () => {
+  return (
+    <ProductStack.Navigator screenOptions={{headerShown: false}}>
+      <ProductStack.Screen
+        name="ProductsTabScreen"
+        component={ProductsTabScreen}
+      />
+    </ProductStack.Navigator>
+  );
+};
 export const HomeStackNavigator = () => {
   return (
     <HomeStack.Navigator screenOptions={{headerShown: false}}>
@@ -71,7 +82,7 @@ export const HomeTabNavigator = () => {
       />
       <HomeTabs.Screen
         name="Products"
-        component={HomeStackNavigator}
+        component={ProductStackNavigator}
         options={{
           tabBarIcon: focused => (
             <Entypo

@@ -29,7 +29,7 @@ const LoginSuccessScreen = ({navigation, route}) => {
         activate your account
       </Text>
       <TouchableOpacity
-        onPress={() => navigation.navigate('LoginSuccessScreen')}
+        onPress={() => navigation.navigate('StoreStack')}
         style={styles.button}>
         <Text style={{color: 'white', fontSize: 18, fontWeight: 'bold'}}>
           Continue to Store
@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
   },
   imageStyle: {
     width: '50%',
+    height: 200,
     marginBottom: '10%',
   },
   button: {

@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
     left: '5%',
   },
   imageStyle: {
+    height: 200,
     width: '50%',
     marginBottom: '10%',
   },

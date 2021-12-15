@@ -23,7 +23,19 @@ const OrderStack = createStackNavigator();
 const ProductStack = createStackNavigator();
 const MarketingStack = createStackNavigator();
 const StoreStack = createStackNavigator();
+const MainStack = createStackNavigator();
 const HomeTabs = createBottomTabNavigator();
+export const MainStackNavigator = () => {
+  return (
+    <MainStack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <MainStack.Screen name="AuthStack" component={AuthorizationStack} />
+      <MainStack.Screen name="StoreStack" component={HomeTabNavigator} />
+    </MainStack.Navigator>
+  );
+};
 export const ProductStackNavigator = () => {
   return (
     <ProductStack.Navigator screenOptions={{headerShown: false}}>

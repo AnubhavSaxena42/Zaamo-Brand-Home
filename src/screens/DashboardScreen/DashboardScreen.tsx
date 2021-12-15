@@ -26,16 +26,18 @@ const DashboardScreen = () => {
         }}>
         Overview
       </Text>
-      <Image
-        source={require('../../assets/images/DashboardEllipse.png')}
-        style={{
-          height: 400,
-          width: windowWidth,
-          zIndex: 1,
-          position: 'absolute',
-          top: -80,
-        }}
-      />
+      {
+        <Image
+          source={require('../../assets/images/DashboardEllipse.png')}
+          style={{
+            height: 400,
+            width: windowWidth,
+            zIndex: 1,
+            position: 'absolute',
+            top: -80,
+          }}
+        />
+      }
       <View
         style={{
           zIndex: 2,

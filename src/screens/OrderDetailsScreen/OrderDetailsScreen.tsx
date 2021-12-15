@@ -6,8 +6,9 @@ import {
   Dimensions,
   Text,
   View,
+  ScrollView,
 } from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
+
 import OrderCard from '../../components/OrderCard/OrderCard';
 import OrderItem from '../../components/OrderItem/OrderItem';
 

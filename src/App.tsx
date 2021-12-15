@@ -7,11 +7,12 @@ import {store} from './redux/store/store';
 import TaggingPanelStack from './navigation/MainNavigator';
 import {HomeTabNavigator} from './navigation/MainNavigator';
 import {AuthorizationStack} from './navigation/MainNavigator';
+import {MainStackNavigator} from './navigation/MainNavigator';
 const App = () => {
   return (
     <NavigationContainer>
       <Provider store={store}>
-        <HomeTabNavigator />
+        <MainStackNavigator />
       </Provider>
     </NavigationContainer>
   );

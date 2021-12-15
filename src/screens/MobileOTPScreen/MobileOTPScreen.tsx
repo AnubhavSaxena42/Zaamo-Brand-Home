@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
   imageStyle: {
     width: '50%',
     marginBottom: '10%',
+    height: 200,
   },
   infoText: {
     fontSize: 16,

@@ -13,6 +13,8 @@ import VerifyOTPScreen from '../screens/VerifyOTPScreen/VerifyOTPScreen';
 import ConnectInstaScreen from '../screens/ConnectInstaScreen/ConnectInstaScreen';
 import LoginSuccessScreen from '../screens/LoginSuccessScreen/LoginSuccessScreen';
 import DashboardScreen from '../screens/DashboardScreen/DashboardScreen';
+import OrdersScreen from '../screens/OrdersScreen/OrdersScreen';
+import OrderDetailsScreen from '../screens/OrderDetailsScreen/OrderDetailsScreen';
 const TaggingStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 const HomeStack = createStackNavigator();
@@ -28,7 +30,17 @@ export const HomeStackNavigator = () => {
     </HomeStack.Navigator>
   );
 };
-
+export const OrderStackNavigator = () => {
+  return (
+    <OrderStack.Navigator screenOptions={{headerShown: false}}>
+      <OrderStack.Screen name="OrdersScreen" component={OrdersScreen} />
+      <OrderStack.Screen
+        name="OrderDetailsScreen"
+        component={OrderDetailsScreen}
+      />
+    </OrderStack.Navigator>
+  );
+};
 export const HomeTabNavigator = () => {
   return (
     <HomeTabs.Navigator
@@ -39,15 +51,21 @@ export const HomeTabNavigator = () => {
         name="Home"
         component={HomeStackNavigator}
         options={{
-          tabBarIcon: () => <Entypo name="home" size={25} color={'gray'} />,
+          tabBarIcon: focused => (
+            <Entypo name="home" size={25} color={focused ? 'black' : 'gray'} />
+          ),
         }}
       />
       <HomeTabs.Screen
         name="Orders"
-        component={HomeStackNavigator}
+        component={OrderStackNavigator}
         options={{
-          tabBarIcon: () => (
-            <Ionicons name="reorder-three" size={25} color={'gray'} />
+          tabBarIcon: focused => (
+            <Ionicons
+              name="reorder-three"
+              size={25}
+              color={focused ? 'black' : 'gray'}
+            />
           ),
         }}
       />
@@ -55,22 +73,38 @@ export const HomeTabNavigator = () => {
         name="Products"
         component={HomeStackNavigator}
         options={{
-          tabBarIcon: () => <Entypo name="price-tag" size={25} color="gray" />,
+          tabBarIcon: focused => (
+            <Entypo
+              name="price-tag"
+              size={25}
+              color={focused ? 'black' : 'gray'}
+            />
+          ),
         }}
       />
       <HomeTabs.Screen
         name="Marketing"
         component={HomeStackNavigator}
         options={{
-          tabBarIcon: () => <Entypo name="line-graph" size={25} color="gray" />,
+          tabBarIcon: focused => (
+            <Entypo
+              name="line-graph"
+              size={25}
+              color={focused ? 'black' : 'gray'}
+            />
+          ),
         }}
       />
       <HomeTabs.Screen
         name="Store"
         component={HomeStackNavigator}
         options={{
-          tabBarIcon: () => (
-            <Fontisto name="shopping-store" size={25} color="gray" />
+          tabBarIcon: focused => (
+            <Fontisto
+              name="shopping-store"
+              size={25}
+              color={focused ? 'black' : 'gray'}
+            />
           ),
         }}
       />

@@ -6,13 +6,16 @@ import {
   Dimensions,
   Text,
   View,
+  TouchableOpacity,
 } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import MetricCard from '../../components/MetricCard/MetricCard';
 import UpdateCard from '../../components/UpdateCard/UpdateCard';
+//For web it has to be a scrollview , implement fab properly
 const DashboardScreen = () => {
   const windowWidth = Dimensions.get('window').width;
   return (
-    <ScrollView style={styles.dashboardContainer}>
+    <View style={styles.dashboardContainer}>
       <Text
         style={{
           zIndex: 2,
@@ -66,6 +69,21 @@ const DashboardScreen = () => {
           color="lightblue"
         />
       </View>
+      <TouchableOpacity
+        style={{
+          backgroundColor: 'black',
+          position: 'absolute',
+          bottom: 50,
+          right: 20,
+          height: 70,
+          width: 70,
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderRadius: 35,
+          zIndex: 3,
+        }}>
+        <Ionicons name="logo-instagram" size={35} color="white" />
+      </TouchableOpacity>
       <Text
         style={{
           color: 'black',
@@ -75,12 +93,14 @@ const DashboardScreen = () => {
         }}>
         Recent Updates
       </Text>
-      <UpdateCard />
-      <UpdateCard />
-      <UpdateCard />
-      <UpdateCard />
-      <UpdateCard />
-    </ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <UpdateCard />
+        <UpdateCard />
+        <UpdateCard />
+        <UpdateCard />
+        <UpdateCard />
+      </ScrollView>
+    </View>
   );
 };
 

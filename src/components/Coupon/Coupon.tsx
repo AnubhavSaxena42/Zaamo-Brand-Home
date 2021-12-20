@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, Dimensions, View} from 'react-native';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 const windowWidth = Dimensions.get('window').width;
 const Coupon = () => {
   return (
@@ -46,7 +47,13 @@ const Coupon = () => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <Text style={{paddingHorizontal: '15%', color: 'white', fontSize: 28}}>
+        <Text
+          style={{
+            paddingHorizontal: '15%',
+            color: 'white',
+            fontSize: 28,
+            textAlign: 'center',
+          }}>
           70%
           <Text style={{textAlign: 'center', color: 'white', fontSize: 14}}>
             Off
@@ -67,16 +74,30 @@ const Coupon = () => {
             justifyContent: 'space-between',
           }}>
           <Text style={{fontSize: 14}}>70% off for first time buyer</Text>
-          <Text style={{fontSize: 12}}>Available</Text>
+          <Text style={{fontSize: 12, color: '#3eb988', fontWeight: '700'}}>
+            Available
+          </Text>
         </View>
         <View
           style={{
             flexDirection: 'row',
             alignItems: 'center',
+
             justifyContent: 'space-between',
           }}>
-          <View>
+          <View
+            style={{
+              backgroundColor: '#ffeee8',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexDirection: 'row',
+              width: '65%',
+              paddingHorizontal: '2%',
+              height: 25,
+              borderRadius: 5,
+            }}>
             <Text>SAVE70NEWBUYER</Text>
+            <AntDesign name="copy1" color="black" size={12} />
           </View>
           <View
             style={{

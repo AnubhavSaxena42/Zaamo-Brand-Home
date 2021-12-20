@@ -39,32 +39,42 @@ const Coupon = () => {
         }}></View>
       <View
         style={{
-          height: 80,
-          width: 80,
-          borderRadius: 40,
-          marginLeft: '5%',
-          backgroundColor: 'black',
           justifyContent: 'center',
           alignItems: 'center',
+          width: '30%',
+          borderRightWidth: 3,
+          borderRightColor: 'rgba(0,0,0,0.2)',
+          borderStyle: 'dashed',
         }}>
-        <Text
+        <View
           style={{
-            paddingHorizontal: '15%',
-            color: 'white',
-            fontSize: 28,
-            textAlign: 'center',
+            height: 80,
+            width: 80,
+            borderRadius: 40,
+
+            backgroundColor: 'black',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}>
-          70%
-          <Text style={{textAlign: 'center', color: 'white', fontSize: 14}}>
-            Off
+          <Text
+            style={{
+              paddingHorizontal: '15%',
+              color: 'white',
+              fontSize: 28,
+              textAlign: 'center',
+            }}>
+            70%
+            <Text style={{textAlign: 'center', color: 'white', fontSize: 14}}>
+              Off
+            </Text>
           </Text>
-        </Text>
+        </View>
       </View>
       <View
         style={{
           width: '60%',
           height: '60%',
-          marginLeft: '10%',
+          marginLeft: '5%',
           justifyContent: 'space-around',
         }}>
         <View

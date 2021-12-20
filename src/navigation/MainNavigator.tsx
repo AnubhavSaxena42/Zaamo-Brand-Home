@@ -16,6 +16,8 @@ import DashboardScreen from '../screens/DashboardScreen/DashboardScreen';
 import OrdersScreen from '../screens/OrdersScreen/OrdersScreen';
 import OrderDetailsScreen from '../screens/OrderDetailsScreen/OrderDetailsScreen';
 import ProductsTabScreen from '../screens/ProductsTabScreen/ProductsTabScreen';
+import SettingsScreen from '../screens/SettingsScreen/SettingsScreen';
+import MarketingScreen from '../screens/MarketingScreen/MarketingScreen';
 const TaggingStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 const HomeStack = createStackNavigator();
@@ -25,6 +27,30 @@ const MarketingStack = createStackNavigator();
 const StoreStack = createStackNavigator();
 const MainStack = createStackNavigator();
 const HomeTabs = createBottomTabNavigator();
+export const MarketingStackNavigator = () => {
+  return (
+    <MarketingStack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <MarketingStack.Screen
+        name="MarketingScreen"
+        component={MarketingScreen}
+      />
+    </MarketingStack.Navigator>
+  );
+};
+export const StoreStackNavigator = () => {
+  return (
+    <StoreStack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <StoreStack.Screen name="SettingsScreen" component={SettingsScreen} />
+    </StoreStack.Navigator>
+  );
+};
+
 export const MainStackNavigator = () => {
   return (
     <MainStack.Navigator
@@ -107,7 +133,7 @@ export const HomeTabNavigator = () => {
       />
       <HomeTabs.Screen
         name="Marketing"
-        component={HomeStackNavigator}
+        component={MarketingStackNavigator}
         options={{
           tabBarIcon: focused => (
             <Entypo
@@ -120,7 +146,7 @@ export const HomeTabNavigator = () => {
       />
       <HomeTabs.Screen
         name="Store"
-        component={HomeStackNavigator}
+        component={StoreStackNavigator}
         options={{
           tabBarIcon: focused => (
             <Fontisto

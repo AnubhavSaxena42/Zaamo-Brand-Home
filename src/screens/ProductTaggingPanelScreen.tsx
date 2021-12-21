@@ -79,11 +79,16 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
       })
       .catch(err => console.log('CollectionErr', err));
   };
+  console.log(route.params);
 
   const fetchProducts = async () => {
     console.log('calling products fetch');
     contentService
-      .getProducts('QnJhbmQ6MQ==', 10, 'WyJibHVlLWZsb3JhbC1zaG9ydC1kcmVzcyJd')
+      .getProducts(
+        route.params.brand,
+        10,
+        'WyJibHVlLWZsb3JhbC1zaG9ydC1kcmVzcyJd',
+      )
       .then(res => {
         console.log(res);
         let {data} = res;

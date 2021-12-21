@@ -79,6 +79,7 @@ const ProductOverview = ({
         console.log(err);
       });
   };
+  console.log(product);
   return (
     <TouchableOpacity
       style={styles.productOverviewContainer}
@@ -90,9 +91,9 @@ const ProductOverview = ({
       <View style={styles.imageContainer}>
         <Image
           style={styles.image}
-          resizeMode="cover"
+          resizeMode="contain"
           source={{
-            uri: product.thumbnail_url,
+            uri: product.thumbnail.url,
           }}
         />
       </View>
@@ -138,7 +139,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     paddingVertical: 11,
     height: '100%',
-    width: '30%',
+    width: '40%',
     alignItems: 'center',
     justifyContent: 'center',
   },

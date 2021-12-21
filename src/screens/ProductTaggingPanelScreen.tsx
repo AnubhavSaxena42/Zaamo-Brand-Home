@@ -191,7 +191,7 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
 
   return (
     <View style={styles.taggingPanelContainer}>
-      <Header />
+      <Header navigation={navigation} showBackButton={true} />
       {/*Filters for posts */}
       <View style={styles.filtersContainer}>
         {/*Dropdown Style Objects OS Specific */}

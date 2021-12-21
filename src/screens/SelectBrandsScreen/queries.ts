@@ -1,7 +1,7 @@
 import {gql} from '@apollo/client';
 export const GET_BRANDS = gql`
   query {
-    brands(first: 3, sortBy: {direction: DESC, field: CREATED_AT}) {
+    brands(first: 50, sortBy: {direction: DESC, field: CREATED_AT}) {
       edges {
         node {
           id

@@ -7,6 +7,7 @@ import {
   FlatList,
   Text,
   View,
+  Image,
 } from 'react-native';
 import ProductOverview from './ProductOverview';
 import Search from './Search';

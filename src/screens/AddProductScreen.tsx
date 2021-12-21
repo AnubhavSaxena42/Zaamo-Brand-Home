@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React, {useState} from 'react';
 import Header from '../components/Header';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Platform} from 'react-native';
 import Dropdown from '../components/Dropdown';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 //import GestureRecognizer from 'react-native-swipe-gestures';
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     borderColor: '#b7b9ba',
     paddingHorizontal: '5%',
     paddingVertical: '25%',
-    marginTop: '35%',
+    marginTop: Platform.OS === 'web' ? '2%' : '35%',
     width: '80%',
     alignSelf: 'center',
   },

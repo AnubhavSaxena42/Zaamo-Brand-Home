@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     paddingVertical: 11,
     height: '100%',
-    width: '40%',
+    width: '30%',
     alignItems: 'center',
     justifyContent: 'center',
   },

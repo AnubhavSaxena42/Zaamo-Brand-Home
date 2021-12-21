@@ -153,13 +153,6 @@ const SelectBrandsScreen = ({navigation}) => {
           <Text style={styles.nextButtonText}>Next</Text>
         </View>
       </TouchableOpacity>
-      <Image
-        style={{width: 100, height: 100}}
-        resizeMode="cover"
-        source={{
-          uri: 'https://beta.zaamo.co/media/__sized__/products/12_duaYVrh-thumbnail-255x255-70.jpeg',
-        }}
-      />
     </View>
   );
 };

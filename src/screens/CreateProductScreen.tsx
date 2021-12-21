@@ -112,7 +112,7 @@ const CreateProductScreen = ({navigation}) => {
       {/*<GestureRecognizer
         config={{directionalOffsetThreshold: 30, velocityThreshold: 0.5}}
         onSwipeRight={() => navigation.goBack()}>*/}
-      <Header />
+      <Header navigation={navigation} showBackButton={true} />
       <View style={styles.createProductContainer}>
         <View style={styles.createProductHeaderContainer}>
           <Text style={styles.createProductHeaderText}>Create product</Text>

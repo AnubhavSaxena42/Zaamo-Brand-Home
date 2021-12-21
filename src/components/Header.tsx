@@ -1,9 +1,14 @@
 import React from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
-
-const Header = () => {
+import {Platform, StyleSheet, TouchableOpacity, Text, View} from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+const Header = ({showBackButton, navigation}) => {
   return (
     <View style={styles.headerContainer}>
+      {Platform.OS === 'web' && showBackButton && (
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" color="white" size={40} />
+        </TouchableOpacity>
+      )}
       <Text style={styles.headerText}>ZAAMO</Text>
     </View>
   );
@@ -16,7 +21,9 @@ const styles = StyleSheet.create({
     height: Platform.OS === 'web' ? 80 : 60,
     backgroundColor: 'black',
     paddingVertical: 5,
-    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingLeft: '1%',
   },
   headerText: {
     color: 'white',

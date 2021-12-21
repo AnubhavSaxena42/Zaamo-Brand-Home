@@ -24,7 +24,7 @@ const AddProductScreen = ({navigation}) => {
   }
   return (
     <View style={styles.addProductContainer}>
-      <Header />
+      <Header navigation={navigation} showBackButton={true} />
       <View style={styles.addProductsDropdownContainer}>
         <Dropdown
           tag="Select Brand Name*"

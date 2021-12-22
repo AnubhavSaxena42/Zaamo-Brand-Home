@@ -29,7 +29,11 @@ const ConnectInstaScreen = ({navigation, route}) => {
         source={require('../../assets/images/smugcat.jpg')}
       />
       <TouchableOpacity
-        onPress={() => navigation.navigate('LoginSuccessScreen')}
+        onPress={() =>
+          navigation.navigate('LoginSuccessScreen', {
+            mobileNumber: route.params.mobileNumber,
+          })
+        }
         style={styles.button}>
         <Text style={{color: 'white', fontSize: 18, fontWeight: 'bold'}}>
           Connect Your IG

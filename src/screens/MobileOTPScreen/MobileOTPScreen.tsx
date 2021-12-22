@@ -9,10 +9,18 @@ import {
 } from 'react-native';
 import smugcat from '../../assets/images/smugcat.jpg';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {useMutation} from '@apollo/client';
+import {GENERATE_OTP} from './mutations';
 //import {TextInput} from 'react-native-gesture-handler';
 const MobileOTPScreen = ({navigation, route}) => {
   const [mobileNumber, setMobileNumber] = useState('');
 
+  const [generateOtp, {data, loading, error}] = useMutation(GENERATE_OTP, {
+    variables: {
+      mobileNo: '91' + mobileNumber,
+    },
+  });
+  console.log(data, loading, error);
   return (
     <View style={styles.mobileOTPContainer}>
       <View style={styles.iconContainer}>
@@ -42,9 +50,10 @@ const MobileOTPScreen = ({navigation, route}) => {
         value={mobileNumber}
       />
       <TouchableOpacity
-        onPress={() =>
-          navigation.navigate('VerifyOTPScreen', {mobileNumber: mobileNumber})
-        }
+        onPress={() => {
+          generateOtp();
+          navigation.navigate('VerifyOTPScreen', {mobileNumber: mobileNumber});
+        }}
         style={styles.button}>
         <Text style={{color: 'white', fontWeight: 'bold'}}>GET OTP</Text>
       </TouchableOpacity>

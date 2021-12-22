@@ -1,13 +1,27 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, Image, Text, View} from 'react-native';
-
+import {useMutation} from '@apollo/client';
+import {TOKEN_CREATE} from './mutations';
 const LoginSuccessScreen = ({navigation, route}) => {
+  const [createToken, {data, loading, error}] = useMutation(TOKEN_CREATE, {
+    variables: {
+      mobileNo: '91' + route.params.mobileNumber,
+    },
+  });
+  const create = () => {
+    console.log('here');
+    console.log(route.params.mobileNumber);
+    createToken();
+  };
+  console.log(data, error, loading);
+
   return (
     <View style={styles.loginSuccessContainer}>
       <Image
         style={styles.imageStyle}
         source={require('../../assets/images/smugcat.jpg')}
       />
+      <Text onPress={create}>PRess</Text>
       <Text
         style={{
           fontSize: 24,

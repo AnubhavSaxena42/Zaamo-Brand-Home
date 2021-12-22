@@ -8,12 +8,22 @@ import TaggingPanelStack from './navigation/MainNavigator';
 import {HomeTabNavigator} from './navigation/MainNavigator';
 import {AuthorizationStack} from './navigation/MainNavigator';
 import {MainStackNavigator} from './navigation/MainNavigator';
+import {ApolloClient, InMemoryCache, ApolloProvider} from '@apollo/client';
+
+// Initialize Apollo Client
+const client = new ApolloClient({
+  uri: 'https://beta.zaamo.co/graphql/',
+  cache: new InMemoryCache(),
+});
+
 const App = () => {
   return (
     <NavigationContainer>
-      <Provider store={store}>
-        <MainStackNavigator />
-      </Provider>
+      <ApolloProvider client={client}>
+        <Provider store={store}>
+          <MainStackNavigator />
+        </Provider>
+      </ApolloProvider>
     </NavigationContainer>
   );
 };

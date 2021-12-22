@@ -8,9 +8,18 @@ import {
   Image,
   Modal,
 } from 'react-native';
+import {useMutation} from '@apollo/client';
+import {VERIFY_OTP} from './mutations';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 const VerifyOTPScreen = ({navigation, route}) => {
   const [otp, setOtp] = useState('');
+  const [verifyOtp, {data, error, loading}] = useMutation(VERIFY_OTP, {
+    variables: {
+      mobileNo: '91' + route.params.mobileNumber,
+      otp: 2474,
+    },
+  });
+  console.log(data, error, loading);
   return (
     <View style={styles.verifyOTPContainer}>
       <View style={styles.iconContainer}>
@@ -39,7 +48,12 @@ const VerifyOTPScreen = ({navigation, route}) => {
         <Text style={styles.otpText}>RESEND OTP</Text>
       </Text>
       <TouchableOpacity
-        onPress={() => navigation.navigate('ConnectInstaScreen')}
+        onPress={() => {
+          verifyOtp();
+          navigation.navigate('ConnectInstaScreen', {
+            mobileNumber: route.params.mobileNumber,
+          });
+        }}
         style={styles.button}>
         <Text style={{color: 'white', fontWeight: 'bold'}}>
           VERIFY & PROCEED

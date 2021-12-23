@@ -9,10 +9,10 @@ import {
   Image,
   View,
 } from 'react-native';
-//import renchon from '../../assets/renchon.png';
-//import {useQuery, gql} from '@apollo/client';
+import renchon from '../../assets/renchon.png';
+import {useQuery, gql} from '@apollo/client';
 import axios from 'axios';
-//import {GET_BRANDS} from './queries';
+import {GET_BRANDS} from './queries';
 import Dropdown from '../../components/Dropdown';
 
 const windowHeight = Dimensions.get('window').height;

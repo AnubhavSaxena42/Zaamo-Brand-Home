@@ -9,12 +9,12 @@ import {
   Image,
   View,
 } from 'react-native';
-import renchon from '../../assets/renchon.png';
-import {useQuery, gql} from '@apollo/client';
+//import renchon from '../../assets/renchon.png';
+//import {useQuery, gql} from '@apollo/client';
 import axios from 'axios';
-import {GET_BRANDS} from './queries';
+//import {GET_BRANDS} from './queries';
 import Dropdown from '../../components/Dropdown';
-//import * as DocumentPicker from 'expo-document-picker';
+
 const windowHeight = Dimensions.get('window').height;
 const SelectBrandsScreen = ({navigation}) => {
   const [brandsItems, setBrandsItems] = useState([]);
@@ -114,9 +114,6 @@ const SelectBrandsScreen = ({navigation}) => {
 
   const onUpload = () => {
     formData.append('zaamo_id', brand);
-    /*DocumentPicker.getDocumentAsync()
-      .then(res => console.log(res))
-      .catch(err => console.log(err));*/
     /*axios({
       method: 'post',
       url: 'https://betacontent.zaamo.co/engine/content/upload',

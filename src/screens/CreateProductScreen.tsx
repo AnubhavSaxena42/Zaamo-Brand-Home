@@ -292,8 +292,7 @@ const styles = StyleSheet.create({
   createProductHeaderContainer: {
     backgroundColor: 'white',
     paddingVertical: '5%',
-    alignItems: Platform.OS === 'web' ? 'center' : '',
-    paddingHorizontal: Platform.OS === '5%',
+    paddingHorizontal: '5%',
   },
   createProductHeaderText: {
     color: 'black',
@@ -318,19 +317,16 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: 'black',
     marginTop: '3%',
-    textAlign: Platform.OS === 'web' ? 'center' : '',
   },
   productNameInputContainer: {},
   labelText: {
     fontSize: Platform.OS === 'web' ? 24 : 16,
     fontWeight: '400',
     marginTop: '3%',
-    textAlign: Platform.OS === 'web' ? 'center' : '',
   },
   productImagesContainer: {},
   productPriceStockInputContainer: {
     flexDirection: Platform.OS === 'web' ? 'column' : 'row',
-    alignItems: Platform.OS === 'web' ? 'center' : '',
   },
   input: {
     borderWidth: 1,
@@ -339,9 +335,6 @@ const styles = StyleSheet.create({
     marginTop: Platform.OS === 'web' ? '1%' : '2%',
     backgroundColor: 'white',
     fontSize: Platform.OS === 'web' ? 24 : 14,
-    textAlign: Platform.OS === 'web' ? 'center' : '',
-    height: Platform.OS === 'web' ? 60 : '',
-    marginHorizontal: Platform.OS === 'web' ? '25%' : '',
   },
   priceInput: {
     borderWidth: 1,
@@ -349,8 +342,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginTop: '2%',
     fontSize: Platform.OS === 'web' ? 24 : 14,
-    textAlign: Platform.OS === 'web' ? 'center' : '',
-    height: Platform.OS === 'web' ? 60 : '',
+
     marginRight: '2%',
     backgroundColor: 'white',
   },
@@ -371,8 +363,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginTop: '2%',
     fontSize: Platform.OS === 'web' ? 24 : 14,
-    textAlign: Platform.OS === 'web' ? 'center' : '',
-    height: Platform.OS === 'web' ? 60 : '',
     backgroundColor: 'white',
   },
   priceInputContainer: {
@@ -403,7 +393,6 @@ const styles = StyleSheet.create({
   variantCheckboxContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginHorizontal: Platform.OS === 'web' ? '25%' : '',
     marginVertical: '5%',
   },
   addVariationButtonContainer: {

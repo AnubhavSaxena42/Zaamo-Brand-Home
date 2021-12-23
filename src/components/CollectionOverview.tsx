@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 const windowWidth = Dimensions.get('window').width;
-const CollectionOverview = ({imageUrl, name}) => {
+const CollectionOverview = collection => {
   return (
     <View style={styles.collectionOverviewContainer}>
       {/*Image of the product */}
@@ -18,14 +18,14 @@ const CollectionOverview = ({imageUrl, name}) => {
           style={styles.image}
           resizeMode="cover"
           source={{
-            uri: imageUrl,
+            uri: collection.imageUrl,
           }}
         />
       </View>
       {/*Product Information */}
       <View style={styles.collectionInfoContainer}>
         <View>
-          <Text style={styles.collectionNameText}>{name}</Text>
+          <Text style={styles.collectionNameText}>{collection.name}</Text>
         </View>
         <View>
           <Text style={styles.collectionLinkText}>

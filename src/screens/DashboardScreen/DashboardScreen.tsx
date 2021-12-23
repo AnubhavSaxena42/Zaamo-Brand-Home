@@ -11,6 +11,7 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MetricCard from '../../components/MetricCard/MetricCard';
 import UpdateCard from '../../components/UpdateCard/UpdateCard';
+import {getItemFromStorage} from '../../services/storage-service';
 //For web it has to be a scrollview , implement fab properly
 const DashboardScreen = () => {
   const windowWidth = Dimensions.get('window').width;

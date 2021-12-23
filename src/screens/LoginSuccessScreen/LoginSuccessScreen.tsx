@@ -1,19 +1,30 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, TouchableOpacity, Image, Text, View} from 'react-native';
 import {useMutation} from '@apollo/client';
 import {TOKEN_CREATE} from './mutations';
+import {useDispatch} from 'react-redux';
+import {setUser, setToken} from '../../redux/reducers/userReducer';
+import {saveItemToStorage} from '../../services/storage-service';
 const LoginSuccessScreen = ({navigation, route}) => {
   const [createToken, {data, loading, error}] = useMutation(TOKEN_CREATE, {
     variables: {
       mobileNo: '91' + route.params.mobileNumber,
     },
   });
-  const create = () => {
-    console.log('here');
-    console.log(route.params.mobileNumber);
+  const dispatch = useDispatch();
+  useEffect(() => {
     createToken();
-  };
-  console.log(data, error, loading);
+  }, []);
+  useEffect(() => {
+    if (data && data.tokenCreate.user.isActive) {
+      dispatch(setUser(data.tokenCreate.user));
+      dispatch(setToken(data.tokenCreate.token));
+      saveItemToStorage('Token', data.tokenCreate.token)
+        .then(res => console.log('Token Stored:', res))
+        .catch(err => console.log('Error storing token:', err));
+      navigation.navigate('StoreStack');
+    }
+  }, [data]);
 
   return (
     <View style={styles.loginSuccessContainer}>
@@ -21,7 +32,6 @@ const LoginSuccessScreen = ({navigation, route}) => {
         style={styles.imageStyle}
         source={require('../../assets/images/smugcat.jpg')}
       />
-      <Text onPress={create}>PRess</Text>
       <Text
         style={{
           fontSize: 24,
@@ -42,13 +52,6 @@ const LoginSuccessScreen = ({navigation, route}) => {
       <Text style={{fontSize: 16, color: 'rgba(0,0,0,0.5)'}}>
         activate your account
       </Text>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('StoreStack')}
-        style={styles.button}>
-        <Text style={{color: 'white', fontSize: 18, fontWeight: 'bold'}}>
-          Continue to Store
-        </Text>
-      </TouchableOpacity>
     </View>
   );
 };

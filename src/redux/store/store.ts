@@ -1,11 +1,13 @@
 import {configureStore} from '@reduxjs/toolkit';
 import postsReducer from '../reducers/postsReducer';
 import productsReducer from '../reducers/productsReducer';
+import userReducer from '../reducers/userReducer';
 //need to implement caching properly
 export const store = configureStore({
   reducer: {
     posts: postsReducer,
     products: productsReducer,
+    user: userReducer,
   },
 });
 

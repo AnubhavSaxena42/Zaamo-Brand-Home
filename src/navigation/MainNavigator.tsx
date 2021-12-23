@@ -18,6 +18,7 @@ import OrderDetailsScreen from '../screens/OrderDetailsScreen/OrderDetailsScreen
 import ProductsTabScreen from '../screens/ProductsTabScreen/ProductsTabScreen';
 import SettingsScreen from '../screens/SettingsScreen/SettingsScreen';
 import MarketingScreen from '../screens/MarketingScreen/MarketingScreen';
+import SplashScreen from '../screens/SplashScreen/SplashScreen';
 const TaggingStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 const HomeStack = createStackNavigator();
@@ -164,11 +165,13 @@ export const HomeTabNavigator = () => {
 export const AuthorizationStack = () => {
   return (
     <AuthStack.Navigator
+      initialRouteName={'SplashScreen'}
       screenOptions={{
         headerShown: false,
       }}>
       <AuthStack.Screen name="MobileOTPScreen" component={MobileOTPScreen} />
       <AuthStack.Screen name="VerifyOTPScreen" component={VerifyOTPScreen} />
+      <AuthStack.Screen name="SplashScreen" component={SplashScreen} />
       <AuthStack.Screen
         name="ConnectInstaScreen"
         component={ConnectInstaScreen}

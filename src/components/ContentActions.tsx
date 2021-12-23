@@ -54,19 +54,19 @@ const ContentActions = ({
         //remove product from post in store
         const newPosts = posts.map(post => {
           let flag = 0;
-
-          const newTagged = post.tagged.filter(taggedProduct => {
-            return taggedProduct.id !== productId;
-          });
+          let newTagged = post.tagged_products;
+          if (post.id === contentId)
+            newTagged = post.tagged_products.filter(taggedProduct => {
+              return taggedProduct.id !== productId;
+            });
           const newPost = {
             ...post,
-            tagged: newTagged,
+            tagged_products: newTagged,
           };
 
           return newPost;
         });
         dispatch(setPosts(newPosts));
-        //trigger re render
       })
       .catch(err => {
         console.log(err);
@@ -141,7 +141,7 @@ const ContentActions = ({
       </View>
       {/*Tags */}
       <View style={styles.tagsContainer}>
-        {post.tagged.map(tag => (
+        {post.tagged_products.map(tag => (
           <TaggedComponent
             key={tag.name}
             contentId={post.id}
@@ -165,7 +165,7 @@ const ContentActions = ({
           trigger={trigger}
           isTrigger={isTrigger}
           contentType={contentType}
-          taggedProducts={post.tagged}
+          taggedProducts={post.tagged_products}
           contentId={post.id}
           setShowProducts={setShowProducts}
         />

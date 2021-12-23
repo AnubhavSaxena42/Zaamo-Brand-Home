@@ -54,16 +54,16 @@ const ProductOverview = ({
     console.log(productData);
     setIsTagged(true);
     contentService
-      .tagProduct(productData, 'INWEAVE')
+      .tagProduct(productData, 'QnJhbmQ6Ng==', 'BRAND', 'PRODUCT')
       .then(res => {
-        console.log(res);
+        console.log('PRODUCT TAGGED:', res);
         //Change post status to tagged in store locally
         const newPosts = posts.map(post => {
           if (post.id === contentId) {
             return {
               ...post,
-              tagged: [
-                ...post.tagged,
+              tagged_products: [
+                ...post.tagged_products,
                 {id: product.id, name: product.name, slug: product.slug},
               ],
             };

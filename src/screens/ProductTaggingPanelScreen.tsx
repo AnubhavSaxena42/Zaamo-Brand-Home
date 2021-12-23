@@ -33,6 +33,7 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
   const [isActivityIndicator, setIsActivityIndicator] = useState(false);
   const dispatch = useDispatch();
   const windowWidth = Dimensions.get('window').width;
+  console.log('Selected Brand Id:', route.params.brandId);
   //Set number of columns for Web,Tablet and Mobile
   let numberOfColumns;
   if (Platform.OS === 'web') {
@@ -46,7 +47,9 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
       .then(res => {
         const {content_source, content_format, content_type} = res;
         setContentSourceItems(content_source);
+        setContentSource('INSTAGRAM_UGC');
         setContentFormatItems(content_format);
+        setContentFormat('INSTA_VIDEO');
         setContentTypeItems(content_type);
       })
       .catch(err => console.log(err));
@@ -56,7 +59,14 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
   const fetchContent = async () => {
     setIsActivityIndicator(true);
     contentService
-      .getContent(contentSource, contentFormat, contentLimit, 0)
+      .getContent(
+        contentSource,
+        contentFormat,
+        contentLimit,
+        0,
+        'BRAND',
+        route.params.brandId,
+      )
       .then(res => {
         console.log('We have new data!');
         console.log(res);
@@ -85,7 +95,7 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
     console.log('calling products fetch');
     contentService
       .getProducts(
-        route.params.brand,
+        route.params.brandId,
         10,
         'WyJibHVlLWZsb3JhbC1zaG9ydC1kcmVzcyJd',
       )

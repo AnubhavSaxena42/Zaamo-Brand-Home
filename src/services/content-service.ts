@@ -17,8 +17,8 @@ class ContentService {
     });
   }
   //Get Content
-  //Params content_source,content_format,limit,offset
-  getContent(contentSource, contentFormat, limit, offset) {
+  //Params content_source,content_format,limit,offset,user_type,zaamo_id
+  getContent(contentSource, contentFormat, limit, offset, userType, zaamoId) {
     console.log(
       'Send Request for:' +
         ' Content Source: ' +
@@ -36,6 +36,8 @@ class ContentService {
           content_format: contentFormat,
           limit: limit,
           offset: offset,
+          user_type: userType,
+          zaamo_id: zaamoId,
         },
       })
         .then(res => resolve(res))
@@ -62,20 +64,17 @@ class ContentService {
   }
 
   //Tag a product or collection on content
-  //body [{id,product_id,sku_id(Variant ID),content_type}],brand_name for product
+  //body [{id,product_id,sku_id(Variant ID),content_type}],zaamo_id,user_type,tag_type for product
   //body [{content_id,collection_id,content_type}],collection:true,brand_name for collection
-  tagProduct(tagData, brandName) {
-    const requestObj = {
-      data: tagData,
-      brand_name: brandName,
-    };
-    console.log(requestObj);
+  tagProduct(tagData, zaamoId, userType, tagType) {
     return new Promise((resolve, reject) => {
       Post(
         `${this._apiUrl}/tag/content/`,
         {
           data: tagData,
-          brand_name: brandName,
+          zaamo_id: zaamoId,
+          user_type: userType,
+          tag_type: 'PRODUCT',
         },
         {
           headers: {
@@ -98,6 +97,7 @@ class ContentService {
         `${this._apiUrl}/untag/content/`,
         {
           data: untagData,
+          untag_type: 'PRODUCT',
         },
         {
           headers: {

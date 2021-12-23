@@ -9,9 +9,12 @@ import {
   Image,
   View,
 } from 'react-native';
+import renchon from '../../assets/renchon.png';
 import {useQuery, gql} from '@apollo/client';
+import axios from 'axios';
 import {GET_BRANDS} from './queries';
 import Dropdown from '../../components/Dropdown';
+//import * as DocumentPicker from 'expo-document-picker';
 const windowHeight = Dimensions.get('window').height;
 const SelectBrandsScreen = ({navigation}) => {
   const [brandsItems, setBrandsItems] = useState([]);
@@ -103,10 +106,35 @@ const SelectBrandsScreen = ({navigation}) => {
     color: 'rgba(0, 0, 0, 0.75)',
   };
 
-  console.log(brand);
+  const formData = new FormData();
+  formData.append('user_type', 'BRAND');
+  formData.append('image', renchon);
+  formData.append('tag_product', 'false');
+  formData.append('mapping', '[]');
+
+  const onUpload = () => {
+    formData.append('zaamo_id', brand);
+    /*DocumentPicker.getDocumentAsync()
+      .then(res => console.log(res))
+      .catch(err => console.log(err));*/
+    /*axios({
+      method: 'post',
+      url: 'https://betacontent.zaamo.co/engine/content/upload',
+      data: formData,
+      headers: {'Content-Type': 'multipart/form-data'},
+    })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (response) {
+        console.log(response);
+      });
+      */
+  };
+
   const onBrandSelected = () => {
     navigation.navigate('panel', {
-      brand: brand,
+      brandId: brand,
     });
   };
   console.log('brands Items:', brandsItems);
@@ -146,6 +174,12 @@ const SelectBrandsScreen = ({navigation}) => {
         }
       />
 
+      <TouchableOpacity onPress={onUpload} style={styles.nextButtonContainer}>
+        <View style={styles.nextButton}>
+          <Text style={styles.nextButtonText}>Upload Content</Text>
+        </View>
+      </TouchableOpacity>
+
       <TouchableOpacity
         onPress={onBrandSelected}
         style={styles.nextButtonContainer}>
@@ -178,7 +212,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     width: '10%',
     padding: '1%',
-    marginBottom: '5%',
+    marginBottom: '1%',
     borderRadius: 10,
   },
   nextButtonText: {

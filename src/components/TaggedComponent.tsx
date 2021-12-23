@@ -1,14 +1,18 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
-const TaggedComponent = ({contentId, product, tag, onDelete}) => {
+const TaggedComponent = ({variation, contentId, product, tag, onDelete}) => {
   return (
     <View style={styles.tagContainer}>
       <TouchableOpacity
-        onPress={() => {
-          console.log('pressed');
-          onDelete(contentId, product.id);
-        }}>
+        onPress={
+          variation
+            ? onDelete
+            : () => {
+                console.log('pressed');
+                onDelete(contentId, product.id);
+              }
+        }>
         <View style={styles.removeIconContainer}>
           <Entypo name="circle-with-cross" size={20} color={'#3B5998'} />
         </View>

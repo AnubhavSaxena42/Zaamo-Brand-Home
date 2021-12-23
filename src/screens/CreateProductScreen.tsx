@@ -7,10 +7,13 @@ import {
   Text,
   TextInput,
   View,
+  Platform,
 } from 'react-native';
 import Header from '../components/Header';
 import Dropdown from '../components/Dropdown';
 import Checkbox from '../components/Checkbox';
+import {useQuery} from '@apollo/client';
+import {GET_CATEGORIES} from './queries';
 import TaggedComponent from '../components/TaggedComponent';
 //import GestureRecognizer from 'react-native-swipe-gestures';
 const ErrorMessage = () => {
@@ -107,8 +110,12 @@ const CreateProductScreen = ({navigation}) => {
     setTrigger(!trigger);
   };
 
+  const {error, loading, data} = useQuery(GET_CATEGORIES);
+  console.log(error, loading, data);
   return (
-    <ScrollView style={{backgroundColor: 'rgba(229, 229, 229, 0.2);'}}>
+    <ScrollView
+      showsHorizontalScrollIndicator={false}
+      style={{backgroundColor: 'rgba(229, 229, 229, 0.2);'}}>
       {/*<GestureRecognizer
         config={{directionalOffsetThreshold: 30, velocityThreshold: 0.5}}
         onSwipeRight={() => navigation.goBack()}>*/}
@@ -216,6 +223,7 @@ const CreateProductScreen = ({navigation}) => {
               <View key={item} style={{marginRight: '10%', marginBottom: '2%'}}>
                 <TaggedComponent
                   tag={item}
+                  variation={true}
                   onDelete={() => {
                     removeVariationHandler(item);
                   }}
@@ -284,11 +292,12 @@ const styles = StyleSheet.create({
   createProductHeaderContainer: {
     backgroundColor: 'white',
     paddingVertical: '5%',
-    paddingHorizontal: '5%',
+    alignItems: Platform.OS === 'web' ? 'center' : '',
+    paddingHorizontal: Platform.OS === '5%',
   },
   createProductHeaderText: {
     color: 'black',
-    fontSize: 28,
+    fontSize: Platform.OS === 'web' ? 36 : 28,
     fontWeight: '600',
   },
   errorMessageContainer: {
@@ -305,33 +314,43 @@ const styles = StyleSheet.create({
   },
   productDetailsHeaderContainer: {},
   headerText: {
-    fontSize: 24,
+    fontSize: Platform.OS === 'web' ? 30 : 24,
     fontWeight: '500',
     color: 'black',
     marginTop: '3%',
+    textAlign: Platform.OS === 'web' ? 'center' : '',
   },
   productNameInputContainer: {},
   labelText: {
-    fontSize: 16,
+    fontSize: Platform.OS === 'web' ? 24 : 16,
     fontWeight: '400',
     marginTop: '3%',
+    textAlign: Platform.OS === 'web' ? 'center' : '',
   },
   productImagesContainer: {},
   productPriceStockInputContainer: {
-    flexDirection: 'row',
+    flexDirection: Platform.OS === 'web' ? 'column' : 'row',
+    alignItems: Platform.OS === 'web' ? 'center' : '',
   },
   input: {
     borderWidth: 1,
     borderColor: '#b7b9ba',
     borderRadius: 5,
-    marginTop: '2%',
+    marginTop: Platform.OS === 'web' ? '1%' : '2%',
     backgroundColor: 'white',
+    fontSize: Platform.OS === 'web' ? 24 : 14,
+    textAlign: Platform.OS === 'web' ? 'center' : '',
+    height: Platform.OS === 'web' ? 60 : '',
+    marginHorizontal: Platform.OS === 'web' ? '25%' : '',
   },
   priceInput: {
     borderWidth: 1,
     borderColor: '#b7b9ba',
     borderRadius: 5,
     marginTop: '2%',
+    fontSize: Platform.OS === 'web' ? 24 : 14,
+    textAlign: Platform.OS === 'web' ? 'center' : '',
+    height: Platform.OS === 'web' ? 60 : '',
     marginRight: '2%',
     backgroundColor: 'white',
   },
@@ -341,6 +360,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginTop: '2%',
     height: 200,
+    fontSize: Platform.OS === 'web' ? 24 : 14,
+    paddingHorizontal: '1%',
     textAlignVertical: 'top',
     backgroundColor: 'white',
   },
@@ -349,6 +370,9 @@ const styles = StyleSheet.create({
     borderColor: '#b7b9ba',
     borderRadius: 5,
     marginTop: '2%',
+    fontSize: Platform.OS === 'web' ? 24 : 14,
+    textAlign: Platform.OS === 'web' ? 'center' : '',
+    height: Platform.OS === 'web' ? 60 : '',
     backgroundColor: 'white',
   },
   priceInputContainer: {
@@ -379,6 +403,7 @@ const styles = StyleSheet.create({
   variantCheckboxContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    marginHorizontal: Platform.OS === 'web' ? '25%' : '',
     marginVertical: '5%',
   },
   addVariationButtonContainer: {
@@ -387,8 +412,8 @@ const styles = StyleSheet.create({
   },
   addVariationButton: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    width: '35%',
-    padding: '3%',
+    width: Platform.OS === 'web' ? '120%' : '35%',
+    padding: Platform.OS === 'web' ? '15%' : '3%',
     borderRadius: 10,
   },
   addVariationButtonText: {

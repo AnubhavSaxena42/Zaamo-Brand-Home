@@ -14,11 +14,14 @@ import {useQuery, gql} from '@apollo/client';
 import axios from 'axios';
 import {GET_BRANDS} from './queries';
 import Dropdown from '../../components/Dropdown';
+import DocumentPicker from 'react-native-document-picker';
 
 const windowHeight = Dimensions.get('window').height;
 const SelectBrandsScreen = ({navigation}) => {
   const [brandsItems, setBrandsItems] = useState([]);
   const [brand, setBrand] = useState('');
+  const [uploadPressed, setUploadPressed] = useState(false);
+  const [isUploadSuccess, setIsUploadSuccess] = useState();
   const {loading, error, data} = useQuery(GET_BRANDS);
   useEffect(() => {
     if (data) {
@@ -52,7 +55,7 @@ const SelectBrandsScreen = ({navigation}) => {
   };
 
   const mobileDropdownStyle = {
-    height: '70%',
+    height: '5%',
     width: '45%',
     borderRadius: 5,
     alignItems: 'center',
@@ -113,20 +116,31 @@ const SelectBrandsScreen = ({navigation}) => {
   formData.append('mapping', '[]');
 
   const onUpload = () => {
+    if (!brand || brand === '') return;
     formData.append('zaamo_id', brand);
-    /*axios({
-      method: 'post',
-      url: 'https://betacontent.zaamo.co/engine/content/upload',
-      data: formData,
-      headers: {'Content-Type': 'multipart/form-data'},
-    })
-      .then(function (response) {
-        console.log(response);
+    DocumentPicker.pick()
+      .then(res => {
+        console.log('File pick response:', res);
+        formData.append('file', res[0]);
+        console.log('Form:', formData);
+        axios({
+          method: 'post',
+          url: 'https://betacontent.zaamo.co/engine/content/upload',
+          data: formData,
+          headers: {'Content-Type': 'multipart/form-data'},
+        })
+          .then(function (response) {
+            console.log(response);
+            setUploadPressed(true);
+            setIsUploadSuccess(true);
+          })
+          .catch(function (response) {
+            console.log(response);
+            setUploadPressed(true);
+            setIsUploadSuccess(false);
+          });
       })
-      .catch(function (response) {
-        console.log(response);
-      });
-      */
+      .catch(err => console.log(err));
   };
 
   const onBrandSelected = () => {
@@ -176,7 +190,12 @@ const SelectBrandsScreen = ({navigation}) => {
           <Text style={styles.nextButtonText}>Upload Content</Text>
         </View>
       </TouchableOpacity>
-
+      {uploadPressed &&
+        (isUploadSuccess ? (
+          <Text>Content Added for {brand}!</Text>
+        ) : (
+          <Text>Failed to upload Content!Try Again.</Text>
+        ))}
       <TouchableOpacity
         onPress={onBrandSelected}
         style={styles.nextButtonContainer}>
@@ -207,7 +226,7 @@ const styles = StyleSheet.create({
   },
   nextButton: {
     backgroundColor: 'black',
-    width: '10%',
+    width: '20%',
     padding: '1%',
     marginBottom: '1%',
     borderRadius: 10,

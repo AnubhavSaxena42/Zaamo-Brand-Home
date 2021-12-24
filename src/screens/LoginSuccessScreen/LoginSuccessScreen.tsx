@@ -3,6 +3,7 @@ import {StyleSheet, TouchableOpacity, Image, Text, View} from 'react-native';
 import {useMutation} from '@apollo/client';
 import {TOKEN_CREATE} from './mutations';
 import {useDispatch} from 'react-redux';
+import authService from '../../services/auth-service';
 import {setUser, setToken} from '../../redux/reducers/userReducer';
 import {saveItemToStorage} from '../../services/storage-service';
 const LoginSuccessScreen = ({navigation, route}) => {
@@ -19,6 +20,14 @@ const LoginSuccessScreen = ({navigation, route}) => {
     if (data && data.tokenCreate.user.isActive) {
       dispatch(setUser(data.tokenCreate.user));
       dispatch(setToken(data.tokenCreate.token));
+      saveItemToStorage('User', JSON.stringify(data.tokenCreate.user));
+      authService
+        .getStoreId(data.tokenCreate.user.userId)
+        .then(store => {
+          console.log(store);
+          saveItemToStorage('Store-ID', store.store_id.toString());
+        })
+        .catch(err => console.log(err));
       saveItemToStorage('Token', data.tokenCreate.token)
         .then(res => console.log('Token Stored:', res))
         .catch(err => console.log('Error storing token:', err));

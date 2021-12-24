@@ -13,11 +13,11 @@ import OrdersOverviewCard from '../../components/OrdersOverviewCard/OrdersOvervi
 import {useQuery} from '@apollo/client';
 import {GET_ORDERS} from './queries';
 import {useSelector} from 'react-redux';
+import authService from '../../services/auth-service';
 const OrdersScreen = ({navigation}) => {
   const windowWidth = Dimensions.get('window').width;
   const {data, error, loading} = useQuery(GET_ORDERS);
-  const user = useSelector(state => state.user.user);
-  console.log(user);
+
   console.log(data, error, loading);
   return (
     <View style={styles.ordersContainer}>

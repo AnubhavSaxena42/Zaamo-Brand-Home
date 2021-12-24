@@ -12,9 +12,17 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MetricCard from '../../components/MetricCard/MetricCard';
 import UpdateCard from '../../components/UpdateCard/UpdateCard';
 import {getItemFromStorage} from '../../services/storage-service';
+import authService from '../../services/auth-service';
+import {useSelector} from 'react-redux';
+import {useQuery} from '@apollo/client';
+import {GET_STORE} from './queries';
 //For web it has to be a scrollview , implement fab properly
 const DashboardScreen = () => {
   const windowWidth = Dimensions.get('window').width;
+  const userId = useSelector(state => state.user.user);
+  const {data, error, loading} = useQuery(GET_STORE);
+  console.log(data, error, loading);
+  console.log(userId);
   return (
     <View style={styles.dashboardContainer}>
       <Text

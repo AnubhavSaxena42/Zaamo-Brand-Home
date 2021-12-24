@@ -1,13 +1,22 @@
 import React, {useEffect} from 'react';
 import {StyleSheet, Text, Image, View} from 'react-native';
 import {getItemFromStorage} from '../../services/storage-service';
-
+import {useDispatch} from 'react-redux';
+import {setToken, setUser} from '../../redux/reducers/userReducer';
 const SplashScreen = ({navigation}) => {
+  const dispatch = useDispatch();
   useEffect(() => {
     getItemFromStorage('Token')
-      .then(res => {
-        if (res && res !== '') {
-          navigation.navigate('StoreStack');
+      .then(token => {
+        if (token && token !== '') {
+          getItemFromStorage('User').then(user => {
+            if (user && user !== '') {
+              const userObj = JSON.parse(user);
+              dispatch(setToken(token));
+              dispatch(setUser(userObj));
+            }
+            navigation.navigate('StoreStack');
+          });
         } else {
           navigation.navigate('MobileOTPScreen');
         }
@@ -26,7 +35,7 @@ const SplashScreen = ({navigation}) => {
         alignItems: 'center',
       }}>
       <Image
-        style={{height: 350, width: 350}}
+        style={{height: 150, width: 150}}
         source={require('../../assets/images/zaamo.jpg')}
       />
     </View>

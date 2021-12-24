@@ -282,6 +282,7 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
         }}
         ListFooterComponentStyle={{
           paddingBottom: '20%',
+          backgroundColor: 'whitesmoke',
         }}
         showsVerticalScrollIndicator={false}
         onEndReached={() => {

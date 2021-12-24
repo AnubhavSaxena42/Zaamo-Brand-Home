@@ -7,6 +7,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useQuery} from '@apollo/client';
 import {GET_BRANDS} from './SelectBrandsScreen/queries';
 import contentService from '../services/content-service';
+import DocumentPicker from 'react-native-document-picker';
 //import GestureRecognizer from 'react-native-swipe-gestures';
 const AddProductScreen = ({navigation}) => {
   const [brandName, setBrandName] = useState();
@@ -178,7 +179,14 @@ const AddProductScreen = ({navigation}) => {
       </View>
       <TouchableOpacity
         onPress={() => {
-          //navigation.navigate('createProduct');
+          DocumentPicker.pick()
+            .then(res => {
+              console.log('response:', res);
+              navigation.navigate('createProduct', {
+                image: res,
+              });
+            })
+            .catch(err => console.log('Error:', err));
         }}>
         <View style={styles.addFilesContainer}>
           <View style={styles.iconContainer}>

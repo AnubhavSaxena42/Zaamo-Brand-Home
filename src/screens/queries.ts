@@ -8,10 +8,6 @@ export const GET_CATEGORIES = gql`
           id
           slug
           name
-          descriptionJson
-          backgroundImage {
-            url
-          }
           children(first: 10) {
             edges {
               node {

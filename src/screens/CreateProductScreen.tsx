@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -33,12 +33,54 @@ const CreateProductScreen = ({navigation}) => {
   const [isPriceError, setisPriceError] = useState(false);
   const [isStockError, setIsStockError] = useState(false);
   const [isDescriptionError, setIsDescriptionError] = useState(false);
+  const [category, setCategory] = useState();
+  const [categoryItems, setCategoryItems] = useState([]);
+  const [subCategory, setSubCategory] = useState();
+  const [subCategoryItems, setSubCategoryItems] = useState([]);
   const [newVariation, setNewVariation] = useState('');
   const [isVariationNameError, setIsVariationNameError] = useState(false);
   const [trigger, setTrigger] = useState(true);
   const [codCheckbox, setCodCheckbox] = useState([
     {value: 'Allow COD', isSelected: false},
   ]);
+  const {data, error, loading} = useQuery(GET_CATEGORIES);
+  useEffect(() => {
+    if (data) {
+      console.log('This is the data: ', data);
+      const categories = data.categories.edges.map(edge => edge.node);
+      console.log(categories);
+      const newCategoryItems = categories.map(category => {
+        return {
+          name: category.name,
+          id: category.id,
+        };
+      });
+      console.log(newCategoryItems);
+      setCategoryItems(newCategoryItems);
+    }
+  }, [data]);
+  useEffect(() => {
+    if (category) {
+      console.log(category);
+      const categories = data.categories.edges.map(edge => edge.node);
+      console.log(categories);
+      const children = categories.find(item => item.id === category);
+      console.log(children);
+      console.log(children.children.edges.length);
+      if (children.children.edges.length === 0) {
+        setSubCategoryItems([]);
+      } else {
+        const newSubcategories = children.children.edges.map(edge => {
+          return {
+            name: edge.node.name,
+            id: edge.node.name,
+          };
+        });
+        console.log(newSubcategories);
+        setSubCategoryItems(newSubcategories);
+      }
+    }
+  }, [category]);
   const [variationCheckboxes, setVariationCheckboxes] = useState([
     {value: 'XS', isSelected: false},
     {value: 'S', isSelected: false},
@@ -64,6 +106,81 @@ const CreateProductScreen = ({navigation}) => {
     'Static Post',
     'Uncategorized',
   ];
+  const webDropdownStyle = {
+    height: '5%',
+    width: '15%',
+    marginLeft: '0%',
+    borderRadius: 5,
+    alignItems: 'center',
+    borderColor: 'rgba(0,0,0,0.2)',
+    paddingHorizontal: 5,
+    borderWidth: 1,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowRadius: 1,
+    paddingVertical: 15,
+    shadowOpacity: 1.0,
+    elevation: 2,
+    zIndex: 200,
+  };
+
+  const mobileDropdownStyle = {
+    height: '15%',
+    width: '45%',
+    borderRadius: 5,
+    alignItems: 'center',
+    borderColor: 'rgba(0,0,0,0.2)',
+    paddingHorizontal: 5,
+    borderWidth: 1,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowRadius: 2,
+    shadowOpacity: 1.0,
+    elevation: 5,
+    zIndex: 200,
+  };
+  const mobileDropdownValuesContainerStyle = {
+    top: 33,
+    width: '105%',
+    alignSelf: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(0,0,0,0.2)',
+  };
+  const webDropdownValuesContainerStyle = {
+    top: 18,
+    width: '100%',
+    borderWidth: 1,
+    borderColor: 'rgba(0,0,0,0.2)',
+  };
+  const mobileDropdownValuesTextStyle = {
+    fontSize: 14,
+    fontFamily: 'Roboto-Regular',
+    marginVertical: 2,
+    marginLeft: 10,
+  };
+  const webDropdownValuesTextStyle = {
+    fontSize: 16,
+    fontFamily: 'Roboto-Regular',
+    marginVertical: 5,
+    marginLeft: 10,
+  };
+  const mobileDropdownTextStyle = {
+    fontSize: 14,
+    fontFamily: 'Open-Sans',
+    fontWeight: '300',
+    color: 'rgba(0, 0, 0, 0.75)',
+  };
+  const webDropdownTextStyle = {
+    fontSize: 16,
+    fontFamily: 'Open-Sans',
+    fontWeight: '300',
+    color: 'rgba(0, 0, 0, 0.75)',
+  };
+
   const onSubmitHandler = () => {
     let flag = 0;
     if (productName === '') {
@@ -110,8 +227,6 @@ const CreateProductScreen = ({navigation}) => {
     setTrigger(!trigger);
   };
 
-  const {error, loading, data} = useQuery(GET_CATEGORIES);
-  console.log(error, loading, data);
   return (
     <ScrollView
       showsHorizontalScrollIndicator={false}
@@ -189,20 +304,60 @@ const CreateProductScreen = ({navigation}) => {
             <Text style={styles.labelText}>Select Category</Text>
             <Dropdown
               tag="Select Category"
-              items={contentFormatItems}
-              selectedValue={contentFormat}
-              setSelectedValue={setContentFormat}
-              dropDownStyle={{zIndex: 600}}
+              items={categoryItems}
+              selectedValue={category}
+              setSelectedValue={setCategory}
+              down
+              iconColor={'black'}
+              dropDownContainerStyle={
+                Platform.OS === 'web'
+                  ? webDropdownStyle
+                  : {...mobileDropdownStyle, zIndex: 300}
+              }
+              dropDownValuesTextStyle={
+                Platform.OS === 'web'
+                  ? webDropdownValuesTextStyle
+                  : mobileDropdownValuesTextStyle
+              }
+              dropDownTextStyle={
+                Platform.OS === 'web'
+                  ? webDropdownTextStyle
+                  : mobileDropdownTextStyle
+              }
+              dropDownValuesContainerStyle={
+                Platform.OS === 'web'
+                  ? webDropdownValuesContainerStyle
+                  : mobileDropdownValuesContainerStyle
+              }
             />
           </View>
           <View style={styles.selectSubCategoryContainer}>
             <Text style={styles.labelText}>Select Sub Category</Text>
             <Dropdown
               tag="Select Sub Category"
-              items={contentFormatItems}
-              selectedValue={contentFormat}
-              setSelectedValue={setContentFormat}
-              dropDownStyle={{zIndex: 400}}
+              items={subCategoryItems}
+              selectedValue={subCategory}
+              setSelectedValue={setSubCategory}
+              down
+              iconColor={'black'}
+              dropDownContainerStyle={
+                Platform.OS === 'web' ? webDropdownStyle : mobileDropdownStyle
+              }
+              dropDownValuesTextStyle={
+                Platform.OS === 'web'
+                  ? webDropdownValuesTextStyle
+                  : mobileDropdownValuesTextStyle
+              }
+              dropDownTextStyle={
+                Platform.OS === 'web'
+                  ? webDropdownTextStyle
+                  : mobileDropdownTextStyle
+              }
+              dropDownValuesContainerStyle={
+                Platform.OS === 'web'
+                  ? webDropdownValuesContainerStyle
+                  : mobileDropdownValuesContainerStyle
+              }
             />
           </View>
           <View style={styles.codCheckboxContainer}>

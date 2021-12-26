@@ -59,6 +59,7 @@ const SettingsScreen = ({navigation, route}) => {
             imageUrl={require('../../assets/icons/network.png')}
           />
           <SettingOption
+            onPress={() => navigation.navigate('RegisterAsCompanyScreen')}
             setting={'Register as Company'}
             imageUrl={require('../../assets/icons/registerCompany.png')}
           />
@@ -91,6 +92,7 @@ const SettingsScreen = ({navigation, route}) => {
             imageUrl={require('../../assets/icons/zaamosupport.png')}
           />
           <SettingOption
+            onPress={() => navigation.navigate('BrandGuidelinesScreen')}
             setting={'Brand Guidelines'}
             imageUrl={require('../../assets/icons/brandguidelines.png')}
           />

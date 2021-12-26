@@ -62,14 +62,19 @@ const SettingsScreen = ({navigation, route}) => {
             imageUrl={require('../../assets/icons/registerCompany.png')}
           />
           <SettingOption
+            onPress={() => {
+              navigation.navigate('TermsAndConditionsScreen');
+            }}
             setting={'Terms & Conditions'}
             imageUrl={require('../../assets/icons/termsandconditions.png')}
           />
           <SettingOption
+            onPress={() => navigation.navigate('PrivacyPolicyScreen')}
             setting={'Privacy Policy'}
             imageUrl={require('../../assets/icons/privacypolicy.png')}
           />
           <SettingOption
+            onPress={() => navigation.navigate('ReturnPolicyScreen')}
             setting={'Return Policy'}
             imageUrl={require('../../assets/icons/returnpolicy.png')}
           />

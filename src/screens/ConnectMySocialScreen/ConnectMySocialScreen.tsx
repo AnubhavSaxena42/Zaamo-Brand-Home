@@ -81,7 +81,7 @@ const ConnectMySocialScreen = ({navigation, route}) => {
         <TouchableOpacity
           onPress={() => navigation.navigate('SettingsScreen')}
           style={styles.button}>
-          <Text style={{color: 'white', fontWeight: 'bold'}}>Update</Text>
+          <Text style={{color: 'white', fontWeight: 'bold'}}>Save</Text>
         </TouchableOpacity>
       </View>
     </View>

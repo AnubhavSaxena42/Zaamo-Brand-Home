@@ -89,6 +89,7 @@ const SettingsScreen = ({navigation, route}) => {
             imageUrl={require('../../assets/icons/logistics.png')}
           />
           <SettingOption
+            onPress={() => navigation.navigate('ZaamoSupportScreen')}
             setting={'Zaamo Support'}
             imageUrl={require('../../assets/icons/zaamosupport.png')}
           />

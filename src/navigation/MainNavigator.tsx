@@ -29,6 +29,7 @@ import StoreThemesScreen from '../screens/StoreThemesScreen/StoreThemesScreen';
 import BrandGuidelinesScreen from '../screens/BrandGuidelinesScreen/BrandGuidelinesScreen';
 import RegisterAsCompanyScreen from '../screens/RegisterAsCompanyScreen/RegisterAsCompanyScreen';
 import PaymentDetailsScreen from '../screens/PaymentDetailsScreen/PaymentDetailsScreen';
+import ZaamoSupportScreen from '../screens/ZaamoSupportScreen/ZaamoSupportScreen';
 const TaggingStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 const HomeStack = createStackNavigator();
@@ -77,6 +78,10 @@ export const StoreStackNavigator = () => {
       <StoreStack.Screen
         name="BrandGuidelinesScreen"
         component={BrandGuidelinesScreen}
+      />
+      <StoreStack.Screen
+        name="ZaamoSupportScreen"
+        component={ZaamoSupportScreen}
       />
       <StoreStack.Screen
         name="RegisterAsCompanyScreen"

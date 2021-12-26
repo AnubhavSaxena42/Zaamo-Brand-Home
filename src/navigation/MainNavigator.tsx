@@ -19,6 +19,9 @@ import ProductsTabScreen from '../screens/ProductsTabScreen/ProductsTabScreen';
 import SettingsScreen from '../screens/SettingsScreen/SettingsScreen';
 import MarketingScreen from '../screens/MarketingScreen/MarketingScreen';
 import SplashScreen from '../screens/SplashScreen/SplashScreen';
+import InstaWorldScreen from '../screens/InstaWorldScreen/InstaWorldScreen';
+import ConnectMySocialScreen from '../screens/ConnectMySocialScreen/ConnectMySocialScreen';
+import LogisticsSettingsScreen from '../screens/LogisticsSettingsScreen/LogisticsSettingsScreen';
 const TaggingStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 const HomeStack = createStackNavigator();
@@ -48,6 +51,14 @@ export const StoreStackNavigator = () => {
         headerShown: false,
       }}>
       <StoreStack.Screen name="SettingsScreen" component={SettingsScreen} />
+      <StoreStack.Screen
+        name="ConnectMySocialScreen"
+        component={ConnectMySocialScreen}
+      />
+      <StoreStack.Screen
+        name="LogisticsSettingsScreen"
+        component={LogisticsSettingsScreen}
+      />
     </StoreStack.Navigator>
   );
 };
@@ -77,6 +88,7 @@ export const HomeStackNavigator = () => {
   return (
     <HomeStack.Navigator screenOptions={{headerShown: false}}>
       <HomeStack.Screen name="Dashboard" component={DashboardScreen} />
+      <HomeStack.Screen name="InstaWorldScreen" component={InstaWorldScreen} />
     </HomeStack.Navigator>
   );
 };

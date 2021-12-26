@@ -1,9 +1,11 @@
 import React from 'react';
-import {StyleSheet, Text, Image, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, Text, Image, View} from 'react-native';
 
-const SettingOption = ({setting, imageUrl}) => {
+const SettingOption = ({setting, onPress, imageUrl}) => {
   return (
-    <View style={{height: 60, width: 150, marginVertical: '4%'}}>
+    <TouchableOpacity
+      onPress={onPress}
+      style={{height: 60, width: 150, marginVertical: '4%'}}>
       <View
         style={{
           flex: 1,
@@ -35,7 +37,7 @@ const SettingOption = ({setting, imageUrl}) => {
         }}>
         <Image source={imageUrl} style={{height: 20, width: 20}} />
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

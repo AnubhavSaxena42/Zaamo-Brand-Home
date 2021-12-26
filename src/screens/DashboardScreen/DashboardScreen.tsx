@@ -17,7 +17,7 @@ import {useSelector} from 'react-redux';
 import {useQuery} from '@apollo/client';
 import {GET_STORE} from './queries';
 //For web it has to be a scrollview , implement fab properly
-const DashboardScreen = () => {
+const DashboardScreen = ({navigation, route}) => {
   const windowWidth = Dimensions.get('window').width;
   const userId = useSelector(state => state.user.user);
   const {data, error, loading} = useQuery(GET_STORE);
@@ -81,6 +81,9 @@ const DashboardScreen = () => {
         />
       </View>
       <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('InstaWorldScreen');
+        }}
         style={{
           backgroundColor: 'black',
           position: 'absolute',

@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, Image, Dimensions, Text, View} from 'react-native';
 import SettingOption from '../../components/SettingOption/SettingOption';
 const windowWidth = Dimensions.get('window').width;
-const SettingsScreen = () => {
+const SettingsScreen = ({navigation, route}) => {
   return (
     <View style={styles.settingsContainer}>
       <View style={{alignItems: 'center'}}>
@@ -53,6 +53,7 @@ const SettingsScreen = () => {
             imageUrl={require('../../assets/icons/paymentdetails.png')}
           />
           <SettingOption
+            onPress={() => navigation.navigate('ConnectMySocialScreen')}
             setting={'Connect my Social'}
             imageUrl={require('../../assets/icons/network.png')}
           />
@@ -73,6 +74,9 @@ const SettingsScreen = () => {
             imageUrl={require('../../assets/icons/returnpolicy.png')}
           />
           <SettingOption
+            onPress={() => {
+              navigation.navigate('LogisticsSettingsScreen');
+            }}
             setting={'Logistics Settings'}
             imageUrl={require('../../assets/icons/logistics.png')}
           />

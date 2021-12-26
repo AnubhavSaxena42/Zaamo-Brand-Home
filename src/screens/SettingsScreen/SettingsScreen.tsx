@@ -41,6 +41,7 @@ const SettingsScreen = ({navigation, route}) => {
             justifyContent: 'space-around',
           }}>
           <SettingOption
+            onPress={() => navigation.navigate('CustomiseLandingPageScreen')}
             setting={'Customise Landing Page'}
             imageUrl={require('../../assets/icons/customiseLandingPage.png')}
           />

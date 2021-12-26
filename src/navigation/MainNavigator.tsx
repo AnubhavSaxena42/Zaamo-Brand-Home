@@ -30,6 +30,7 @@ import BrandGuidelinesScreen from '../screens/BrandGuidelinesScreen/BrandGuideli
 import RegisterAsCompanyScreen from '../screens/RegisterAsCompanyScreen/RegisterAsCompanyScreen';
 import PaymentDetailsScreen from '../screens/PaymentDetailsScreen/PaymentDetailsScreen';
 import ZaamoSupportScreen from '../screens/ZaamoSupportScreen/ZaamoSupportScreen';
+import CustomiseLandingPageScreen from '../screens/CustomiseLandingPageScreen/CustomiseLandingPageScreen';
 const TaggingStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 const HomeStack = createStackNavigator();
@@ -78,6 +79,10 @@ export const StoreStackNavigator = () => {
       <StoreStack.Screen
         name="BrandGuidelinesScreen"
         component={BrandGuidelinesScreen}
+      />
+      <StoreStack.Screen
+        name="CustomiseLandingPageScreen"
+        component={CustomiseLandingPageScreen}
       />
       <StoreStack.Screen
         name="ZaamoSupportScreen"

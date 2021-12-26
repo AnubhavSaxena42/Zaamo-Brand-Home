@@ -31,6 +31,7 @@ import RegisterAsCompanyScreen from '../screens/RegisterAsCompanyScreen/Register
 import PaymentDetailsScreen from '../screens/PaymentDetailsScreen/PaymentDetailsScreen';
 import ZaamoSupportScreen from '../screens/ZaamoSupportScreen/ZaamoSupportScreen';
 import CustomiseLandingPageScreen from '../screens/CustomiseLandingPageScreen/CustomiseLandingPageScreen';
+import CouponInfoScreen from '../screens/CouponInfoScreen/CouponInfoScreen';
 const TaggingStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 const HomeStack = createStackNavigator();
@@ -46,6 +47,10 @@ export const MarketingStackNavigator = () => {
       screenOptions={{
         headerShown: false,
       }}>
+      <MarketingStack.Screen
+        name="CouponInfoScreen"
+        component={CouponInfoScreen}
+      />
       <MarketingStack.Screen
         name="MarketingScreen"
         component={MarketingScreen}

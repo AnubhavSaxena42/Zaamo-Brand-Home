@@ -1,8 +1,14 @@
 import React from 'react';
-import {StyleSheet, Text, Dimensions, View} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  Dimensions,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 const windowWidth = Dimensions.get('window').width;
-const Coupon = () => {
+const Coupon = ({navigation}) => {
   return (
     <View
       style={{
@@ -109,7 +115,8 @@ const Coupon = () => {
             <Text>SAVE70NEWBUYER</Text>
             <AntDesign name="copy1" color="black" size={12} />
           </View>
-          <View
+          <TouchableOpacity
+            onPress={() => navigation.navigate('CouponInfoScreen')}
             style={{
               width: 70,
               height: 25,
@@ -119,7 +126,7 @@ const Coupon = () => {
               alignItems: 'center',
             }}>
             <Text style={{color: 'white'}}>View</Text>
-          </View>
+          </TouchableOpacity>
         </View>
         <Text>Valid Until 30th March</Text>
       </View>

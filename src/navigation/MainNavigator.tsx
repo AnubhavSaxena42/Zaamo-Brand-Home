@@ -25,6 +25,7 @@ import LogisticsSettingsScreen from '../screens/LogisticsSettingsScreen/Logistic
 import TermsAndConditionsScreen from '../screens/TermsAndConditionsScreen/TermsAndConditionsScreen';
 import PrivacyPolicyScreen from '../screens/PrivacyPolicyScreen/PrivacyPolicyScreen';
 import ReturnPolicyScreen from '../screens/ReturnPolicyScreen/ReturnPolicyScreen';
+import StoreThemesScreen from '../screens/StoreThemesScreen/StoreThemesScreen';
 const TaggingStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 const HomeStack = createStackNavigator();
@@ -54,6 +55,10 @@ export const StoreStackNavigator = () => {
         headerShown: false,
       }}>
       <StoreStack.Screen name="SettingsScreen" component={SettingsScreen} />
+      <StoreStack.Screen
+        name="StoreThemesScreen"
+        component={StoreThemesScreen}
+      />
       <StoreStack.Screen
         name="ReturnPolicyScreen"
         component={ReturnPolicyScreen}

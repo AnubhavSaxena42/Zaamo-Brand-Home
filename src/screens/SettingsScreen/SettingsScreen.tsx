@@ -45,6 +45,7 @@ const SettingsScreen = ({navigation, route}) => {
             imageUrl={require('../../assets/icons/customiseLandingPage.png')}
           />
           <SettingOption
+            onPress={() => navigation.navigate('StoreThemesScreen')}
             setting={'Store Themes'}
             imageUrl={require('../../assets/icons/storeThemes.png')}
           />

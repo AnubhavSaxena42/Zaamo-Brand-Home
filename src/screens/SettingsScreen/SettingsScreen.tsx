@@ -50,6 +50,7 @@ const SettingsScreen = ({navigation, route}) => {
             imageUrl={require('../../assets/icons/storeThemes.png')}
           />
           <SettingOption
+            onPress={() => navigation.navigate('PaymentDetailsScreen')}
             setting={'Payment Details'}
             imageUrl={require('../../assets/icons/paymentdetails.png')}
           />

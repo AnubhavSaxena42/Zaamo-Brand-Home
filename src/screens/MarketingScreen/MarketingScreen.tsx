@@ -4,12 +4,18 @@ import Coupon from '../../components/Coupon/Coupon';
 import Header from '../../components/Header';
 import {useQuery} from '@apollo/client';
 import {GET_COUPONS} from './queries';
+
 const MarketingScreen = ({navigation}) => {
   const {data, error, loading} = useQuery(GET_COUPONS);
   console.log(data, error, loading);
   return (
     <ScrollView style={styles.marketingContainer}>
-      <Header />
+      <Header
+        tag={'Marketing'}
+        fontSize={22}
+        icon={true}
+        onPress={() => navigation.navigate('CreateCouponScreen')}
+      />
       <Coupon navigation={navigation} />
       <Coupon />
       <Coupon />

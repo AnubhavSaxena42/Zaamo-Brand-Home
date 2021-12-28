@@ -32,6 +32,7 @@ import PaymentDetailsScreen from '../screens/PaymentDetailsScreen/PaymentDetails
 import ZaamoSupportScreen from '../screens/ZaamoSupportScreen/ZaamoSupportScreen';
 import CustomiseLandingPageScreen from '../screens/CustomiseLandingPageScreen/CustomiseLandingPageScreen';
 import CouponInfoScreen from '../screens/CouponInfoScreen/CouponInfoScreen';
+import CreateCouponScreen from '../screens/CreateCouponScreen/CreateCouponScreen';
 const TaggingStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 const HomeStack = createStackNavigator();
@@ -46,14 +47,19 @@ export const MarketingStackNavigator = () => {
     <MarketingStack.Navigator
       screenOptions={{
         headerShown: false,
-      }}>
+      }}
+      initialRouteName="MarketingScreen">
+      <MarketingStack.Screen
+        name="MarketingScreen"
+        component={MarketingScreen}
+      />
       <MarketingStack.Screen
         name="CouponInfoScreen"
         component={CouponInfoScreen}
       />
       <MarketingStack.Screen
-        name="MarketingScreen"
-        component={MarketingScreen}
+        name="CreateCouponScreen"
+        component={CreateCouponScreen}
       />
     </MarketingStack.Navigator>
   );
@@ -130,6 +136,10 @@ export const ProductStackNavigator = () => {
       <ProductStack.Screen
         name="ProductsTabScreen"
         component={ProductsTabScreen}
+      />
+      <ProductStack.Screen
+        name="CreateProductScreen"
+        component={CreateProductScreen}
       />
     </ProductStack.Navigator>
   );

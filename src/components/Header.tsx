@@ -1,10 +1,20 @@
+import {HeaderHeightContext} from '@react-navigation/stack';
 import React from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
-
-const Header = () => {
+import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import Entypo from 'react-native-vector-icons/Entypo';
+const Header = ({tag, fontSize, icon, onPress}) => {
   return (
     <View style={styles.headerContainer}>
-      <Text style={styles.headerText}>ZAAMO</Text>
+      <Text style={{...styles.headerText, fontSize: fontSize ? fontSize : 28}}>
+        {tag ? tag : 'ZAAMO'}
+      </Text>
+      {icon && (
+        <TouchableOpacity
+          onPress={onPress}
+          style={{position: 'absolute', right: 5}}>
+          <Entypo name="plus" size={30} color={'white'} />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -17,6 +27,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     paddingVertical: 5,
     justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   headerText: {
     color: 'white',

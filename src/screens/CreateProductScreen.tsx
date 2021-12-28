@@ -20,7 +20,7 @@ const ErrorMessage = () => {
     </View>
   );
 };
-const CreateProductScreen = ({navigation}) => {
+const CreateProductScreen = ({navigation, route}) => {
   const [contentFormat, setContentFormat] = useState();
   const [productName, setProductName] = useState('');
   const [price, setPrice] = useState('');
@@ -264,7 +264,14 @@ const CreateProductScreen = ({navigation}) => {
             </TouchableOpacity>
           </View>
         </View>
-        <TouchableOpacity onPress={onSubmitHandler}>
+        <TouchableOpacity
+          onPress={
+            route.params.fromBrandHome
+              ? () => {
+                  navigation.navigate('ProductsTabScreen');
+                }
+              : onSubmitHandler
+          }>
           <View style={styles.nextButtonContainer}>
             <View style={styles.nextButton}>
               <Text style={styles.nextButtonText}>Next</Text>

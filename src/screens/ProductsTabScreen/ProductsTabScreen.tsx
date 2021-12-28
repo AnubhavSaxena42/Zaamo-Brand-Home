@@ -9,7 +9,7 @@ import {
 import Entypo from 'react-native-vector-icons/Entypo';
 import CollectionCard from '../../components/CollectionCard/CollectionCard';
 import ProductCard from '../../components/ProductCard/ProductCard';
-const ProductsTabScreen = () => {
+const ProductsTabScreen = ({navigation}) => {
   const [isViewing, setIsViewing] = useState(1);
   return (
     <View style={styles.productsTabContainer}>
@@ -33,7 +33,16 @@ const ProductsTabScreen = () => {
           }}>
           {isViewing === 1 ? 'Products' : 'Collections'}
         </Text>
-        <View
+        <TouchableOpacity
+          onPress={
+            isViewing === 1
+              ? () => {
+                  navigation.navigate('CreateProductScreen', {
+                    fromBrandHome: true,
+                  });
+                }
+              : () => {}
+          }
           style={{
             position: 'absolute',
             right: 5,
@@ -41,7 +50,7 @@ const ProductsTabScreen = () => {
             alignContent: 'flex-end',
           }}>
           <Entypo name="plus" size={35} color={'black'} />
-        </View>
+        </TouchableOpacity>
       </View>
       <View
         style={{

@@ -1,4 +1,6 @@
 import React, {useState} from 'react';
+import {useMutation} from '@apollo/client';
+import {BANK_ACCOUNT_CREATE, BRAND_UPI_ID_CREATE} from './mutations';
 import {
   StyleSheet,
   ScrollView,
@@ -9,9 +11,47 @@ import {
   TextInput,
   Dimensions,
 } from 'react-native';
+import {useSelector} from 'react-redux';
 const windowWidth = Dimensions.get('window').width;
 const PaymentDetailsScreen = ({navigation, route}) => {
   const [isViewing, setIsViewing] = useState(1);
+  const [accountHolderName, setAccountHolderName] = useState('');
+  const [upiId, setUpiId] = useState('');
+  const [address, setAddress] = useState('');
+  const [email, setEmail] = useState('');
+  const [panNumber, setPanNumber] = useState('');
+  const [bankAccountNumber, setBankAccountNumber] = useState('');
+  const [confirmBankAccountNumber, setConfirmBankAccountNumber] = useState('');
+  const [bankIfscCode, setBankIfscCode] = useState('');
+  const brandId = useSelector(state => state.user.user.authorisedBrands[0].id);
+  console.log(brandId);
+  const [brandUpiIdCreate, {data, error, loading}] = useMutation(
+    BRAND_UPI_ID_CREATE,
+    {
+      variables: {
+        brand: brandId,
+        upiId: upiId,
+      },
+    },
+  );
+  const [bankAccountCreate, bankResponse] = useMutation(BANK_ACCOUNT_CREATE, {
+    variables: {
+      brand: brandId,
+      acName: accountHolderName,
+      acBankName: accountHolderName,
+      acNumber: bankAccountNumber,
+      acIfscCode: bankIfscCode,
+      acBankBranch: address,
+    },
+  });
+  const onBankCreate = () => {
+    bankAccountCreate();
+  };
+  const onUpiCreate = () => {
+    brandUpiIdCreate();
+  };
+  console.log(data, error, loading);
+  console.log(bankResponse.data, bankResponse.error, bankResponse.loading);
   return (
     <View style={styles.paymentDetailsContainer}>
       <View style={{alignItems: 'center'}}>
@@ -83,6 +123,8 @@ const PaymentDetailsScreen = ({navigation, route}) => {
           }}>
           <Text style={{marginVertical: '5%'}}>Account Holder Name</Text>
           <TextInput
+            value={accountHolderName}
+            onChangeText={text => setAccountHolderName(text)}
             style={{
               width: '100%',
               borderWidth: 1,
@@ -95,6 +137,8 @@ const PaymentDetailsScreen = ({navigation, route}) => {
           />
           <Text style={{marginVertical: '5%'}}>UPI ID</Text>
           <TextInput
+            value={upiId}
+            onChangeText={text => setUpiId(text)}
             style={{
               width: '100%',
               borderWidth: 1,
@@ -107,6 +151,8 @@ const PaymentDetailsScreen = ({navigation, route}) => {
           />
           <Text style={{marginVertical: '5%'}}>Address</Text>
           <TextInput
+            value={address}
+            onChangeText={text => setAddress(text)}
             style={{
               width: '100%',
               borderWidth: 1,
@@ -119,6 +165,8 @@ const PaymentDetailsScreen = ({navigation, route}) => {
           />
           <Text style={{marginVertical: '5%'}}>Email</Text>
           <TextInput
+            value={email}
+            onChangeText={text => setEmail(text)}
             style={{
               width: '100%',
               borderWidth: 1,
@@ -131,6 +179,8 @@ const PaymentDetailsScreen = ({navigation, route}) => {
           />
           <Text style={{marginVertical: '5%'}}>PAN Number</Text>
           <TextInput
+            value={panNumber}
+            onChangeText={text => setPanNumber(text)}
             style={{
               width: '100%',
               borderWidth: 1,
@@ -148,7 +198,9 @@ const PaymentDetailsScreen = ({navigation, route}) => {
               width: '100%',
             }}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('SettingsScreen')}
+              onPress={() => {
+                onUpiCreate();
+              }}
               style={styles.button}>
               <Text style={{color: 'white', fontWeight: 'bold'}}>Save</Text>
             </TouchableOpacity>
@@ -164,6 +216,8 @@ const PaymentDetailsScreen = ({navigation, route}) => {
           }}>
           <Text style={{marginVertical: '5%'}}>Account Holder Name</Text>
           <TextInput
+            value={accountHolderName}
+            onChangeText={text => setAccountHolderName(text)}
             style={{
               width: '100%',
               borderWidth: 1,
@@ -176,6 +230,8 @@ const PaymentDetailsScreen = ({navigation, route}) => {
           />
           <Text style={{marginVertical: '5%'}}>Bank Account Number</Text>
           <TextInput
+            value={bankAccountNumber}
+            onChangeText={text => setBankAccountNumber(text)}
             style={{
               width: '100%',
               borderWidth: 1,
@@ -188,6 +244,8 @@ const PaymentDetailsScreen = ({navigation, route}) => {
           />
           <Text style={{marginVertical: '5%'}}>Confirm Account Number</Text>
           <TextInput
+            value={confirmBankAccountNumber}
+            onChangeText={text => setConfirmBankAccountNumber(text)}
             style={{
               width: '100%',
               borderWidth: 1,
@@ -200,6 +258,8 @@ const PaymentDetailsScreen = ({navigation, route}) => {
           />
           <Text style={{marginVertical: '5%'}}>Bank IFSC Code</Text>
           <TextInput
+            value={bankIfscCode}
+            onChangeText={text => setBankIfscCode(text)}
             style={{
               width: '100%',
               borderWidth: 1,
@@ -212,6 +272,8 @@ const PaymentDetailsScreen = ({navigation, route}) => {
           />
           <Text style={{marginVertical: '5%'}}>Address</Text>
           <TextInput
+            value={address}
+            onChangeText={text => setAddress(text)}
             style={{
               width: '100%',
               borderWidth: 1,
@@ -224,6 +286,8 @@ const PaymentDetailsScreen = ({navigation, route}) => {
           />
           <Text style={{marginVertical: '5%'}}>Email</Text>
           <TextInput
+            value={email}
+            onChangeText={text => setEmail(text)}
             style={{
               width: '100%',
               borderWidth: 1,
@@ -236,6 +300,8 @@ const PaymentDetailsScreen = ({navigation, route}) => {
           />
           <Text style={{marginVertical: '5%'}}>PAN Number</Text>
           <TextInput
+            value={panNumber}
+            onChangeText={text => setPanNumber(text)}
             style={{
               width: '100%',
               borderWidth: 1,
@@ -253,7 +319,9 @@ const PaymentDetailsScreen = ({navigation, route}) => {
               width: '100%',
             }}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('SettingsScreen')}
+              onPress={() => {
+                onBankCreate();
+              }}
               style={styles.button}>
               <Text style={{color: 'white', fontWeight: 'bold'}}>Save</Text>
             </TouchableOpacity>

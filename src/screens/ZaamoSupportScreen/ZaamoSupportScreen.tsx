@@ -1,4 +1,5 @@
-import React from 'react';
+import {useMutation} from '@apollo/client';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,8 +9,25 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
+import {CREATE_SUPPORT_QUERY} from './mutations';
 const windowWidth = Dimensions.get('window').width;
 const ZaamoSupportScreen = ({navigation, route}) => {
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [supportQueryCreate, {data, error, loading}] = useMutation(
+    CREATE_SUPPORT_QUERY,
+    {
+      variables: {
+        email: email,
+        message: message,
+        mobileNo: '9599243067',
+      },
+    },
+  );
+  const onQueryCreate = () => {
+    supportQueryCreate();
+  };
+  console.log(data, error, loading);
   return (
     <View style={styles.zaamoSupportContainer}>
       <View style={{alignItems: 'center'}}>
@@ -84,6 +102,8 @@ const ZaamoSupportScreen = ({navigation, route}) => {
           Your Email
         </Text>
         <TextInput
+          value={email}
+          onChangeText={text => setEmail(text)}
           style={{
             width: '100%',
             borderWidth: 1,
@@ -104,6 +124,8 @@ const ZaamoSupportScreen = ({navigation, route}) => {
           Your Message
         </Text>
         <TextInput
+          value={message}
+          onChangeText={text => setMessage(text)}
           style={{
             width: '100%',
             borderWidth: 1,
@@ -117,7 +139,7 @@ const ZaamoSupportScreen = ({navigation, route}) => {
           placeholder={'Enter your Message'}
         />
         <TouchableOpacity
-          onPress={() => navigation.navigate('SettingsScreen')}
+          onPress={() => supportQueryCreate()}
           style={styles.button}>
           <Text style={{color: 'white', fontWeight: 'bold'}}>Save</Text>
         </TouchableOpacity>

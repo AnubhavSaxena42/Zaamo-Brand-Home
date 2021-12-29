@@ -1,12 +1,16 @@
 import React from 'react';
 import {ImageBackground, StyleSheet, Text, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-const CollectionCard = () => {
+const CollectionCard = ({collection}) => {
   return (
     <View style={styles.collectionCardContainer}>
       <ImageBackground
         style={styles.imageStyle}
-        source={require('../../assets/images/smugcat.jpg')}>
+        source={
+          collection.imageUrl !== ''
+            ? {uri: collection.imageUrl}
+            : require('../../assets/images/smugcat.jpg')
+        }>
         <View
           style={{
             flexDirection: 'row',
@@ -36,9 +40,11 @@ const CollectionCard = () => {
           }}>
           <View>
             <Text style={{fontSize: 20, color: 'white', fontWeight: '500'}}>
-              MALDIVES COLLECTION
+              {collection.name}
             </Text>
-            <Text style={{fontSize: 15, color: 'white'}}>21 Products</Text>
+            <Text style={{fontSize: 15, color: 'white'}}>
+              {collection.products.edges.length.toString()} Products
+            </Text>
           </View>
           <View
             style={{

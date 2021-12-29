@@ -24,6 +24,7 @@ export const GET_STORE = gql`
           node {
             id
             name
+            imageUrl
             products(first: 10) {
               edges {
                 node {

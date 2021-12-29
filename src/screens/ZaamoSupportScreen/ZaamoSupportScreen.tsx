@@ -20,7 +20,7 @@ const ZaamoSupportScreen = ({navigation, route}) => {
       variables: {
         email: email,
         message: message,
-        mobileNo: '9599243067',
+        mobileNo: '+919599243067',
       },
     },
   );

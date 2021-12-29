@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {StyleSheet, TouchableOpacity, Image, Text, View} from 'react-native';
 import {useMutation} from '@apollo/client';
-import {TOKEN_CREATE} from './mutations';
+import {TOKEN_CREATE, USER_REGISTER} from './mutations';
 import {useDispatch} from 'react-redux';
 import authService from '../../services/auth-service';
 import {setUser, setToken} from '../../redux/reducers/userReducer';
@@ -12,12 +12,19 @@ const LoginSuccessScreen = ({navigation, route}) => {
       mobileNo: '91' + route.params.mobileNumber,
     },
   });
+  const [userRegister, {registerData, registerLoading, registerError}] =
+    useMutation(USER_REGISTER, {
+      variables: {
+        mobileNo: '91' + route.params.mobileNumber,
+      },
+    });
   const dispatch = useDispatch();
   useEffect(() => {
     createToken();
   }, []);
   useEffect(() => {
     if (data && data.tokenCreate.user.isActive) {
+      console.log('in token create');
       dispatch(setUser(data.tokenCreate.user));
       dispatch(setToken(data.tokenCreate.token));
       saveItemToStorage('User', JSON.stringify(data.tokenCreate.user));
@@ -32,9 +39,31 @@ const LoginSuccessScreen = ({navigation, route}) => {
         .then(res => console.log('Token Stored:', res))
         .catch(err => console.log('Error storing token:', err));
       navigation.navigate('StoreStack');
+    } else {
+      if (data && data.tokenCreate) {
+        console.log('in register');
+        dispatch(setUser(data.tokenCreate.user));
+        dispatch(setToken(data.tokenCreate.token));
+        saveItemToStorage('User', JSON.stringify(data.tokenCreate.user));
+        authService
+          .getStoreId(data.tokenCreate.user.userId)
+          .then(store => {
+            console.log(store);
+            saveItemToStorage('Store-ID', store.store_id.toString());
+          })
+          .catch(err => console.log(err));
+        saveItemToStorage('Token', data.tokenCreate.token)
+          .then(res => console.log('Token Stored:', res))
+          .catch(err => console.log('Error storing token:', err));
+        userRegister();
+      }
     }
   }, [data]);
-
+  useEffect(() => {
+    if (registerData && registerData.userRegister.user.isActive === 'true') {
+      navigation.navigate('StoreStack');
+    }
+  }, [registerData]);
   return (
     <View style={styles.loginSuccessContainer}>
       <Image

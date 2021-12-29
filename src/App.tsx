@@ -30,7 +30,7 @@ const authLink = setContext(async (_, {headers}) => {
     headers: {
       ...headers,
       'x-store-id': storeId ? parseInt(storeId) : '',
-      authorization: token ? `JWT ${token}` : '',
+      Authorization: token ? `JWT ${token}` : '',
     },
   };
 });

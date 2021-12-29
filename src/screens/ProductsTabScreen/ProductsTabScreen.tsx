@@ -9,8 +9,22 @@ import {
 import Entypo from 'react-native-vector-icons/Entypo';
 import CollectionCard from '../../components/CollectionCard/CollectionCard';
 import ProductCard from '../../components/ProductCard/ProductCard';
+import {useSelector} from 'react-redux';
 const ProductsTabScreen = ({navigation}) => {
   const [isViewing, setIsViewing] = useState(1);
+  const user = useSelector(state => state.user.user);
+  console.log(user.authorisedBrands[0]);
+  const products = user.authorisedBrands[0].products.edges.map(({node}) => {
+    return {
+      brandName: node.brand.brandName,
+      id: node.id,
+      name: node.name,
+      thumbnail: node.thumbnail.url,
+      price: node.pricing.priceRange.start.net.amount,
+    };
+  });
+  console.log(products);
+
   return (
     <View style={styles.productsTabContainer}>
       <View
@@ -97,12 +111,9 @@ const ProductsTabScreen = ({navigation}) => {
             justifyContent: 'space-around',
             flexWrap: 'wrap',
           }}>
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
+          {products.map(product => (
+            <ProductCard product={product} />
+          ))}
         </ScrollView>
       )}
       {isViewing === 2 && (

@@ -2,12 +2,12 @@ import React from 'react';
 import {ImageBackground, StyleSheet, Text, View} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-const ProductCard = () => {
+const ProductCard = ({product}) => {
   return (
     <View style={styles.productCardContainer}>
       <ImageBackground
         style={styles.imageStyle}
-        source={require('../../assets/images/smugcat.jpg')}>
+        source={{uri: product.thumbnail}}>
         <View style={styles.iconContainer}>
           <Entypo name="link" color={'gray'} size={15} />
         </View>
@@ -19,11 +19,16 @@ const ProductCard = () => {
             bottom: 10,
           }}>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <Text style={styles.rowOneText}>Levis</Text>
-            <Text style={styles.rowOneText}>Rs.540</Text>
+            <Text style={styles.rowOneText}>{product.brandName}</Text>
+            <Text style={styles.rowOneText}>Rs.{product.price}</Text>
           </View>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <Text style={styles.rowTwoText}>Cotton Yellow Hoodie</Text>
+            <Text
+              numberOfLines={1}
+              ellipsizeMode="tail"
+              style={{...styles.rowTwoText, width: '70%'}}>
+              {product.name}
+            </Text>
             <Text
               style={{
                 ...styles.rowTwoText,

@@ -9,54 +9,96 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CollectionCard from '../../components/CollectionCard/CollectionCard';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import {useSelector} from 'react-redux';
 import {useMutation, useQuery} from '@apollo/client';
 import {COLLECTION_CREATE} from './mutations';
-import {GET_STORE} from '../DashboardScreen/queries';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import axios from 'axios';
+import {GET_AUTHORISED_BRANDS, GET_STORE} from '../DashboardScreen/queries';
+import {fieldNameFromStoreName} from '@apollo/client/cache';
 const ProductsTabScreen = ({navigation}) => {
   const [isViewing, setIsViewing] = useState(1);
+  const [products, setProducts] = useState(
+    useSelector(state => state.store.products),
+  );
   const [isNewCollectionModalVisible, setIsNewCollectionModalVisible] =
     useState(false);
   const [newCollectionName, setNewCollectionName] = useState('');
-  const [thumbnail, setThumbnail] = useState(
-    'https://images.squarespace-cdn.com/content/v1/5ccabcf60b77bdbb3acaf70a/1587274251173-I67O9CS83EG04P3EQV4R/Clannad-Pics-clannad-and-clannad-after-story-24746547-1920-1200.jpg',
-  );
+  const [file, setFile] = useState();
   const [isThumbnailModalVisible, setIsThumbnailModalVisible] = useState(false);
   const user = useSelector(state => state.user.user);
-  const [collections, setCollections] = useState([]);
-  console.log(user.authorisedBrands[0]);
+  const [collections, setCollections] = useState(
+    useSelector(state => state.store.collections),
+  );
   const [collectionCreate, {data, error, loading}] = useMutation(
     COLLECTION_CREATE,
     {
       variables: {
         name: newCollectionName,
-        imageUrl: thumbnail,
+        imageUrl: file,
       },
     },
   );
-  const storeResponse = useQuery(GET_STORE);
-  useEffect(() => {
-    const newCollections = storeResponse.data.store.collections.edges.map(
-      collection => collection.node,
-    );
-    setCollections(newCollections);
-  }, [storeResponse]);
-  const products =
-    user.authorisedBrands.length !== 0
-      ? user.authorisedBrands[0].products.edges.map(({node}) => {
-          return {
-            brandName: node.brand.brandName,
-            id: node.id,
-            name: node.name,
-            thumbnail: node.thumbnail.url,
-            price: node.pricing.priceRange.start.net.amount,
-          };
+  const onSelectTakePhoto = async () => {
+    const result = await launchCamera(
+      {
+        cameraType: 'back',
+      },
+      res => {
+        console.log(res);
+        if (res.didCancel) return;
+        var formData = new FormData();
+        formData.append('file', res.assets[0]);
+        console.log(formData);
+        axios({
+          method: 'post',
+          url: 'https://betacontent.zaamo.co/engine/upload',
+          data: formData,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Service-Token': '2900ba48-85f6-4929-b19d-0c0da14dbc14',
+          },
         })
-      : [];
-  console.log(data, error, loading);
+          .then(function (response) {
+            //handle success
+            console.log(response);
+          })
+          .catch(function (response) {
+            //handle error
+            console.log(response);
+          });
+      },
+    );
+  };
 
+  const onSelectGallery = async () => {
+    const result = await launchImageLibrary({}, res => {
+      console.log(res);
+      if (res.didCancel) return;
+      var galleryFormData = new FormData();
+      galleryFormData.append('file', res.assets[0]);
+      console.log(galleryFormData);
+      axios({
+        method: 'post',
+        url: 'https://betacontent.zaamo.co/engine/upload',
+        data: galleryFormData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+        .then(function (response) {
+          //handle success
+          console.log(response);
+        })
+        .catch(function (response) {
+          //handle error
+          console.log(response);
+        });
+    });
+  };
   return (
     <View style={styles.productsTabContainer}>
       {(isNewCollectionModalVisible || isThumbnailModalVisible) && (
@@ -159,7 +201,7 @@ const ProductsTabScreen = ({navigation}) => {
             flexWrap: 'wrap',
           }}>
           {products.map(product => (
-            <ProductCard product={product} />
+            <ProductCard key={product.id} product={product} />
           ))}
         </ScrollView>
       )}
@@ -199,6 +241,7 @@ const ProductsTabScreen = ({navigation}) => {
                 <Text style={{color: 'black', fontSize: 20, fontWeight: '600'}}>
                   Upload Image
                 </Text>
+
                 <TouchableOpacity
                   onPress={() => {
                     setIsThumbnailModalVisible(false);
@@ -214,6 +257,27 @@ const ProductsTabScreen = ({navigation}) => {
                     borderWidth: 2,
                   }}>
                   <Entypo name="cross" size={14} color={'rgba(0,0,0,0.8)'} />
+                </TouchableOpacity>
+              </View>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'space-around',
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                  paddingBottom: '5%',
+                }}>
+                <TouchableOpacity
+                  onPress={onSelectTakePhoto}
+                  style={{justifyContent: 'center', alignItems: 'center'}}>
+                  <Entypo name="camera" size={40} color={'black'} />
+                  <Text>Take a Photo</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={onSelectGallery}
+                  style={{justifyContent: 'center', alignItems: 'center'}}>
+                  <FontAwesome name="photo" size={40} color={'black'} />
+                  <Text>Select from Gallery</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -354,7 +418,9 @@ const ProductsTabScreen = ({navigation}) => {
           </Modal>
 
           {collections.map(collection => {
-            return <CollectionCard collection={collection} />;
+            return (
+              <CollectionCard key={collection.id} collection={collection} />
+            );
           })}
         </ScrollView>
       )}

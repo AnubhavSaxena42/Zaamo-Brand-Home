@@ -43,7 +43,7 @@ const CollectionCard = ({collection}) => {
               {collection.name}
             </Text>
             <Text style={{fontSize: 15, color: 'white'}}>
-              {collection.products.edges.length.toString()} Products
+              {collection.products.length.toString()} Products
             </Text>
           </View>
           <View

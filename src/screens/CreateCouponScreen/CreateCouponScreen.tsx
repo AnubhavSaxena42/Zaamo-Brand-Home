@@ -355,39 +355,47 @@ const CreateCouponScreen = ({navigation}) => {
             />
           </View>
         </View>
-        <Text
-          style={{
-            marginVertical: '5%',
-            fontSize: 16,
-            color: 'black',
-            fontWeight: '500',
-          }}>
-          Select a Brand
-        </Text>
-        <Dropdown
-          tag="Select a Brand"
-          items={brandItems}
-          selectedValue={brand}
-          iconColor="black"
-          down
-          setSelectedValue={setBrand}
-          dropDownContainerStyle={{...mobileDropdownStyle, zIndex: 500}}
-          dropDownValuesTextStyle={
-            Platform.OS === 'web'
-              ? webDropdownValuesTextStyle
-              : mobileDropdownValuesTextStyle
-          }
-          dropDownTextStyle={
-            Platform.OS === 'web'
-              ? webDropdownTextStyle
-              : mobileDropdownTextStyle
-          }
-          dropDownValuesContainerStyle={
-            Platform.OS === 'web'
-              ? webDropdownValuesContainerStyle
-              : mobileDropdownValuesContainerStyle
-          }
-        />
+        {couponType === 'SPECIFIC_PRODUCT' && (
+          <View>
+            <Text
+              style={{
+                marginVertical: '5%',
+                fontSize: 16,
+                color: 'black',
+                fontWeight: '500',
+              }}>
+              Select a Brand
+            </Text>
+            <Dropdown
+              tag="Select a Brand"
+              items={brandItems}
+              selectedValue={brand}
+              iconColor="black"
+              down
+              setSelectedValue={setBrand}
+              dropDownContainerStyle={{
+                ...mobileDropdownStyle,
+                zIndex: 500,
+                height: '15%',
+              }}
+              dropDownValuesTextStyle={
+                Platform.OS === 'web'
+                  ? webDropdownValuesTextStyle
+                  : mobileDropdownValuesTextStyle
+              }
+              dropDownTextStyle={
+                Platform.OS === 'web'
+                  ? webDropdownTextStyle
+                  : mobileDropdownTextStyle
+              }
+              dropDownValuesContainerStyle={
+                Platform.OS === 'web'
+                  ? webDropdownValuesContainerStyle
+                  : mobileDropdownValuesContainerStyle
+              }
+            />
+          </View>
+        )}
         <Text
           style={{
             marginVertical: '5%',

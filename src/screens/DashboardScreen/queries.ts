@@ -2,8 +2,7 @@ import {gql} from '@apollo/client';
 
 export const GET_STORE = gql`
   query {
-    store(storeId: "10") {
-      __typename
+    store {
       storeName
       id
       storeType
@@ -33,6 +32,52 @@ export const GET_STORE = gql`
                 }
               }
             }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_AUTHORISED_BRANDS = gql`
+  query {
+    userByMobile(mobileNo: "919953724117") {
+      authorisedBrands {
+        id
+        products(first: 100) {
+          edges {
+            node {
+              id
+              name
+              brand {
+                brandName
+              }
+              thumbnail {
+                url
+                alt
+              }
+              pricing {
+                discount {
+                  gross {
+                    amount
+                  }
+                }
+                priceRange {
+                  start {
+                    net {
+                      amount
+                    }
+                  }
+                }
+              }
+              productType {
+                name
+              }
+              name
+            }
+          }
+          pageInfo {
+            hasNextPage
           }
         }
       }

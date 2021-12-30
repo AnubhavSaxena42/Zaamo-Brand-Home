@@ -19,7 +19,12 @@ const ProductCard = ({product}) => {
             bottom: 10,
           }}>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <Text style={styles.rowOneText}>{product.brandName}</Text>
+            <Text
+              numberOfLines={1}
+              ellipsizeMode="tail"
+              style={{...styles.rowOneText, width: '50%'}}>
+              {product.brandName}
+            </Text>
             <Text style={styles.rowOneText}>Rs.{product.price}</Text>
           </View>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>

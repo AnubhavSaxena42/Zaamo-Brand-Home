@@ -1,6 +1,7 @@
 import {configureStore} from '@reduxjs/toolkit';
 import postsReducer from '../reducers/postsReducer';
 import productsReducer from '../reducers/productsReducer';
+import storeReducer from '../reducers/storeReducer';
 import userReducer from '../reducers/userReducer';
 //need to implement caching properly
 export const store = configureStore({
@@ -8,6 +9,7 @@ export const store = configureStore({
     posts: postsReducer,
     products: productsReducer,
     user: userReducer,
+    store: storeReducer,
   },
 });
 

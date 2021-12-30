@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   StyleSheet,
   Image,
@@ -13,16 +13,60 @@ import MetricCard from '../../components/MetricCard/MetricCard';
 import UpdateCard from '../../components/UpdateCard/UpdateCard';
 import {getItemFromStorage} from '../../services/storage-service';
 import authService from '../../services/auth-service';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {useQuery} from '@apollo/client';
-import {GET_STORE} from './queries';
+import {GET_AUTHORISED_BRANDS, GET_STORE} from './queries';
+import {
+  setStoreInfo,
+  setStoreCollections,
+  setStoreProducts,
+} from '../../redux/reducers/storeReducer';
+
 //For web it has to be a scrollview , implement fab properly
 const DashboardScreen = ({navigation, route}) => {
   const windowWidth = Dimensions.get('window').width;
-  const userId = useSelector(state => state.user.user);
-  const {data, error, loading} = useQuery(GET_STORE);
-  console.log(data, error, loading);
-  console.log(userId);
+  const dispatch = useDispatch();
+  const storeResponse = useQuery(GET_STORE);
+  const brandResponse = useQuery(GET_AUTHORISED_BRANDS);
+  useEffect(() => {
+    if (storeResponse.data) {
+      dispatch(
+        setStoreInfo({
+          id: storeResponse.data.store.id,
+          storeName: storeResponse.data.store.storeName,
+          storeType: storeResponse.data.store.storeType,
+        }),
+      );
+      const storeCollections = storeResponse.data.store.collections.edges.map(
+        ({node}) => {
+          return {
+            id: node.id,
+            products: node.products.edges,
+            imageUrl: node.imageUrl,
+            name: node.name,
+          };
+        },
+      );
+      dispatch(setStoreCollections(storeCollections));
+    }
+  }, [storeResponse.data]);
+  useEffect(() => {
+    if (brandResponse.data) {
+      const newStoreProducts =
+        brandResponse.data.userByMobile.authorisedBrands[0].products.edges.map(
+          ({node}) => {
+            return {
+              brandName: node.brand.brandName,
+              id: node.id,
+              name: node.name,
+              thumbnail: node.thumbnail.url,
+              price: node.pricing.priceRange.start.net.amount,
+            };
+          },
+        );
+      dispatch(setStoreProducts(newStoreProducts));
+    }
+  }, [brandResponse.data]);
   return (
     <View style={styles.dashboardContainer}>
       <Text

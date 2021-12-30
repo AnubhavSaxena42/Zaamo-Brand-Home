@@ -8,6 +8,7 @@ import {GET_COUPONS} from './queries';
 const MarketingScreen = ({navigation}) => {
   const {data, error, loading} = useQuery(GET_COUPONS);
   console.log(data, error, loading);
+  console.log('update');
   return (
     <ScrollView style={styles.marketingContainer}>
       <Header

@@ -14,11 +14,9 @@ import CollectionCard from '../../components/CollectionCard/CollectionCard';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import {useSelector} from 'react-redux';
 import {useMutation, useQuery} from '@apollo/client';
-import {COLLECTION_CREATE} from './mutations';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import axios from 'axios';
-import {GET_AUTHORISED_BRANDS, GET_STORE} from '../DashboardScreen/queries';
-import {fieldNameFromStoreName} from '@apollo/client/cache';
+
 const ProductsTabScreen = ({navigation}) => {
   const [isViewing, setIsViewing] = useState(1);
   const [products, setProducts] = useState(
@@ -28,58 +26,66 @@ const ProductsTabScreen = ({navigation}) => {
     useState(false);
   const [newCollectionName, setNewCollectionName] = useState('');
   const [file, setFile] = useState();
+  const [thumbnailUri, setThumbnailUri] = useState('');
   const [isThumbnailModalVisible, setIsThumbnailModalVisible] = useState(false);
   const user = useSelector(state => state.user.user);
   const [collections, setCollections] = useState(
     useSelector(state => state.store.collections),
   );
-  const [collectionCreate, {data, error, loading}] = useMutation(
-    COLLECTION_CREATE,
-    {
-      variables: {
-        name: newCollectionName,
-        imageUrl: file,
-      },
-    },
-  );
+
+  console.log(file);
   const onSelectTakePhoto = async () => {
     const result = await launchCamera(
       {
         cameraType: 'back',
+        quality: 0.5,
       },
-      res => {
-        console.log(res);
-        if (res.didCancel) return;
-        var formData = new FormData();
-        formData.append('file', res.assets[0]);
-        console.log(formData);
-        axios({
-          method: 'post',
-          url: 'https://betacontent.zaamo.co/engine/upload',
-          data: formData,
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            'Service-Token': '2900ba48-85f6-4929-b19d-0c0da14dbc14',
-          },
-        })
-          .then(function (response) {
-            //handle success
-            console.log(response);
-          })
-          .catch(function (response) {
-            //handle error
-            console.log(response);
-          });
-      },
+      res => {},
     );
+    console.log('Real response', result);
+    console.log(result);
+    if (result.didCancel) return;
+    var formData = new FormData();
+    formData.append('file', {
+      type: 'image/jpeg',
+      name: result.assets[0].fileName,
+      uri: result.assets[0].uri,
+    });
+    setFile(result.assets[0]);
+    console.log(formData);
+    axios({
+      method: 'post',
+      url: 'https://betacontent.zaamo.co/engine/upload',
+      data: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Service-Token': '2900ba48-85f6-4929-b19d-0c0da14dbc14',
+      },
+    })
+      .then(function (response) {
+        setThumbnailUri(response.data.url);
+        setIsThumbnailModalVisible(false);
+        setIsNewCollectionModalVisible(true);
+        console.log(response);
+      })
+      .catch(function (response) {
+        //handle error
+        console.log(response);
+      });
   };
-
+  console.log(thumbnailUri);
   const onSelectGallery = async () => {
     const result = await launchImageLibrary({}, res => {
       console.log(res);
       if (res.didCancel) return;
       var galleryFormData = new FormData();
-      galleryFormData.append('file', res.assets[0]);
+      setFile(res.assets[0]);
+
+      galleryFormData.append('file', {
+        type: 'image/jpeg',
+        name: res.assets[0].fileName,
+        uri: res.assets[0].uri,
+      });
       console.log(galleryFormData);
       axios({
         method: 'post',
@@ -87,10 +93,13 @@ const ProductsTabScreen = ({navigation}) => {
         data: galleryFormData,
         headers: {
           'Content-Type': 'multipart/form-data',
+          'Service-Token': '2900ba48-85f6-4929-b19d-0c0da14dbc14',
         },
       })
         .then(function (response) {
-          //handle success
+          setThumbnailUri(response.data.url);
+          setIsThumbnailModalVisible(false);
+          setIsNewCollectionModalVisible(true);
           console.log(response);
         })
         .catch(function (response) {
@@ -368,12 +377,20 @@ const ProductsTabScreen = ({navigation}) => {
                   <Entypo name="upload" size={14} color={'white'} />
                   <Text style={{color: 'white'}}>Upload</Text>
                 </TouchableOpacity>
-                <Text>Filename.png</Text>
+                <Text
+                  numberOfLines={2}
+                  ellipsizeMode="tail"
+                  style={{width: '50%'}}>
+                  {file ? file.fileName : ''}
+                </Text>
               </View>
               <TouchableOpacity
                 onPress={() => {
-                  collectionCreate();
                   setIsNewCollectionModalVisible(false);
+                  navigation.navigate('CollectionProductsAddScreen', {
+                    collectionName: newCollectionName,
+                    collectionThumbnail: thumbnailUri,
+                  });
                 }}
                 style={{
                   width: '100%',

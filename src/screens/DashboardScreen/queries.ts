@@ -10,7 +10,7 @@ export const GET_STORE = gql`
         id
         name
         imageUrl
-        products(first: 10) {
+        products(first: 50) {
           edges {
             node {
               id
@@ -18,7 +18,7 @@ export const GET_STORE = gql`
           }
         }
       }
-      collections(first: 10) {
+      collections(first: 50) {
         edges {
           node {
             id

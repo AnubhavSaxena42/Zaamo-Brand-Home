@@ -33,6 +33,7 @@ import ZaamoSupportScreen from '../screens/ZaamoSupportScreen/ZaamoSupportScreen
 import CustomiseLandingPageScreen from '../screens/CustomiseLandingPageScreen/CustomiseLandingPageScreen';
 import CouponInfoScreen from '../screens/CouponInfoScreen/CouponInfoScreen';
 import CreateCouponScreen from '../screens/CreateCouponScreen/CreateCouponScreen';
+import CollectionProductsAddScreen from '../screens/CollectionProductsAddScreen/CollectionProductsAddScreen';
 const TaggingStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 const HomeStack = createStackNavigator();
@@ -140,6 +141,10 @@ export const ProductStackNavigator = () => {
       <ProductStack.Screen
         name="CreateProductScreen"
         component={CreateProductScreen}
+      />
+      <ProductStack.Screen
+        name="CollectionProductsAddScreen"
+        component={CollectionProductsAddScreen}
       />
     </ProductStack.Navigator>
   );

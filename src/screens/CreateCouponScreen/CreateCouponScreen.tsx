@@ -1,6 +1,7 @@
 import {useMutation, useQuery} from '@apollo/client';
 import React, {useState, useEffect} from 'react';
 import {
+  Modal,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
@@ -10,10 +11,12 @@ import {
   View,
 } from 'react-native';
 import Checkbox from '../../components/Checkbox';
+import Entypo from 'react-native-vector-icons/Entypo';
 import Dropdown from '../../components/Dropdown';
 import Header from '../../components/Header';
-import {CREATE_COUPON} from './mutations';
-import {GET_STORES} from './queries';
+import {CREATE_COUPON, CREATE_ENTIRE_ORDER_COUPON} from './mutations';
+import {GET_STORES, GET_BRANDS} from './queries';
+import {FlatList} from 'react-native-gesture-handler';
 const webDropdownStyle = {
   height: '30%',
   width: '15%',
@@ -90,8 +93,10 @@ const webDropdownTextStyle = {
 };
 
 const CreateCouponScreen = ({navigation}) => {
+  const [isBrandsModalVisible, setIsBrandsModalVisible] = useState(false);
   const [discountType, setDiscountType] = useState('');
   const [owner, setOwner] = useState('');
+  const [fieldError, setFieldError] = useState(false);
   const [ownerItems, setOwnerItems] = useState([
     {id: 'ZAAMO', name: 'Zaamo'},
     {id: 'BRAND', name: 'Brand'},
@@ -101,6 +106,8 @@ const CreateCouponScreen = ({navigation}) => {
     {id: 'FIXED', name: 'Fixed'},
   ]);
   const [couponType, setCouponType] = useState('');
+  const [selectedStores, setSelectedStores] = useState([]);
+  const [isStoresModalVisible, setIsStoresModalVisible] = useState(false);
   const [couponTypeItems, setCouponTypeItems] = useState([
     {id: 'SHIPPING', name: 'Shipping'},
     {id: 'ENTIRE_ORDER', name: 'Entire Order'},
@@ -118,7 +125,7 @@ const CreateCouponScreen = ({navigation}) => {
     {id: 'QnJhbmQ6MjE=', name: 'Dummy Brand'},
     {id: 'brandID2', name: 'brand2'},
   ]);
-  const [brand, setBrand] = useState('');
+  const [selectedBrands, setSelectedBrands] = useState([]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [couponCode, setCouponCode] = useState('');
@@ -127,34 +134,98 @@ const CreateCouponScreen = ({navigation}) => {
   const [couponDescription, setCouponDescription] = useState('');
   const [discountValue, setDiscountValue] = useState();
   const storesResponse = useQuery(GET_STORES);
+  const brandsResponse = useQuery(GET_BRANDS);
+  useEffect(() => {
+    if (brandsResponse.data) {
+      const newBrandItems = brandsResponse.data.brands.edges.map(({node}) => {
+        return {
+          id: node.id,
+          name: node.brandName,
+        };
+      });
+      setBrandItems(newBrandItems);
+    }
+  }, [brandsResponse.data]);
   useEffect(() => {
     if (storesResponse.data) {
-      console.log(storesResponse.data);
-      const newStoreItems = [
-        ...influencerStoreItems,
-        ...storesResponse.data.stores.edges.map(({node}) => {
-          return {
-            id: node.id,
-            name: node.storeName,
-          };
-        }),
-      ];
+      const newStoreItems = storesResponse.data.stores.edges.map(({node}) => {
+        return {
+          id: node.id,
+          name: node.storeName,
+        };
+      });
       console.log(newStoreItems);
       setInfluencerStoreItems(newStoreItems);
     }
   }, [storesResponse.data]);
-  console.log('uupdaete');
-  const [voucherBulkCreate, {data, error, loading}] = useMutation(
-    CREATE_COUPON,
+  const onCreatePress = () => {
+    if (!couponType || couponType === '') {
+      setFieldError(true);
+      return;
+    }
+    if (!couponCode || couponCode === '') {
+      setFieldError(true);
+      return;
+    }
+    if (!selectedStores || selectedStores.length === 0) {
+      setFieldError(true);
+      return;
+    }
+    if (!discountType || discountType === '') {
+      setFieldError(true);
+      return;
+    }
+    if (!discountValue || discountValue === '') {
+      setFieldError(true);
+      return;
+    }
+    if (
+      couponType === 'SPECIFIC_PRODUCT' &&
+      (!selectedBrands || selectedBrands.length === 0)
+    ) {
+      setFieldError(true);
+      return;
+    }
+    if (!owner || owner === '') {
+      setFieldError(true);
+      return;
+    }
+    if (!couponDescription || couponDescription === '') {
+      setFieldError(true);
+      return;
+    }
+    if (couponType === 'ENTIRE_ORDER') entireOrderBulkVoucherCreate();
+    else voucherBulkCreate();
+  };
+  const [voucherBulkCreate, voucherResponse] = useMutation(CREATE_COUPON, {
+    variables: {
+      type: couponType,
+      name: couponName,
+      code: couponCode,
+      stores: selectedStores,
+      discountValueType: discountType,
+      discountValue: discountValue,
+      brands: selectedBrands,
+      owner: owner,
+      metadata: [
+        {
+          key: 'description',
+          value: couponDescription,
+        },
+      ],
+    },
+  });
+  const [entireOrderBulkVoucherCreate, entireOrderResponse] = useMutation(
+    CREATE_ENTIRE_ORDER_COUPON,
     {
       variables: {
         type: couponType,
         name: couponName,
         code: couponCode,
-        stores: [influencerStore],
+        stores: selectedStores,
         discountValueType: discountType,
         discountValue: discountValue,
-        brands: [brand],
+
         owner: owner,
         metadata: [
           {
@@ -166,15 +237,209 @@ const CreateCouponScreen = ({navigation}) => {
     },
   );
   useEffect(() => {
-    if (data) {
-      console.log('CouponData:', data);
+    if (entireOrderResponse.data) {
+      console.log('in use effect:', entireOrderResponse.data);
+      if (entireOrderResponse.data.voucherBulkCreate.success) {
+        navigation.navigate('MarketingScreen');
+      }
     }
-  }, [data]);
+  }, [entireOrderResponse.data]);
+  useEffect(() => {
+    if (voucherResponse.data) {
+      console.log('in use effect:', voucherResponse.data);
+      if (voucherResponse.data.voucherBulkCreate.success) {
+        navigation.navigate('MarketingScreen');
+      }
+    }
+  }, [voucherResponse.data]);
+  console.log(selectedStores);
+  console.log(selectedBrands);
+  const ModalItem = ({name, value, selectedItems, setSelectedItems}) => {
+    const onPressHandler = () => {
+      if (selectedItems.includes(value)) {
+        const newSelectedItems = selectedItems.filter(item => item !== value);
+        setSelectedItems(newSelectedItems);
+      } else {
+        const addSelectedItems = [...selectedItems, value];
+        setSelectedItems(addSelectedItems);
+      }
+    };
+    return (
+      <TouchableOpacity
+        onPress={onPressHandler}
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          paddingHorizontal: '5%',
+          width: '100%',
+          borderBottomColor: 'rgba(0,0,0,0.2)',
+          borderBottomWidth: 1,
+          alignItems: 'center',
+
+          backgroundColor: selectedItems.includes(value) ? 'black' : 'white',
+        }}>
+        <Text
+          style={{
+            fontSize: 16,
+            color: selectedItems.includes(value) ? 'white' : 'black',
+          }}>
+          {name}
+        </Text>
+        <View
+          style={{
+            borderWidth: 1,
+            borderColor: selectedItems.includes(value)
+              ? 'white'
+              : 'rgba(0,0,0,0.4)',
+            width: 26,
+            height: 26,
+            borderRadius: 13,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          {selectedItems.includes(value) ? (
+            <Entypo name="minus" size={15} color="white" />
+          ) : (
+            <Entypo name="plus" size={15} color="black" />
+          )}
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <ScrollView
       contentContainerStyle={{paddingBottom: '35%'}}
       style={styles.createCouponContainer}>
       <Header tag={'Marketing'} fontSize={22} />
+      {isBrandsModalVisible && (
+        <View
+          style={{
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            position: 'absolute',
+            zIndex: 900,
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+          }}
+        />
+      )}
+      <Modal visible={isBrandsModalVisible} transparent={true}>
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <View
+            style={{
+              width: '100%',
+              height: '100%',
+              backgroundColor: 'white',
+              paddingHorizontal: '5%',
+            }}>
+            <Text
+              style={{
+                marginVertical: '5%',
+                textAlign: 'center',
+                fontSize: 20,
+                color: 'black',
+              }}>
+              Select Brands
+            </Text>
+            {/*<ScrollView contentContainerStyle={{flex: 1}}>
+              {brandItems.map(brandItem => (
+                <ModalItem
+                  name={brandItem.name}
+                  value={brandItem.id}
+                  selectedItems={selectedBrands}
+                  setSelectedItems={setSelectedBrands}
+                />
+              ))}
+            </ScrollView>*/}
+            <FlatList
+              data={brandItems}
+              keyExtractor={item => item.id}
+              renderItem={({item}) => (
+                <ModalItem
+                  name={item.name}
+                  value={item.id}
+                  selectedItems={selectedBrands}
+                  setSelectedItems={setSelectedBrands}
+                />
+              )}
+            />
+            <TouchableOpacity
+              onPress={() => setIsBrandsModalVisible(false)}
+              style={{
+                alignSelf: 'center',
+                backgroundColor: 'black',
+                width: '30%',
+                marginVertical: '4%',
+                justifyContent: 'center',
+                alignItems: 'center',
+                paddingVertical: '2%',
+              }}>
+              <Text style={{color: 'white', fontSize: 16}}>Confirm</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+      <Modal visible={isStoresModalVisible} transparent={true}>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: 'white',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Text
+            style={{
+              marginVertical: '5%',
+              textAlign: 'center',
+              fontSize: 20,
+              color: 'black',
+            }}>
+            Select Influencer Stores
+          </Text>
+
+          {/*influencerStoreItems.map(storeItem => (
+                <ModalItem
+                  name={storeItem.name}
+                  value={storeItem.id}
+                  selectedItems={selectedStores}
+                  setSelectedItems={setSelectedStores}
+                />
+              ))*/}
+
+          {
+            <View style={{flex: 1}}>
+              <FlatList
+                data={influencerStoreItems}
+                renderItem={({item}) => (
+                  <ModalItem
+                    name={item.name}
+                    value={item.id}
+                    selectedItems={selectedStores}
+                    setSelectedItems={setSelectedStores}
+                  />
+                )}
+                keyExtractor={item => item.id}
+              />
+            </View>
+          }
+
+          <TouchableOpacity
+            onPress={() => setIsStoresModalVisible(false)}
+            style={{
+              alignSelf: 'center',
+              backgroundColor: 'black',
+              width: '30%',
+              marginVertical: '4%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              paddingVertical: '2%',
+            }}>
+            <Text style={{color: 'white', fontSize: 16}}>Confirm</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
       <View style={{flex: 1, paddingHorizontal: '5%', paddingVertical: '4%'}}>
         <Text style={{fontSize: 28, color: 'black'}}>Create Coupon</Text>
         <Text style={{fontSize: 22, color: 'black', marginTop: '4%'}}>
@@ -187,7 +452,7 @@ const CreateCouponScreen = ({navigation}) => {
             color: 'black',
             fontWeight: '500',
           }}>
-          Select Coupon Type
+          Select Coupon Type*
         </Text>
         <Dropdown
           tag="Select Coupon Type"
@@ -220,7 +485,7 @@ const CreateCouponScreen = ({navigation}) => {
             color: 'black',
             fontWeight: '500',
           }}>
-          Select Discount Type
+          Select Discount Type*
         </Text>
         <Dropdown
           tag="Select Discount Type"
@@ -255,7 +520,7 @@ const CreateCouponScreen = ({navigation}) => {
             color: 'black',
             fontWeight: '500',
           }}>
-          Discount Value
+          Discount Value*
         </Text>
         <TextInput
           value={discountValue}
@@ -356,45 +621,28 @@ const CreateCouponScreen = ({navigation}) => {
           </View>
         </View>
         {couponType === 'SPECIFIC_PRODUCT' && (
-          <View>
-            <Text
-              style={{
-                marginVertical: '5%',
-                fontSize: 16,
-                color: 'black',
-                fontWeight: '500',
-              }}>
-              Select a Brand
-            </Text>
-            <Dropdown
-              tag="Select a Brand"
-              items={brandItems}
-              selectedValue={brand}
-              iconColor="black"
-              down
-              setSelectedValue={setBrand}
-              dropDownContainerStyle={{
-                ...mobileDropdownStyle,
-                zIndex: 500,
-                height: '15%',
-              }}
-              dropDownValuesTextStyle={
-                Platform.OS === 'web'
-                  ? webDropdownValuesTextStyle
-                  : mobileDropdownValuesTextStyle
-              }
-              dropDownTextStyle={
-                Platform.OS === 'web'
-                  ? webDropdownTextStyle
-                  : mobileDropdownTextStyle
-              }
-              dropDownValuesContainerStyle={
-                Platform.OS === 'web'
-                  ? webDropdownValuesContainerStyle
-                  : mobileDropdownValuesContainerStyle
-              }
-            />
-          </View>
+          <TouchableOpacity
+            onPress={() => setIsBrandsModalVisible(true)}
+            style={{
+              marginTop: '5%',
+              width: '100%',
+              height: '3%',
+              justifyContent: 'center',
+              borderWidth: 1,
+              borderColor: 'rgba(0,0,0,0.3)',
+              borderRadius: 4,
+              backgroundColor: 'white',
+              paddingHorizontal: '5%',
+              shadowOffset: {
+                width: 0,
+                height: 1,
+              },
+              shadowRadius: 2,
+              shadowOpacity: 1.0,
+              elevation: 5,
+            }}>
+            <Text>Select Brands*</Text>
+          </TouchableOpacity>
         )}
         <Text
           style={{
@@ -403,7 +651,7 @@ const CreateCouponScreen = ({navigation}) => {
             color: 'black',
             fontWeight: '500',
           }}>
-          Select Owner
+          Select Owner*
         </Text>
         <Dropdown
           tag="Select Owner"
@@ -491,41 +739,28 @@ const CreateCouponScreen = ({navigation}) => {
           </View>
         </View>
         {/* CheckBox */}
-        <Text
+        <TouchableOpacity
+          onPress={() => setIsStoresModalVisible(true)}
           style={{
-            marginVertical: '5%',
-            fontSize: 16,
-            color: 'black',
-            fontWeight: '500',
+            marginTop: '5%',
+            width: '100%',
+            height: '3%',
+            justifyContent: 'center',
+            borderWidth: 1,
+            borderColor: 'rgba(0,0,0,0.3)',
+            borderRadius: 4,
+            backgroundColor: 'white',
+            paddingHorizontal: '5%',
+            shadowOffset: {
+              width: 0,
+              height: 1,
+            },
+            shadowRadius: 2,
+            shadowOpacity: 1.0,
+            elevation: 5,
           }}>
-          Select Influencer Store
-        </Text>
-        <Dropdown
-          tag="Select Influencer Store"
-          items={influencerStoreItems}
-          selectedValue={influencerStore}
-          iconColor="black"
-          down
-          setSelectedValue={setInfluencerStore}
-          dropDownContainerStyle={
-            Platform.OS === 'web' ? webDropdownStyle : mobileDropdownStyle
-          }
-          dropDownValuesTextStyle={
-            Platform.OS === 'web'
-              ? webDropdownValuesTextStyle
-              : mobileDropdownValuesTextStyle
-          }
-          dropDownTextStyle={
-            Platform.OS === 'web'
-              ? webDropdownTextStyle
-              : mobileDropdownTextStyle
-          }
-          dropDownValuesContainerStyle={
-            Platform.OS === 'web'
-              ? webDropdownValuesContainerStyle
-              : mobileDropdownValuesContainerStyle
-          }
-        />
+          <Text>Select Influencer Stores*</Text>
+        </TouchableOpacity>
         <Text style={{fontSize: 22, color: 'black', marginTop: '4%'}}>
           Coupon Naming
         </Text>
@@ -536,7 +771,7 @@ const CreateCouponScreen = ({navigation}) => {
             color: 'black',
             fontWeight: '500',
           }}>
-          Coupon Code
+          Coupon Code*
         </Text>
         <TextInput
           value={couponCode}
@@ -558,7 +793,7 @@ const CreateCouponScreen = ({navigation}) => {
             color: 'black',
             fontWeight: '500',
           }}>
-          Coupon Title
+          Coupon Title*
         </Text>
         <TextInput
           value={couponTitle}
@@ -580,7 +815,7 @@ const CreateCouponScreen = ({navigation}) => {
             color: 'black',
             fontWeight: '500',
           }}>
-          Coupon Name
+          Coupon Name*
         </Text>
         <TextInput
           value={couponName}
@@ -602,7 +837,7 @@ const CreateCouponScreen = ({navigation}) => {
             color: 'black',
             fontWeight: '500',
           }}>
-          Coupon Details
+          Coupon Details*
         </Text>
         <TextInput
           value={couponDescription}
@@ -619,11 +854,14 @@ const CreateCouponScreen = ({navigation}) => {
           textAlignVertical="top"
           placeholder={'Enter Coupon Details'}
         />
-        <TouchableOpacity
-          onPress={() => voucherBulkCreate()}
-          style={styles.button}>
+        <TouchableOpacity onPress={onCreatePress} style={styles.button}>
           <Text style={{color: 'white', fontWeight: 'bold'}}>Create</Text>
         </TouchableOpacity>
+        {(voucherResponse.error || fieldError) && (
+          <Text style={{textAlign: 'center', marginTop: '1%'}}>
+            Select the required fields
+          </Text>
+        )}
       </View>
     </ScrollView>
   );

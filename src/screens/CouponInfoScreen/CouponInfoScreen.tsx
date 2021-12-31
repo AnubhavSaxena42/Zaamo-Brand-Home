@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, Image, Dimensions, View} from 'react-native';
+import Coupon from '../../components/Coupon/Coupon';
 import CouponOverview from '../../components/CouponOverview/CouponOverview';
 const windowWidth = Dimensions.get('window').width;
 const CouponInfoScreen = ({navigation, route}) => {
@@ -26,7 +27,7 @@ const CouponInfoScreen = ({navigation, route}) => {
         }}>
         Marketing
       </Text>
-      <CouponOverview />
+      <CouponOverview coupon={route.params.coupon} />
       <View
         style={{
           paddingVertical: '4%',
@@ -37,22 +38,10 @@ const CouponInfoScreen = ({navigation, route}) => {
           width: '90%',
         }}>
         <Text style={{textAlign: 'center', marginVertical: '2%', fontSize: 16}}>
-          Conditions
+          Description
         </Text>
         <Text style={{textAlign: 'center', marginVertical: '1%', fontSize: 14}}>
-          Sample Condition
-        </Text>
-        <Text style={{textAlign: 'center', marginVertical: '1%', fontSize: 14}}>
-          Sample Condition
-        </Text>
-        <Text style={{textAlign: 'center', marginVertical: '1%', fontSize: 14}}>
-          Sample Condition
-        </Text>
-        <Text style={{textAlign: 'center', marginVertical: '1%', fontSize: 14}}>
-          Sample Condition
-        </Text>
-        <Text style={{textAlign: 'center', marginVertical: '1%', fontSize: 14}}>
-          Sample Condition
+          {route.params.coupon.metadata[0].value}
         </Text>
       </View>
     </View>

@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 const windowWidth = Dimensions.get('window').width;
-const Coupon = ({navigation}) => {
+const Coupon = ({navigation, coupon}) => {
   return (
     <View
       style={{
@@ -19,30 +19,6 @@ const Coupon = ({navigation}) => {
         flexDirection: 'row',
         marginVertical: '2%',
       }}>
-      <View
-        style={{
-          height: 25,
-          width: 40,
-          zIndex: 2,
-          top: 0,
-          left: '25%',
-          position: 'absolute',
-          borderBottomLeftRadius: 20,
-          borderBottomRightRadius: 20,
-          backgroundColor: 'whitesmoke',
-        }}></View>
-      <View
-        style={{
-          height: 25,
-          width: 40,
-          bottom: 0,
-          left: '25%',
-          position: 'absolute',
-          zIndex: 2,
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 20,
-          backgroundColor: 'whitesmoke',
-        }}></View>
       <View
         style={{
           justifyContent: 'center',
@@ -66,13 +42,15 @@ const Coupon = ({navigation}) => {
             style={{
               paddingHorizontal: '15%',
               color: 'white',
-              fontSize: 28,
+              fontSize: 16,
               textAlign: 'center',
             }}>
-            70%
-            <Text style={{textAlign: 'center', color: 'white', fontSize: 14}}>
-              Off
-            </Text>
+            {coupon.discountValueType === 'FIXED' ? 'Rs' : ''}
+            {coupon.discountValue}
+            {coupon.discountValueType === 'PERCENTAGE' ? '%' : ''}
+          </Text>
+          <Text style={{textAlign: 'center', color: 'white', fontSize: 14}}>
+            Off
           </Text>
         </View>
       </View>
@@ -89,7 +67,7 @@ const Coupon = ({navigation}) => {
             alignItems: 'center',
             justifyContent: 'space-between',
           }}>
-          <Text style={{fontSize: 14}}>70% off for first time buyer</Text>
+          <Text style={{fontSize: 14}}>{coupon.name}</Text>
           <Text style={{fontSize: 12, color: '#3eb988', fontWeight: '700'}}>
             Available
           </Text>
@@ -112,11 +90,15 @@ const Coupon = ({navigation}) => {
               height: 25,
               borderRadius: 5,
             }}>
-            <Text>SAVE70NEWBUYER</Text>
+            <Text>{coupon.code}</Text>
             <AntDesign name="copy1" color="black" size={12} />
           </View>
           <TouchableOpacity
-            onPress={() => navigation.navigate('CouponInfoScreen')}
+            onPress={() =>
+              navigation.navigate('CouponInfoScreen', {
+                coupon: coupon,
+              })
+            }
             style={{
               width: 70,
               height: 25,
@@ -128,7 +110,7 @@ const Coupon = ({navigation}) => {
             <Text style={{color: 'white'}}>View</Text>
           </TouchableOpacity>
         </View>
-        <Text>Valid Until 30th March</Text>
+        <Text>{coupon.endDate ? 'Valid Until 30th March' : ''}</Text>
       </View>
     </View>
   );

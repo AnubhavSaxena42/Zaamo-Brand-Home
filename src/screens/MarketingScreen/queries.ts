@@ -3,7 +3,7 @@ import {gql} from '@apollo/client';
 export const GET_COUPONS = gql`
   query {
     vouchers(
-      first: 10
+      first: 50
       filter: {status: ACTIVE}
       sortBy: {field: START_DATE, direction: DESC}
     ) {

@@ -1,31 +1,9 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
-const CouponOverview = () => {
+const CouponOverview = ({coupon}) => {
   return (
     <View style={styles.couponOverviewContainer}>
-      <View
-        style={{
-          width: 20,
-          height: 30,
-          borderTopRightRadius: 15,
-          borderBottomRightRadius: 15,
-          backgroundColor: 'black',
-          position: 'absolute',
-          left: 0,
-          top: '40%',
-        }}></View>
-      <View
-        style={{
-          width: 20,
-          height: 30,
-          borderTopLeftRadius: 15,
-          borderBottomLeftRadius: 15,
-          backgroundColor: 'black',
-          position: 'absolute',
-          right: 0,
-          top: '40%',
-        }}></View>
       <View
         style={{
           borderBottomWidth: 2,
@@ -55,11 +33,15 @@ const CouponOverview = () => {
             fontSize: 22,
             color: 'black',
           }}>
-          Discount 70% Off
+          {coupon.name}
         </Text>
-        <Text style={{textAlign: 'center', marginBottom: '10%'}}>
-          For first time buyers
-        </Text>
+        {coupon.shortName ? (
+          <Text style={{textAlign: 'center', marginBottom: '10%'}}>
+            For first time buyers
+          </Text>
+        ) : (
+          <Text></Text>
+        )}
       </View>
       <View>
         <Text
@@ -69,7 +51,7 @@ const CouponOverview = () => {
             color: 'black',
             marginVertical: '2%',
           }}>
-          SAVE70NEWBUYER
+          {coupon.code}
         </Text>
         <View
           style={{
@@ -91,10 +73,12 @@ const CouponOverview = () => {
             Copy Code
           </Text>
         </View>
-        <Text
-          style={{marginTop: '2%', marginBottom: '10%', alignSelf: 'center'}}>
-          Valid Until 30th March
-        </Text>
+        {coupon.endDate && (
+          <Text
+            style={{marginTop: '2%', marginBottom: '10%', alignSelf: 'center'}}>
+            Valid Until 30th March
+          </Text>
+        )}
       </View>
     </View>
   );
@@ -106,6 +90,7 @@ const styles = StyleSheet.create({
   couponOverviewContainer: {
     width: '90%',
     borderRadius: 10,
+    minHeight: '40%',
     zIndex: 2,
     backgroundColor: 'white',
     alignSelf: 'center',

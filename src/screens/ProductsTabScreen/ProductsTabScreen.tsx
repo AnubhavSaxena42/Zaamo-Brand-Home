@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
-  ScrollView,
   Text,
   TextInput,
   View,
   Modal,
   TouchableOpacity,
 } from 'react-native';
+import {ScrollView} from 'react-native-gesture-handler';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CollectionCard from '../../components/CollectionCard/CollectionCard';
@@ -226,7 +226,7 @@ const ProductsTabScreen = ({navigation}) => {
             transparent={true}
             visible={isThumbnailModalVisible}
             animationType="slide">
-            <View
+            <ScrollView
               style={{
                 backgroundColor: 'white',
                 position: 'absolute',
@@ -289,7 +289,7 @@ const ProductsTabScreen = ({navigation}) => {
                   <Text>Select from Gallery</Text>
                 </TouchableOpacity>
               </View>
-            </View>
+            </ScrollView>
           </Modal>
           <Modal
             transparent={true}

@@ -23,7 +23,7 @@ const CollectionProductsAddScreen = ({navigation, route}) => {
   useEffect(() => {
     if (data) {
       console.log(data);
-      if (data.collectionCreate.collection.id) {
+      if (data.collectionCreate.collection) {
         navigation.navigate('ProductsTabScreen');
       }
     }

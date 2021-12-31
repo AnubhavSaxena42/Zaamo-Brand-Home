@@ -14,3 +14,16 @@ export const GET_STORES = gql`
     }
   }
 `;
+
+export const GET_BRANDS = gql`
+  query {
+    brands(first: 100) {
+      edges {
+        node {
+          brandName
+          id
+        }
+      }
+    }
+  }
+`;

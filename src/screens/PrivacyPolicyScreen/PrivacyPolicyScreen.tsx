@@ -8,6 +8,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+import toastService from '../../services/toast-service';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 const windowWidth = Dimensions.get('window').width;
 const PrivacyPolicyScreen = ({navigation, route}) => {
@@ -45,7 +46,10 @@ const PrivacyPolicyScreen = ({navigation, route}) => {
         }}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Text>Privacy Policy</Text>
-          <View
+          <TouchableOpacity
+            onPress={() => {
+              toastService.showToast('Feature in Development', true);
+            }}
             style={{
               flexDirection: 'row',
               padding: '1%',
@@ -57,7 +61,7 @@ const PrivacyPolicyScreen = ({navigation, route}) => {
             }}>
             <Text>Edit</Text>
             <MaterialCommunityIcons name="pencil" size={12} color="black" />
-          </View>
+          </TouchableOpacity>
         </View>
         <Text style={{marginTop: '4%'}}>
           These are the general terms and conditions governing your use of this
@@ -106,7 +110,10 @@ const PrivacyPolicyScreen = ({navigation, route}) => {
           bottom: 0,
         }}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('SettingsScreen')}
+          onPress={() => {
+            toastService.showToast('Feature in Development');
+            navigation.navigate('SettingsScreen');
+          }}
           style={styles.button}>
           <Text style={{color: 'white', fontWeight: 'bold'}}>Save</Text>
         </TouchableOpacity>

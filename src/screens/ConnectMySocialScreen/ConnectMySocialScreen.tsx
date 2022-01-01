@@ -8,6 +8,7 @@ import {
   Image,
   TextInput,
 } from 'react-native';
+import toastService from '../../services/toast-service';
 const windowWidth = Dimensions.get('window').width;
 const ConnectMySocialScreen = ({navigation, route}) => {
   return (
@@ -79,7 +80,10 @@ const ConnectMySocialScreen = ({navigation, route}) => {
           bottom: 25,
         }}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('SettingsScreen')}
+          onPress={() => {
+            toastService.showToast('Feature in development', true);
+            navigation.navigate('SettingsScreen');
+          }}
           style={styles.button}>
           <Text style={{color: 'white', fontWeight: 'bold'}}>Save</Text>
         </TouchableOpacity>

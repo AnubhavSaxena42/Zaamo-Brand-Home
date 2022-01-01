@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useMutation} from '@apollo/client';
 import {BANK_ACCOUNT_CREATE, BRAND_UPI_ID_CREATE} from './mutations';
 import {
@@ -11,9 +11,12 @@ import {
   TextInput,
   Dimensions,
 } from 'react-native';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
+import toastService from '../../services/toast-service';
 const windowWidth = Dimensions.get('window').width;
 const PaymentDetailsScreen = ({navigation, route}) => {
+  const dispatch = useDispatch();
   const [isViewing, setIsViewing] = useState(1);
   const [accountHolderName, setAccountHolderName] = useState('');
   const [upiId, setUpiId] = useState('');
@@ -23,17 +26,13 @@ const PaymentDetailsScreen = ({navigation, route}) => {
   const [bankAccountNumber, setBankAccountNumber] = useState('');
   const [confirmBankAccountNumber, setConfirmBankAccountNumber] = useState('');
   const [bankIfscCode, setBankIfscCode] = useState('');
-  const brandId = useSelector(state => state.user.user.authorisedBrands[0].id);
-  console.log(brandId);
-  const [brandUpiIdCreate, {data, error, loading}] = useMutation(
-    BRAND_UPI_ID_CREATE,
-    {
-      variables: {
-        brand: brandId,
-        upiId: upiId,
-      },
+  const brandId = useSelector(state => state.user.authorisedBrands[0].id);
+  const [brandUpiIdCreate, upiResponse] = useMutation(BRAND_UPI_ID_CREATE, {
+    variables: {
+      brand: brandId,
+      upiId: upiId,
     },
-  );
+  });
   const [bankAccountCreate, bankResponse] = useMutation(BANK_ACCOUNT_CREATE, {
     variables: {
       brand: brandId,
@@ -44,14 +43,44 @@ const PaymentDetailsScreen = ({navigation, route}) => {
       acBankBranch: address,
     },
   });
+
   const onBankCreate = () => {
+    console.log('BANK ACCOUNT CREATE CALLED');
+    dispatch(setLoaderStatus(true));
     bankAccountCreate();
   };
   const onUpiCreate = () => {
+    dispatch(setLoaderStatus(true));
+    console.log('UPI CREATE CALLED');
     brandUpiIdCreate();
   };
-  console.log(data, error, loading);
-  console.log(bankResponse.data, bankResponse.error, bankResponse.loading);
+  useEffect(() => {
+    if (bankResponse.data) {
+      if (bankResponse.data.bankAccountCreate.BankAccount.acNumber) {
+        dispatch(setLoaderStatus(false));
+        toastService.showToast(
+          `Bank Account Added:${bankResponse.data.bankAccountCreate.BankAccount.acNumber}`,
+          true,
+        );
+        navigation.navigate('SettingsScreen');
+      }
+      dispatch(setLoaderStatus(false));
+    }
+  }, [bankResponse.data]);
+  useEffect(() => {
+    console.log(upiResponse);
+    if (upiResponse.data) {
+      if (upiResponse.data.brandUpiIdCreate.BrandUpiId.upiId) {
+        dispatch(setLoaderStatus(false));
+        toastService.showToast(
+          `UPI Id added: ${upiResponse.data.brandUpiIdCreate.BrandUpiId.upiId}`,
+          true,
+        );
+        navigation.navigate('SettingsScreen');
+      }
+      dispatch(setLoaderStatus(false));
+    }
+  }, [upiResponse.data]);
   return (
     <View style={styles.paymentDetailsContainer}>
       <View style={{alignItems: 'center'}}>
@@ -80,8 +109,8 @@ const PaymentDetailsScreen = ({navigation, route}) => {
       <View
         style={{
           width: '90%',
-          height: '5%',
-          borderRadius: 20,
+          height: 40,
+          borderRadius: 5,
           marginTop: '15%',
           flexDirection: 'row',
           alignSelf: 'center',
@@ -95,6 +124,8 @@ const PaymentDetailsScreen = ({navigation, route}) => {
             height: '100%',
             justifyContent: 'center',
             alignItems: 'center',
+            borderTopLeftRadius: 5,
+            borderBottomLeftRadius: 5,
           }}>
           <Text style={{color: isViewing === 1 ? 'white' : 'black'}}>
             UPI ID
@@ -108,6 +139,8 @@ const PaymentDetailsScreen = ({navigation, route}) => {
             height: '100%',
             justifyContent: 'center',
             alignItems: 'center',
+            borderTopRightRadius: 5,
+            borderBottomRightRadius: 5,
           }}>
           <Text style={{color: isViewing === 2 ? 'white' : 'black'}}>
             Bank Details

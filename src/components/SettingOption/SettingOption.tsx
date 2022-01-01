@@ -5,7 +5,13 @@ const SettingOption = ({setting, onPress, imageUrl}) => {
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={{height: 60, width: 150, marginVertical: '4%'}}>
+      style={{
+        height: 60,
+        width: 150,
+        marginVertical: '4%',
+
+        borderRadius: 10,
+      }}>
       <View
         style={{
           flex: 1,

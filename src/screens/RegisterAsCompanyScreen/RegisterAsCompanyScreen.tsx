@@ -8,9 +8,31 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {launchImageLibrary} from 'react-native-image-picker';
 import Entypo from 'react-native-vector-icons/Entypo';
+import toastService from '../../services/toast-service';
 const windowWidth = Dimensions.get('window').width;
 const RegisterAsCompanyScreen = ({navigation, route}) => {
+  const onPANUpload = () => {
+    launchImageLibrary({}, res => {
+      if (res.didCancel) {
+        toastService.showToast('Upload Cancelled', true);
+      } else {
+        console.log(res.assets);
+        toastService.showToast('PAN Card Uploaded', true);
+      }
+    });
+  };
+  const onGSTUpload = () => {
+    launchImageLibrary({}, res => {
+      if (res.didCancel) {
+        toastService.showToast('Upload Cancelled', true);
+      } else {
+        console.log(res.assets);
+        toastService.showToast('GST Certificate Uploaded', true);
+      }
+    });
+  };
   return (
     <View style={styles.registerAsCompanyContainer}>
       <View style={{alignItems: 'center'}}>
@@ -90,7 +112,9 @@ const RegisterAsCompanyScreen = ({navigation, route}) => {
             alignItems: 'center',
             marginTop: '2%',
           }}>
-          <Entypo name="plus" size={25} color={'black'} />
+          <TouchableOpacity onPress={onGSTUpload}>
+            <Entypo name="plus" size={25} color={'black'} />
+          </TouchableOpacity>
           <Text style={{marginLeft: '5%'}}>
             Upload a photo of your GST certificate
             <Text style={{color: 'red'}}>*</Text>
@@ -123,7 +147,9 @@ const RegisterAsCompanyScreen = ({navigation, route}) => {
             alignItems: 'center',
             marginTop: '2%',
           }}>
-          <Entypo name="plus" size={25} color={'black'} />
+          <TouchableOpacity onPress={onPANUpload}>
+            <Entypo name="plus" size={25} color={'black'} />
+          </TouchableOpacity>
           <Text style={{marginLeft: '5%'}}>
             Upload a photo of your PAN Card
             <Text style={{color: 'red'}}>*</Text>
@@ -140,7 +166,10 @@ const RegisterAsCompanyScreen = ({navigation, route}) => {
           bottom: 25,
         }}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('SettingsScreen')}
+          onPress={() => {
+            toastService.showToast('Feature in Development', true);
+            navigation.navigate('SettingsScreen');
+          }}
           style={styles.button}>
           <Text style={{color: 'white', fontWeight: 'bold'}}>Save</Text>
         </TouchableOpacity>

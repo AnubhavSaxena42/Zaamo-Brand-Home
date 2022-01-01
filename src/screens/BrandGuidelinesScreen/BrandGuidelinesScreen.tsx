@@ -8,6 +8,7 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
+import toastService from '../../services/toast-service';
 const windowWidth = Dimensions.get('window').width;
 const BrandGuidelinesScreen = ({navigation, route}) => {
   return (
@@ -94,7 +95,10 @@ const BrandGuidelinesScreen = ({navigation, route}) => {
           bottom: 25,
         }}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('SettingsScreen')}
+          onPress={() => {
+            toastService.showToast('Feature in Development', true);
+            navigation.navigate('SettingsScreen');
+          }}
           style={styles.button}>
           <Text style={{color: 'white', fontWeight: 'bold'}}>Save</Text>
         </TouchableOpacity>

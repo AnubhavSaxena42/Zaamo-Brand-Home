@@ -9,6 +9,7 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
+import toastService from '../../services/toast-service';
 const windowWidth = Dimensions.get('window').width;
 const ReturnPolicyScreen = ({navigation, route}) => {
   return (
@@ -45,7 +46,10 @@ const ReturnPolicyScreen = ({navigation, route}) => {
         }}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Text>Return Policy</Text>
-          <View
+          <TouchableOpacity
+            onPress={() => {
+              toastService.showToast('Feature in Development', true);
+            }}
             style={{
               flexDirection: 'row',
               padding: '1%',
@@ -57,7 +61,7 @@ const ReturnPolicyScreen = ({navigation, route}) => {
             }}>
             <Text>Edit</Text>
             <MaterialCommunityIcons name="pencil" size={12} color="black" />
-          </View>
+          </TouchableOpacity>
         </View>
         <Text style={{marginTop: '4%'}}>
           We want you to love what you ordered, but if something isn't right,
@@ -93,7 +97,10 @@ const ReturnPolicyScreen = ({navigation, route}) => {
           bottom: 0,
         }}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('SettingsScreen')}
+          onPress={() => {
+            toastService.showToast('Feature in development', true);
+            navigation.navigate('SettingsScreen');
+          }}
           style={styles.button}>
           <Text style={{color: 'white', fontWeight: 'bold'}}>Save</Text>
         </TouchableOpacity>

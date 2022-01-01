@@ -8,6 +8,7 @@ import {
   View,
 } from 'react-native';
 import ThemeSelector from '../../components/ThemeSelector/ThemeSelector';
+import toastService from '../../services/toast-service';
 const windowWidth = Dimensions.get('window').width;
 const StoreThemesScreen = ({navigation, route}) => {
   return (
@@ -82,7 +83,10 @@ const StoreThemesScreen = ({navigation, route}) => {
           bottom: 0,
         }}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('SettingsScreen')}
+          onPress={() => {
+            toastService.showToast('Feature in development', true);
+            navigation.navigate('SettingsScreen');
+          }}
           style={styles.button}>
           <Text style={{color: 'white', fontWeight: 'bold'}}>Save</Text>
         </TouchableOpacity>

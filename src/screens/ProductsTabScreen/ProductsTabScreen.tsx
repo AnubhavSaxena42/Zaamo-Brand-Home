@@ -179,7 +179,7 @@ const ProductsTabScreen = ({navigation}) => {
         style={{
           width: '90%',
           height: '5%',
-          borderRadius: 20,
+          borderRadius: 5,
           marginTop: '2%',
           flexDirection: 'row',
           alignSelf: 'center',
@@ -193,6 +193,8 @@ const ProductsTabScreen = ({navigation}) => {
             height: '100%',
             justifyContent: 'center',
             alignItems: 'center',
+            borderTopLeftRadius: 5,
+            borderBottomLeftRadius: 5,
           }}>
           <Text style={{color: isViewing === 1 ? 'white' : 'black'}}>
             Products
@@ -206,6 +208,8 @@ const ProductsTabScreen = ({navigation}) => {
             height: '100%',
             justifyContent: 'center',
             alignItems: 'center',
+            borderTopRightRadius: 5,
+            borderBottomRightRadius: 5,
           }}>
           <Text style={{color: isViewing === 2 ? 'white' : 'black'}}>
             Collections

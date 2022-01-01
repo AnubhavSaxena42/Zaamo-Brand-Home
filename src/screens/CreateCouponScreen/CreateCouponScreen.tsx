@@ -16,9 +16,10 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Dropdown from '../../components/Dropdown';
 import Header from '../../components/Header';
 import {CREATE_VOUCHER} from './mutations';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {GET_STORES, GET_BRANDS} from './queries';
 import {FlatList} from 'react-native-gesture-handler';
+import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 const webDropdownStyle = {
   height: '30%',
   width: '15%',
@@ -137,6 +138,7 @@ const CreateCouponScreen = ({navigation}) => {
   const [discountValue, setDiscountValue] = useState();
   const [couponTypeFieldError, setCouponTypeFieldError] = useState(false);
   const [couponCodeFieldError, setCouponCodeFieldError] = useState(false);
+  const dispatch = useDispatch();
   const [selectedStoresFieldError, setSelectedStoresFieldError] =
     useState(false);
   const [discountTypeFieldError, setDiscountTypeFieldError] = useState(false);
@@ -264,12 +266,15 @@ const CreateCouponScreen = ({navigation}) => {
     },
   });
   useEffect(() => {
+    dispatch(setLoaderStatus(true));
     if (voucherResponse.data) {
       console.log('in use effect:', voucherResponse.data);
       if (voucherResponse.data.voucherBulkCreate.success) {
+        dispatch(setLoaderStatus(false));
         navigation.navigate('MarketingScreen');
       }
     }
+    dispatch(setLoaderStatus(false));
   }, [voucherResponse.data]);
   useEffect(() => {
     if (startDate > endDate) setEndDate(startDate);

@@ -15,11 +15,12 @@ import {getItemFromStorage} from '../../services/storage-service';
 import authService from '../../services/auth-service';
 import {useSelector, useDispatch} from 'react-redux';
 import {useQuery} from '@apollo/client';
-import {GET_AUTHORISED_BRANDS, GET_STORE} from './queries';
+import {GET_AUTHORISED_BRANDS, GET_COUPONS, GET_STORE} from './queries';
 import {
   setStoreInfo,
   setStoreCollections,
   setStoreProducts,
+  setStoreVouchers,
 } from '../../redux/reducers/storeReducer';
 import {setAuthorisedBrands} from '../../redux/reducers/userReducer';
 
@@ -77,6 +78,17 @@ const DashboardScreen = ({navigation, route}) => {
       dispatch(setAuthorisedBrands(authorisedBrands));
     }
   }, [brandResponse.data]);
+  const couponResponse = useQuery(GET_COUPONS);
+  useEffect(() => {
+    console.log('data update');
+    if (couponResponse.data) {
+      const newCoupons = couponResponse.data.vouchers.edges.map(({node}) => {
+        return node;
+      });
+      dispatch(setStoreVouchers(newCoupons));
+    }
+  }, [couponResponse.data]);
+
   return (
     <View style={styles.dashboardContainer}>
       <Text

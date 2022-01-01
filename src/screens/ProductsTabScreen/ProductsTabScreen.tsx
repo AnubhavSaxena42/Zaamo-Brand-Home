@@ -12,10 +12,11 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CollectionCard from '../../components/CollectionCard/CollectionCard';
 import ProductCard from '../../components/ProductCard/ProductCard';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {useMutation, useQuery} from '@apollo/client';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import axios from 'axios';
+import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 
 const ProductsTabScreen = ({navigation}) => {
   const [isViewing, setIsViewing] = useState(1);
@@ -27,7 +28,9 @@ const ProductsTabScreen = ({navigation}) => {
   const [isThumbnailModalVisible, setIsThumbnailModalVisible] = useState(false);
   const newProducts = useSelector(state => state.store.products);
   const newCollections = useSelector(state => state.store.collections);
+  const dispatch = useDispatch();
   const onSelectTakePhoto = async () => {
+    dispatch(setLoaderStatus(true));
     const res = await launchCamera(
       {
         cameraType: 'back',
@@ -36,7 +39,10 @@ const ProductsTabScreen = ({navigation}) => {
       result => {
         console.log('Real response', result);
         console.log(result);
-        if (result.didCancel) return;
+        if (result.didCancel) {
+          dispatch(setLoaderStatus(false));
+          return;
+        }
         var formData = new FormData();
         formData.append('file', {
           type: 'image/jpeg',
@@ -59,10 +65,12 @@ const ProductsTabScreen = ({navigation}) => {
             setIsThumbnailModalVisible(false);
             setIsNewCollectionModalVisible(true);
             console.log(response);
+            dispatch(setLoaderStatus(false));
           })
           .catch(function (response) {
             //handle error
             console.log(response);
+            dispatch(setLoaderStatus(false));
           });
       },
     );
@@ -70,8 +78,12 @@ const ProductsTabScreen = ({navigation}) => {
   console.log(thumbnailUri);
   const onSelectGallery = async () => {
     const result = await launchImageLibrary({}, res => {
+      dispatch(setLoaderStatus(true));
       console.log(res);
-      if (res.didCancel) return;
+      if (res.didCancel) {
+        dispatch(setLoaderStatus(true));
+        return;
+      }
       var galleryFormData = new FormData();
       setFile(res.assets[0]);
 
@@ -95,10 +107,12 @@ const ProductsTabScreen = ({navigation}) => {
           setIsThumbnailModalVisible(false);
           setIsNewCollectionModalVisible(true);
           console.log(response);
+          dispatch(setLoaderStatus(false));
         })
         .catch(function (response) {
           //handle error
           console.log(response);
+          dispatch(setLoaderStatus(false));
         });
     });
   };

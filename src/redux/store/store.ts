@@ -3,6 +3,7 @@ import postsReducer from '../reducers/postsReducer';
 import productsReducer from '../reducers/productsReducer';
 import storeReducer from '../reducers/storeReducer';
 import userReducer from '../reducers/userReducer';
+import appVariablesReducer from '../reducers/appVariablesReducer';
 //need to implement caching properly
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     products: productsReducer,
     user: userReducer,
     store: storeReducer,
+    appVariables: appVariablesReducer,
   },
 });
 

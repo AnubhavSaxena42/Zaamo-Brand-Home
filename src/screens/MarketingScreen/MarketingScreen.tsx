@@ -2,23 +2,9 @@ import React, {useState, useEffect} from 'react';
 import {StyleSheet, ScrollView, Text, View} from 'react-native';
 import Coupon from '../../components/Coupon/Coupon';
 import Header from '../../components/Header';
-import {useQuery} from '@apollo/client';
-import {GET_COUPONS} from './queries';
-
+import {useSelector} from 'react-redux';
 const MarketingScreen = ({navigation}) => {
-  const [coupons, setCoupons] = useState([]);
-  console.log('update');
-  const couponResponse = useQuery(GET_COUPONS);
-  useEffect(() => {
-    console.log('data update');
-    if (couponResponse.data) {
-      const newCoupons = couponResponse.data.vouchers.edges.map(({node}) => {
-        return node;
-      });
-      setCoupons(newCoupons);
-    }
-  }, [couponResponse.data]);
-  console.log(coupons);
+  const vouchers = useSelector(state => state.store.vouchers);
   return (
     <ScrollView style={styles.marketingContainer}>
       <Header
@@ -27,7 +13,7 @@ const MarketingScreen = ({navigation}) => {
         icon={true}
         onPress={() => navigation.navigate('CreateCouponScreen')}
       />
-      {coupons.map(coupon => (
+      {vouchers.map(coupon => (
         <Coupon navigation={navigation} key={coupon.id} coupon={coupon} />
       ))}
     </ScrollView>

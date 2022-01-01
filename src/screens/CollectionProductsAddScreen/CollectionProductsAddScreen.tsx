@@ -7,6 +7,7 @@ import {setStoreProducts} from '../../redux/reducers/storeReducer';
 import {useMutation} from '@apollo/client';
 import {COLLECTION_CREATE} from './mutations';
 import {setStoreCollections} from '../../redux/reducers/storeReducer';
+import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 const CollectionProductsAddScreen = ({navigation, route}) => {
   const products = useSelector(state => state.store.products);
   const collections = useSelector(state => state.store.collections);
@@ -22,10 +23,12 @@ const CollectionProductsAddScreen = ({navigation, route}) => {
       },
     },
   );
+
   useEffect(() => {
     if (data) {
       console.log('Data:', data);
       if (data.collectionCreate.collection) {
+        dispatch(setLoaderStatus(true));
         const newCollections = [
           ...collections,
           data.collectionCreate.collection,
@@ -33,9 +36,11 @@ const CollectionProductsAddScreen = ({navigation, route}) => {
         console.log('Old collections:', collections);
         console.log('New Collections:', newCollections);
         dispatch(setStoreCollections(newCollections));
+        dispatch(setLoaderStatus(false));
         navigation.navigate('ProductsTabScreen');
       } else {
         console.log('error');
+        dispatch(setLoaderStatus(false));
         navigation.navigate('ProductsTabScreen');
       }
     }

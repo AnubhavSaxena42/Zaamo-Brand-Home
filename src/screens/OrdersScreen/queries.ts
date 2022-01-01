@@ -2,7 +2,7 @@ import {gql} from '@apollo/client';
 
 export const GET_ORDERS = gql`
   {
-    orders(first: 10) {
+    orders(first: 100) {
       edges {
         node {
           id

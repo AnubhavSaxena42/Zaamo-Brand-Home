@@ -14,7 +14,7 @@ import Checkbox from '../../components/Checkbox';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Dropdown from '../../components/Dropdown';
 import Header from '../../components/Header';
-import {CREATE_COUPON, CREATE_ENTIRE_ORDER_COUPON} from './mutations';
+import {CREATE_COUPON, CREATE_VOUCHER} from './mutations';
 import {GET_STORES, GET_BRANDS} from './queries';
 import {FlatList} from 'react-native-gesture-handler';
 const webDropdownStyle = {
@@ -96,6 +96,7 @@ const CreateCouponScreen = ({navigation}) => {
   const [isBrandsModalVisible, setIsBrandsModalVisible] = useState(false);
   const [discountType, setDiscountType] = useState('');
   const [owner, setOwner] = useState('');
+  const [allBrandsItems, setAllBrandsItems] = useState([]);
   const [fieldError, setFieldError] = useState(false);
   const [ownerItems, setOwnerItems] = useState([
     {id: 'ZAAMO', name: 'Zaamo'},
@@ -114,16 +115,15 @@ const CreateCouponScreen = ({navigation}) => {
     {id: 'SPECIFIC_PRODUCT', name: 'Specific Product'},
   ]);
   const [upperLimit, setUpperLimit] = useState();
-  const [minValue, setMinValue] = useState();
-  const [minQuantity, setMinQuantity] = useState();
+  const [minValue, setMinValue] = useState('');
+  const [minQuantity, setMinQuantity] = useState('');
   const [influencerStore, setInfluencerStore] = useState('');
   const [influencerStoreItems, setInfluencerStoreItems] = useState([
     {id: 'U3RvcmU6NzE=', name: 'My Store'},
     {id: 'Influencer2', name: 'Influencer_2'},
   ]);
   const [brandItems, setBrandItems] = useState([
-    {id: 'QnJhbmQ6MjE=', name: 'Dummy Brand'},
-    {id: 'brandID2', name: 'brand2'},
+    {id: 'QnJhbmQ6MjE=', name: 'My Brand'},
   ]);
   const [selectedBrands, setSelectedBrands] = useState([]);
   const [startDate, setStartDate] = useState('');
@@ -135,6 +135,21 @@ const CreateCouponScreen = ({navigation}) => {
   const [discountValue, setDiscountValue] = useState();
   const storesResponse = useQuery(GET_STORES);
   const brandsResponse = useQuery(GET_BRANDS);
+  let input = {
+    type: couponType,
+    name: couponName,
+    code: couponCode,
+    discountValueType: discountType,
+    discountValue: discountValue,
+    owner: owner,
+    metadata: [
+      {
+        key: 'description',
+        value: couponDescription,
+      },
+    ],
+  };
+  console.log('Input:', input);
   useEffect(() => {
     if (brandsResponse.data) {
       const newBrandItems = brandsResponse.data.brands.edges.map(({node}) => {
@@ -143,7 +158,7 @@ const CreateCouponScreen = ({navigation}) => {
           name: node.brandName,
         };
       });
-      setBrandItems(newBrandItems);
+      setAllBrandsItems(newBrandItems);
     }
   }, [brandsResponse.data]);
   useEffect(() => {
@@ -194,56 +209,22 @@ const CreateCouponScreen = ({navigation}) => {
       setFieldError(true);
       return;
     }
-    if (couponType === 'ENTIRE_ORDER') entireOrderBulkVoucherCreate();
-    else voucherBulkCreate();
+    if (minValue !== '') input.minAmountSpent = parseInt(minValue);
+    if (minQuantity !== '')
+      input.minCheckoutItemsQuantity = parseInt(minQuantity);
+    if (upperLimit !== '') input.maxDiscountValue = parseInt(upperLimit);
+    if (couponType === 'SPECIFIC_PRODUCT' || couponType === 'SHIPPING') {
+      input.brands = selectedBrands;
+    }
+    console.log('New Input:', input);
+    voucherBulkCreate();
   };
-  const [voucherBulkCreate, voucherResponse] = useMutation(CREATE_COUPON, {
+  const [voucherBulkCreate, voucherResponse] = useMutation(CREATE_VOUCHER, {
     variables: {
-      type: couponType,
-      name: couponName,
-      code: couponCode,
+      input: input,
       stores: selectedStores,
-      discountValueType: discountType,
-      discountValue: discountValue,
-      brands: selectedBrands,
-      owner: owner,
-      metadata: [
-        {
-          key: 'description',
-          value: couponDescription,
-        },
-      ],
     },
   });
-  const [entireOrderBulkVoucherCreate, entireOrderResponse] = useMutation(
-    CREATE_ENTIRE_ORDER_COUPON,
-    {
-      variables: {
-        type: couponType,
-        name: couponName,
-        code: couponCode,
-        stores: selectedStores,
-        discountValueType: discountType,
-        discountValue: discountValue,
-
-        owner: owner,
-        metadata: [
-          {
-            key: 'description',
-            value: couponDescription,
-          },
-        ],
-      },
-    },
-  );
-  useEffect(() => {
-    if (entireOrderResponse.data) {
-      console.log('in use effect:', entireOrderResponse.data);
-      if (entireOrderResponse.data.voucherBulkCreate.success) {
-        navigation.navigate('MarketingScreen');
-      }
-    }
-  }, [entireOrderResponse.data]);
   useEffect(() => {
     if (voucherResponse.data) {
       console.log('in use effect:', voucherResponse.data);
@@ -252,6 +233,13 @@ const CreateCouponScreen = ({navigation}) => {
       }
     }
   }, [voucherResponse.data]);
+  useEffect(() => {
+    if (owner && owner === 'ZAAMO') {
+      setBrandItems(allBrandsItems);
+    } else {
+      setBrandItems([{id: 'QnJhbmQ6MjE=', name: 'My Brand'}]);
+    }
+  }, [owner]);
   console.log(selectedStores);
   console.log(selectedBrands);
   const ModalItem = ({name, value, selectedItems, setSelectedItems}) => {
@@ -275,7 +263,6 @@ const CreateCouponScreen = ({navigation}) => {
           borderBottomColor: 'rgba(0,0,0,0.2)',
           borderBottomWidth: 1,
           alignItems: 'center',
-
           backgroundColor: selectedItems.includes(value) ? 'black' : 'white',
         }}>
         <Text

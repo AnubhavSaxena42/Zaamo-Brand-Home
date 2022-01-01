@@ -1,5 +1,5 @@
 //@ts-nocheck
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   StyleSheet,
   ScrollView,
@@ -17,7 +17,14 @@ import authService from '../../services/auth-service';
 const OrdersScreen = ({navigation}) => {
   const windowWidth = Dimensions.get('window').width;
   const {data, error, loading} = useQuery(GET_ORDERS);
-
+  useEffect(() => {
+    if (data) {
+      const orders = data.orders.edges.filter(
+        ({node}) => node.lines.length !== 0,
+      );
+      console.log('Orders:', orders);
+    }
+  }, [data]);
   console.log(data, error, loading);
   return (
     <View style={styles.ordersContainer}>

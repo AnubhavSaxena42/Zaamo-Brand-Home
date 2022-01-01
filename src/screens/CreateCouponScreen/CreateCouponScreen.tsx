@@ -11,6 +11,7 @@ import {
   View,
 } from 'react-native';
 import Checkbox from '../../components/Checkbox';
+import DatePicker from 'react-native-date-picker';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Dropdown from '../../components/Dropdown';
 import Header from '../../components/Header';
@@ -110,6 +111,10 @@ const CreateCouponScreen = ({navigation}) => {
   const authorisedBrands = useSelector(state => state.user.authorisedBrands);
   const [couponType, setCouponType] = useState('');
   const [selectedStores, setSelectedStores] = useState([]);
+  const [date, setDate] = useState(new Date());
+  const [startDateOpen, setStartDateOpen] = useState(false);
+  const [selectDateToggle, setSelectDateToggle] = useState(false);
+  const [endDateOpen, setEndDateOpen] = useState(false);
   const [isStoresModalVisible, setIsStoresModalVisible] = useState(false);
   const [couponTypeItems, setCouponTypeItems] = useState([
     {id: 'SHIPPING', name: 'Shipping'},
@@ -123,8 +128,8 @@ const CreateCouponScreen = ({navigation}) => {
   const [influencerStoreItems, setInfluencerStoreItems] = useState([]);
   const [brandItems, setBrandItems] = useState(authorisedBrands);
   const [selectedBrands, setSelectedBrands] = useState([]);
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
   const [couponCode, setCouponCode] = useState('');
   const [couponTitle, setCouponTitle] = useState('');
   const [couponName, setCouponName] = useState('');
@@ -244,6 +249,10 @@ const CreateCouponScreen = ({navigation}) => {
     if (upperLimit !== '') input.maxDiscountValue = parseInt(upperLimit);
     if (couponType === 'SPECIFIC_PRODUCT' || couponType === 'SHIPPING') {
       input.brands = selectedBrands;
+    }
+    if (selectDateToggle) {
+      input.startDate = startDate.toISOString();
+      input.endDate = endDate.toISOString();
     }
     console.log('New Input:', input);
     voucherBulkCreate();
@@ -744,64 +753,117 @@ const CreateCouponScreen = ({navigation}) => {
         )}
         {ownerFieldError && <ErrorMessage />}
         <Text
+          onPress={() => setSelectDateToggle(!selectDateToggle)}
           style={{
+            borderWidth: 1,
+            borderColor: 'rgba(0,0,0,0.3)',
+            borderRadius: 4,
+            paddingHorizontal: '5%',
+            backgroundColor: 'white',
+            height: 50,
+            justifyContent: 'center',
+            alignItems: 'center',
             marginTop: '5%',
             fontSize: 16,
             color: 'black',
+            textAlign: 'center',
+            textAlignVertical: 'center',
             fontWeight: '500',
+            shadowOffset: {
+              width: 0,
+              height: 1,
+            },
+            shadowRadius: 2,
+            shadowOpacity: 1.0,
+            elevation: 5,
           }}>
-          Date
+          Select Dates
+          <Entypo name="arrow-down" size={15} color={'black'} />
         </Text>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <View style={{width: '45%'}}>
-            <Text
-              style={{
-                marginVertical: '5%',
-                fontSize: 16,
-                color: 'black',
-                fontWeight: '500',
-              }}>
-              Start Date
-            </Text>
-            <TextInput
-              value={startDate}
-              onChangeText={text => setStartDate(text)}
-              style={{
-                width: '100%',
-                borderWidth: 1,
-                borderColor: 'rgba(0,0,0,0.3)',
-                borderRadius: 4,
-                backgroundColor: 'white',
-                paddingHorizontal: '5%',
-              }}
-              placeholder={'dd/mm/yy'}
-            />
+        {selectDateToggle && (
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <View style={{width: '45%'}}>
+              <Text
+                onPress={() => setStartDateOpen(true)}
+                style={{
+                  borderWidth: 1,
+                  borderColor: 'rgba(0,0,0,0.3)',
+                  borderRadius: 4,
+                  backgroundColor: 'white',
+                  paddingHorizontal: '5%',
+                  marginVertical: '5%',
+                  fontSize: 16,
+                  color: 'black',
+                  fontWeight: '500',
+                }}>
+                Select Start Date
+              </Text>
+              <Text
+                style={{
+                  width: '100%',
+                  borderWidth: 1,
+                  borderColor: 'rgba(0,0,0,0.3)',
+                  borderRadius: 4,
+                  backgroundColor: 'white',
+                  paddingHorizontal: '5%',
+                }}>
+                {startDate.toISOString().substring(0, 10)}
+              </Text>
+              <DatePicker
+                onConfirm={date => {
+                  setStartDateOpen(false);
+                  setStartDate(date);
+                }}
+                onCancel={() => {
+                  setStartDateOpen(false);
+                }}
+                date={startDate}
+                modal
+                open={startDateOpen}
+              />
+            </View>
+            <View style={{width: '45%'}}>
+              <Text
+                onPress={() => setEndDateOpen(true)}
+                style={{
+                  borderWidth: 1,
+                  borderColor: 'rgba(0,0,0,0.3)',
+                  borderRadius: 4,
+                  backgroundColor: 'white',
+                  paddingHorizontal: '5%',
+                  marginVertical: '5%',
+                  fontSize: 16,
+                  color: 'black',
+                  fontWeight: '500',
+                }}>
+                Select End Date
+              </Text>
+              <Text
+                style={{
+                  width: '100%',
+                  borderWidth: 1,
+                  borderColor: 'rgba(0,0,0,0.3)',
+                  borderRadius: 4,
+                  backgroundColor: 'white',
+                  paddingHorizontal: '5%',
+                }}>
+                {endDate.toISOString().substring(0, 10)}
+              </Text>
+              <DatePicker
+                onConfirm={date => {
+                  setEndDateOpen(false);
+                  setEndDate(date);
+                }}
+                onCancel={() => {
+                  setEndDateOpen(false);
+                }}
+                date={endDate}
+                modal
+                open={endDateOpen}
+              />
+            </View>
           </View>
-          <View style={{width: '45%'}}>
-            <Text
-              style={{
-                marginVertical: '5%',
-                fontSize: 16,
-                color: 'black',
-                fontWeight: '500',
-              }}>
-              End Date
-            </Text>
-            <TextInput
-              value={endDate}
-              onChangeText={text => setEndDate(text)}
-              style={{
-                width: '100%',
-                borderWidth: 1,
-                borderColor: 'rgba(0,0,0,0.3)',
-                borderRadius: 4,
-                backgroundColor: 'white',
-                paddingHorizontal: '5%',
-              }}
-              placeholder={'dd/mm/yy'}
-            />
-          </View>
-        </View>
+        )}
         {/* CheckBox */}
         <Text
           style={{

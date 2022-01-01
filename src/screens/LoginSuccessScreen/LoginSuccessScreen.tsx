@@ -6,6 +6,7 @@ import {useDispatch} from 'react-redux';
 import authService from '../../services/auth-service';
 import {setUser, setToken} from '../../redux/reducers/userReducer';
 import {saveItemToStorage} from '../../services/storage-service';
+import CongratulationsSVG from './Congratulations';
 const LoginSuccessScreen = ({navigation, route}) => {
   const [createToken, {data, loading, error}] = useMutation(TOKEN_CREATE, {
     variables: {
@@ -66,10 +67,18 @@ const LoginSuccessScreen = ({navigation, route}) => {
   }, [registerData]);
   return (
     <View style={styles.loginSuccessContainer}>
-      <Image
-        style={styles.imageStyle}
-        source={require('../../assets/images/smugcat.jpg')}
-      />
+      <View
+        style={{
+          height: 100,
+          width: 100,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'black',
+          borderRadius: 50,
+          marginBottom: '5%',
+        }}>
+        <CongratulationsSVG />
+      </View>
       <Text
         style={{
           fontSize: 24,

@@ -7,6 +7,8 @@ import {
   View,
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Clipboard from '@react-native-clipboard/clipboard';
+import toastService from '../../services/toast-service';
 const windowWidth = Dimensions.get('window').width;
 const Coupon = ({navigation, coupon}) => {
   return (
@@ -87,11 +89,20 @@ const Coupon = ({navigation, coupon}) => {
               flexDirection: 'row',
               width: '65%',
               paddingHorizontal: '2%',
-              height: 25,
+              height: 35,
               borderRadius: 5,
             }}>
             <Text>{coupon.code}</Text>
-            <AntDesign name="copy1" color="black" size={12} />
+            <TouchableOpacity
+              onPress={() => {
+                Clipboard.setString(coupon.code);
+                toastService.showToast(
+                  `Coupon Code Copied:${coupon.code}`,
+                  true,
+                );
+              }}>
+              <AntDesign name="copy1" color="black" size={20} />
+            </TouchableOpacity>
           </View>
           <TouchableOpacity
             onPress={() =>

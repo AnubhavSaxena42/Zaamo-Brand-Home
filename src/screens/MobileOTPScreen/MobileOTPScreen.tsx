@@ -11,6 +11,7 @@ import smugcat from '../../assets/images/smugcat.jpg';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useMutation} from '@apollo/client';
 import {GENERATE_OTP} from './mutations';
+import PhoneSVG from './phone';
 //import {TextInput} from 'react-native-gesture-handler';
 const MobileOTPScreen = ({navigation, route}) => {
   const [mobileNumber, setMobileNumber] = useState('');
@@ -30,10 +31,7 @@ const MobileOTPScreen = ({navigation, route}) => {
           color={'rgba(0,0,0,0.5)'}
         />
       </View>
-      <Image
-        source={require('../../assets/images/smugcat.jpg')}
-        style={styles.imageStyle}
-      />
+      <PhoneSVG />
       <Text style={styles.headingText}>OTP Verification</Text>
       <Text style={styles.infoText}>
         We will send you an{' '}
@@ -79,6 +77,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 24,
     marginBottom: '3%',
+    marginTop: '3%',
   },
   imageStyle: {
     width: '50%',

@@ -7,7 +7,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import ProductTaggingPanelScreen from '../screens/ProductTaggingPanelScreen';
 import VariantScreen from '../screens/VariantScreen';
 import AddProductScreen from '../screens/AddProductScreen';
-import CreateProductScreen from '../screens/CreateProductScreen';
+import CreateProductScreen from '../screens/CreateProductScreen/CreateProductScreen';
 import MobileOTPScreen from '../screens/MobileOTPScreen/MobileOTPScreen';
 import VerifyOTPScreen from '../screens/VerifyOTPScreen/VerifyOTPScreen';
 import ConnectInstaScreen from '../screens/ConnectInstaScreen/ConnectInstaScreen';

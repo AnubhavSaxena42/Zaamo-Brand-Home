@@ -11,6 +11,7 @@ import {
 import {useMutation} from '@apollo/client';
 import {VERIFY_OTP} from './mutations';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import PhoneSVG from '../MobileOTPScreen/phone';
 const VerifyOTPScreen = ({navigation, route}) => {
   const [otp, setOtp] = useState('');
   const [verifyOtp, {data, error, loading}] = useMutation(VERIFY_OTP, {
@@ -29,10 +30,7 @@ const VerifyOTPScreen = ({navigation, route}) => {
           color={'rgba(0,0,0,0.5)'}
         />
       </View>
-      <Image
-        source={require('../../assets/images/smugcat.jpg')}
-        style={styles.imageStyle}
-      />
+      <PhoneSVG />
       <Text style={styles.headingText}>OTP Verification</Text>
       <Text style={styles.infoText}>
         Enter the OTP sent to{' '}
@@ -99,6 +97,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 24,
     marginBottom: '3%',
+    marginTop: '3%',
   },
   numberInput: {
     fontSize: 20,

@@ -25,7 +25,7 @@ const ProductCard = ({product}) => {
             );
           }}
           style={styles.iconContainer}>
-          <Entypo name="link" color={'gray'} size={15} />
+          <Entypo name="link" color={'rgba(0,0,0,0.6)'} size={15} />
         </TouchableOpacity>
         <View
           style={{
@@ -132,13 +132,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 15,
-    backgroundColor: '#e1cab6',
+    backgroundColor: 'rgba(0,0,0,0.1)',
     position: 'absolute',
     top: 10,
     right: 10,
   },
   imageStyle: {
-    height: 220,
+    height: 250,
     width: '100%',
     borderRadius: 10,
     overflow: 'hidden',

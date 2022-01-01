@@ -17,6 +17,7 @@ import {useMutation, useQuery} from '@apollo/client';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import axios from 'axios';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
+import {setStoreCollections} from '../../redux/reducers/storeReducer';
 
 const ProductsTabScreen = ({navigation}) => {
   const [isViewing, setIsViewing] = useState(1);
@@ -75,6 +76,7 @@ const ProductsTabScreen = ({navigation}) => {
       },
     );
   };
+
   console.log(thumbnailUri);
   const onSelectGallery = async () => {
     const result = await launchImageLibrary({}, res => {
@@ -151,6 +153,7 @@ const ProductsTabScreen = ({navigation}) => {
           }}>
           {isViewing === 1 ? 'Products' : 'Collections'}
         </Text>
+
         <TouchableOpacity
           onPress={
             isViewing === 1
@@ -258,7 +261,6 @@ const ProductsTabScreen = ({navigation}) => {
                 <Text style={{color: 'black', fontSize: 20, fontWeight: '600'}}>
                   Upload Image
                 </Text>
-
                 <TouchableOpacity
                   onPress={() => {
                     setIsThumbnailModalVisible(false);
@@ -299,6 +301,7 @@ const ProductsTabScreen = ({navigation}) => {
               </View>
             </ScrollView>
           </Modal>
+
           <Modal
             transparent={true}
             visible={isNewCollectionModalVisible}
@@ -442,7 +445,7 @@ const ProductsTabScreen = ({navigation}) => {
               </Text>
             </View>
           </Modal>
-
+          {newCollections.length === 0 && <View style={{flex: 1}}></View>}
           {newCollections.map(collection => {
             return (
               <CollectionCard key={collection.id} collection={collection} />

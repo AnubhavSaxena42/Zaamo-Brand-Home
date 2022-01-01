@@ -14,7 +14,8 @@ import Checkbox from '../../components/Checkbox';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Dropdown from '../../components/Dropdown';
 import Header from '../../components/Header';
-import {CREATE_COUPON, CREATE_VOUCHER} from './mutations';
+import {CREATE_VOUCHER} from './mutations';
+import {useSelector} from 'react-redux';
 import {GET_STORES, GET_BRANDS} from './queries';
 import {FlatList} from 'react-native-gesture-handler';
 const webDropdownStyle = {
@@ -38,7 +39,7 @@ const webDropdownStyle = {
 };
 
 const mobileDropdownStyle = {
-  height: '3%',
+  height: 50,
   width: '100%',
   borderRadius: 5,
   alignItems: 'center',
@@ -106,6 +107,7 @@ const CreateCouponScreen = ({navigation}) => {
     {id: 'PERCENTAGE', name: 'Percentage'},
     {id: 'FIXED', name: 'Fixed'},
   ]);
+  const authorisedBrands = useSelector(state => state.user.authorisedBrands);
   const [couponType, setCouponType] = useState('');
   const [selectedStores, setSelectedStores] = useState([]);
   const [isStoresModalVisible, setIsStoresModalVisible] = useState(false);
@@ -118,13 +120,8 @@ const CreateCouponScreen = ({navigation}) => {
   const [minValue, setMinValue] = useState('');
   const [minQuantity, setMinQuantity] = useState('');
   const [influencerStore, setInfluencerStore] = useState('');
-  const [influencerStoreItems, setInfluencerStoreItems] = useState([
-    {id: 'U3RvcmU6NzE=', name: 'My Store'},
-    {id: 'Influencer2', name: 'Influencer_2'},
-  ]);
-  const [brandItems, setBrandItems] = useState([
-    {id: 'QnJhbmQ6MjE=', name: 'My Brand'},
-  ]);
+  const [influencerStoreItems, setInfluencerStoreItems] = useState([]);
+  const [brandItems, setBrandItems] = useState(authorisedBrands);
   const [selectedBrands, setSelectedBrands] = useState([]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -133,8 +130,28 @@ const CreateCouponScreen = ({navigation}) => {
   const [couponName, setCouponName] = useState('');
   const [couponDescription, setCouponDescription] = useState('');
   const [discountValue, setDiscountValue] = useState();
+  const [couponTypeFieldError, setCouponTypeFieldError] = useState(false);
+  const [couponCodeFieldError, setCouponCodeFieldError] = useState(false);
+  const [selectedStoresFieldError, setSelectedStoresFieldError] =
+    useState(false);
+  const [discountTypeFieldError, setDiscountTypeFieldError] = useState(false);
+  const [discountValueFieldError, setDiscountValueFieldError] = useState(false);
+  const [selectedBrandsFieldError, setSelectedBrandsFieldError] =
+    useState(false);
+  const [ownerFieldError, setOwnerFieldError] = useState(false);
+  const [couponNameFieldError, setCouponNameFieldError] = useState(false);
+  const [couponTitleFieldError, setCouponTitleFieldError] = useState(false);
+  const [couponDescriptionFieldError, setCouponDescriptionFieldError] =
+    useState(false);
   const storesResponse = useQuery(GET_STORES);
   const brandsResponse = useQuery(GET_BRANDS);
+  const ErrorMessage = () => {
+    return (
+      <View style={styles.errorMessageContainer}>
+        <Text style={styles.errorMessageText}>This Field is required*</Text>
+      </View>
+    );
+  };
   let input = {
     type: couponType,
     name: couponName,
@@ -146,6 +163,10 @@ const CreateCouponScreen = ({navigation}) => {
       {
         key: 'description',
         value: couponDescription,
+      },
+      {
+        key: 'title',
+        value: couponTitle,
       },
     ],
   };
@@ -173,40 +194,48 @@ const CreateCouponScreen = ({navigation}) => {
       setInfluencerStoreItems(newStoreItems);
     }
   }, [storesResponse.data]);
+
   const onCreatePress = () => {
     if (!couponType || couponType === '') {
-      setFieldError(true);
+      setCouponTypeFieldError(true);
       return;
     }
+    if (!couponName || couponName === '') {
+      setCouponNameFieldError(true);
+      return;
+    }
+    if (!couponTitle || couponTitle === '') {
+      setCouponTitleFieldError(true);
+    }
     if (!couponCode || couponCode === '') {
-      setFieldError(true);
+      setCouponCodeFieldError(true);
       return;
     }
     if (!selectedStores || selectedStores.length === 0) {
-      setFieldError(true);
+      setSelectedStoresFieldError(true);
       return;
     }
     if (!discountType || discountType === '') {
-      setFieldError(true);
+      setDiscountTypeFieldError(true);
       return;
     }
     if (!discountValue || discountValue === '') {
-      setFieldError(true);
+      setDiscountValueFieldError(true);
       return;
     }
     if (
       couponType === 'SPECIFIC_PRODUCT' &&
       (!selectedBrands || selectedBrands.length === 0)
     ) {
-      setFieldError(true);
+      setSelectedBrandsFieldError(true);
       return;
     }
     if (!owner || owner === '') {
-      setFieldError(true);
+      setOwnerFieldError(true);
       return;
     }
     if (!couponDescription || couponDescription === '') {
-      setFieldError(true);
+      setCouponDescriptionFieldError(true);
       return;
     }
     if (minValue !== '') input.minAmountSpent = parseInt(minValue);
@@ -237,7 +266,7 @@ const CreateCouponScreen = ({navigation}) => {
     if (owner && owner === 'ZAAMO') {
       setBrandItems(allBrandsItems);
     } else {
-      setBrandItems([{id: 'QnJhbmQ6MjE=', name: 'My Brand'}]);
+      setBrandItems(authorisedBrands);
     }
   }, [owner]);
   console.log(selectedStores);
@@ -465,6 +494,15 @@ const CreateCouponScreen = ({navigation}) => {
               : mobileDropdownValuesContainerStyle
           }
         />
+        {couponType !== '' && (
+          <View style={{flexDirection: 'row', marginVertical: '5%'}}>
+            <Entypo name="check" size={15} color={'black'} />
+            <Text style={{marginBottom: '5%', marginLeft: '3%'}}>
+              Coupon Type Selected
+            </Text>
+          </View>
+        )}
+        {couponTypeFieldError && <ErrorMessage />}
         <Text
           style={{
             marginVertical: '5%',
@@ -500,6 +538,15 @@ const CreateCouponScreen = ({navigation}) => {
               : mobileDropdownValuesContainerStyle
           }
         />
+        {discountType !== '' && (
+          <View style={{flexDirection: 'row', marginVertical: '5%'}}>
+            <Entypo name="check" size={15} color={'black'} />
+            <Text style={{marginBottom: '5%', marginLeft: '3%'}}>
+              Discount Type Selected
+            </Text>
+          </View>
+        )}
+        {discountTypeFieldError && <ErrorMessage />}
         <Text
           style={{
             marginVertical: '5%',
@@ -524,6 +571,7 @@ const CreateCouponScreen = ({navigation}) => {
           }}
           placeholder={'Select Discount Value'}
         />
+        {discountValueFieldError && <ErrorMessage />}
         <Text
           style={{
             marginVertical: '5%',
@@ -608,28 +656,48 @@ const CreateCouponScreen = ({navigation}) => {
           </View>
         </View>
         {couponType === 'SPECIFIC_PRODUCT' && (
-          <TouchableOpacity
-            onPress={() => setIsBrandsModalVisible(true)}
-            style={{
-              marginTop: '5%',
-              width: '100%',
-              height: '3%',
-              justifyContent: 'center',
-              borderWidth: 1,
-              borderColor: 'rgba(0,0,0,0.3)',
-              borderRadius: 4,
-              backgroundColor: 'white',
-              paddingHorizontal: '5%',
-              shadowOffset: {
-                width: 0,
-                height: 1,
-              },
-              shadowRadius: 2,
-              shadowOpacity: 1.0,
-              elevation: 5,
-            }}>
-            <Text>Select Brands*</Text>
-          </TouchableOpacity>
+          <View style={{flex: 1}}>
+            <Text
+              style={{
+                marginTop: '5%',
+                fontSize: 16,
+                color: 'black',
+                fontWeight: '500',
+              }}>
+              Select Brands*
+            </Text>
+            <TouchableOpacity
+              onPress={() => setIsBrandsModalVisible(true)}
+              style={{
+                marginVertical: '5%',
+                width: '100%',
+                height: 50,
+                justifyContent: 'center',
+                borderWidth: 1,
+                borderColor: 'rgba(0,0,0,0.3)',
+                borderRadius: 4,
+                paddingHorizontal: '5%',
+                backgroundColor: 'white',
+                shadowOffset: {
+                  width: 0,
+                  height: 1,
+                },
+                shadowRadius: 2,
+                shadowOpacity: 1.0,
+                elevation: 5,
+              }}>
+              <Text>Select Brands*</Text>
+            </TouchableOpacity>
+            {selectedBrands.length !== 0 && (
+              <View style={{flexDirection: 'row'}}>
+                <Entypo name="check" size={15} color={'black'} />
+                <Text style={{marginBottom: '5%', marginLeft: '3%'}}>
+                  Brands Selected
+                </Text>
+              </View>
+            )}
+            {selectedBrandsFieldError && <ErrorMessage />}
+          </View>
         )}
         <Text
           style={{
@@ -666,6 +734,15 @@ const CreateCouponScreen = ({navigation}) => {
               : mobileDropdownValuesContainerStyle
           }
         />
+        {owner !== '' && (
+          <View style={{flexDirection: 'row', marginVertical: '5%'}}>
+            <Entypo name="check" size={15} color={'black'} />
+            <Text style={{marginBottom: '5%', marginLeft: '3%'}}>
+              Owner Selected
+            </Text>
+          </View>
+        )}
+        {ownerFieldError && <ErrorMessage />}
         <Text
           style={{
             marginTop: '5%',
@@ -726,6 +803,15 @@ const CreateCouponScreen = ({navigation}) => {
           </View>
         </View>
         {/* CheckBox */}
+        <Text
+          style={{
+            marginTop: '5%',
+            fontSize: 16,
+            color: 'black',
+            fontWeight: '500',
+          }}>
+          Select Influencer Stores*
+        </Text>
         <TouchableOpacity
           onPress={() => setIsStoresModalVisible(true)}
           style={{
@@ -748,6 +834,15 @@ const CreateCouponScreen = ({navigation}) => {
           }}>
           <Text>Select Influencer Stores*</Text>
         </TouchableOpacity>
+        {selectedStores.length !== 0 && (
+          <View style={{flexDirection: 'row', marginVertical: '5%'}}>
+            <Entypo name="check" size={15} color={'black'} />
+            <Text style={{marginBottom: '5%', marginLeft: '3%'}}>
+              Stores Selected
+            </Text>
+          </View>
+        )}
+        {selectedStoresFieldError && <ErrorMessage />}
         <Text style={{fontSize: 22, color: 'black', marginTop: '4%'}}>
           Coupon Naming
         </Text>
@@ -773,6 +868,7 @@ const CreateCouponScreen = ({navigation}) => {
           }}
           placeholder={'Enter Coupon Short Name'}
         />
+        {couponCodeFieldError && <ErrorMessage />}
         <Text
           style={{
             marginVertical: '5%',
@@ -795,6 +891,7 @@ const CreateCouponScreen = ({navigation}) => {
           }}
           placeholder={'Enter Coupon Title'}
         />
+        {couponTitleFieldError && <ErrorMessage />}
         <Text
           style={{
             marginVertical: '5%',
@@ -817,6 +914,7 @@ const CreateCouponScreen = ({navigation}) => {
           }}
           placeholder={'Enter Coupon Name'}
         />
+        {couponNameFieldError && <ErrorMessage />}
         <Text
           style={{
             marginVertical: '5%',
@@ -841,6 +939,7 @@ const CreateCouponScreen = ({navigation}) => {
           textAlignVertical="top"
           placeholder={'Enter Coupon Details'}
         />
+        {couponDescriptionFieldError && <ErrorMessage />}
         <TouchableOpacity onPress={onCreatePress} style={styles.button}>
           <Text style={{color: 'white', fontWeight: 'bold'}}>Create</Text>
         </TouchableOpacity>
@@ -860,6 +959,13 @@ const styles = StyleSheet.create({
   createCouponContainer: {
     flex: 1,
     paddingBottom: '15%',
+  },
+  errorMessageContainer: {
+    marginTop: '1%',
+  },
+  errorMessageText: {
+    fontSize: 12,
+    color: 'red',
   },
   button: {
     height: '3%',

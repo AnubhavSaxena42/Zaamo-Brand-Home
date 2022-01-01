@@ -44,6 +44,7 @@ export const GET_AUTHORISED_BRANDS = gql`
     userByMobile(mobileNo: "919953724117") {
       authorisedBrands {
         id
+        brandName
         products(first: 100) {
           edges {
             node {

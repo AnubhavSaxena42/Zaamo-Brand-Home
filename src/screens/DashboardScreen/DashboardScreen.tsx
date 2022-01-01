@@ -21,6 +21,7 @@ import {
   setStoreCollections,
   setStoreProducts,
 } from '../../redux/reducers/storeReducer';
+import {setAuthorisedBrands} from '../../redux/reducers/userReducer';
 
 //For web it has to be a scrollview , implement fab properly
 const DashboardScreen = ({navigation, route}) => {
@@ -65,6 +66,15 @@ const DashboardScreen = ({navigation, route}) => {
           },
         );
       dispatch(setStoreProducts(newStoreProducts));
+
+      const authorisedBrands =
+        brandResponse.data.userByMobile.authorisedBrands.map(brand => {
+          return {
+            name: brand.brandName,
+            id: brand.id,
+          };
+        });
+      dispatch(setAuthorisedBrands(authorisedBrands));
     }
   }, [brandResponse.data]);
   return (

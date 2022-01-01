@@ -75,7 +75,10 @@ const ProductCard = ({product}) => {
             4
           </Text>
         </Text>
-        <View
+        <TouchableOpacity
+          onPress={() => {
+            toastService.showToast('Feature in Development', true);
+          }}
           style={{
             flexDirection: 'row',
             justifyContent: 'center',
@@ -88,7 +91,7 @@ const ProductCard = ({product}) => {
             <Ionicons name="pencil" size={5} color={'black'} />
           </View>
           <Text style={{color: 'white'}}>Edit</Text>
-        </View>
+        </TouchableOpacity>
       </View>
     </View>
   );

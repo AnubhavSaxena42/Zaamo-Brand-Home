@@ -20,6 +20,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {GET_STORES, GET_BRANDS} from './queries';
 import {FlatList} from 'react-native-gesture-handler';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
+import toastService from '../../services/toast-service';
 const webDropdownStyle = {
   height: '30%',
   width: '15%',
@@ -271,7 +272,11 @@ const CreateCouponScreen = ({navigation}) => {
       console.log('in use effect:', voucherResponse.data);
       if (voucherResponse.data.voucherBulkCreate.success) {
         dispatch(setLoaderStatus(false));
+        toastService.showToast('Coupon has been created succesfully!', true);
         navigation.navigate('MarketingScreen');
+      } else {
+        toastService.showToast('Coupon Creation failed,try again.', true);
+        dispatch(setLoaderStatus(false));
       }
     }
     dispatch(setLoaderStatus(false));

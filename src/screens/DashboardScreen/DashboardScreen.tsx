@@ -78,7 +78,9 @@ const DashboardScreen = ({navigation, route}) => {
       dispatch(setAuthorisedBrands(authorisedBrands));
     }
   }, [brandResponse.data]);
-  const couponResponse = useQuery(GET_COUPONS);
+  const couponResponse = useQuery(GET_COUPONS, {
+    pollInterval: 2000,
+  });
   useEffect(() => {
     console.log('data update');
     if (couponResponse.data) {

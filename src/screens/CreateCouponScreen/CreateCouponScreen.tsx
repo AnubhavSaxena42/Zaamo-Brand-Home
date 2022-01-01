@@ -272,6 +272,9 @@ const CreateCouponScreen = ({navigation}) => {
     }
   }, [voucherResponse.data]);
   useEffect(() => {
+    if (startDate > endDate) setEndDate(startDate);
+  }, [startDate]);
+  useEffect(() => {
     if (owner && owner === 'ZAAMO') {
       setBrandItems(allBrandsItems);
     } else {

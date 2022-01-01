@@ -2,14 +2,16 @@ import React, {useState, useEffect} from 'react';
 import {StyleSheet, ScrollView, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import AddProductCard from '../../components/AddProductCard/AddProductCard';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {setStoreProducts} from '../../redux/reducers/storeReducer';
 import {useMutation} from '@apollo/client';
 import {COLLECTION_CREATE} from './mutations';
-
+import {setStoreCollections} from '../../redux/reducers/storeReducer';
 const CollectionProductsAddScreen = ({navigation, route}) => {
   const products = useSelector(state => state.store.products);
+  const collections = useSelector(state => state.store.collections);
   const [selectedProducts, setSelectedProducts] = useState([]);
+  const dispatch = useDispatch();
   const [collectionCreate, {data, error, loading}] = useMutation(
     COLLECTION_CREATE,
     {
@@ -22,8 +24,18 @@ const CollectionProductsAddScreen = ({navigation, route}) => {
   );
   useEffect(() => {
     if (data) {
-      console.log(data);
+      console.log('Data:', data);
       if (data.collectionCreate.collection) {
+        const newCollections = [
+          ...collections,
+          data.collectionCreate.collection,
+        ];
+        console.log('Old collections:', collections);
+        console.log('New Collections:', newCollections);
+        dispatch(setStoreCollections(newCollections));
+        navigation.navigate('ProductsTabScreen');
+      } else {
+        console.log('error');
         navigation.navigate('ProductsTabScreen');
       }
     }

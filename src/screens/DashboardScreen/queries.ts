@@ -23,6 +23,7 @@ export const GET_STORE = gql`
           node {
             id
             name
+            slug
             imageUrl
             products(first: 10) {
               edges {

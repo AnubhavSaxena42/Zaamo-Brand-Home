@@ -19,59 +19,53 @@ import axios from 'axios';
 
 const ProductsTabScreen = ({navigation}) => {
   const [isViewing, setIsViewing] = useState(1);
-  const [products, setProducts] = useState(
-    useSelector(state => state.store.products),
-  );
   const [isNewCollectionModalVisible, setIsNewCollectionModalVisible] =
     useState(false);
   const [newCollectionName, setNewCollectionName] = useState('');
   const [file, setFile] = useState();
   const [thumbnailUri, setThumbnailUri] = useState('');
   const [isThumbnailModalVisible, setIsThumbnailModalVisible] = useState(false);
-  const user = useSelector(state => state.user.user);
-  const [collections, setCollections] = useState(
-    useSelector(state => state.store.collections),
-  );
-
-  console.log(file);
+  const newProducts = useSelector(state => state.store.products);
+  const newCollections = useSelector(state => state.store.collections);
   const onSelectTakePhoto = async () => {
-    const result = await launchCamera(
+    const res = await launchCamera(
       {
         cameraType: 'back',
-        quality: 0.5,
+        quality: 0.2,
       },
-      res => {},
+      result => {
+        console.log('Real response', result);
+        console.log(result);
+        if (result.didCancel) return;
+        var formData = new FormData();
+        formData.append('file', {
+          type: 'image/jpeg',
+          name: result.assets[0].fileName,
+          uri: result.assets[0].uri,
+        });
+        setFile(result.assets[0]);
+        console.log(formData);
+        axios({
+          method: 'post',
+          url: 'https://betacontent.zaamo.co/engine/upload',
+          data: formData,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Service-Token': '2900ba48-85f6-4929-b19d-0c0da14dbc14',
+          },
+        })
+          .then(function (response) {
+            setThumbnailUri(response.data.url);
+            setIsThumbnailModalVisible(false);
+            setIsNewCollectionModalVisible(true);
+            console.log(response);
+          })
+          .catch(function (response) {
+            //handle error
+            console.log(response);
+          });
+      },
     );
-    console.log('Real response', result);
-    console.log(result);
-    if (result.didCancel) return;
-    var formData = new FormData();
-    formData.append('file', {
-      type: 'image/jpeg',
-      name: result.assets[0].fileName,
-      uri: result.assets[0].uri,
-    });
-    setFile(result.assets[0]);
-    console.log(formData);
-    axios({
-      method: 'post',
-      url: 'https://betacontent.zaamo.co/engine/upload',
-      data: formData,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        'Service-Token': '2900ba48-85f6-4929-b19d-0c0da14dbc14',
-      },
-    })
-      .then(function (response) {
-        setThumbnailUri(response.data.url);
-        setIsThumbnailModalVisible(false);
-        setIsNewCollectionModalVisible(true);
-        console.log(response);
-      })
-      .catch(function (response) {
-        //handle error
-        console.log(response);
-      });
   };
   console.log(thumbnailUri);
   const onSelectGallery = async () => {
@@ -128,7 +122,7 @@ const ProductsTabScreen = ({navigation}) => {
           flexDirection: 'row',
           alignItems: 'center',
           width: '100%',
-          height: '10%',
+          height: 80,
           justifyContent: 'center',
           backgroundColor: 'white',
           borderBottomWidth: 1,
@@ -209,7 +203,7 @@ const ProductsTabScreen = ({navigation}) => {
             justifyContent: 'space-around',
             flexWrap: 'wrap',
           }}>
-          {products.map(product => (
+          {newProducts.map(product => (
             <ProductCard key={product.id} product={product} />
           ))}
         </ScrollView>
@@ -336,6 +330,7 @@ const ProductsTabScreen = ({navigation}) => {
                   borderRadius: 4,
                   paddingHorizontal: '5%',
                   backgroundColor: 'white',
+                  height: 50,
                 }}
                 placeholder={'Enter Collection Name'}
               />
@@ -352,9 +347,9 @@ const ProductsTabScreen = ({navigation}) => {
                 style={{
                   width: '100%',
                   borderWidth: 1,
+                  height: 50,
                   borderColor: 'rgba(0,0,0,0.3)',
                   borderRadius: 4,
-                  height: '12%',
                   paddingHorizontal: '1%',
                   backgroundColor: 'white',
                   flexDirection: 'row',
@@ -434,7 +429,7 @@ const ProductsTabScreen = ({navigation}) => {
             </View>
           </Modal>
 
-          {collections.map(collection => {
+          {newCollections.map(collection => {
             return (
               <CollectionCard key={collection.id} collection={collection} />
             );

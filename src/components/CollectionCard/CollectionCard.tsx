@@ -1,6 +1,14 @@
 import React from 'react';
-import {ImageBackground, StyleSheet, Text, View} from 'react-native';
+import {
+  TouchableOpacity,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import toastService from '../../services/toast-service';
 const CollectionCard = ({collection}) => {
   return (
     <View style={styles.collectionCardContainer}>
@@ -11,7 +19,10 @@ const CollectionCard = ({collection}) => {
             ? {uri: collection.imageUrl}
             : require('../../assets/images/smugcat.jpg')
         }>
-        <View
+        <TouchableOpacity
+          onPress={() => {
+            toastService.showToast('Feature in development', true);
+          }}
           style={{
             flexDirection: 'row',
             justifyContent: 'center',
@@ -27,7 +38,7 @@ const CollectionCard = ({collection}) => {
             <Ionicons name="pencil" size={15} color={'black'} />
           </View>
           <Text style={{color: 'black'}}>Edit</Text>
-        </View>
+        </TouchableOpacity>
         <View
           style={{
             width: '100%',
@@ -47,7 +58,14 @@ const CollectionCard = ({collection}) => {
               Products
             </Text>
           </View>
-          <View
+          <TouchableOpacity
+            onPress={() => {
+              Clipboard.setString(collection.id);
+              toastService.showToast(
+                `Collection ID copied to clipboard:"  ${collection.id}  "`,
+                true,
+              );
+            }}
             style={{
               flexDirection: 'row',
               justifyContent: 'center',
@@ -61,7 +79,7 @@ const CollectionCard = ({collection}) => {
               <Ionicons name="link" size={15} color={'white'} />
             </View>
             <Text style={{color: 'white'}}>Copy Link</Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </ImageBackground>
     </View>

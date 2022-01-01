@@ -8,6 +8,7 @@ import {useMutation} from '@apollo/client';
 import {COLLECTION_CREATE} from './mutations';
 import {setStoreCollections} from '../../redux/reducers/storeReducer';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
+import toastService from '../../services/toast-service';
 const CollectionProductsAddScreen = ({navigation, route}) => {
   const products = useSelector(state => state.store.products);
   const collections = useSelector(state => state.store.collections);
@@ -37,10 +38,15 @@ const CollectionProductsAddScreen = ({navigation, route}) => {
         console.log('New Collections:', newCollections);
         dispatch(setStoreCollections(newCollections));
         dispatch(setLoaderStatus(false));
+        toastService.showToast(
+          `Collection Created:${data.collectionCreate.collection.name}`,
+          true,
+        );
         navigation.navigate('ProductsTabScreen');
       } else {
         console.log('error');
         dispatch(setLoaderStatus(false));
+        toastService.showToast('Could not create collection,Try Again', true);
         navigation.navigate('ProductsTabScreen');
       }
     }

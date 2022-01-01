@@ -1,16 +1,32 @@
 import React from 'react';
-import {ImageBackground, StyleSheet, Text, View} from 'react-native';
+import {
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Clipboard from '@react-native-clipboard/clipboard';
+import toastService from '../../services/toast-service';
 const ProductCard = ({product}) => {
   return (
     <View style={styles.productCardContainer}>
       <ImageBackground
         style={styles.imageStyle}
         source={{uri: product.thumbnail}}>
-        <View style={styles.iconContainer}>
+        <TouchableOpacity
+          onPress={() => {
+            Clipboard.setString(product.id);
+            toastService.showToast(
+              `Product ID copied to clipboard:  ${product.id}  `,
+              true,
+            );
+          }}
+          style={styles.iconContainer}>
           <Entypo name="link" color={'gray'} size={15} />
-        </View>
+        </TouchableOpacity>
         <View
           style={{
             position: 'absolute',

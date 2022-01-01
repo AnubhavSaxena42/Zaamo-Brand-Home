@@ -13,7 +13,7 @@ const Loader = props => {
       // textContent={textContent}
       customIndicator={
         <View style={tailwind('bg-gray-100 p-6 rounded-lg')}>
-          <ActivityIndicator color={'#0089CF'} size={34} />
+          <ActivityIndicator color={'black'} size={34} />
         </View>
       }
       textStyle={styles.spinnerTextStyle}

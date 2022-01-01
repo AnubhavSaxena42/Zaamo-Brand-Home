@@ -1,5 +1,3 @@
-import {Get, Put, Post, Delete} from './api.service';
-
 import {Platform, ToastAndroid} from 'react-native';
 import Toast from 'react-native-simple-toast';
 class ToastService {

@@ -1,6 +1,7 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
+import toastService from '../../services/toast-service';
 const CouponOverview = ({coupon}) => {
   return (
     <View style={styles.couponOverviewContainer}>
@@ -53,7 +54,14 @@ const CouponOverview = ({coupon}) => {
           }}>
           {coupon.code}
         </Text>
-        <View
+        <TouchableOpacity
+          onPress={() => {
+            Clipboard.setString(coupon.code);
+            toastService.showToast(
+              `Code copied to clipboard:${coupon.code}`,
+              true,
+            );
+          }}
           style={{
             flexDirection: 'row',
             backgroundColor: 'black',
@@ -72,7 +80,7 @@ const CouponOverview = ({coupon}) => {
             }}>
             Copy Code
           </Text>
-        </View>
+        </TouchableOpacity>
         {coupon.endDate && (
           <Text
             style={{marginTop: '2%', marginBottom: '10%', alignSelf: 'center'}}>

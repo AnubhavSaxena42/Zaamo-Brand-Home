@@ -5,6 +5,7 @@ export const GET_STORE = gql`
     store {
       storeName
       id
+      slug
       storeType
       defaultCollection {
         id

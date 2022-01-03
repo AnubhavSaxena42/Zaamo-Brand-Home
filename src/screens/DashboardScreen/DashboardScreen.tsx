@@ -2,10 +2,12 @@ import React, {useEffect} from 'react';
 import {
   StyleSheet,
   Image,
+  Platform,
   ScrollView,
   Dimensions,
   Text,
   View,
+  Alert,
   TouchableOpacity,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -14,6 +16,7 @@ import UpdateCard from '../../components/UpdateCard/UpdateCard';
 import {getItemFromStorage} from '../../services/storage-service';
 import authService from '../../services/auth-service';
 import {useSelector, useDispatch} from 'react-redux';
+import {request, PERMISSIONS, openSettings} from 'react-native-permissions';
 import {useQuery} from '@apollo/client';
 import {GET_AUTHORISED_BRANDS, GET_COUPONS, GET_STORE} from './queries';
 import {
@@ -28,6 +31,77 @@ import {setAuthorisedBrands} from '../../redux/reducers/userReducer';
 const DashboardScreen = ({navigation, route}) => {
   const windowWidth = Dimensions.get('window').width;
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    handlePermission();
+  }, []);
+
+  const handlePermission = async () => {
+    async function requestAll() {
+      const cameraStatus = Platform.select({
+        android: PERMISSIONS.ANDROID.CAMERA,
+        ios: PERMISSIONS.IOS.CAMERA,
+      });
+
+      const audioStatus = Platform.select({
+        android: PERMISSIONS.ANDROID.RECORD_AUDIO,
+        ios: PERMISSIONS.IOS.CAMERA, //ios only
+      });
+
+      const photoLibrary = Platform.select({
+        // android: PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+        android: PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+        ios: PERMISSIONS.IOS.PHOTO_LIBRARY,
+      });
+
+      const writePhotoLibrary = Platform.select({
+        android: PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+        ios: PERMISSIONS.IOS.PHOTO_LIBRARY,
+      });
+
+      const isCamera = await request(cameraStatus);
+      const isAudio = await request(audioStatus);
+      const isPhotoLibrary = await request(photoLibrary);
+      const isWritePhotoLibrary = await request(writePhotoLibrary);
+      return {isCamera, isAudio, isPhotoLibrary, isWritePhotoLibrary};
+    }
+
+    requestAll().then(status => {
+      console.log('status', status);
+      if (
+        status.isAudio == 'granted' &&
+        status.isCamera == 'granted' &&
+        status.isPhotoLibrary == 'granted' &&
+        status.isWritePhotoLibrary == 'granted'
+      ) {
+        console.log('Permissions Granted');
+      } else {
+        Alert.alert(
+          '',
+          'All Permission' +
+            ' is required to use this app. Please grant the permission to continue',
+          [
+            {
+              text: 'OK',
+              onPress: () => {
+                if (
+                  status.isAudio == 'blocked' ||
+                  status.isCamera == 'blocked' ||
+                  status.isPhotoLibrary == 'blocked' ||
+                  status.isWritePhotoLibrary == 'blocked'
+                ) {
+                  openSettings();
+                } else {
+                  handlePermission();
+                }
+              },
+            },
+          ],
+        );
+      }
+    });
+  };
+
   const storeResponse = useQuery(GET_STORE);
   const brandResponse = useQuery(GET_AUTHORISED_BRANDS);
   useEffect(() => {
@@ -43,9 +117,9 @@ const DashboardScreen = ({navigation, route}) => {
         ({node}) => {
           return {
             id: node.id,
-            products: node.products.edges,
-            imageUrl: node.imageUrl,
-            name: node.name,
+            products: node.products ? node.products.edges : [],
+            imageUrl: node.imageUrl ? node.imageUrl : '',
+            name: node.name ? node.name : '',
           };
         },
       );

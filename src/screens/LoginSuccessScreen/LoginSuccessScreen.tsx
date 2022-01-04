@@ -4,9 +4,17 @@ import {useMutation} from '@apollo/client';
 import {TOKEN_CREATE, USER_REGISTER} from './mutations';
 import {useDispatch} from 'react-redux';
 import authService from '../../services/auth-service';
-import {setUser, setToken} from '../../redux/reducers/userReducer';
-import {saveItemToStorage} from '../../services/storage-service';
+import {
+  setUser,
+  setToken,
+  setMobileNumber,
+} from '../../redux/reducers/userReducer';
+import {
+  getItemFromStorage,
+  saveItemToStorage,
+} from '../../services/storage-service';
 import CongratulationsSVG from './Congratulations';
+import toastService from '../../services/toast-service';
 const LoginSuccessScreen = ({navigation, route}) => {
   const [createToken, {data, loading, error}] = useMutation(TOKEN_CREATE, {
     variables: {
@@ -24,7 +32,7 @@ const LoginSuccessScreen = ({navigation, route}) => {
     createToken();
   }, []);
   useEffect(() => {
-    if (data && data.tokenCreate.user.isActive) {
+    /*if (data && data.tokenCreate.user.isActive) {
       console.log('in token create');
       dispatch(setUser(data.tokenCreate.user));
       dispatch(setToken(data.tokenCreate.token));
@@ -58,11 +66,59 @@ const LoginSuccessScreen = ({navigation, route}) => {
           .catch(err => console.log('Error storing token:', err));
         userRegister();
       }
+    }*/
+    if (data && data.tokenCreate) {
+      if (data.tokenCreate.user && data.tokenCreate.token) {
+        console.log('in token create');
+        dispatch(setUser(data.tokenCreate.user));
+        dispatch(setToken(data.tokenCreate.token));
+        if (route.params.mobileNumber) {
+          dispatch(setMobileNumber(route.params.mobileNumber));
+          saveItemToStorage('User', JSON.stringify(data.tokenCreate.user));
+          authService
+            .getStoreId(data.tokenCreate.user.userId)
+            .then(store => {
+              console.log(store);
+              saveItemToStorage('Store-ID', store.store_id.toString());
+            })
+            .catch(err => console.log(err));
+          saveItemToStorage('Token', data.tokenCreate.token)
+            .then(res => console.log('Token Stored:', res))
+            .catch(err => console.log('Error storing token:', err));
+          toastService.showToast('Logged in successfully', true);
+          navigation.navigate('StoreStack');
+        } else {
+          getItemFromStorage('Mobile Number').then(mobileNumber => {
+            if (mobileNumber) {
+              dispatch(setMobileNumber(mobileNumber));
+              saveItemToStorage('User', JSON.stringify(data.tokenCreate.user));
+              authService
+                .getStoreId(data.tokenCreate.user.userId)
+                .then(store => {
+                  console.log(store);
+                  saveItemToStorage('Store-ID', store.store_id.toString());
+                })
+                .catch(err => console.log(err));
+              saveItemToStorage('Token', data.tokenCreate.token)
+                .then(res => console.log('Token Stored:', res))
+                .catch(err => console.log('Error storing token:', err));
+              toastService.showToast('Logged in successfully', true);
+              navigation.navigate('StoreStack');
+            } else {
+              console.log('mobile number not found');
+              navigation.navigate('StoreStack');
+            }
+          });
+        }
+      } else {
+        console.log('In register block');
+        userRegister();
+      }
     }
   }, [data]);
   useEffect(() => {
-    if (registerData && registerData.userRegister.user.isActive === 'true') {
-      navigation.navigate('StoreStack');
+    if (registerData) {
+      console.log(registerData);
     }
   }, [registerData]);
   return (

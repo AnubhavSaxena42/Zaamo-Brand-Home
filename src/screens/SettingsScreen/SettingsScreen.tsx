@@ -1,10 +1,17 @@
 import React from 'react';
-import {StyleSheet, Image, Dimensions, Text, View} from 'react-native';
+import {
+  StyleSheet,
+  ScrollView,
+  Image,
+  Dimensions,
+  Text,
+  View,
+} from 'react-native';
 import SettingOption from '../../components/SettingOption/SettingOption';
 const windowWidth = Dimensions.get('window').width;
 const SettingsScreen = ({navigation, route}) => {
   return (
-    <View style={styles.settingsContainer}>
+    <ScrollView style={styles.settingsContainer}>
       <View style={{alignItems: 'center'}}>
         <Image
           source={require('../../assets/images/DashboardEllipse.png')}
@@ -101,7 +108,7 @@ const SettingsScreen = ({navigation, route}) => {
           />
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

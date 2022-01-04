@@ -264,6 +264,13 @@ const CreateCouponScreen = ({navigation}) => {
       input.startDate = startDate.toISOString();
       input.endDate = endDate.toISOString();
     }
+    if (
+      couponType === 'SPECIFIC_PRODUCT' &&
+      selectedProducts &&
+      selectedProducts.length !== 0
+    ) {
+      input.products = selectedProducts;
+    }
     console.log('New Input:', input);
     voucherBulkCreate();
   };

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   TextInput,
@@ -12,16 +12,38 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useMutation} from '@apollo/client';
 import {GENERATE_OTP} from './mutations';
 import PhoneSVG from './phone';
+import {useDispatch} from 'react-redux';
+import toastService from '../../services/toast-service';
+import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 //import {TextInput} from 'react-native-gesture-handler';
 const MobileOTPScreen = ({navigation, route}) => {
   const [mobileNumber, setMobileNumber] = useState('');
-
+  const [errorMessage, setErrorMessage] = useState(false);
+  const dispatch = useDispatch();
   const [generateOtp, {data, loading, error}] = useMutation(GENERATE_OTP, {
     variables: {
       mobileNo: '91' + mobileNumber,
     },
   });
   console.log(data, loading, error);
+  useEffect(() => {
+    if (data) {
+      if (data.generateOtp.success) {
+        navigation.navigate('VerifyOTPScreen', {
+          mobileNumber: mobileNumber,
+        });
+      } else {
+        toastService.showToast('Could not generate OTP,Try again.', true);
+      }
+    }
+  }, [data]);
+  useEffect(() => {
+    if (loading) {
+      dispatch(setLoaderStatus(true));
+    } else {
+      dispatch(setLoaderStatus(false));
+    }
+  }, [loading]);
   return (
     <View style={styles.mobileOTPContainer}>
       <View style={styles.iconContainer}>
@@ -43,14 +65,26 @@ const MobileOTPScreen = ({navigation, route}) => {
       </Text>
       <Text style={styles.infoText}>Enter Mobile Number</Text>
       <TextInput
-        onChangeText={text => setMobileNumber(text)}
+        onChangeText={text => {
+          if (mobileNumber.length === 10) return;
+          setMobileNumber(text);
+        }}
         style={styles.numberInput}
+        keyboardType="number-pad"
         value={mobileNumber}
       />
+      {errorMessage && (
+        <Text style={{marginBottom: '4%'}}>Enter a valid mobile Number</Text>
+      )}
       <TouchableOpacity
         onPress={() => {
-          generateOtp();
-          navigation.navigate('VerifyOTPScreen', {mobileNumber: mobileNumber});
+          if (mobileNumber.length < 10) {
+            setErrorMessage(true);
+            return;
+          } else {
+            console.log('in else block');
+            generateOtp();
+          }
         }}
         style={styles.button}>
         <Text style={{color: 'white', fontWeight: 'bold'}}>GET OTP</Text>
@@ -104,7 +138,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   button: {
-    height: '8%',
+    height: 60,
     borderRadius: 10,
     width: '90%',
     backgroundColor: 'black',

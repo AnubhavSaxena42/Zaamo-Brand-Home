@@ -1,4 +1,5 @@
 import {gql} from '@apollo/client';
+import {getItemFromStorage} from '../../services/storage-service';
 
 export const GET_STORE = gql`
   query {
@@ -42,8 +43,8 @@ export const GET_STORE = gql`
 `;
 
 export const GET_AUTHORISED_BRANDS = gql`
-  query {
-    userByMobile(mobileNo: "919953724117") {
+  query ($mobileNo: String!) {
+    userByMobile(mobileNo: $mobileNo) {
       authorisedBrands {
         id
         brandName

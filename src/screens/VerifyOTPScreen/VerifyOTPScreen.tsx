@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,17 +10,40 @@ import {
 } from 'react-native';
 import {useMutation} from '@apollo/client';
 import {VERIFY_OTP} from './mutations';
+import {useDispatch} from 'react-redux';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import PhoneSVG from '../MobileOTPScreen/phone';
+import toastService from '../../services/toast-service';
+import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 const VerifyOTPScreen = ({navigation, route}) => {
   const [otp, setOtp] = useState('');
+  const [errorMessage, setErrorMessage] = useState(false);
+  const dispatch = useDispatch();
   const [verifyOtp, {data, error, loading}] = useMutation(VERIFY_OTP, {
     variables: {
       mobileNo: '91' + route.params.mobileNumber,
-      otp: 2474,
+      otp: parseInt(otp),
     },
   });
-  console.log(data, error, loading);
+  useEffect(() => {
+    if (data) {
+      if (data.verifyOtp.success) {
+        toastService.showToast('OTP Verified!', true);
+        navigation.navigate('ConnectInstaScreen', {
+          mobileNumber: route.params.mobileNumber,
+        });
+      } else {
+        toastService.showToast('Failed to verify OTP,try again later.', true);
+      }
+    }
+  }, [data]);
+  useEffect(() => {
+    if (loading) {
+      dispatch(setLoaderStatus(true));
+    } else {
+      dispatch(setLoaderStatus(false));
+    }
+  }, [loading]);
   return (
     <View style={styles.verifyOTPContainer}>
       <View style={styles.iconContainer}>
@@ -38,19 +61,30 @@ const VerifyOTPScreen = ({navigation, route}) => {
       </Text>
       <TextInput
         value={otp}
-        onChangeText={text => setOtp(text)}
+        keyboardType="number-pad"
+        onChangeText={text => {
+          if (otp.length == 4) return;
+          setOtp(text);
+        }}
         style={styles.numberInput}
       />
       <Text style={{...styles.infoText, marginBottom: '7%'}}>
         Didn't receive the OTP?
         <Text style={styles.otpText}>RESEND OTP</Text>
       </Text>
+      {errorMessage && (
+        <Text style={{marginBottom: '5%'}}>Please enter a valid OTP</Text>
+      )}
       <TouchableOpacity
         onPress={() => {
-          verifyOtp();
-          navigation.navigate('ConnectInstaScreen', {
+          /*navigation.navigate('ConnectInstaScreen', {
             mobileNumber: route.params.mobileNumber,
-          });
+          });*/
+          if (otp.length < 4) {
+            setErrorMessage(true);
+            return;
+          }
+          verifyOtp();
         }}
         style={styles.button}>
         <Text style={{color: 'white', fontWeight: 'bold'}}>
@@ -109,7 +143,7 @@ const styles = StyleSheet.create({
     marginBottom: '7%',
   },
   button: {
-    height: '10%',
+    height: 60,
     borderRadius: 5,
     width: '90%',
     backgroundColor: 'black',

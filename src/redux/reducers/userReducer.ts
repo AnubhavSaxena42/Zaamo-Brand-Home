@@ -4,6 +4,7 @@ import {Post} from '../../types';
 const initialState = {
   user: {},
   token: {},
+  mobileNumber: '',
   authorisedBrands: [],
 };
 
@@ -23,9 +24,14 @@ export const userSlice = createSlice({
       state.authorisedBrands = action.payload;
       console.log('Authorised Brands Set:', action.payload);
     },
+    setMobileNumber: (state, action: PayloadAction<any>) => {
+      state.mobileNumber = action.payload;
+      console.log('Mobile Number Set:', action.payload);
+    },
   },
 });
 
-export const {setUser, setToken, setAuthorisedBrands} = userSlice.actions;
+export const {setUser, setToken, setMobileNumber, setAuthorisedBrands} =
+  userSlice.actions;
 
 export default userSlice.reducer;

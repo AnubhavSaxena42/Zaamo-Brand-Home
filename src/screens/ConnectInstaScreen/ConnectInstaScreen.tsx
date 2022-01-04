@@ -1,6 +1,7 @@
 import React from 'react';
 import {TouchableOpacity, StyleSheet, Image, Text, View} from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {saveItemToStorage} from '../../services/storage-service';
 
 const ConnectInstaScreen = ({navigation, route}) => {
   return (
@@ -29,11 +30,15 @@ const ConnectInstaScreen = ({navigation, route}) => {
         source={require('../../assets/images/smugcat.jpg')}
       />
       <TouchableOpacity
-        onPress={() =>
-          navigation.navigate('LoginSuccessScreen', {
-            mobileNumber: route.params.mobileNumber,
-          })
-        }
+        onPress={() => {
+          saveItemToStorage('Mobile Number', route.params.mobileNumber)
+            .then(res => {
+              navigation.navigate('LoginSuccessScreen', {
+                mobileNumber: route.params.mobileNumber,
+              });
+            })
+            .catch(err => console.log(err));
+        }}
         style={styles.button}>
         <Text style={{color: 'white', fontSize: 18, fontWeight: 'bold'}}>
           Connect Your IG

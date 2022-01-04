@@ -30,6 +30,7 @@ import {setAuthorisedBrands} from '../../redux/reducers/userReducer';
 //For web it has to be a scrollview , implement fab properly
 const DashboardScreen = ({navigation, route}) => {
   const windowWidth = Dimensions.get('window').width;
+  const mobileNumber = useSelector(state => state.user.mobileNumber);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -103,7 +104,13 @@ const DashboardScreen = ({navigation, route}) => {
   };
 
   const storeResponse = useQuery(GET_STORE);
-  const brandResponse = useQuery(GET_AUTHORISED_BRANDS);
+  const brandResponse = useQuery(GET_AUTHORISED_BRANDS, {
+    variables: {
+      mobileNo: '91' + mobileNumber,
+    },
+  });
+  console.log(mobileNumber);
+  console.log(brandResponse.data, brandResponse.loading, brandResponse.error);
   useEffect(() => {
     if (storeResponse.data) {
       dispatch(
@@ -128,32 +135,39 @@ const DashboardScreen = ({navigation, route}) => {
   }, [storeResponse.data]);
   useEffect(() => {
     if (brandResponse.data) {
-      const newStoreProducts =
-        brandResponse.data.userByMobile.authorisedBrands[0].products.edges.map(
-          ({node}) => {
-            return {
-              brandName: node.brand.brandName,
-              id: node.id,
-              name: node.name,
-              thumbnail: node.thumbnail
-                ? node.thumbnail.url
-                : 'https://media-exp1.licdn.com/dms/image/C4E0BAQGymyKm7OE3wg/company-logo_200_200/0/1636442519943?e=2159024400&v=beta&t=19hHu3puobGsregS0-31D-KiANWe3NqrKZESktzQC30',
-              price: node.pricing.priceRange
-                ? node.pricing.priceRange.start.net.amount
-                : 0,
-            };
-          },
-        );
-      dispatch(setStoreProducts(newStoreProducts));
+      console.log(brandResponse.data);
+      if (
+        brandResponse.data.userByMobile &&
+        brandResponse.data.userByMobile.authorisedBrands[0] &&
+        brandResponse.data.userByMobile.authorisedBrands[0].products
+      ) {
+        const newStoreProducts =
+          brandResponse.data.userByMobile.authorisedBrands[0].products.edges.map(
+            ({node}) => {
+              return {
+                brandName: node.brand.brandName,
+                id: node.id,
+                name: node.name,
+                thumbnail: node.thumbnail
+                  ? node.thumbnail.url
+                  : 'https://media-exp1.licdn.com/dms/image/C4E0BAQGymyKm7OE3wg/company-logo_200_200/0/1636442519943?e=2159024400&v=beta&t=19hHu3puobGsregS0-31D-KiANWe3NqrKZESktzQC30',
+                price: node.pricing.priceRange
+                  ? node.pricing.priceRange.start.net.amount
+                  : 0,
+              };
+            },
+          );
+        dispatch(setStoreProducts(newStoreProducts));
 
-      const authorisedBrands =
-        brandResponse.data.userByMobile.authorisedBrands.map(brand => {
-          return {
-            name: brand.brandName,
-            id: brand.id,
-          };
-        });
-      dispatch(setAuthorisedBrands(authorisedBrands));
+        const authorisedBrands =
+          brandResponse.data.userByMobile.authorisedBrands.map(brand => {
+            return {
+              name: brand.brandName,
+              id: brand.id,
+            };
+          });
+        dispatch(setAuthorisedBrands(authorisedBrands));
+      }
     }
   }, [brandResponse.data]);
   const couponResponse = useQuery(GET_COUPONS, {

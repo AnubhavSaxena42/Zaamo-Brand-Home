@@ -10,10 +10,12 @@ import {
   TextInput,
   View,
   FlatList,
+  Image,
   Modal,
 } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Header from '../../components/Header';
+
 import Dropdown from '../../components/Dropdown';
 import Checkbox from '../../components/Checkbox';
 import TaggedComponent from '../../components/TaggedComponent';
@@ -23,6 +25,7 @@ import {CREATE_PRODUCT} from './mutations';
 import {setStoreProducts} from '../../redux/reducers/storeReducer';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import toastService from '../../services/toast-service';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 //import GestureRecognizer from 'react-native-swipe-gestures';
 const ErrorMessage = () => {
   return (
@@ -46,6 +49,7 @@ const CreateProductScreen = ({navigation, route}) => {
   const [productTypeItems, setProductTypeItems] = useState([]);
   const [isVariationNameError, setIsVariationNameError] = useState(false);
   const [trigger, setTrigger] = useState(true);
+  const [imageUri, setImageUri] = useState();
   const [codCheckbox, setCodCheckbox] = useState([
     {value: 'Allow COD', isSelected: false},
   ]);
@@ -283,6 +287,17 @@ const CreateProductScreen = ({navigation, route}) => {
 
     productCreate();
   };
+  const imageAddHandler = () => {
+    launchImageLibrary({}, res => {
+      console.log(res);
+      if (res.didCancel) {
+        return;
+      } else {
+        setImageUri(res.assets[0].uri);
+        console.log(res.assets[0]);
+      }
+    });
+  };
   return (
     <ScrollView style={{backgroundColor: 'rgba(229, 229, 229, 0.2);'}}>
       {/*<GestureRecognizer
@@ -365,12 +380,10 @@ const CreateProductScreen = ({navigation, route}) => {
             />
             {isNameError && <ErrorMessage />}
           </View>
-          <View style={styles.productImagesContainer}>
-            {/* product Images + add Image */}
-          </View>
+
           <View style={styles.productPriceStockInputContainer}>
             <View style={styles.priceInputContainer}>
-              <Text style={styles.labelText}>Price</Text>
+              <Text style={styles.labelText}>Base Price</Text>
               <TextInput
                 onChangeText={text => {
                   setPrice(text);
@@ -382,7 +395,7 @@ const CreateProductScreen = ({navigation, route}) => {
               />
               {isPriceError && <ErrorMessage />}
             </View>
-            <View style={styles.stockInputContainer}>
+            {/* <View style={styles.stockInputContainer}>
               <Text style={styles.labelText}>Stock</Text>
               <TextInput
                 onChangeText={text => {
@@ -394,7 +407,29 @@ const CreateProductScreen = ({navigation, route}) => {
                 style={styles.stockInput}
               />
               {isStockError && <ErrorMessage />}
-            </View>
+            </View>*/}
+          </View>
+          <Text style={{...styles.labelText, marginVertical: '2%'}}>
+            Add Image
+          </Text>
+          <View style={styles.imageContainer}>
+            {imageUri && (
+              <Image
+                source={{uri: imageUri}}
+                resizeMode="contain"
+                style={{width: 100, height: '100%'}}
+              />
+            )}
+            <TouchableOpacity
+              onPress={() => imageAddHandler()}
+              style={{
+                width: '30%',
+                height: '100%',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Entypo name="camera" color="darkgray" size={35} />
+            </TouchableOpacity>
           </View>
           <View style={styles.selectCategoryContainer}>
             <Text style={styles.labelText}>Select Product Types</Text>
@@ -532,7 +567,9 @@ const CreateProductScreen = ({navigation, route}) => {
 export default CreateProductScreen;
 
 const styles = StyleSheet.create({
-  createProductContainer: {},
+  createProductContainer: {
+    flex: 1,
+  },
   createProductHeaderContainer: {
     backgroundColor: 'white',
     paddingVertical: '5%',
@@ -568,7 +605,11 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     marginTop: '3%',
   },
-  productImagesContainer: {},
+  imageContainer: {
+    flexDirection: 'row',
+    width: '100%',
+    height: 100,
+  },
   productPriceStockInputContainer: {
     flexDirection: 'row',
   },

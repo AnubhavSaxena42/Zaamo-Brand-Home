@@ -2,7 +2,11 @@ import React, {useEffect} from 'react';
 import {StyleSheet, Text, Image, View} from 'react-native';
 import {getItemFromStorage} from '../../services/storage-service';
 import {useDispatch} from 'react-redux';
-import {setToken, setUser} from '../../redux/reducers/userReducer';
+import {
+  setMobileNumber,
+  setToken,
+  setUser,
+} from '../../redux/reducers/userReducer';
 const SplashScreen = ({navigation}) => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -11,18 +15,51 @@ const SplashScreen = ({navigation}) => {
         if (token && token !== '') {
           getItemFromStorage('User').then(user => {
             if (user && user !== '') {
+              console.log('User:', user);
               const userObj = JSON.parse(user);
               dispatch(setToken(token));
               dispatch(setUser(userObj));
+              getItemFromStorage('Mobile Number').then(mobileNumber => {
+                if (mobileNumber) {
+                  dispatch(setMobileNumber(mobileNumber));
+                  navigation.navigate('StoreStack');
+                } else {
+                  console.log('Mobile Number not found');
+                  navigation.navigate('StoreStack');
+                }
+              });
             }
-            navigation.navigate('StoreStack');
           });
         } else {
-          navigation.navigate('MobileOTPScreen');
+          console.log('in else block 1');
+          getItemFromStorage('Mobile Number').then(mobileNumber => {
+            console.log('Mobile Number:', mobileNumber);
+            if (mobileNumber && mobileNumber.length !== 0) {
+              navigation.navigate('LoginSuccessScreen', {
+                mobileNumber: mobileNumber,
+              });
+            } else {
+              navigation.navigate('MobileOTPScreen');
+            }
+          });
         }
       })
       .catch(err => {
-        navigation.navigate('MobileOTPScreen');
+        console.log('in else block');
+        getItemFromStorage('Mobile Number')
+          .then(mobileNumber => {
+            console.log('Mobile Number:', mobileNumber);
+            if (mobileNumber && mobileNumber.length !== 0) {
+              navigation.navigate('LoginSuccessScreen', {
+                mobileNumber: mobileNumber,
+              });
+            } else {
+              navigation.navigate('MobileOTPScreen');
+            }
+          })
+          .catch(err => {
+            navigation.navigate('MobileOTPScreen');
+          });
       });
   }, []);
 

@@ -62,6 +62,10 @@ export const MarketingStackNavigator = () => {
         name="CreateCouponScreen"
         component={CreateCouponScreen}
       />
+      <MarketingStack.Screen
+        name="CollectionProductsAddScreen"
+        component={CollectionProductsAddScreen}
+      />
     </MarketingStack.Navigator>
   );
 };

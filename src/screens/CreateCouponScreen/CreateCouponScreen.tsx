@@ -118,6 +118,7 @@ const CreateCouponScreen = ({navigation}) => {
   const [selectDateToggle, setSelectDateToggle] = useState(false);
   const [endDateOpen, setEndDateOpen] = useState(false);
   const [isStoresModalVisible, setIsStoresModalVisible] = useState(false);
+  const [selectedProducts, setSelectedProducts] = useState([]);
   const [couponTypeItems, setCouponTypeItems] = useState([
     {id: 'SHIPPING', name: 'Shipping'},
     {id: 'ENTIRE_ORDER', name: 'Entire Order'},
@@ -128,7 +129,7 @@ const CreateCouponScreen = ({navigation}) => {
   const [minQuantity, setMinQuantity] = useState('');
   const [influencerStore, setInfluencerStore] = useState('');
   const [influencerStoreItems, setInfluencerStoreItems] = useState([]);
-  const [brandItems, setBrandItems] = useState(authorisedBrands);
+  const [brandItems, setBrandItems] = useState();
   const [selectedBrands, setSelectedBrands] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -139,6 +140,7 @@ const CreateCouponScreen = ({navigation}) => {
   const [discountValue, setDiscountValue] = useState();
   const [couponTypeFieldError, setCouponTypeFieldError] = useState(false);
   const [couponCodeFieldError, setCouponCodeFieldError] = useState(false);
+  const [selectedBrandsItems, setSelectedBrandsItems] = useState([]);
   const dispatch = useDispatch();
   const [selectedStoresFieldError, setSelectedStoresFieldError] =
     useState(false);
@@ -179,6 +181,10 @@ const CreateCouponScreen = ({navigation}) => {
     ],
   };
   console.log('Input:', input);
+  console.log('Brand Items:', brandItems);
+  useEffect(() => {
+    setOwner('ZAAMO');
+  }, []);
   useEffect(() => {
     if (brandsResponse.data) {
       const newBrandItems = brandsResponse.data.brands.edges.map(({node}) => {
@@ -188,6 +194,7 @@ const CreateCouponScreen = ({navigation}) => {
         };
       });
       setAllBrandsItems(newBrandItems);
+      setBrandItems(newBrandItems);
     }
   }, [brandsResponse.data]);
   useEffect(() => {
@@ -291,16 +298,28 @@ const CreateCouponScreen = ({navigation}) => {
       setBrandItems(authorisedBrands);
     }
   }, [owner]);
-  console.log(selectedStores);
-  console.log(selectedBrands);
+
+  console.log('Selected Stores:', selectedStores);
+  console.log('Selected Brands:', selectedBrands);
+  console.log('Selected Products:', selectedProducts);
+
   const ModalItem = ({name, value, selectedItems, setSelectedItems}) => {
     const onPressHandler = () => {
       if (selectedItems.includes(value)) {
         const newSelectedItems = selectedItems.filter(item => item !== value);
+        const newSelectedBrandsItems = selectedBrandsItems.filter(
+          item => item.value !== value,
+        );
+        setSelectedBrandsItems(newSelectedBrandsItems);
         setSelectedItems(newSelectedItems);
       } else {
         const addSelectedItems = [...selectedItems, value];
+        const addSelectedBrandsItems = [
+          ...selectedBrandsItems,
+          {id: value, name: name},
+        ];
         setSelectedItems(addSelectedItems);
+        setSelectedBrandsItems(addSelectedBrandsItems);
       }
     };
     return (
@@ -721,6 +740,60 @@ const CreateCouponScreen = ({navigation}) => {
             {selectedBrandsFieldError && <ErrorMessage />}
           </View>
         )}
+
+        {couponType === 'SPECIFIC_PRODUCT' && (
+          <View style={{flex: 1}}>
+            <Text
+              style={{
+                marginTop: '5%',
+                fontSize: 16,
+                color: 'black',
+                fontWeight: '500',
+              }}>
+              Select Products*
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('CollectionProductsAddScreen', {
+                  setProducts: setSelectedProducts,
+                  products: selectedProducts,
+                  fromVoucherCreate: true,
+                  brands: selectedBrandsItems,
+                });
+              }}
+              style={{
+                marginVertical: '5%',
+                width: '100%',
+                height: 50,
+                justifyContent: 'center',
+                borderWidth: 1,
+                borderColor: 'rgba(0,0,0,0.3)',
+                borderRadius: 4,
+                paddingHorizontal: '5%',
+                backgroundColor: 'white',
+                shadowOffset: {
+                  width: 0,
+                  height: 1,
+                },
+                shadowRadius: 2,
+                shadowOpacity: 1.0,
+                elevation: 5,
+              }}>
+              <Text>Select Products*</Text>
+            </TouchableOpacity>
+            {selectedProducts.length !== 0 && (
+              <View style={{flexDirection: 'row'}}>
+                <Entypo name="check" size={15} color={'black'} />
+                <Text style={{marginBottom: '5%', marginLeft: '3%'}}>
+                  Products Selected
+                </Text>
+              </View>
+            )}
+
+            {selectedBrandsFieldError && <ErrorMessage />}
+          </View>
+        )}
+
         <Text
           style={{
             marginVertical: '5%',

@@ -281,20 +281,24 @@ const CreateCouponScreen = ({navigation}) => {
     },
   });
   useEffect(() => {
-    dispatch(setLoaderStatus(true));
+    
     if (voucherResponse.data) {
       console.log('in use effect:', voucherResponse.data);
       if (voucherResponse.data.voucherBulkCreate.success) {
-        dispatch(setLoaderStatus(false));
+        
         toastService.showToast('Coupon has been created succesfully!', true);
         navigation.navigate('MarketingScreen');
       } else {
         toastService.showToast('Coupon Creation failed,try again.', true);
-        dispatch(setLoaderStatus(false));
+        
       }
     }
     dispatch(setLoaderStatus(false));
   }, [voucherResponse.data]);
+  useEffect(()=>{
+    if(voucherResponse.loading) dispatch(setLoaderStatus(true))
+    else dispatch(setLoaderStatus(false))
+  },[voucherResponse.loading])
   useEffect(() => {
     if (startDate > endDate) setEndDate(startDate);
   }, [startDate]);

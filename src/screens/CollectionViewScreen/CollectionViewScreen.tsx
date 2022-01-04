@@ -32,7 +32,6 @@ const CollectionViewScreen = ({navigation, route}) => {
   );
   useEffect(() => {
     if (productRemoveResponse.data) {
-      dispatch(setLoaderStatus(true));
       console.log('Current Collections:', currentCollections);
       const newCollections = currentCollections.map(collection => {
         if (
@@ -51,7 +50,6 @@ const CollectionViewScreen = ({navigation, route}) => {
       });
       console.log('New Collections:', newCollections);
       dispatch(setStoreCollections(newCollections));
-      dispatch(setLoaderStatus(false));
       setSelectedCollection({
         ...collection,
         products:
@@ -64,6 +62,10 @@ const CollectionViewScreen = ({navigation, route}) => {
       );
     }
   }, [productRemoveResponse.data]);
+  useEffect(() => {
+    if (productRemoveResponse.loading) dispatch(setLoaderStatus(true));
+    else dispatch(setLoaderStatus(false));
+  }, [productRemoveResponse.loading]);
   useEffect(() => {
     if (productIdToRemove && productIdToRemove !== '') {
       collectionRemoveProducts();

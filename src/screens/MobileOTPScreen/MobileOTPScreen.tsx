@@ -66,7 +66,7 @@ const MobileOTPScreen = ({navigation, route}) => {
       <Text style={styles.infoText}>Enter Mobile Number</Text>
       <TextInput
         onChangeText={text => {
-          if (mobileNumber.length === 10) return;
+          if (text.length > 10) return;
           setMobileNumber(text);
         }}
         style={styles.numberInput}
@@ -78,7 +78,7 @@ const MobileOTPScreen = ({navigation, route}) => {
       )}
       <TouchableOpacity
         onPress={() => {
-          if (mobileNumber.length < 10) {
+          if (mobileNumber.length !== 10) {
             setErrorMessage(true);
             return;
           } else {

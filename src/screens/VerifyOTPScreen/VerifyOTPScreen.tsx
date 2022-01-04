@@ -63,7 +63,7 @@ const VerifyOTPScreen = ({navigation, route}) => {
         value={otp}
         keyboardType="number-pad"
         onChangeText={text => {
-          if (otp.length == 4) return;
+          if (text.length > 4) return;
           setOtp(text);
         }}
         style={styles.numberInput}

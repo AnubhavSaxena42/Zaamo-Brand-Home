@@ -188,11 +188,12 @@ const OrdersScreen = ({navigation}) => {
             alignItems: 'center',
           }}>
           <OrderCard navigation={navigation} />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
         </ScrollView>
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -203,11 +204,11 @@ const OrdersScreen = ({navigation}) => {
             alignItems: 'center',
           }}>
           <OrderCard navigation={navigation} />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
         </ScrollView>
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -218,11 +219,11 @@ const OrdersScreen = ({navigation}) => {
             alignItems: 'center',
           }}>
           <OrderCard navigation={navigation} />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
         </ScrollView>
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -232,11 +233,11 @@ const OrdersScreen = ({navigation}) => {
             alignItems: 'center',
           }}>
           <OrderCard navigation={navigation} />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
         </ScrollView>
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -246,11 +247,11 @@ const OrdersScreen = ({navigation}) => {
             alignItems: 'center',
           }}>
           <OrderCard navigation={navigation} />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
         </ScrollView>
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -260,11 +261,11 @@ const OrdersScreen = ({navigation}) => {
             alignItems: 'center',
           }}>
           <OrderCard navigation={navigation} />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
         </ScrollView>
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -274,11 +275,11 @@ const OrdersScreen = ({navigation}) => {
             alignItems: 'center',
           }}>
           <OrderCard navigation={navigation} />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
         </ScrollView>
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -288,11 +289,11 @@ const OrdersScreen = ({navigation}) => {
             alignItems: 'center',
           }}>
           <OrderCard navigation={navigation} />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
         </ScrollView>
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -302,11 +303,11 @@ const OrdersScreen = ({navigation}) => {
             alignItems: 'center',
           }}>
           <OrderCard navigation={navigation} />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
+          <OrderCard navigation={navigation} />
         </ScrollView>
       </Swiper>
     </View>

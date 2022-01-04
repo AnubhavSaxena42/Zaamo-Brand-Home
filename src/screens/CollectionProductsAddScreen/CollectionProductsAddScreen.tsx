@@ -48,10 +48,7 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
   });
   useEffect(() => {
     if (collectionAddResponse.data) {
-      dispatch(setLoaderStatus(true));
-      console.log(collectionAddResponse.data.collectionAddProducts.collection);
       toastService.showToast('Products have been added successfully', true);
-
       route.params.setSelectedCollection({
         ...route.params.collection,
         products:
@@ -74,10 +71,13 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
         }
       });
       dispatch(setStoreCollections(newCollections));
-      dispatch(setLoaderStatus(false));
       navigation.goBack();
     }
   }, [collectionAddResponse.data]);
+  useEffect(() => {
+    if (collectionAddResponse.loading) dispatch(setLoaderStatus(true));
+    if (!collectionAddResponse.loading) dispatch(setLoaderStatus(false));
+  }, [collectionAddResponse.loading]);
   useEffect(() => {
     brandResponse.refetch();
   }, [brand]);

@@ -16,9 +16,16 @@ const CollectionCard = ({
   setIsEditCollectionId,
   setNewCollectionName,
   setThumbnailUri,
+  navigation,
 }) => {
   return (
-    <View style={styles.collectionCardContainer}>
+    <TouchableOpacity
+      onPress={() => {
+        navigation.navigate('CollectionViewScreen', {
+          collection: collection,
+        });
+      }}
+      style={styles.collectionCardContainer}>
       <ImageBackground
         style={styles.imageStyle}
         source={
@@ -93,7 +100,7 @@ const CollectionCard = ({
           </TouchableOpacity>
         </View>
       </ImageBackground>
-    </View>
+    </TouchableOpacity>
   );
 };
 

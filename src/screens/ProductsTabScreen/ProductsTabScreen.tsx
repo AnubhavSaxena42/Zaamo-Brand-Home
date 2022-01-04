@@ -95,7 +95,6 @@ const ProductsTabScreen = ({navigation}) => {
   );
   const onEditCollection = () => {
     collectionUpdate();
-    dispatch(setLoaderStatus(true));
     setThumbnailUri('');
     setIsNewCollectionModalVisible(false);
     setNewCollectionName('');
@@ -128,8 +127,7 @@ const ProductsTabScreen = ({navigation}) => {
       dispatch(setLoaderStatus(false));
     }
   }, [collectionUpdateResponse.data]);
-  console.log('new Thumbnail Uri:', thumbnailUri);
-  console.log('new new collection name:', newCollectionName);
+
   const onSelectGallery = async () => {
     const result = await launchImageLibrary({}, res => {
       dispatch(setLoaderStatus(true));
@@ -170,6 +168,7 @@ const ProductsTabScreen = ({navigation}) => {
         });
     });
   };
+
   return (
     <View style={styles.productsTabContainer}>
       {(isNewCollectionModalVisible || isThumbnailModalVisible) && (
@@ -519,6 +518,7 @@ const ProductsTabScreen = ({navigation}) => {
           {newCollections.map(collection => {
             return (
               <CollectionCard
+                navigation={navigation}
                 key={collection.id}
                 editModalOpen={setIsNewCollectionModalVisible}
                 isEditMode={setIsCollectionEdit}

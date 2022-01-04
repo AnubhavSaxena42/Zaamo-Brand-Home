@@ -16,6 +16,32 @@ export const GET_STORE = gql`
           edges {
             node {
               id
+              name
+              brand {
+                brandName
+              }
+              thumbnail {
+                url
+                alt
+              }
+              pricing {
+                discount {
+                  gross {
+                    amount
+                  }
+                }
+                priceRange {
+                  start {
+                    net {
+                      amount
+                    }
+                  }
+                }
+              }
+              productType {
+                name
+              }
+              name
             }
           }
         }
@@ -31,6 +57,31 @@ export const GET_STORE = gql`
               edges {
                 node {
                   id
+                  name
+                  brand {
+                    brandName
+                  }
+                  thumbnail {
+                    url
+                    alt
+                  }
+                  pricing {
+                    discount {
+                      gross {
+                        amount
+                      }
+                    }
+                    priceRange {
+                      start {
+                        net {
+                          amount
+                        }
+                      }
+                    }
+                  }
+                  productType {
+                    name
+                  }
                   name
                 }
               }

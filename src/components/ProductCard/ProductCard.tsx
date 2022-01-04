@@ -10,12 +10,14 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Clipboard from '@react-native-clipboard/clipboard';
 import toastService from '../../services/toast-service';
-const ProductCard = ({product}) => {
+const ProductCard = ({product, inCollectionView, setProductIdToRemove}) => {
   return (
     <View style={styles.productCardContainer}>
       <ImageBackground
         style={styles.imageStyle}
-        source={{uri: product.thumbnail}}>
+        source={{
+          uri: product.thumbnail,
+        }}>
         <TouchableOpacity
           onPress={() => {
             Clipboard.setString(product.id);
@@ -60,39 +62,70 @@ const ProductCard = ({product}) => {
           </View>
         </View>
       </ImageBackground>
-      <View
-        style={{
-          flexDirection: 'row',
-          width: '100%',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          paddingHorizontal: '5%',
-          paddingVertical: '4%',
-        }}>
-        <Text style={{color: 'black', fontSize: 12}}>
-          Inventory:
-          <Text style={{color: 'black', fontSize: 14, fontWeight: 'bold'}}>
-            4
-          </Text>
-        </Text>
-        <TouchableOpacity
-          onPress={() => {
-            toastService.showToast('Feature in Development', true);
-          }}
+      {!inCollectionView && (
+        <View
           style={{
             flexDirection: 'row',
+            width: '100%',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            paddingHorizontal: '5%',
+            paddingVertical: '4%',
+          }}>
+          <Text style={{color: 'black', fontSize: 12}}>
+            Inventory:
+            <Text style={{color: 'black', fontSize: 14, fontWeight: 'bold'}}>
+              4
+            </Text>
+          </Text>
+          <TouchableOpacity
+            onPress={() => {
+              toastService.showToast('Feature in Development', true);
+            }}
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: 'black',
+              paddingHorizontal: '3%',
+              borderRadius: 10,
+            }}>
+            <View style={styles.editIcon}>
+              <Ionicons name="pencil" size={5} color={'black'} />
+            </View>
+            <Text style={{color: 'white'}}>Edit</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+      {inCollectionView && (
+        <View
+          style={{
+            flexDirection: 'row',
+            width: '100%',
             justifyContent: 'center',
             alignItems: 'center',
-            backgroundColor: 'black',
-            paddingHorizontal: '3%',
-            borderRadius: 10,
+            paddingHorizontal: '5%',
+            paddingVertical: '4%',
           }}>
-          <View style={styles.editIcon}>
-            <Ionicons name="pencil" size={5} color={'black'} />
-          </View>
-          <Text style={{color: 'white'}}>Edit</Text>
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity
+            onPress={() => {
+              setProductIdToRemove(product.id);
+            }}
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: 'black',
+              paddingHorizontal: '3%',
+              borderRadius: 10,
+            }}>
+            <View style={styles.editIcon}>
+              <Entypo name="minus" size={5} color={'black'} />
+            </View>
+            <Text style={{color: 'white'}}>Remove</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };

@@ -14,28 +14,70 @@ import AddProductCard from '../../components/AddProductCard/AddProductCard';
 import {useDispatch, useSelector} from 'react-redux';
 import {setStoreProducts} from '../../redux/reducers/storeReducer';
 import {useMutation, useQuery} from '@apollo/client';
-import {COLLECTION_CREATE} from './mutations';
+import {ADD_PRODUCTS_COLLECTION, COLLECTION_CREATE} from './mutations';
 import {setStoreCollections} from '../../redux/reducers/storeReducer';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import toastService from '../../services/toast-service';
 import {GET_PRODUCTS_BY_BRAND} from './queries';
 
-const CollectionProductsAddScreen = ({navigation, route}) => {
+const CollectionProductsAddScreen = ({navigation, route, collection}) => {
   const productsStore = useSelector(state => state.store.products);
   const [products, setProducts] = useState([]);
   const collections = useSelector(state => state.store.collections);
   const [brand, setBrand] = useState('');
   const [selectedProducts, setSelectedProducts] = useState([]);
+
   const [isBrandSelectModalVisible, setIsBrandSelectModalVisible] =
     useState(false);
   const dispatch = useDispatch();
   console.log('Parameters:', route.params);
-
+  console.log('Products:', products);
+  const [collectionAddProducts, collectionAddResponse] = useMutation(
+    ADD_PRODUCTS_COLLECTION,
+    {
+      variables: {
+        collectionId: route.params.collection.id,
+        products: selectedProducts,
+      },
+    },
+  );
   const brandResponse = useQuery(GET_PRODUCTS_BY_BRAND, {
     variables: {
       brands: [brand],
     },
   });
+  useEffect(() => {
+    if (collectionAddResponse.data) {
+      dispatch(setLoaderStatus(true));
+      console.log(collectionAddResponse.data.collectionAddProducts.collection);
+      toastService.showToast('Products have been added successfully', true);
+
+      route.params.setSelectedCollection({
+        ...route.params.collection,
+        products:
+          collectionAddResponse.data.collectionAddProducts.collection.products
+            .edges,
+      });
+      const newCollections = collections.map(collection => {
+        if (
+          collection.id ===
+          collectionAddResponse.data.collectionAddProducts.collection.id
+        ) {
+          return {
+            ...collection,
+            products:
+              collectionAddResponse.data.collectionAddProducts.collection
+                .products.edges,
+          };
+        } else {
+          return collection;
+        }
+      });
+      dispatch(setStoreCollections(newCollections));
+      dispatch(setLoaderStatus(false));
+      navigation.goBack();
+    }
+  }, [collectionAddResponse.data]);
   useEffect(() => {
     brandResponse.refetch();
   }, [brand]);
@@ -73,8 +115,18 @@ const CollectionProductsAddScreen = ({navigation, route}) => {
 
   console.log('brandResponse:', brandResponse.data);
   useEffect(() => {
-    if (!route.params.fromVoucherCreate) {
+    if (!route.params.fromVoucherCreate && !route.params.collection) {
       setProducts(productsStore);
+    }
+    if (route.params.collection) {
+      const excludeIds = route.params.collection.products.map(
+        ({node}) => node.id,
+      );
+      const newProducts = productsStore.filter(product => {
+        const productIncluded = excludeIds.some(id => id === product.id);
+        return !productIncluded;
+      });
+      setProducts(newProducts);
     }
   }, []);
 
@@ -153,6 +205,16 @@ const CollectionProductsAddScreen = ({navigation, route}) => {
       }
     }
   }, [data]);
+  const onPressComplete = () => {
+    if (route.params.fromVoucherCreate) {
+      route.params.setProducts(selectedProducts);
+      navigation.goBack();
+    } else if (route.params.collection) {
+      collectionAddProducts();
+    } else {
+      collectionCreate();
+    }
+  };
   console.log(selectedProducts);
   return (
     <View style={styles.collectionProductsAddScreenContainer}>
@@ -237,16 +299,7 @@ const CollectionProductsAddScreen = ({navigation, route}) => {
           Products
         </Text>
         <TouchableOpacity
-          onPress={
-            route.params.fromVoucherCreate
-              ? () => {
-                  route.params.setProducts(selectedProducts);
-                  navigation.goBack();
-                }
-              : () => {
-                  collectionCreate();
-                }
-          }
+          onPress={onPressComplete}
           style={{
             flex: 1,
             backgroundColor: 'black',

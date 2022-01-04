@@ -1,6 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {useMutation} from '@apollo/client';
-import {StyleSheet, ScrollView, Text, Image, View} from 'react-native';
+import {
+  StyleSheet,
+  ScrollView,
+  Text,
+  Image,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import {REMOVE_PRODUCT_COLLECTION} from './mutations';
 import {useDispatch, useSelector} from 'react-redux';
@@ -103,6 +110,7 @@ const CollectionViewScreen = ({navigation, route}) => {
           flexDirection: 'row',
           justifyContent: 'space-around',
           flexWrap: 'wrap',
+          paddingBottom: 40,
         }}>
         {selectedCollection &&
           selectedCollection.products.map(({node}) => {
@@ -127,6 +135,26 @@ const CollectionViewScreen = ({navigation, route}) => {
             );
           })}
       </ScrollView>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('CollectionProductsAddScreen', {
+            collection: collection,
+            setSelectedCollection: setSelectedCollection,
+          });
+        }}
+        style={{
+          alignSelf: 'center',
+          width: '80%',
+          backgroundColor: 'black',
+          borderRadius: 10,
+          height: 40,
+          justifyContent: 'center',
+          alignItems: 'center',
+          position: 'absolute',
+          bottom: 10,
+        }}>
+        <Text style={{color: 'white'}}>Add Products</Text>
+      </TouchableOpacity>
     </View>
   );
 };

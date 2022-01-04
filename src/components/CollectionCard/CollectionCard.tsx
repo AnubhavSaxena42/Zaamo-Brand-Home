@@ -9,7 +9,14 @@ import {
 import Clipboard from '@react-native-clipboard/clipboard';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import toastService from '../../services/toast-service';
-const CollectionCard = ({collection}) => {
+const CollectionCard = ({
+  collection,
+  editModalOpen,
+  isEditMode,
+  setIsEditCollectionId,
+  setNewCollectionName,
+  setThumbnailUri,
+}) => {
   return (
     <View style={styles.collectionCardContainer}>
       <ImageBackground
@@ -21,7 +28,11 @@ const CollectionCard = ({collection}) => {
         }>
         <TouchableOpacity
           onPress={() => {
-            toastService.showToast('Feature in development', true);
+            isEditMode(true);
+            editModalOpen(true);
+            setIsEditCollectionId(collection.id);
+            setNewCollectionName(collection.name);
+            setThumbnailUri(collection.imageUrl);
           }}
           style={{
             flexDirection: 'row',

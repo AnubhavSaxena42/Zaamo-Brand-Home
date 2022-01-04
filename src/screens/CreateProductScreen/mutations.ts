@@ -31,3 +31,16 @@ export const CREATE_PRODUCT = gql`
     }
   }
 `;
+
+export const CREATE_PRODUCT_IMAGE = gql`
+  mutation productImageCreate($image: Upload!, $product: ID!) {
+    productImageCreate(input: {image: $image, product: $product}) {
+      product {
+        id
+      }
+      image {
+        id
+      }
+    }
+  }
+`;

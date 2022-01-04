@@ -21,7 +21,7 @@ import Checkbox from '../../components/Checkbox';
 import TaggedComponent from '../../components/TaggedComponent';
 import {useMutation, useQuery} from '@apollo/client';
 import {GET_PRODUCT_TYPES} from './queries';
-import {CREATE_PRODUCT} from './mutations';
+import {CREATE_PRODUCT, CREATE_PRODUCT_IMAGE} from './mutations';
 import {setStoreProducts} from '../../redux/reducers/storeReducer';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import toastService from '../../services/toast-service';
@@ -49,7 +49,8 @@ const CreateProductScreen = ({navigation, route}) => {
   const [productTypeItems, setProductTypeItems] = useState([]);
   const [isVariationNameError, setIsVariationNameError] = useState(false);
   const [trigger, setTrigger] = useState(true);
-  const [imageUri, setImageUri] = useState();
+  const [image, setImage] = useState();
+  const [newProductId, setNewProductId] = useState();
   const [codCheckbox, setCodCheckbox] = useState([
     {value: 'Allow COD', isSelected: false},
   ]);
@@ -252,6 +253,34 @@ const CreateProductScreen = ({navigation, route}) => {
       input: productInput,
     },
   });
+  console.log({
+    type: 'image/jpeg',
+    name: image.fileName,
+    uri: image.uri,
+  });
+  const [productImageCreate, productImageResponse] = useMutation(
+    CREATE_PRODUCT_IMAGE,
+    {
+      variables: {
+        image: {
+          type: 'image/jpeg',
+          name: image ? image.fileName : '',
+          uri: image ? image.uri : '',
+        },
+        product: newProductId,
+      },
+    },
+  );
+  useEffect(() => {
+    if (productImageResponse.data) {
+      console.log(productImageResponse.data);
+    }
+  }, productImageResponse.data);
+  useEffect(() => {
+    if (newProductId && newProductId !== '') {
+      productImageCreate();
+    }
+  }, [newProductId]);
   const dispatch = useDispatch();
   useEffect(() => {
     if (productResponse.data) {
@@ -267,13 +296,13 @@ const CreateProductScreen = ({navigation, route}) => {
             'https://media-exp1.licdn.com/dms/image/C4E0BAQGymyKm7OE3wg/company-logo_200_200/0/1636442519943?e=2159024400&v=beta&t=19hHu3puobGsregS0-31D-KiANWe3NqrKZESktzQC30',
         },
       ];
+      setNewProductId(productResponse.data.productCreate.product.id);
       dispatch(setStoreProducts(newProducts));
       dispatch(setLoaderStatus(false));
       toastService.showToast(
         `Product created succesfully:${productResponse.data.productCreate.product.name}`,
         true,
       );
-      navigation.navigate('ProductsTabScreen');
     } else {
       console.log('in else');
       dispatch(setLoaderStatus(false));
@@ -293,7 +322,7 @@ const CreateProductScreen = ({navigation, route}) => {
       if (res.didCancel) {
         return;
       } else {
-        setImageUri(res.assets[0].uri);
+        setImage(res.assets[0]);
         console.log(res.assets[0]);
       }
     });
@@ -413,9 +442,9 @@ const CreateProductScreen = ({navigation, route}) => {
             Add Image
           </Text>
           <View style={styles.imageContainer}>
-            {imageUri && (
+            {image && (
               <Image
-                source={{uri: imageUri}}
+                source={{uri: image.uri}}
                 resizeMode="contain"
                 style={{width: 100, height: '100%'}}
               />

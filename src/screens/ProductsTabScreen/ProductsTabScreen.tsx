@@ -18,9 +18,13 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import axios from 'axios';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import {setStoreCollections} from '../../redux/reducers/storeReducer';
+import {UPDATE_COLLECTION} from './mutations';
+import toastService from '../../services/toast-service';
 
 const ProductsTabScreen = ({navigation}) => {
   const [isViewing, setIsViewing] = useState(1);
+  const [isCollectionEdit, setIsCollectionEdit] = useState(false);
+  const [editCollectionId, setIsEditCollectionId] = useState('');
   const [isNewCollectionModalVisible, setIsNewCollectionModalVisible] =
     useState(false);
   const [newCollectionName, setNewCollectionName] = useState('');
@@ -77,7 +81,55 @@ const ProductsTabScreen = ({navigation}) => {
     );
   };
 
-  console.log(thumbnailUri);
+  const [collectionUpdate, collectionUpdateResponse] = useMutation(
+    UPDATE_COLLECTION,
+    {
+      variables: {
+        input: {
+          imageUrl: thumbnailUri,
+          name: newCollectionName,
+        },
+        id: editCollectionId,
+      },
+    },
+  );
+  const onEditCollection = () => {
+    collectionUpdate();
+    dispatch(setLoaderStatus(true));
+    setThumbnailUri('');
+    setIsNewCollectionModalVisible(false);
+    setNewCollectionName('');
+    setIsCollectionEdit(false);
+  };
+  useEffect(() => {
+    if (collectionUpdateResponse.data) {
+      dispatch(setLoaderStatus(true));
+      console.log('look below');
+      console.log(collectionUpdateResponse.data);
+      const updatedCollections = newCollections.map(collection => {
+        if (
+          collection.id ===
+          collectionUpdateResponse.data.collectionUpdate.collection.id
+        ) {
+          return {
+            ...collection,
+            name: collectionUpdateResponse.data.collectionUpdate.collection
+              .name,
+            imageUrl:
+              collectionUpdateResponse.data.collectionUpdate.collection
+                .imageUrl,
+          };
+        } else {
+          return collection;
+        }
+      });
+      dispatch(setStoreCollections(updatedCollections));
+      toastService.showToast('Collection has been updated', true);
+      dispatch(setLoaderStatus(false));
+    }
+  }, [collectionUpdateResponse.data]);
+  console.log('new Thumbnail Uri:', thumbnailUri);
+  console.log('new new collection name:', newCollectionName);
   const onSelectGallery = async () => {
     const result = await launchImageLibrary({}, res => {
       dispatch(setLoaderStatus(true));
@@ -330,7 +382,9 @@ const ProductsTabScreen = ({navigation}) => {
                   fontWeight: '700',
                   marginVertical: '4%',
                 }}>
-                Excited for the new Collection!
+                {isCollectionEdit
+                  ? 'Edit Collection'
+                  : 'Excited for the new Collection!'}
               </Text>
               <Text
                 style={{
@@ -362,7 +416,7 @@ const ProductsTabScreen = ({navigation}) => {
                   color: 'black',
                   fontWeight: '500',
                 }}>
-                Thumbnail
+                {isCollectionEdit ? 'Update Thumbnail' : 'Thumbnail'}
               </Text>
               <View
                 style={{
@@ -401,13 +455,17 @@ const ProductsTabScreen = ({navigation}) => {
                 </Text>
               </View>
               <TouchableOpacity
-                onPress={() => {
-                  setIsNewCollectionModalVisible(false);
-                  navigation.navigate('CollectionProductsAddScreen', {
-                    collectionName: newCollectionName,
-                    collectionThumbnail: thumbnailUri,
-                  });
-                }}
+                onPress={
+                  isCollectionEdit
+                    ? onEditCollection
+                    : () => {
+                        setIsNewCollectionModalVisible(false);
+                        navigation.navigate('CollectionProductsAddScreen', {
+                          collectionName: newCollectionName,
+                          collectionThumbnail: thumbnailUri,
+                        });
+                      }
+                }
                 style={{
                   width: '100%',
                   backgroundColor: 'black',
@@ -419,22 +477,30 @@ const ProductsTabScreen = ({navigation}) => {
                   marginVertical: '5%',
                   paddingHorizontal: '5%',
                 }}>
-                <View
-                  style={{
-                    height: 30,
-                    width: 30,
-                    borderRadius: 15,
-                    marginRight: '2%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: 'white',
-                  }}>
-                  <Entypo name="plus" size={14} color={'black'} />
-                </View>
-                <Text style={{color: 'white'}}>Add Products</Text>
+                {!isCollectionEdit && (
+                  <View
+                    style={{
+                      height: 30,
+                      width: 30,
+                      borderRadius: 15,
+                      marginRight: '2%',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      backgroundColor: 'white',
+                    }}>
+                    <Entypo name="plus" size={14} color={'black'} />
+                  </View>
+                )}
+                <Text style={{color: 'white'}}>
+                  {isCollectionEdit ? 'Update Collection' : 'Add Products'}
+                </Text>
               </TouchableOpacity>
               <Text
                 onPress={() => {
+                  if (isCollectionEdit) {
+                    setThumbnailUri('');
+                    setIsCollectionEdit(false);
+                  }
                   setNewCollectionName('');
                   setIsNewCollectionModalVisible(false);
                 }}
@@ -452,7 +518,15 @@ const ProductsTabScreen = ({navigation}) => {
           {newCollections.length === 0 && <View style={{flex: 1}}></View>}
           {newCollections.map(collection => {
             return (
-              <CollectionCard key={collection.id} collection={collection} />
+              <CollectionCard
+                key={collection.id}
+                editModalOpen={setIsNewCollectionModalVisible}
+                isEditMode={setIsCollectionEdit}
+                setThumbnailUri={setThumbnailUri}
+                setNewCollectionName={setNewCollectionName}
+                setIsEditCollectionId={setIsEditCollectionId}
+                collection={collection}
+              />
             );
           })}
         </ScrollView>

@@ -36,7 +36,7 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
     ADD_PRODUCTS_COLLECTION,
     {
       variables: {
-        collectionId: route.params.collection.id,
+        collectionId: route.params.collection ? route.params.collection.id : '',
         products: selectedProducts,
       },
     },
@@ -112,9 +112,14 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
       }
     }
   }, [brandResponse.data]);
+  useEffect(() => {
+    if (brandResponse.loading) dispatch(setLoaderStatus(true));
+    else dispatch(setLoaderStatus(false));
+  }, [brandResponse.loading]);
 
   console.log('brandResponse:', brandResponse.data);
   useEffect(() => {
+    dispatch(setLoaderStatus(true));
     if (!route.params.fromVoucherCreate && !route.params.collection) {
       setProducts(productsStore);
     }
@@ -128,6 +133,7 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
       });
       setProducts(newProducts);
     }
+    dispatch(setLoaderStatus(false));
   }, []);
 
   const ModalItem = ({name, value, selectedItem, setSelectedItem}) => {
@@ -173,6 +179,10 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
       },
     },
   );
+  useEffect(() => {
+    if (loading) dispatch(setLoaderStatus(true));
+    else dispatch(setLoaderStatus(false));
+  }, [loading]);
   useEffect(() => {
     if (route.params.fromVoucherCreate) {
       setSelectedProducts(route.params.products);

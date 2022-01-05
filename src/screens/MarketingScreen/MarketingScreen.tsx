@@ -6,13 +6,13 @@ import {useSelector, useDispatch} from 'react-redux';
 import {setStoreVouchers} from '../../redux/reducers/storeReducer';
 import {useQuery} from '@apollo/client';
 import {GET_COUPONS} from '../DashboardScreen/queries';
+import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 const MarketingScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const couponResponse = useQuery(GET_COUPONS, {
     pollInterval: 1000,
   });
   useEffect(() => {
-    console.log('data update');
     if (couponResponse.data) {
       const newCoupons = couponResponse.data.vouchers.edges.map(({node}) => {
         return node;
@@ -20,7 +20,10 @@ const MarketingScreen = ({navigation}) => {
       dispatch(setStoreVouchers(newCoupons));
     }
   }, [couponResponse.data]);
-
+  useEffect(() => {
+    if (couponResponse.loading) dispatch(setLoaderStatus(true));
+    else dispatch(setLoaderStatus(false));
+  }, [couponResponse.loading]);
   const vouchers = useSelector(state => state.store.vouchers);
   return (
     <ScrollView style={styles.marketingContainer}>
@@ -31,7 +34,7 @@ const MarketingScreen = ({navigation}) => {
         onPress={() => navigation.navigate('CreateCouponScreen')}
       />
       {vouchers.map(coupon => (
-        <Coupon navigation={navigation} key={coupon.id} coupon={coupon} />
+        <Coupon key={coupon.id} navigation={navigation} coupon={coupon} />
       ))}
     </ScrollView>
   );

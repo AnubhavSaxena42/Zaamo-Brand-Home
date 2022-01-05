@@ -26,6 +26,7 @@ import {
   setStoreVouchers,
 } from '../../redux/reducers/storeReducer';
 import {setAuthorisedBrands} from '../../redux/reducers/userReducer';
+import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 
 //For web it has to be a scrollview , implement fab properly
 const DashboardScreen = ({navigation, route}) => {
@@ -109,8 +110,14 @@ const DashboardScreen = ({navigation, route}) => {
       mobileNo: '91' + mobileNumber,
     },
   });
-  console.log(mobileNumber);
-  console.log(brandResponse.data, brandResponse.loading, brandResponse.error);
+  useEffect(() => {
+    if (storeResponse.loading) dispatch(setLoaderStatus(true));
+    else dispatch(setLoaderStatus(false));
+  }, [storeResponse.loading]);
+  useEffect(() => {
+    if (brandResponse.loading) dispatch(setLoaderStatus(true));
+    else dispatch(setLoaderStatus(false));
+  }, [brandResponse.loading]);
   useEffect(() => {
     if (storeResponse.data) {
       dispatch(

@@ -56,7 +56,11 @@ const CreateProductScreen = ({navigation, route}) => {
   ]);
   const [isProductTypeModalVisible, setIsProductTypeModalVisible] =
     useState(false);
-  const brandId = useSelector(state => state.user.authorisedBrands[0].id);
+  const brandId = useSelector(state => {
+    state.user.authorisedBrands && state.user.authorisedBrands.length !== 0
+      ? state.user.authorisedBrands[0].id
+      : '';
+  });
   console.log(brandId);
   const ModalItem = ({name, value, selectedItem, setSelectedItem}) => {
     console.log(selectedItem, name, value);
@@ -253,11 +257,7 @@ const CreateProductScreen = ({navigation, route}) => {
       input: productInput,
     },
   });
-  console.log({
-    type: 'image/jpeg',
-    name: image.fileName,
-    uri: image.uri,
-  });
+
   const [productImageCreate, productImageResponse] = useMutation(
     CREATE_PRODUCT_IMAGE,
     {

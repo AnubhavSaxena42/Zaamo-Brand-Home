@@ -26,7 +26,16 @@ const PaymentDetailsScreen = ({navigation, route}) => {
   const [bankAccountNumber, setBankAccountNumber] = useState('');
   const [confirmBankAccountNumber, setConfirmBankAccountNumber] = useState('');
   const [bankIfscCode, setBankIfscCode] = useState('');
-  const brandId = useSelector(state => state.user.authorisedBrands[0].id);
+  const brandId = useSelector(state => {
+    if (
+      state.user.authorisedBrands &&
+      state.user.authorisedBrands.length !== 0
+    ) {
+      return state.user.authorisedBrands[0].id;
+    } else {
+      return null;
+    }
+  });
   const [brandUpiIdCreate, upiResponse] = useMutation(BRAND_UPI_ID_CREATE, {
     variables: {
       brand: brandId,
@@ -43,42 +52,40 @@ const PaymentDetailsScreen = ({navigation, route}) => {
       acBankBranch: address,
     },
   });
-
+  useEffect(() => {
+    if (bankResponse.loading) dispatch(setLoaderStatus(true));
+    else dispatch(setLoaderStatus(false));
+  }, [bankResponse.loading]);
+  useEffect(() => {
+    if (upiResponse.loading) dispatch(setLoaderStatus(true));
+    else dispatch(setLoaderStatus(false));
+  });
   const onBankCreate = () => {
-    console.log('BANK ACCOUNT CREATE CALLED');
-    dispatch(setLoaderStatus(true));
     bankAccountCreate();
   };
   const onUpiCreate = () => {
-    dispatch(setLoaderStatus(true));
-    console.log('UPI CREATE CALLED');
     brandUpiIdCreate();
   };
   useEffect(() => {
     if (bankResponse.data) {
       if (bankResponse.data.bankAccountCreate.BankAccount.acNumber) {
-        dispatch(setLoaderStatus(false));
         toastService.showToast(
           `Bank Account Added:${bankResponse.data.bankAccountCreate.BankAccount.acNumber}`,
           true,
         );
         navigation.navigate('SettingsScreen');
       }
-      dispatch(setLoaderStatus(false));
     }
   }, [bankResponse.data]);
   useEffect(() => {
-    console.log(upiResponse);
     if (upiResponse.data) {
       if (upiResponse.data.brandUpiIdCreate.BrandUpiId.upiId) {
-        dispatch(setLoaderStatus(false));
         toastService.showToast(
           `UPI Id added: ${upiResponse.data.brandUpiIdCreate.BrandUpiId.upiId}`,
           true,
         );
         navigation.navigate('SettingsScreen');
       }
-      dispatch(setLoaderStatus(false));
     }
   }, [upiResponse.data]);
   return (

@@ -102,9 +102,6 @@ const ProductsTabScreen = ({navigation}) => {
   };
   useEffect(() => {
     if (collectionUpdateResponse.data) {
-      dispatch(setLoaderStatus(true));
-      console.log('look below');
-      console.log(collectionUpdateResponse.data);
       const updatedCollections = newCollections.map(collection => {
         if (
           collection.id ===
@@ -124,10 +121,12 @@ const ProductsTabScreen = ({navigation}) => {
       });
       dispatch(setStoreCollections(updatedCollections));
       toastService.showToast('Collection has been updated', true);
-      dispatch(setLoaderStatus(false));
     }
   }, [collectionUpdateResponse.data]);
-
+  useEffect(() => {
+    if (collectionUpdateResponse.loading) dispatch(setLoaderStatus(true));
+    else dispatch(setLoaderStatus(false));
+  }, [collectionUpdateResponse.loading]);
   const onSelectGallery = async () => {
     const result = await launchImageLibrary({}, res => {
       dispatch(setLoaderStatus(true));
@@ -209,9 +208,10 @@ const ProductsTabScreen = ({navigation}) => {
           onPress={
             isViewing === 1
               ? () => {
-                  navigation.navigate('CreateProductScreen', {
+                  toastService.showToast('Feature in development', true);
+                  /*navigation.navigate('CreateProductScreen', {
                     fromBrandHome: true,
-                  });
+                  });*/
                 }
               : () => {
                   setIsNewCollectionModalVisible(true);

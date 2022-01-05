@@ -57,7 +57,7 @@ export const TOKEN_CREATE = gql`
 `;
 export const USER_REGISTER = gql`
   mutation userRegister($mobileNo: String!) {
-    userRegister(input: {mobileNo: $mobileNo, isActive: true}) {
+    userRegister(input: {mobileNo: $mobileNo, isActive: false}) {
       user {
         id
         isActive

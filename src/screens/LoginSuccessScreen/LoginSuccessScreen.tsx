@@ -66,9 +66,10 @@ const LoginSuccessScreen = ({navigation, route}) => {
           .catch(err => console.log('Error storing token:', err));
         userRegister();
       }
-    }*/
-    if (data && data.tokenCreate) {
-      if (data.tokenCreate.user && data.tokenCreate.token) {
+    }*/ console.log('ran');
+    if (data && data.tokenCreate && data.tokenCreate.user) {
+      console.log('in 1');
+      if (data.tokenCreate.user.isActive && data.tokenCreate.token) {
         console.log('in token create');
         dispatch(setUser(data.tokenCreate.user));
         dispatch(setToken(data.tokenCreate.token));
@@ -85,6 +86,7 @@ const LoginSuccessScreen = ({navigation, route}) => {
           saveItemToStorage('Token', data.tokenCreate.token)
             .then(res => console.log('Token Stored:', res))
             .catch(err => console.log('Error storing token:', err));
+          userRegister();
           toastService.showToast('Logged in successfully', true);
           navigation.navigate('StoreStack');
         } else {
@@ -102,11 +104,9 @@ const LoginSuccessScreen = ({navigation, route}) => {
               saveItemToStorage('Token', data.tokenCreate.token)
                 .then(res => console.log('Token Stored:', res))
                 .catch(err => console.log('Error storing token:', err));
-              toastService.showToast('Logged in successfully', true);
-              navigation.navigate('StoreStack');
             } else {
               console.log('mobile number not found');
-              navigation.navigate('StoreStack');
+              userRegister();
             }
           });
         }
@@ -114,6 +114,9 @@ const LoginSuccessScreen = ({navigation, route}) => {
         console.log('In register block');
         userRegister();
       }
+    } else {
+      console.log('registering');
+      userRegister();
     }
   }, [data]);
   useEffect(() => {

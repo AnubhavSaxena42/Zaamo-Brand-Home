@@ -20,9 +20,9 @@ const ProductCard = ({product, inCollectionView, setProductIdToRemove}) => {
         }}>
         <TouchableOpacity
           onPress={() => {
-            Clipboard.setString(product.id);
+            Clipboard.setString(product.url);
             toastService.showToast(
-              `Product ID copied to clipboard:  ${product.id}  `,
+              `Product URL copied to clipboard:  ${product.url}  `,
               true,
             );
           }}
@@ -90,7 +90,7 @@ const ProductCard = ({product, inCollectionView, setProductIdToRemove}) => {
               paddingHorizontal: '3%',
               borderRadius: 10,
             }}>
-            <View style={styles.editIcon}>
+            <View style={{...styles.editIcon, backgroundColor: 'black'}}>
               <Ionicons name="pencil" size={5} color={'black'} />
             </View>
             <Text style={{color: 'white'}}>Edit</Text>
@@ -154,10 +154,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontFamily: 'Roboto-Bold',
     color: 'white',
+    textShadowColor: 'rgba(0,0,0,0.4)',
+    textShadowRadius: 0.1,
+    textShadowOffset: {width: 1, height: 1},
   },
   rowTwoText: {
-    fontSize: 12,
+    fontSize: 14,
     color: 'white',
+    textShadowColor: 'rgba(0,0,0,0.4)',
+    textShadowRadius: 0.1,
+    textShadowOffset: {width: 1, height: 1},
   },
   iconContainer: {
     height: 30,

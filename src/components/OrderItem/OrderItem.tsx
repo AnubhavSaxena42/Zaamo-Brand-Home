@@ -197,7 +197,7 @@ const OrderItem = ({line, id, status, setData, fulfillment}) => {
             Rs {line.totalPrice.net.amount}
           </Text>
         </View>
-        <View style={{flexDirection: 'row', marginBottom: '2%'}}>
+        {/*<View style={{flexDirection: 'row', marginBottom: '2%'}}>
           <Text
             style={{
               fontSize: 14,
@@ -219,24 +219,46 @@ const OrderItem = ({line, id, status, setData, fulfillment}) => {
             }}>
             L
           </Text>
-        </View>
+        </View>*/}
         <View style={{position: 'absolute', bottom: '20%', marginLeft: '3%'}}>
           <Text style={{fontSize: 14, color: 'black', fontWeight: 'bold'}}>
             Order Status
           </Text>
-          <Text
-            onPress={() => {
-              if (wasInitiallyCancelled)
-                toastService.showToast(
-                  'Cancelled Order Status can not be updated!',
-                  true,
-                );
-              else setIsFulfillmentModalOpen(true);
+          <View
+            style={{
+              width: 250,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              borderWidth: 1,
+              borderColor: 'rgba(0,0,0,0.1)',
+              borderRadius: 5,
+              paddingHorizontal: '2%',
+              paddingVertical: '2%',
             }}>
-            {fulfillmentStatus
-              ? getFulfillmentStatusDisplay(status)
-              : 'Update Fulfillment status'}
-          </Text>
+            <Text style={{textAlignVertical: 'center'}}>
+              {fulfillmentStatus
+                ? getFulfillmentStatusDisplay()
+                : 'Update Fulfillment status'}
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                if (wasInitiallyCancelled)
+                  toastService.showToast(
+                    'Cancelled Order Status can not be updated!',
+                    true,
+                  );
+                else setIsFulfillmentModalOpen(true);
+              }}
+              style={{
+                height: '100%',
+                width: 70,
+                backgroundColor: 'black',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text style={{color: 'white'}}>Change</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </View>

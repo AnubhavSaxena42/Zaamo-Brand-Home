@@ -103,7 +103,7 @@ const CreateProductScreen = ({navigation, route}) => {
         value => {
           return {
             name: value.name,
-            id: value.id,
+            id: value.name,
             isSelected: false,
           };
         },
@@ -653,6 +653,7 @@ const CreateProductScreen = ({navigation, route}) => {
             {sizeAttributeValues.map(value => {
               return (
                 <Checkbox
+                  key={value}
                   item={value}
                   setItems={setSizeAttributeValues}
                   items={sizeAttributeValues}

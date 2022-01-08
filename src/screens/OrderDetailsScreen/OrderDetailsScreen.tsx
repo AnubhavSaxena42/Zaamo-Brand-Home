@@ -82,7 +82,12 @@ const OrderDetailsScreen = ({navigation, route}) => {
           alignItems: 'center',
           marginTop: '12%',
         }}>
-        <OrderCard order={order} navigation={navigation} isDetails={true} />
+        <OrderCard
+          order={order}
+          status={route.params.status}
+          navigation={navigation}
+          isDetails={true}
+        />
       </View>
       <View style={{flex: 1, backgroundColor: 'white'}}>
         <View style={styles.orderDetailsSection}>

@@ -90,7 +90,7 @@ const ProductCard = ({product, inCollectionView, setProductIdToRemove}) => {
               paddingHorizontal: '3%',
               borderRadius: 10,
             }}>
-            <View style={{...styles.editIcon, backgroundColor: 'black'}}>
+            <View style={{...styles.editIcon}}>
               <Ionicons name="pencil" size={5} color={'black'} />
             </View>
             <Text style={{color: 'white'}}>Edit</Text>

@@ -13,7 +13,6 @@ import Dropdown from '../Dropdown';
 const OrderItem = ({line, id, status, setData, fulfillment}) => {
   const [fulfillmentStatus, setFulfillmentStatus] = useState(status);
   const fulfillmentDataItems = [
-    {id: 'PENDING', name: 'Pending'},
     {id: 'IN_PROCESS', name: 'In Process'},
     {id: 'SHIPPED', name: 'Shipped'},
     {id: 'DELIVERED', name: 'Delivered'},

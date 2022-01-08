@@ -81,9 +81,10 @@ const CreateVariantScreen = ({navigation, route}) => {
         trackInventory: true,
       };
     });
-    //validate and then
+
     setVariants(newVariants);
   };
+
   useEffect(() => {
     if (variants) productVariantBulkCreate();
   }, [variants]);

@@ -189,7 +189,9 @@ const OrdersScreen = ({navigation}) => {
           justifyContent: 'center',
           width: '100%',
           marginTop: '10%',
-          paddingBottom: '5%',
+          paddingBottom: '2%',
+          borderBottomColor: 'rgba(0,0,0,0.1)',
+          borderBottomWidth: 1,
         }}>
         <OrdersOverviewCard />
         <ScrollView
@@ -198,7 +200,8 @@ const OrdersScreen = ({navigation}) => {
           contentContainerStyle={{
             flexDirection: 'row',
             alignItems: 'center',
-            paddingHorizontal: '5%',
+            paddingTop: '4%',
+            paddingHorizontal: '2%',
           }}>
           <Text
             onPress={() => {
@@ -206,6 +209,9 @@ const OrdersScreen = ({navigation}) => {
             }}
             style={{
               marginRight: 8,
+              textShadowColor: 'rgba(0,0,0,0.1)',
+              textShadowRadius: 2,
+              textShadowOffset: {width: 1, height: 1},
               borderBottomWidth: selectedIndex === 0 ? 1 : 0,
               borderColor: 'black',
             }}>
@@ -218,6 +224,9 @@ const OrdersScreen = ({navigation}) => {
             }}
             style={{
               marginRight: 8,
+              textShadowColor: 'rgba(0,0,0,0.1)',
+              textShadowRadius: 2,
+              textShadowOffset: {width: 1, height: 1},
               borderBottomWidth: selectedIndex === 1 ? 1 : 0,
               borderColor: 'black',
             }}>
@@ -229,6 +238,9 @@ const OrdersScreen = ({navigation}) => {
             }}
             style={{
               marginRight: 8,
+              textShadowColor: 'rgba(0,0,0,0.1)',
+              textShadowRadius: 2,
+              textShadowOffset: {width: 1, height: 1},
               borderBottomWidth: selectedIndex === 2 ? 1 : 0,
               borderColor: 'black',
             }}>
@@ -240,6 +252,9 @@ const OrdersScreen = ({navigation}) => {
             }}
             style={{
               marginRight: 8,
+              textShadowColor: 'rgba(0,0,0,0.1)',
+              textShadowRadius: 2,
+              textShadowOffset: {width: 1, height: 1},
               borderBottomWidth: selectedIndex === 3 ? 1 : 0,
               borderColor: 'black',
             }}>
@@ -251,6 +266,9 @@ const OrdersScreen = ({navigation}) => {
             }}
             style={{
               marginRight: 8,
+              textShadowColor: 'rgba(0,0,0,0.1)',
+              textShadowRadius: 2,
+              textShadowOffset: {width: 1, height: 1},
               borderBottomWidth: selectedIndex === 4 ? 1 : 0,
               borderColor: 'black',
             }}>
@@ -262,6 +280,9 @@ const OrdersScreen = ({navigation}) => {
             }}
             style={{
               marginRight: 8,
+              textShadowColor: 'rgba(0,0,0,0.1)',
+              textShadowRadius: 2,
+              textShadowOffset: {width: 1, height: 1},
               borderBottomWidth: selectedIndex === 5 ? 1 : 0,
               borderColor: 'black',
             }}>
@@ -273,6 +294,9 @@ const OrdersScreen = ({navigation}) => {
             }}
             style={{
               marginRight: 8,
+              textShadowColor: 'rgba(0,0,0,0.1)',
+              textShadowRadius: 2,
+              textShadowOffset: {width: 1, height: 1},
               borderBottomWidth: selectedIndex === 6 ? 1 : 0,
               borderColor: 'black',
             }}>
@@ -284,6 +308,9 @@ const OrdersScreen = ({navigation}) => {
             }}
             style={{
               marginRight: 8,
+              textShadowColor: 'rgba(0,0,0,0.1)',
+              textShadowRadius: 2,
+              textShadowOffset: {width: 1, height: 1},
               borderBottomWidth: selectedIndex === 7 ? 1 : 0,
               borderColor: 'black',
             }}>
@@ -295,6 +322,9 @@ const OrdersScreen = ({navigation}) => {
             }}
             style={{
               marginRight: 8,
+              textShadowColor: 'rgba(0,0,0,0.1)',
+              textShadowRadius: 2,
+              textShadowOffset: {width: 1, height: 1},
               borderBottomWidth: selectedIndex === 8 ? 1 : 0,
               borderColor: 'black',
             }}>
@@ -484,6 +514,7 @@ export default OrdersScreen;
 const styles = StyleSheet.create({
   ordersContainer: {
     flex: 1,
+    backgroundColor: 'white',
   },
   selected: {
     borderColor: 'black',

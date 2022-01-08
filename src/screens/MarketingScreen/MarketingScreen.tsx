@@ -9,9 +9,7 @@ import {GET_COUPONS} from '../DashboardScreen/queries';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 const MarketingScreen = ({navigation}) => {
   const dispatch = useDispatch();
-  const couponResponse = useQuery(GET_COUPONS, {
-    pollInterval: 1000,
-  });
+  const couponResponse = useQuery(GET_COUPONS);
   useEffect(() => {
     if (couponResponse.data) {
       const newCoupons = couponResponse.data.vouchers.edges.map(({node}) => {

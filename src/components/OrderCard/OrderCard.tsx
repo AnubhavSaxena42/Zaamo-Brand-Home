@@ -45,7 +45,10 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
         />
       )}
       <View style={styles.orderInfo}>
-        <Text style={{fontSize: 14, color: 'black'}}>
+        <Text
+          numberOfLines={1}
+          ellipsizeMode="tail"
+          style={{fontSize: 14, color: 'black'}}>
           {order ? `#${order.number}` : '#'}{' '}
           {order?.user ? order.user.firstName : 'Anchal'}{' '}
           {order?.user ? order.user.lastName : 'Sharma'}
@@ -65,6 +68,12 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
               color: getTextTheme(status),
               backgroundColor: getTheme(status),
               borderRadius: 5,
+              padding: '2%',
+              paddingHorizontal: '3%',
+              textShadowColor: 'rgba(0,0,0,0.1)',
+              textShadowRadius: 2,
+              textShadowOffset: {width: 1, height: 1},
+              textAlignVertical: 'center',
             }}>
             {status ? status : 'NO STATUS'}
           </Text>
@@ -74,6 +83,10 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
               color: 'darkslateblue',
               backgroundColor: 'whitesmoke',
               borderRadius: 5,
+              textShadowColor: 'rgba(0,0,0,0.1)',
+              textShadowRadius: 2,
+              textShadowOffset: {width: 1, height: 1},
+              textAlignVertical: 'center',
             }}>
             {order?.user
               ? `${order.user.defaultBillingAddress.postalCode}`
@@ -82,11 +95,17 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
         </View>
       </View>
       <View style={styles.priceInfo}>
-        <Text style={{fontSize: 14, color: 'black'}}>
+        <Text
+          numberOfLines={1}
+          ellipsizeMode="tail"
+          style={{fontSize: 14, color: 'black'}}>
           {order ? order.total?.net.currency : 'Rs'}
           {order ? order.total?.net.amount : '???'}
         </Text>
-        <Text style={{fontSize: 10, color: 'rgba(0,0,0,0.5)'}}>
+        <Text
+          numberOfLines={1}
+          ellipsizeMode="tail"
+          style={{fontSize: 10, color: 'rgba(0,0,0,0.5)'}}>
           {order ? order.lines?.length : '1'}{' '}
           {order?.lines?.length > 1 ? 'items' : 'item'}
         </Text>
@@ -101,7 +120,7 @@ const styles = StyleSheet.create({
   orderCardContainer: {
     flexDirection: 'row',
     width: '95%',
-    height: 100,
+    height: 130,
     justifyContent: 'space-around',
     alignItems: 'center',
     borderRightColor: 'pink',
@@ -109,9 +128,14 @@ const styles = StyleSheet.create({
     borderRightWidth: 10,
     backgroundColor: 'white',
     marginVertical: '2%',
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
   },
   imageStyle: {
-    height: '100%',
+    height: '90%',
     width: '35%',
     borderRadius: 10,
   },
@@ -119,9 +143,11 @@ const styles = StyleSheet.create({
     paddingTop: '3%',
     height: '100%',
     paddingLeft: '2%',
+    flex: 2,
   },
   priceInfo: {
     height: '100%',
+    flex: 1,
     paddingTop: '3%',
     paddingRight: '2%',
   },

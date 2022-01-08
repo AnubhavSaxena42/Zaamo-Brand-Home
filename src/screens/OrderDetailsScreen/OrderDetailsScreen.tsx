@@ -43,14 +43,20 @@ const OrderDetailsScreen = ({navigation, route}) => {
   useEffect(() => {
     if (updateFulfillmentResponse.data) {
       if (updateFulfillmentResponse.data.updateFulfillment) {
+        dispatch(setLoaderStatus(true));
         toastService.showToast('Updated Fulfillment', true);
-        navigation.goBack();
+        setTimeout(() => {
+          navigation.goBack();
+          dispatch(setLoaderStatus(false));
+        }, 2000);
       }
     }
   }, [updateFulfillmentResponse.data]);
   useEffect(() => {
     if (updateFulfillmentResponse.loading) dispatch(setLoaderStatus(true));
-    else dispatch(setLoaderStatus(false));
+    else {
+      if (!updateFulfillmentResponse.data) dispatch(setLoaderStatus(false));
+    }
   }, [updateFulfillmentResponse.loading]);
 
   return (
@@ -159,6 +165,7 @@ const styles = StyleSheet.create({
   orderDetailsContainer: {
     flex: 1,
     width: '100%',
+    backgroundColor: 'white',
   },
   orderDetailsSection: {
     backgroundColor: 'white',

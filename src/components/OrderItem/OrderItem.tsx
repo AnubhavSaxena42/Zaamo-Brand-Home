@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   FlatList,
@@ -8,10 +8,15 @@ import {
   Text,
   View,
 } from 'react-native';
+import toastService from '../../services/toast-service';
 import Dropdown from '../Dropdown';
 
 const OrderItem = ({line, id, status, setData, fulfillment}) => {
   const [fulfillmentStatus, setFulfillmentStatus] = useState(status);
+  const [wasInitiallyCancelled, setWasInitiallyCancelled] = useState(false);
+  useEffect(() => {
+    if (status === 'CANCELED') setWasInitiallyCancelled(true);
+  }, []);
   const fulfillmentDataItems = [
     {id: 'IN_PROCESS', name: 'In Process'},
     {id: 'SHIPPED', name: 'Shipped'},
@@ -22,6 +27,19 @@ const OrderItem = ({line, id, status, setData, fulfillment}) => {
     {id: 'RETURN_COMPLETED', name: 'Return Completed'},
     {id: 'FULFILLED', name: 'Fulfilled'},
   ];
+  const getFulfillmentStatusDisplay = () => {
+    if (fulfillmentStatus === 'IN_PROCESS') return 'In Process';
+    else if (fulfillmentStatus === 'SHIPPED') return 'Shipped';
+    else if (fulfillmentStatus === 'DELIVERED') return 'Delivered';
+    else if (fulfillmentStatus === 'CANCELED') return 'Cancelled';
+    else if (fulfillmentStatus === 'RETURN_REQUESTED')
+      return 'Return Requested';
+    else if (fulfillmentStatus === 'RETURN_INITIATED')
+      return 'Return Initiated';
+    else if (fulfillmentStatus === 'RETURN_COMPLETED')
+      return 'Return Completed';
+    else if (fulfillmentStatus === 'FULFILLED') return 'Fulfilled';
+  };
   const [isFulfillmentModalOpen, setIsFulfillmentModalOpen] = useState(false);
   const ModalItem = ({
     colorItem,
@@ -206,9 +224,17 @@ const OrderItem = ({line, id, status, setData, fulfillment}) => {
           <Text style={{fontSize: 14, color: 'black', fontWeight: 'bold'}}>
             Order Status
           </Text>
-          <Text onPress={() => setIsFulfillmentModalOpen(true)}>
+          <Text
+            onPress={() => {
+              if (wasInitiallyCancelled)
+                toastService.showToast(
+                  'Cancelled Order Status can not be updated!',
+                  true,
+                );
+              else setIsFulfillmentModalOpen(true);
+            }}>
             {fulfillmentStatus
-              ? fulfillmentStatus
+              ? getFulfillmentStatusDisplay(status)
               : 'Update Fulfillment status'}
           </Text>
         </View>

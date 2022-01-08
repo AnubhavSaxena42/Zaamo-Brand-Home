@@ -9,7 +9,6 @@ const SettingOption = ({setting, onPress, imageUrl}) => {
         height: 60,
         width: 150,
         marginVertical: '4%',
-
         borderRadius: 10,
       }}>
       <View

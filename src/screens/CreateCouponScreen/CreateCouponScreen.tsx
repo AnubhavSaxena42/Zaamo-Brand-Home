@@ -21,6 +21,7 @@ import {GET_STORES, GET_BRANDS} from './queries';
 import {FlatList} from 'react-native-gesture-handler';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import toastService from '../../services/toast-service';
+import {GET_COUPONS} from '../DashboardScreen/queries';
 const webDropdownStyle = {
   height: '30%',
   width: '15%',
@@ -121,7 +122,6 @@ const CreateCouponScreen = ({navigation}) => {
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [couponTypeItems, setCouponTypeItems] = useState([
     {id: 'SHIPPING', name: 'Shipping'},
-    {id: 'ENTIRE_ORDER', name: 'Entire Order'},
     {id: 'SPECIFIC_PRODUCT', name: 'Specific Product'},
   ]);
   const [upperLimit, setUpperLimit] = useState();
@@ -279,26 +279,24 @@ const CreateCouponScreen = ({navigation}) => {
       input: input,
       stores: selectedStores,
     },
+    refetchQueries: [GET_COUPONS],
   });
   useEffect(() => {
-    
     if (voucherResponse.data) {
       console.log('in use effect:', voucherResponse.data);
       if (voucherResponse.data.voucherBulkCreate.success) {
-        
         toastService.showToast('Coupon has been created succesfully!', true);
         navigation.navigate('MarketingScreen');
       } else {
         toastService.showToast('Coupon Creation failed,try again.', true);
-        
       }
     }
     dispatch(setLoaderStatus(false));
   }, [voucherResponse.data]);
-  useEffect(()=>{
-    if(voucherResponse.loading) dispatch(setLoaderStatus(true))
-    else dispatch(setLoaderStatus(false))
-  },[voucherResponse.loading])
+  useEffect(() => {
+    if (voucherResponse.loading) dispatch(setLoaderStatus(true));
+    else dispatch(setLoaderStatus(false));
+  }, [voucherResponse.loading]);
   useEffect(() => {
     if (startDate > endDate) setEndDate(startDate);
   }, [startDate]);

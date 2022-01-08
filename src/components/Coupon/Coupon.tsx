@@ -14,12 +14,18 @@ const Coupon = ({navigation, coupon}) => {
   return (
     <View
       style={{
-        width: '100%',
+        width: '99%',
+        alignSelf: 'center',
         backgroundColor: 'white',
         height: 130,
         alignItems: 'center',
         flexDirection: 'row',
         marginVertical: '2%',
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 1},
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        elevation: 5,
       }}>
       <View
         style={{

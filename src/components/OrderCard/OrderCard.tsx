@@ -1,11 +1,13 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, Image, Text, View} from 'react-native';
 
-const OrderCard = ({navigation, isDetails}) => {
+const OrderCard = ({navigation, isDetails, order}) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate('OrderDetailsScreen');
+        navigation.navigate('OrderDetailsScreen', {
+          order: order,
+        });
       }}
       style={styles.orderCardContainer}>
       {!isDetails && (
@@ -15,9 +17,13 @@ const OrderCard = ({navigation, isDetails}) => {
         />
       )}
       <View style={styles.orderInfo}>
-        <Text style={{fontSize: 14, color: 'black'}}>#24304 Anchal Sharma</Text>
+        <Text style={{fontSize: 14, color: 'black'}}>
+          {order ? `#${order.number}` : '#'}{' '}
+          {order?.user ? order.user.firstName : 'Anchal'}{' '}
+          {order?.user ? order.user.lastName : 'Sharma'}
+        </Text>
         <Text style={{fontSize: 10, color: 'rgba(0,0,0,0.5)'}}>
-          28th August 2021
+          {order ? order.created : ''}
         </Text>
         <View
           style={{
@@ -41,13 +47,21 @@ const OrderCard = ({navigation, isDetails}) => {
               backgroundColor: 'whitesmoke',
               borderRadius: 5,
             }}>
-            110011-Saket
+            {order?.user
+              ? `${order.user.defaultBillingAddress.postalCode}`
+              : '110011-Saket'}
           </Text>
         </View>
       </View>
       <View style={styles.priceInfo}>
-        <Text style={{fontSize: 14, color: 'black'}}>Rs 690</Text>
-        <Text style={{fontSize: 10, color: 'rgba(0,0,0,0.5)'}}>1 item</Text>
+        <Text style={{fontSize: 14, color: 'black'}}>
+          {order ? order.total.net.currency : 'Rs'}
+          {order ? order.total.net.amount : '???'}
+        </Text>
+        <Text style={{fontSize: 10, color: 'rgba(0,0,0,0.5)'}}>
+          {order ? order.lines.length : '1'}{' '}
+          {order?.lines.length > 1 ? 'items' : 'item'}
+        </Text>
       </View>
     </TouchableOpacity>
   );

@@ -52,7 +52,13 @@ const CollectionCard = ({
             top: 10,
             right: 10,
           }}>
-          <View style={{...styles.editIcon, paddingHorizontal: '1%'}}>
+          <View
+            style={{
+              ...styles.editIcon,
+              backgroundColor: 'rgba(0,0,0,0)',
+              paddingHorizontal: '1%',
+              paddingVertical: '4%',
+            }}>
             <Ionicons name="pencil" size={15} color={'black'} />
           </View>
           <Text style={{color: 'black'}}>Edit</Text>
@@ -68,10 +74,25 @@ const CollectionCard = ({
             paddingHorizontal: '4%',
           }}>
           <View>
-            <Text style={{fontSize: 20, color: 'white', fontWeight: '500'}}>
+            <Text
+              style={{
+                fontSize: 20,
+                color: 'white',
+                fontWeight: '500',
+                textShadowColor: 'rgba(0,0,0,0.7)',
+                textShadowRadius: 2,
+                textShadowOffset: {width: 1, height: 1},
+              }}>
               {collection.name}
             </Text>
-            <Text style={{fontSize: 15, color: 'white'}}>
+            <Text
+              style={{
+                fontSize: 15,
+                color: 'white',
+                textShadowColor: 'rgba(0,0,0,0.7)',
+                textShadowRadius: 0.1,
+                textShadowOffset: {width: 1, height: 1},
+              }}>
               {collection.products && collection.products.length.toString()}{' '}
               Products
             </Text>

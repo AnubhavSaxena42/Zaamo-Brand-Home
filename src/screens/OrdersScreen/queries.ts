@@ -6,11 +6,40 @@ export const GET_ORDERS = gql`
       edges {
         node {
           id
+          total {
+            net {
+              amount
+              currency
+            }
+            gross {
+              amount
+              currency
+            }
+          }
+          number
+          user {
+            userId
+            firstName
+            email
+            mobileNo
+            lastName
+            avatar {
+              url
+            }
+            defaultBillingAddress {
+              streetAddress1
+              streetAddress2
+              postalCode
+            }
+          }
           created
           lines {
             id
             productSku
             productName
+            thumbnail {
+              url
+            }
             quantity
             totalPrice {
               net {
@@ -28,6 +57,23 @@ export const GET_ORDERS = gql`
             lines {
               id
               quantity
+              orderLine {
+                id
+                productSku
+                productName
+                thumbnail {
+                  url
+                }
+                quantity
+                totalPrice {
+                  net {
+                    amount
+                  }
+                  gross {
+                    amount
+                  }
+                }
+              }
             }
           }
         }

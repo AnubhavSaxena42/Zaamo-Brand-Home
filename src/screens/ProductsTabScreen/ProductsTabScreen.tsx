@@ -16,11 +16,12 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useMutation, useQuery} from '@apollo/client';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import axios from 'axios';
+import {GET_AUTHORISED_BRANDS} from '../DashboardScreen/queries';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import {setStoreCollections} from '../../redux/reducers/storeReducer';
 import {UPDATE_COLLECTION} from './mutations';
 import toastService from '../../services/toast-service';
-
+import {getItemFromStorage} from '../../services/storage-service';
 const ProductsTabScreen = ({navigation}) => {
   const [isViewing, setIsViewing] = useState(1);
   const [isCollectionEdit, setIsCollectionEdit] = useState(false);
@@ -30,8 +31,8 @@ const ProductsTabScreen = ({navigation}) => {
   const [newCollectionName, setNewCollectionName] = useState('');
   const [file, setFile] = useState();
   const [thumbnailUri, setThumbnailUri] = useState('');
+  const [products, setProducts] = useState([]);
   const [isThumbnailModalVisible, setIsThumbnailModalVisible] = useState(false);
-  const newProducts = useSelector(state => state.store.products);
   const newCollections = useSelector(state => state.store.collections);
   const dispatch = useDispatch();
   const onSelectTakePhoto = async () => {
@@ -80,6 +81,45 @@ const ProductsTabScreen = ({navigation}) => {
       },
     );
   };
+  const mobileNumber = '9953724117';
+  const brandResponse = useQuery(GET_AUTHORISED_BRANDS, {
+    variables: {
+      mobileNo: '91' + mobileNumber,
+    },
+  });
+  useEffect(() => {
+    if (brandResponse.data) {
+      if (
+        brandResponse.data.userByMobile &&
+        brandResponse.data.userByMobile.authorisedBrands[0] &&
+        brandResponse.data.userByMobile.authorisedBrands[0].products
+      ) {
+        console.log('Here');
+        const newStoreProducts =
+          brandResponse.data.userByMobile.authorisedBrands[0].products.edges.map(
+            ({node}) => {
+              return {
+                brandName: node.brand.brandName,
+                id: node.id,
+                name: node.name,
+                url: node.url,
+                thumbnail: node.thumbnail
+                  ? node.thumbnail.url
+                  : 'https://media-exp1.licdn.com/dms/image/C4E0BAQGymyKm7OE3wg/company-logo_200_200/0/1636442519943?e=2159024400&v=beta&t=19hHu3puobGsregS0-31D-KiANWe3NqrKZESktzQC30',
+                price: node.pricing.priceRange
+                  ? node.pricing.priceRange.start.net.amount
+                  : 0,
+              };
+            },
+          );
+        setProducts(newStoreProducts);
+      }
+    }
+  }, [brandResponse.data]);
+  useEffect(() => {
+    if (brandResponse.loading) dispatch(setLoaderStatus(true));
+    else dispatch(setLoaderStatus(false));
+  }, [brandResponse.loading]);
 
   const [collectionUpdate, collectionUpdateResponse] = useMutation(
     UPDATE_COLLECTION,
@@ -132,7 +172,7 @@ const ProductsTabScreen = ({navigation}) => {
       dispatch(setLoaderStatus(true));
       console.log(res);
       if (res.didCancel) {
-        dispatch(setLoaderStatus(true));
+        dispatch(setLoaderStatus(false));
         return;
       }
       var galleryFormData = new FormData();
@@ -275,7 +315,7 @@ const ProductsTabScreen = ({navigation}) => {
             justifyContent: 'space-around',
             flexWrap: 'wrap',
           }}>
-          {newProducts.map(product => (
+          {products.map(product => (
             <ProductCard key={product.id} product={product} />
           ))}
         </ScrollView>

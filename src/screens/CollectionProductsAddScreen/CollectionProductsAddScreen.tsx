@@ -8,6 +8,7 @@ import {
   FlatList,
   TouchableOpacity,
   Platform,
+  TouchableNativeFeedback,
 } from 'react-native';
 
 import AddProductCard from '../../components/AddProductCard/AddProductCard';
@@ -220,7 +221,8 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
       route.params.setProducts(selectedProducts);
       navigation.goBack();
     } else if (route.params.collection) {
-      collectionAddProducts();
+      if (selectedProducts.length === 0) navigation.goBack();
+      else collectionAddProducts();
     } else {
       collectionCreate();
     }
@@ -294,7 +296,7 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
           backgroundColor: 'white',
           borderBottomWidth: 1,
           borderBottomColor: 'rgba(0,0,0,0.2)',
-          justifyContent: 'center',
+          justifyContent: 'space-between',
           alignItems: 'center',
           paddingVertical: '4%',
         }}>
@@ -308,19 +310,22 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
           }}>
           Products
         </Text>
-        <TouchableOpacity
+        <TouchableNativeFeedback
           onPress={onPressComplete}
           style={{
             flex: 1,
             backgroundColor: 'black',
             paddingHorizontal: '5%',
             paddingVertical: '5%',
-            width: '50%',
           }}>
-          <Text style={{color: 'white', textAlign: 'center'}}>
-            {route.params.fromVoucherCreate ? 'Add Products' : 'Create'}
+          <Text
+            style={{
+              color: 'black',
+              marginRight: '5%',
+            }}>
+            {route.params.fromVoucherCreate ? 'Add Products' : 'Confirm'}
           </Text>
-        </TouchableOpacity>
+        </TouchableNativeFeedback>
       </View>
       {route.params.fromVoucherCreate && (
         <View

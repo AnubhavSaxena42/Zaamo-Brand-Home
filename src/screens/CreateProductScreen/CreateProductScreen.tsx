@@ -45,7 +45,7 @@ const CreateProductScreen = ({navigation, route}) => {
   const [isPriceError, setisPriceError] = useState(false);
   const [isStockError, setIsStockError] = useState(false);
   const [isDescriptionError, setIsDescriptionError] = useState(false);
-  const [productType, setProductType] = useState('');
+  const [productType, setProductType] = useState('UHJvZHVjdFR5cGU6NjU=');
   const [isColorModalVisible, setIsColorModalVisible] = useState(false);
   const [productTypeItems, setProductTypeItems] = useState([]);
   const [isVariationNameError, setIsVariationNameError] = useState(false);
@@ -87,8 +87,8 @@ const CreateProductScreen = ({navigation, route}) => {
   const sizeResponse = useQuery(GET_SIZE_VALUES);
   useEffect(() => {
     if (sizeResponse.data) {
-      console.log(sizeResponse.data);
-      const newSizeAttributeId = sizeResponse.data.attributes.edges[5].node.id;
+      console.log('sizeResponse:', sizeResponse.data);
+      /*const newSizeAttributeId = sizeResponse.data.attributes.edges[5].node.id;
       const newSizeAttributeValues =
         sizeResponse.data.attributes.edges[5].node.values.map(value => {
           return {
@@ -98,6 +98,17 @@ const CreateProductScreen = ({navigation, route}) => {
           };
         });
       setSizeAttributeId(newSizeAttributeId);
+      setSizeAttributeValues(newSizeAttributeValues);*/
+      const newSizeAttributeValues = sizeResponse.data.attribute.values.map(
+        value => {
+          return {
+            name: value.name,
+            id: value.id,
+            isSelected: false,
+          };
+        },
+      );
+      setSizeAttributeId(sizeResponse.data.attribute.id);
       setSizeAttributeValues(newSizeAttributeValues);
     }
   }, [sizeResponse.data]);
@@ -210,6 +221,7 @@ const CreateProductScreen = ({navigation, route}) => {
     basePrice: parseInt(price),
   };
   console.log(productInput);
+  console.log('Product Type:', productType);
   const [productCreate, productResponse] = useMutation(CREATE_PRODUCT, {
     variables: {
       input: productInput,
@@ -251,7 +263,7 @@ const CreateProductScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
   useEffect(() => {
     if (productResponse.data) {
-      console.log(productResponse.data);
+      console.log('Created Product:', productResponse.data);
       const newProducts = [
         ...products,
         {
@@ -259,8 +271,9 @@ const CreateProductScreen = ({navigation, route}) => {
           name: productResponse.data.productCreate.product.name,
           brandName: productResponse.data.productCreate.product.brand.brandName,
           price: 0,
-          thumbnail:
-            'https://media-exp1.licdn.com/dms/image/C4E0BAQGymyKm7OE3wg/company-logo_200_200/0/1636442519943?e=2159024400&v=beta&t=19hHu3puobGsregS0-31D-KiANWe3NqrKZESktzQC30',
+          thumbnail: productResponse.data.productCreate.product.thumbnail
+            ? productResponse.data.productCreate.product.thumbnail.url
+            : 'https://media-exp1.licdn.com/dms/image/C4E0BAQGymyKm7OE3wg/company-logo_200_200/0/1636442519943?e=2159024400&v=beta&t=19hHu3puobGsregS0-31D-KiANWe3NqrKZESktzQC30',
         },
       ];
       setNewProductId(productResponse.data.productCreate.product.id);
@@ -306,13 +319,6 @@ const CreateProductScreen = ({navigation, route}) => {
     for (let i = 0; i < sizeAttributeValues.length; i++) {
       if (sizeAttributeValues[i].isSelected) {
         const isAlreadyAdded = variations.some(variation => {
-          console.log(
-            colorItem.name +
-              ',' +
-              sizeAttributeValues[i].name +
-              ' already added',
-            isAlreadyAdded,
-          );
           return (
             variation.name ===
             colorItem.name + ',' + sizeAttributeValues[i].name
@@ -528,7 +534,7 @@ const CreateProductScreen = ({navigation, route}) => {
               <Entypo name="camera" color="darkgray" size={35} />
             </TouchableOpacity>
           </View>
-          <View style={styles.selectCategoryContainer}>
+          {/*<View style={styles.selectCategoryContainer}>
             <Text style={styles.labelText}>Select Product Types</Text>
             <TouchableOpacity
               onPress={() => {
@@ -547,7 +553,7 @@ const CreateProductScreen = ({navigation, route}) => {
               }}>
               <Text>Select Product Type</Text>
             </TouchableOpacity>
-          </View>
+          </View>*/}
 
           <View style={styles.productDescriptionInputContainer}>
             <Text style={styles.labelText}>Product Description</Text>
@@ -641,7 +647,7 @@ const CreateProductScreen = ({navigation, route}) => {
               width: '100%',
               flexDirection: 'row',
               flexWrap: 'wrap',
-              justifyContent: 'space-between',
+
               marginVertical: '4%',
             }}>
             {sizeAttributeValues.map(value => {

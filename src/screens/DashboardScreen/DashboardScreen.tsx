@@ -106,6 +106,7 @@ const DashboardScreen = ({navigation, route}) => {
   };
 
   const storeResponse = useQuery(GET_STORE);
+  console.log('Number:', mobileNumber);
   const brandResponse = useQuery(GET_AUTHORISED_BRANDS, {
     variables: {
       mobileNo: '91' + mobileNumber,
@@ -156,6 +157,7 @@ const DashboardScreen = ({navigation, route}) => {
                 brandName: node.brand.brandName,
                 id: node.id,
                 name: node.name,
+                url: node.url,
                 thumbnail: node.thumbnail
                   ? node.thumbnail.url
                   : 'https://media-exp1.licdn.com/dms/image/C4E0BAQGymyKm7OE3wg/company-logo_200_200/0/1636442519943?e=2159024400&v=beta&t=19hHu3puobGsregS0-31D-KiANWe3NqrKZESktzQC30',

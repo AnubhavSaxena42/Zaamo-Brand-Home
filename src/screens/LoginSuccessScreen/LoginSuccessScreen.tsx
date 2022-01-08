@@ -16,6 +16,7 @@ import {
 import CongratulationsSVG from './Congratulations';
 import toastService from '../../services/toast-service';
 const LoginSuccessScreen = ({navigation, route}) => {
+  console.log('Route mobile number:', route.params.mobileNumber);
   const [createToken, {data, loading, error}] = useMutation(TOKEN_CREATE, {
     variables: {
       mobileNo: '91' + route.params.mobileNumber,
@@ -75,6 +76,7 @@ const LoginSuccessScreen = ({navigation, route}) => {
         dispatch(setToken(data.tokenCreate.token));
         if (route.params.mobileNumber) {
           dispatch(setMobileNumber(route.params.mobileNumber));
+          saveItemToStorage('Mobile Number', route.params.mobileNumber);
           saveItemToStorage('User', JSON.stringify(data.tokenCreate.user));
           authService
             .getStoreId(data.tokenCreate.user.userId)

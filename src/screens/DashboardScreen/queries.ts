@@ -46,7 +46,7 @@ export const GET_STORE = gql`
           }
         }
       }
-      collections(first: 50) {
+      collections(first: 20) {
         edges {
           node {
             id
@@ -105,10 +105,12 @@ export const GET_AUTHORISED_BRANDS = gql`
             node {
               id
               name
+              url
+              descriptionJson
               brand {
                 brandName
               }
-              thumbnail {
+              thumbnail(size: 720) {
                 url
                 alt
               }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -8,12 +8,51 @@ import {
   View,
   ScrollView,
 } from 'react-native';
-
 import OrderCard from '../../components/OrderCard/OrderCard';
 import OrderItem from '../../components/OrderItem/OrderItem';
-
+import {useDispatch, useSelector} from 'react-redux';
+import {useMutation} from '@apollo/client';
+import {UPDATE_FULFILLMENT} from './mutations';
+import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
+import toastService from '../../services/toast-service';
+import {GET_ORDERS} from '../OrdersScreen/queries';
 const windowWidth = Dimensions.get('window').width;
-const OrderDetailsScreen = ({navigation}) => {
+const OrderDetailsScreen = ({navigation, route}) => {
+  const order = route.params?.order ? route.params.order : {};
+  const warehouseId = useSelector(state => state.store.warehouse);
+  const [fulfillmentData, setFullfillmentData] = useState(
+    order.fulfillments?.map(fulfillment => {
+      return {
+        id: fulfillment?.id,
+        status: fulfillment?.status,
+      };
+    }),
+  );
+  const dispatch = useDispatch();
+  const [updateFulfillment, updateFulfillmentResponse] = useMutation(
+    UPDATE_FULFILLMENT,
+    {
+      variables: {
+        id: fulfillmentData[0]?.id,
+        fulfillmentStatus: fulfillmentData[0]?.status,
+        warehouseId: warehouseId,
+      },
+    },
+  );
+  console.log('lookey', fulfillmentData);
+  useEffect(() => {
+    if (updateFulfillmentResponse.data) {
+      if (updateFulfillmentResponse.data.updateFulfillment) {
+        toastService.showToast('Updated Fulfillment', true);
+        navigation.goBack();
+      }
+    }
+  }, [updateFulfillmentResponse.data]);
+  useEffect(() => {
+    if (updateFulfillmentResponse.loading) dispatch(setLoaderStatus(true));
+    else dispatch(setLoaderStatus(false));
+  }, [updateFulfillmentResponse.loading]);
+
   return (
     <ScrollView style={styles.orderDetailsContainer}>
       <Text
@@ -43,31 +82,64 @@ const OrderDetailsScreen = ({navigation}) => {
           alignItems: 'center',
           marginTop: '12%',
         }}>
-        <OrderCard navigation={navigation} isDetails={true} />
+        <OrderCard order={order} navigation={navigation} isDetails={true} />
       </View>
       <View style={{flex: 1, backgroundColor: 'white'}}>
         <View style={styles.orderDetailsSection}>
           <Text style={styles.headerText}>Order Details</Text>
-          <OrderItem />
-          <OrderItem />
+          {order.fulfillments.map(fulfillment => {
+            return (
+              <OrderItem
+                key={fulfillment.id}
+                id={fulfillment.id}
+                setData={setFullfillmentData}
+                fulfillment={fulfillmentData}
+                status={fulfillment.status}
+                line={fulfillment.lines[0].orderLine}
+              />
+            );
+          })}
         </View>
         <View style={styles.userDetailsSection}>
           <View style={{paddingTop: '3%'}}>
             <Text style={styles.headerText}>User Details</Text>
-            <Text style={styles.detailText}>Anchal Sharma</Text>
-            <Text style={styles.detailText}>2 items</Text>
+            <Text style={styles.detailText}>
+              {' '}
+              {order.user?.firstName} {order.user?.lastName}
+            </Text>
+            <Text style={styles.detailText}>
+              {order ? order.lines?.length : '1'}{' '}
+              {order?.lines?.length > 1 ? 'items' : 'item'}
+            </Text>
           </View>
           <View style={{paddingTop: '3%', paddingHorizontal: '15%'}}>
             <Text style={styles.headerText}>Shipping Details</Text>
             <Text style={styles.detailText}>
-              D-81,Saket,South Delhi,Delhi,India-110059
+              {order.user
+                ? order.user.defaultBillingAddress?.streetAddress1
+                : ''}
+              {order.user
+                ? order.user.defaultBillingAddress?.streetAddress2
+                : ''}
+              {order.user ? order.user.defaultBillingAddress?.postalCode : ''}
             </Text>
-            <Text style={styles.detailText}>9599243067</Text>
-            <Text style={styles.detailText}>anchal_20sharma@gmail.com</Text>
+            <Text style={styles.detailText}>{order.user?.mobileNo}</Text>
+            <Text style={styles.detailText}>{order.user?.email}</Text>
           </View>
         </View>
         <TouchableOpacity
-          onPress={() => navigation.navigate('OrdersScreen')}
+          onPress={() => {
+            fulfillmentData.forEach(fulfillment => {
+              updateFulfillment({
+                variables: {
+                  id: fulfillment.id,
+                  fulfillmentStatus: fulfillment.status,
+                  warehouseId: warehouseId,
+                },
+                refetchQueries: [GET_ORDERS],
+              });
+            });
+          }}
           style={styles.button}>
           <Text style={{color: 'white', fontWeight: 'bold'}}>Update</Text>
         </TouchableOpacity>

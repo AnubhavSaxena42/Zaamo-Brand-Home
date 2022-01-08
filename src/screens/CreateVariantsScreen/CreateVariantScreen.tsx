@@ -13,6 +13,7 @@ import {useSelector, useDispatch} from 'react-redux';
 //import GestureRecognizer from 'react-native-swipe-gestures';
 import Header from '../../components/Header';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
+import toastService from '../../services/toast-service';
 import {CREATE_VARIANTS} from './mutations';
 const VariantRow = ({variant}) => {
   const [stock, setStock] = useState('');
@@ -65,15 +66,15 @@ const CreateVariantScreen = ({navigation, route}) => {
     },
   );
   const warehouseId = useSelector(state => state.store.warehouse);
+  console.log(variations);
   const onVariantsCreate = () => {
     const newVariants = variations.map(variant => {
       return {
         attributes: variant.attributes,
-        quantityAvailable: [
-          {warehouse: warehouseId, quantity: parseInt(variant.stock)},
-        ],
+        stocks: [{warehouse: warehouseId, quantity: parseInt(variant.stock)}],
         price: parseInt(variant.price),
         sku:
+          variant.name +
           variant.attributes[0].id +
           variant.attributes[0].values[0] +
           new Date().toISOString(),
@@ -89,6 +90,13 @@ const CreateVariantScreen = ({navigation, route}) => {
   useEffect(() => {
     if (variantCreateResponse.data) {
       console.log(variantCreateResponse.data);
+      if (
+        variantCreateResponse.data.productVariantBulkCreate.count > 0 &&
+        variantCreateResponse.data.productVariantBulkCreate.count > 0
+      ) {
+        toastService.showToast('Variants Created Successfully', true);
+        navigation.replace('ProductsTabScreen');
+      }
     }
   }, [variantCreateResponse.data]);
   useEffect(() => {

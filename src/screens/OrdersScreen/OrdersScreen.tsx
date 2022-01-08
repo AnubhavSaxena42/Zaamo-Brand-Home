@@ -18,16 +18,18 @@ import authService from '../../services/auth-service';
 const OrdersScreen = ({navigation}) => {
   const windowWidth = Dimensions.get('window').width;
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const {data, error, loading} = useQuery(GET_ORDERS);
+  const {data, error, loading, refetch} = useQuery(GET_ORDERS);
+  const [brandOrders, setBrandOrders] = useState([]);
   const swiperRef = useRef();
   useEffect(() => {
     if (data) {
       const orders = data.orders.edges.filter(
         ({node}) => node.lines.length !== 0,
       );
-      console.log('Orders:', orders);
+      setBrandOrders(orders);
     }
   }, [data]);
+  console.log('Brand Orders:', brandOrders);
   console.log('Swiper Ref:', swiperRef.current);
   console.log(data, error, loading);
   return (
@@ -187,13 +189,15 @@ const OrdersScreen = ({navigation}) => {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <OrderCard navigation={navigation} />
-          <OrderCard navigation={navigation} />
-          <OrderCard navigation={navigation} />
-          <OrderCard navigation={navigation} />
-          <OrderCard navigation={navigation} />
-          <OrderCard navigation={navigation} />
-          <OrderCard navigation={navigation} />
+          {brandOrders.map(order => {
+            return (
+              <OrderCard
+                key={order.node.id}
+                navigation={navigation}
+                order={order.node}
+              />
+            );
+          })}
         </ScrollView>
         <ScrollView
           showsVerticalScrollIndicator={false}

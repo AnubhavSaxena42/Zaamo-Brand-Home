@@ -24,6 +24,7 @@ import {
   setStoreCollections,
   setStoreProducts,
   setStoreVouchers,
+  setWarehouse,
 } from '../../redux/reducers/storeReducer';
 import {setAuthorisedBrands} from '../../redux/reducers/userReducer';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
@@ -165,6 +166,10 @@ const DashboardScreen = ({navigation, route}) => {
             },
           );
         dispatch(setStoreProducts(newStoreProducts));
+
+        const warehouseId =
+          brandResponse.data.userByMobile.authorisedBrands[0].warehouse;
+        dispatch(setWarehouse(warehouseId));
 
         const authorisedBrands =
           brandResponse.data.userByMobile.authorisedBrands.map(brand => {

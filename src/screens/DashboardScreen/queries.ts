@@ -99,6 +99,7 @@ export const GET_AUTHORISED_BRANDS = gql`
       authorisedBrands {
         id
         brandName
+        warehouse
         products(first: 100) {
           edges {
             node {

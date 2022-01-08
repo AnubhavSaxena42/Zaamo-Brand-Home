@@ -22,10 +22,10 @@ const SplashScreen = ({navigation}) => {
               getItemFromStorage('Mobile Number').then(mobileNumber => {
                 if (mobileNumber) {
                   dispatch(setMobileNumber(mobileNumber));
-                  navigation.navigate('StoreStack');
+                  navigation.replace('StoreStack');
                 } else {
                   console.log('Mobile Number not found');
-                  navigation.navigate('StoreStack');
+                  navigation.replace('StoreStack');
                 }
               });
             }
@@ -35,11 +35,11 @@ const SplashScreen = ({navigation}) => {
           getItemFromStorage('Mobile Number').then(mobileNumber => {
             console.log('Mobile Number:', mobileNumber);
             if (mobileNumber && mobileNumber.length !== 0) {
-              navigation.navigate('LoginSuccessScreen', {
+              navigation.replace('LoginSuccessScreen', {
                 mobileNumber: mobileNumber,
               });
             } else {
-              navigation.navigate('MobileOTPScreen');
+              navigation.replace('MobileOTPScreen');
             }
           });
         }
@@ -50,15 +50,15 @@ const SplashScreen = ({navigation}) => {
           .then(mobileNumber => {
             console.log('Mobile Number:', mobileNumber);
             if (mobileNumber && mobileNumber.length !== 0) {
-              navigation.navigate('LoginSuccessScreen', {
+              navigation.replace('LoginSuccessScreen', {
                 mobileNumber: mobileNumber,
               });
             } else {
-              navigation.navigate('MobileOTPScreen');
+              navigation.replace('MobileOTPScreen');
             }
           })
           .catch(err => {
-            navigation.navigate('MobileOTPScreen');
+            navigation.replace('MobileOTPScreen');
           });
       });
   }, []);

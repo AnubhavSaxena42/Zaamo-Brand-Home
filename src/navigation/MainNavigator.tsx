@@ -5,7 +5,7 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import ProductTaggingPanelScreen from '../screens/ProductTaggingPanelScreen';
-import VariantScreen from '../screens/VariantScreen';
+import CreateVariantScreen from '../screens/CreateVariantsScreen/CreateVariantScreen';
 import AddProductScreen from '../screens/AddProductScreen';
 import CreateProductScreen from '../screens/CreateProductScreen/CreateProductScreen';
 import MobileOTPScreen from '../screens/MobileOTPScreen/MobileOTPScreen';
@@ -146,6 +146,10 @@ export const ProductStackNavigator = () => {
       <ProductStack.Screen
         name="CreateProductScreen"
         component={CreateProductScreen}
+      />
+      <ProductStack.Screen
+        name="CreateVariantScreen"
+        component={CreateVariantScreen}
       />
       <ProductStack.Screen
         name="CollectionProductsAddScreen"

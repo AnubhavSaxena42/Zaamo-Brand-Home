@@ -15,12 +15,13 @@ import {
   ApolloProvider,
   createHttpLink,
 } from '@apollo/client';
+import {createUploadLink} from 'apollo-upload-client';
 import {useSelector} from 'react-redux';
 import {setContext} from '@apollo/client/link/context';
 import {getItemFromStorage} from './services/storage-service';
 // Initialize Apollo Client
 
-const httpLink = createHttpLink({
+const uploadLink = createUploadLink({
   uri: 'https://beta.zaamo.co/graphql/',
 });
 const authLink = setContext(async (_, {headers}) => {
@@ -38,7 +39,7 @@ const authLink = setContext(async (_, {headers}) => {
 });
 
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: authLink.concat(uploadLink),
   cache: new InMemoryCache(),
 });
 

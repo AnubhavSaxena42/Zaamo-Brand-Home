@@ -29,7 +29,7 @@ const VerifyOTPScreen = ({navigation, route}) => {
     if (data) {
       if (data.verifyOtp.success) {
         toastService.showToast('OTP Verified!', true);
-        navigation.navigate('ConnectInstaScreen', {
+        navigation.navigate('LoginSuccessScreen', {
           mobileNumber: route.params.mobileNumber,
         });
       } else {
@@ -77,14 +77,14 @@ const VerifyOTPScreen = ({navigation, route}) => {
       )}
       <TouchableOpacity
         onPress={() => {
-          /*navigation.navigate('ConnectInstaScreen', {
+          navigation.navigate('LoginSuccessScreen', {
             mobileNumber: route.params.mobileNumber,
-          });*/
-          if (otp.length < 4) {
+          });
+          /*if (otp.length < 4) {
             setErrorMessage(true);
             return;
           }
-          verifyOtp();
+          verifyOtp();*/
         }}
         style={styles.button}>
         <Text style={{color: 'white', fontWeight: 'bold'}}>

@@ -20,12 +20,14 @@ import Dropdown from '../../components/Dropdown';
 import Checkbox from '../../components/Checkbox';
 import TaggedComponent from '../../components/TaggedComponent';
 import {useMutation, useQuery} from '@apollo/client';
-import {GET_PRODUCT_TYPES} from './queries';
+import {GET_PRODUCT_TYPES, GET_SIZE_VALUES} from './queries';
 import {CREATE_PRODUCT, CREATE_PRODUCT_IMAGE} from './mutations';
 import {setStoreProducts} from '../../redux/reducers/storeReducer';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import toastService from '../../services/toast-service';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {GET_COLOR_VALUES} from '../ProductsTabScreen/queries';
+import {ReactNativeFile} from 'apollo-upload-client';
 //import GestureRecognizer from 'react-native-swipe-gestures';
 const ErrorMessage = () => {
   return (
@@ -35,7 +37,6 @@ const ErrorMessage = () => {
   );
 };
 const CreateProductScreen = ({navigation, route}) => {
-  const [contentFormat, setContentFormat] = useState();
   const [productName, setProductName] = useState('');
   const [price, setPrice] = useState('');
   const [stock, setStock] = useState('');
@@ -44,25 +45,73 @@ const CreateProductScreen = ({navigation, route}) => {
   const [isPriceError, setisPriceError] = useState(false);
   const [isStockError, setIsStockError] = useState(false);
   const [isDescriptionError, setIsDescriptionError] = useState(false);
-  const [newVariation, setNewVariation] = useState('');
   const [productType, setProductType] = useState('');
+  const [isColorModalVisible, setIsColorModalVisible] = useState(false);
   const [productTypeItems, setProductTypeItems] = useState([]);
   const [isVariationNameError, setIsVariationNameError] = useState(false);
   const [trigger, setTrigger] = useState(true);
   const [image, setImage] = useState();
+  const [sizeAttributeId, setSizeAttributeId] = useState('');
+  const [sizeAttributeValues, setSizeAttributeValues] = useState([]);
+  const [colorAttributeId, setColorAttributeId] = useState('');
+  const [colorAttributeValues, setColorAttributeValues] = useState([]);
+  const [colorItem, setColorItem] = useState();
+  const [variations, setVariations] = useState([]);
   const [newProductId, setNewProductId] = useState();
-  const [codCheckbox, setCodCheckbox] = useState([
-    {value: 'Allow COD', isSelected: false},
-  ]);
   const [isProductTypeModalVisible, setIsProductTypeModalVisible] =
     useState(false);
-  const brandId = useSelector(state => {
-    state.user.authorisedBrands && state.user.authorisedBrands.length !== 0
-      ? state.user.authorisedBrands[0].id
-      : '';
-  });
+  const brandId = useSelector(state => state.user.authorisedBrands[0].id);
   console.log(brandId);
-  const ModalItem = ({name, value, selectedItem, setSelectedItem}) => {
+
+  const colorResponse = useQuery(GET_COLOR_VALUES);
+  useEffect(() => {
+    if (colorResponse.data) {
+      console.log(colorResponse.data);
+      const newColorAttributeId =
+        colorResponse.data.attributes.edges[0].node.id;
+      const newColorAttributeValues =
+        colorResponse.data.attributes.edges[0].node.values
+          .slice(0, 10)
+          .map(value => {
+            return {id: value.id, name: value.name};
+          });
+      setColorAttributeId(newColorAttributeId);
+      setColorItem(newColorAttributeValues[0]);
+      setColorAttributeValues(newColorAttributeValues);
+    }
+  }, [colorResponse.data]);
+  useEffect(() => {
+    if (colorResponse.loading) dispatch(setLoaderStatus(true));
+    else dispatch(setLoaderStatus(false));
+  }, [colorResponse.loading]);
+  const sizeResponse = useQuery(GET_SIZE_VALUES);
+  useEffect(() => {
+    if (sizeResponse.data) {
+      console.log(sizeResponse.data);
+      const newSizeAttributeId = sizeResponse.data.attributes.edges[5].node.id;
+      const newSizeAttributeValues =
+        sizeResponse.data.attributes.edges[5].node.values.map(value => {
+          return {
+            name: value.name,
+            id: value.id,
+            isSelected: false,
+          };
+        });
+      setSizeAttributeId(newSizeAttributeId);
+      setSizeAttributeValues(newSizeAttributeValues);
+    }
+  }, [sizeResponse.data]);
+  useEffect(() => {
+    if (sizeResponse.loading) dispatch(setLoaderStatus(true));
+    else dispatch(setLoaderStatus(false));
+  }, [sizeResponse.loading]);
+  const ModalItem = ({
+    colorItem,
+    name,
+    value,
+    selectedItem,
+    setSelectedItem,
+  }) => {
     console.log(selectedItem, name, value);
     const onPressHandler = () => {
       if (selectedItem === value) {
@@ -71,9 +120,34 @@ const CreateProductScreen = ({navigation, route}) => {
         setSelectedItem(value);
       }
     };
+    const onSelectColor = () => {
+      if (selectedItem.id === colorItem.id) {
+        return;
+      } else {
+        setSelectedItem(colorItem);
+      }
+    };
+    let backgroundColor, textBackgroundColor;
+    if (colorItem) {
+      if (colorItem.id === selectedItem.id) {
+        backgroundColor = 'black';
+        textBackgroundColor = 'white';
+      } else {
+        backgroundColor = 'white';
+        textBackgroundColor = 'black';
+      }
+    } else {
+      if (selectedItem === value) {
+        backgroundColor = 'black';
+        textBackgroundColor = 'white';
+      } else {
+        backgroundColor = 'white';
+        textBackgroundColor = 'black';
+      }
+    }
     return (
       <TouchableOpacity
-        onPress={onPressHandler}
+        onPress={colorItem ? onSelectColor : onPressHandler}
         style={{
           flexDirection: 'row',
           justifyContent: 'space-between',
@@ -82,122 +156,28 @@ const CreateProductScreen = ({navigation, route}) => {
           borderBottomColor: 'rgba(0,0,0,0.2)',
           borderBottomWidth: 1,
           alignItems: 'center',
-          backgroundColor: selectedItem === value ? 'black' : 'white',
+          backgroundColor: backgroundColor,
         }}>
         <Text
           style={{
             fontSize: 16,
-            color: selectedItem === value ? 'white' : 'black',
+            color: textBackgroundColor,
           }}>
-          {name}
+          {colorItem ? colorItem.name : name}
         </Text>
       </TouchableOpacity>
     );
   };
-  console.log(productType);
-  const webDropdownStyle = {
-    height: '30%',
-    width: '15%',
-    marginLeft: '2%',
-    borderRadius: 5,
-    alignItems: 'center',
-    borderColor: 'rgba(0,0,0,0.2)',
-    paddingHorizontal: 5,
-    borderWidth: 1,
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowRadius: 1,
-    paddingVertical: 15,
-    shadowOpacity: 1.0,
-    elevation: 2,
-    zIndex: 200,
-  };
-
-  const mobileDropdownStyle = {
-    height: 50,
-    width: '100%',
-    borderRadius: 5,
-    alignItems: 'center',
-    borderColor: 'rgba(0,0,0,0.2)',
-    paddingHorizontal: 5,
-    borderWidth: 1,
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowRadius: 2,
-    shadowOpacity: 1.0,
-    elevation: 5,
-    zIndex: 200,
-  };
-  const mobileDropdownValuesContainerStyle = {
-    top: -110,
-    width: '102%',
-    alignSelf: 'center',
-    borderWidth: 1,
-    borderColor: 'rgba(0,0,0,0.2)',
-  };
-  const webDropdownValuesContainerStyle = {
-    top: 18,
-    width: '100%',
-    borderWidth: 1,
-    borderColor: 'rgba(0,0,0,0.2)',
-  };
-  const mobileDropdownValuesTextStyle = {
-    fontSize: 14,
-    fontFamily: 'Roboto-Regular',
-    marginVertical: 2,
-    marginLeft: 10,
-  };
-  const webDropdownValuesTextStyle = {
-    fontSize: 16,
-    fontFamily: 'Roboto-Regular',
-    marginVertical: 5,
-    marginLeft: 10,
-  };
-  const mobileDropdownTextStyle = {
-    fontSize: 14,
-    fontFamily: 'Open-Sans',
-    fontWeight: '300',
-    color: 'rgba(0, 0, 0, 0.75)',
-  };
-  const webDropdownTextStyle = {
-    fontSize: 16,
-    fontFamily: 'Open-Sans',
-    fontWeight: '300',
-    color: 'rgba(0, 0, 0, 0.75)',
-  };
-
-  const [variationCheckboxes, setVariationCheckboxes] = useState([
-    {value: 'XS', isSelected: false},
-    {value: 'S', isSelected: false},
-    {value: 'M', isSelected: false},
-    {value: 'L', isSelected: false},
-    {value: 'XL', isSelected: false},
-    {value: 'XXL', isSelected: false},
-  ]);
   const {data, error, loading} = useQuery(GET_PRODUCT_TYPES);
   useEffect(() => {
     if (data) {
       const newProductTypes = data.productTypes.edges.map(({node}) => {
         return node;
       });
-      console.log(newProductTypes);
+      console.log('Product Types:', newProductTypes);
       setProductTypeItems(newProductTypes);
     }
   }, [data]);
-  const [variations, setVariations] = useState([]);
-  const contentFormatItems = [
-    'All',
-    'Insta Highlight',
-    'Insta Story',
-    'Insta Reel',
-    'Insta Video',
-    'Static Post',
-    'Uncategorized',
-  ];
   const onSubmitHandler = () => {
     let flag = 0;
     if (productName === '') {
@@ -222,28 +202,6 @@ const CreateProductScreen = ({navigation, route}) => {
     }
   };
   const products = useSelector(state => state.store.products);
-  const addNewVariationHandler = () => {
-    if (newVariation === '') {
-      setIsVariationNameError(true);
-      return;
-    } else {
-      let newVariations = variations;
-      variationCheckboxes.forEach(item => {
-        if (item.isSelected)
-          newVariations.push(`${newVariation},${item.value}`);
-      });
-      setVariations(newVariations);
-      setTrigger(!trigger);
-    }
-  };
-  const removeVariationHandler = value => {
-    let updatedVariations = [];
-    variations.map(item => {
-      if (item !== value) updatedVariations.push(item);
-    });
-    setVariations(updatedVariations);
-    setTrigger(!trigger);
-  };
   let productInput = {
     productType: productType,
     name: productName,
@@ -257,23 +215,28 @@ const CreateProductScreen = ({navigation, route}) => {
       input: productInput,
     },
   });
-
+  const file = new ReactNativeFile({
+    uri: image?.uri,
+    type: image?.type,
+    name: image?.fileName,
+  });
+  console.log(newProductId);
+  console.log(file);
   const [productImageCreate, productImageResponse] = useMutation(
     CREATE_PRODUCT_IMAGE,
     {
       variables: {
-        image: {
-          type: 'image/jpeg',
-          name: image ? image.fileName : '',
-          uri: image ? image.uri : '',
-        },
+        image: file,
         product: newProductId,
       },
     },
   );
   useEffect(() => {
     if (productImageResponse.data) {
-      console.log(productImageResponse.data);
+      navigation.navigate('CreateVariantScreen', {
+        variations: variations,
+        productID: newProductId,
+      });
     }
   }, productImageResponse.data);
   useEffect(() => {
@@ -281,6 +244,10 @@ const CreateProductScreen = ({navigation, route}) => {
       productImageCreate();
     }
   }, [newProductId]);
+  useEffect(() => {
+    if (productImageResponse.loading) dispatch(setLoaderStatus(true));
+    else dispatch(setLoaderStatus(false));
+  }, [productImageResponse.loading]);
   const dispatch = useDispatch();
   useEffect(() => {
     if (productResponse.data) {
@@ -303,18 +270,25 @@ const CreateProductScreen = ({navigation, route}) => {
         `Product created succesfully:${productResponse.data.productCreate.product.name}`,
         true,
       );
-    } else {
-      console.log('in else');
-      dispatch(setLoaderStatus(false));
-      toastService.showToast('Failed to create product,try again', true);
     }
   }, [productResponse.data]);
-
+  useEffect(() => {
+    if (productResponse.loading) dispatch(setLoaderStatus(true));
+    else dispatch(setLoaderStatus(false));
+  }, [productResponse.loading]);
   const onPressCreate = () => {
-    console.log('pressed');
-    dispatch(setLoaderStatus(true));
-
+    //dispatch(setLoaderStatus(true));
     productCreate();
+    /*const variationsCreate = variations.map(variation => {
+      return {
+        ...variation,
+        price: '',
+        stock: '',
+      };
+    });
+    navigation.navigate('CreateVariantScreen', {
+      variations: variationsCreate,
+    });*/
   };
   const imageAddHandler = () => {
     launchImageLibrary({}, res => {
@@ -326,6 +300,44 @@ const CreateProductScreen = ({navigation, route}) => {
         console.log(res.assets[0]);
       }
     });
+  };
+  const onVariationCreate = () => {
+    let newVariations = [];
+    for (let i = 0; i < sizeAttributeValues.length; i++) {
+      if (sizeAttributeValues[i].isSelected) {
+        const isAlreadyAdded = variations.some(variation => {
+          console.log(
+            colorItem.name +
+              ',' +
+              sizeAttributeValues[i].name +
+              ' already added',
+            isAlreadyAdded,
+          );
+          return (
+            variation.name ===
+            colorItem.name + ',' + sizeAttributeValues[i].name
+          );
+        });
+        if (!isAlreadyAdded) {
+          console.log('adding');
+          newVariations.push({
+            name: colorItem.name + ',' + sizeAttributeValues[i].name,
+            attributes: [
+              {id: colorAttributeId, values: [colorItem.id]},
+              {id: sizeAttributeId, values: [sizeAttributeValues[i].id]},
+            ],
+          });
+        }
+      }
+    }
+    setVariations([...variations, ...newVariations]);
+  };
+  console.log('Variations:', variations);
+  const onVariationDelete = variationName => {
+    const variationsAfterDelete = variations.filter(
+      variation => variation.name !== variationName,
+    );
+    setVariations(variationsAfterDelete);
   };
   return (
     <ScrollView style={{backgroundColor: 'rgba(229, 229, 229, 0.2);'}}>
@@ -388,6 +400,62 @@ const CreateProductScreen = ({navigation, route}) => {
           </View>
         </View>
       </Modal>
+      <Modal visible={isColorModalVisible} transparent={true}>
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <View
+            style={{
+              width: '100%',
+              height: '100%',
+              backgroundColor: 'white',
+              paddingHorizontal: '5%',
+            }}>
+            <Text
+              style={{
+                marginVertical: '5%',
+                textAlign: 'center',
+                fontSize: 20,
+                color: 'black',
+              }}>
+              Select Color
+            </Text>
+            {/*<ScrollView contentContainerStyle={{flex: 1}}>
+              {brandItems.map(brandItem => (
+                <ModalItem
+                  name={brandItem.name}
+                  value={brandItem.id}
+                  selectedItems={selectedBrands}
+                  setSelectedItems={setSelectedBrands}
+                />
+              ))}
+            </ScrollView>*/}
+            <FlatList
+              data={colorAttributeValues}
+              keyExtractor={item => item.id}
+              renderItem={({item}) => (
+                <ModalItem
+                  colorItem={item}
+                  selectedItem={colorItem}
+                  setSelectedItem={setColorItem}
+                />
+              )}
+            />
+            <TouchableOpacity
+              onPress={() => setIsColorModalVisible(false)}
+              style={{
+                alignSelf: 'center',
+                backgroundColor: 'black',
+                width: '30%',
+                marginVertical: '4%',
+                justifyContent: 'center',
+                alignItems: 'center',
+                paddingVertical: '2%',
+              }}>
+              <Text style={{color: 'white', fontSize: 16}}>Confirm</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
       <Header />
       <View style={styles.createProductContainer}>
         <View style={styles.createProductHeaderContainer}>
@@ -494,6 +562,22 @@ const CreateProductScreen = ({navigation, route}) => {
               value={productDescription}
             />
             {isDescriptionError && <ErrorMessage />}
+            <View
+              style={{
+                flexDirection: 'row',
+                width: '100%',
+                flexWrap: 'wrap',
+                justifyContent: 'space-evenly',
+                marginVertical: '4%',
+              }}>
+              {variations.map(variation => (
+                <TaggedComponent
+                  tag={variation.name}
+                  variations={variations}
+                  onDelete={onVariationDelete}
+                />
+              ))}
+            </View>
           </View>
 
           {/*
@@ -532,6 +616,56 @@ const CreateProductScreen = ({navigation, route}) => {
               </View>
             ))}
           </View>*/}
+          <View style={styles.selectCategoryContainer}>
+            <Text style={styles.labelText}>Select Color</Text>
+            <TouchableOpacity
+              onPress={() => {
+                setIsColorModalVisible(true);
+              }}
+              style={{
+                height: 50,
+                width: '100%',
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderWidth: 1,
+                borderColor: 'rgba(0,0,0,0.2)',
+                backgroundColor: 'white',
+                marginTop: '2%',
+                borderRadius: 5,
+              }}>
+              <Text>{colorItem ? colorItem.name : 'Select Color'}</Text>
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              width: '100%',
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              justifyContent: 'space-between',
+              marginVertical: '4%',
+            }}>
+            {sizeAttributeValues.map(value => {
+              return (
+                <Checkbox
+                  item={value}
+                  setItems={setSizeAttributeValues}
+                  items={sizeAttributeValues}
+                />
+              );
+            })}
+          </View>
+
+          <TouchableOpacity onPress={onVariationCreate}>
+            <View
+              style={{
+                ...styles.nextButtonContainer,
+                backgroundColor: 'whitesmoke',
+              }}>
+              <View style={{...styles.nextButton, backgroundColor: 'gray'}}>
+                <Text style={styles.nextButtonText}>Add Variations</Text>
+              </View>
+            </View>
+          </TouchableOpacity>
         </View>
         {/*<View style={{height: '2%', backgroundColor: 'white'}}></View>
 

@@ -3,18 +3,18 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 const Checkbox = ({item, items, setItems}) => {
   const setNewItem = () => {
-    console.log('Old:' + JSON.stringify(items));
     const newItems = items.map(checkbox => {
-      if (checkbox.value === item.value) {
+      if (checkbox.id === item.id) {
         return {
-          value: checkbox.value,
+          name: checkbox.name,
+          id: checkbox.id,
           isSelected: !checkbox.isSelected,
         };
       } else {
         return checkbox;
       }
     });
-    console.log('New:' + JSON.stringify(newItems));
+
     setItems(newItems);
   };
   return (
@@ -28,7 +28,7 @@ const Checkbox = ({item, items, setItems}) => {
           )}
         </View>
         <View style={styles.labelContainer}>
-          <Text style={styles.labelText}>{item.value}</Text>
+          <Text style={styles.labelText}>{item.name}</Text>
         </View>
       </View>
     </TouchableOpacity>

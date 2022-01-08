@@ -6,8 +6,7 @@ const TaggedComponent = ({contentId, product, tag, onDelete}) => {
     <View style={styles.tagContainer}>
       <TouchableOpacity
         onPress={() => {
-          console.log('pressed');
-          onDelete(contentId, product.id);
+          contentId ? onDelete(contentId, product.id) : onDelete(tag);
         }}>
         <View style={styles.removeIconContainer}>
           <Entypo name="circle-with-cross" size={20} color={'#3B5998'} />

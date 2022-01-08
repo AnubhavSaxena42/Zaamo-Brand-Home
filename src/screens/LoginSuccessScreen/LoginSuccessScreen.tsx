@@ -88,7 +88,7 @@ const LoginSuccessScreen = ({navigation, route}) => {
             .catch(err => console.log('Error storing token:', err));
           userRegister();
           toastService.showToast('Logged in successfully', true);
-          navigation.navigate('StoreStack');
+          navigation.replace('StoreStack');
         } else {
           getItemFromStorage('Mobile Number').then(mobileNumber => {
             if (mobileNumber) {

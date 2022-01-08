@@ -5,6 +5,7 @@ const initialState = {
   products: [],
   collections: [],
   vouchers: [],
+  warehouse: '',
 };
 
 export const storeSlice = createSlice({
@@ -27,6 +28,10 @@ export const storeSlice = createSlice({
       state.storeInfo = action.payload;
       console.log('Store Info Set:', action.payload);
     },
+    setWarehouse: (state, action: PayloadAction<any>) => {
+      state.warehouse = action.payload;
+      console.log('Warehouse Id Set:', action.payload);
+    },
   },
 });
 
@@ -35,6 +40,7 @@ export const {
   setStoreCollections,
   setStoreInfo,
   setStoreVouchers,
+  setWarehouse,
 } = storeSlice.actions;
 
 export default storeSlice.reducer;

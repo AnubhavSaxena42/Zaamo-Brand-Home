@@ -208,10 +208,10 @@ const ProductsTabScreen = ({navigation}) => {
           onPress={
             isViewing === 1
               ? () => {
-                  toastService.showToast('Feature in development', true);
-                  /*navigation.navigate('CreateProductScreen', {
+                  //toastService.showToast('Feature in development', true);
+                  navigation.navigate('CreateProductScreen', {
                     fromBrandHome: true,
-                  });*/
+                  });
                 }
               : () => {
                   setIsNewCollectionModalVisible(true);

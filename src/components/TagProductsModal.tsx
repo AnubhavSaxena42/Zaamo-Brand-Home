@@ -58,9 +58,6 @@ const TagProductsModal = ({
       contentSize.height - paddingToBottom
     );
   };
-  const fetchMoreProducts=()=> {
-    if(productsPageInfo)
-  }
 
   return (
     <ScrollView

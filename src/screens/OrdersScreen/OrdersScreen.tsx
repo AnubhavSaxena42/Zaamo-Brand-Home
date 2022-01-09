@@ -169,6 +169,7 @@ const OrdersScreen = ({navigation}) => {
           fontSize: 16,
           textAlign: 'center',
           marginTop: '5%',
+          fontFamily: 'Roboto-Bold',
         }}>
         Orders
       </Text>

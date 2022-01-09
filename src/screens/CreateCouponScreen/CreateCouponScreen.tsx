@@ -716,17 +716,18 @@ const CreateCouponScreen = ({navigation}) => {
               }}>
               Select Brands*
             </Text>
-            <TouchableOpacity
-              onPress={() => setIsBrandsModalVisible(true)}
+            <View
               style={{
                 marginVertical: '5%',
                 width: '100%',
                 height: 50,
-                justifyContent: 'center',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
                 borderWidth: 1,
                 borderColor: 'rgba(0,0,0,0.3)',
                 borderRadius: 4,
-                paddingHorizontal: '5%',
+                paddingHorizontal: '3%',
                 backgroundColor: 'white',
                 shadowOffset: {
                   width: 0,
@@ -737,7 +738,19 @@ const CreateCouponScreen = ({navigation}) => {
                 elevation: 5,
               }}>
               <Text>Select Brands*</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setIsBrandsModalVisible(true)}
+                style={{
+                  height: '80%',
+                  width: '30%',
+                  borderRadius: 4,
+                  backgroundColor: 'black',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text style={{color: 'white'}}>Pick Brands</Text>
+              </TouchableOpacity>
+            </View>
             {selectedBrands.length !== 0 && (
               <View style={{flexDirection: 'row'}}>
                 <Entypo name="check" size={15} color={'black'} />
@@ -761,24 +774,18 @@ const CreateCouponScreen = ({navigation}) => {
               }}>
               Select Products*
             </Text>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('CollectionProductsAddScreen', {
-                  setProducts: setSelectedProducts,
-                  products: selectedProducts,
-                  fromVoucherCreate: true,
-                  brands: selectedBrandsItems,
-                });
-              }}
+            <View
               style={{
                 marginVertical: '5%',
                 width: '100%',
                 height: 50,
-                justifyContent: 'center',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
                 borderWidth: 1,
                 borderColor: 'rgba(0,0,0,0.3)',
                 borderRadius: 4,
-                paddingHorizontal: '5%',
+                paddingHorizontal: '3%',
                 backgroundColor: 'white',
                 shadowOffset: {
                   width: 0,
@@ -789,7 +796,26 @@ const CreateCouponScreen = ({navigation}) => {
                 elevation: 5,
               }}>
               <Text>Select Products*</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('CollectionProductsAddScreen', {
+                    setProducts: setSelectedProducts,
+                    products: selectedProducts,
+                    fromVoucherCreate: true,
+                    brands: selectedBrandsItems,
+                  });
+                }}
+                style={{
+                  height: '80%',
+                  width: '30%',
+                  borderRadius: 4,
+                  backgroundColor: 'black',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text style={{color: 'white'}}>Pick Products</Text>
+              </TouchableOpacity>
+            </View>
             {selectedProducts.length !== 0 && (
               <View style={{flexDirection: 'row'}}>
                 <Entypo name="check" size={15} color={'black'} />
@@ -969,18 +995,19 @@ const CreateCouponScreen = ({navigation}) => {
           }}>
           Select Influencer Stores*
         </Text>
-        <TouchableOpacity
-          onPress={() => setIsStoresModalVisible(true)}
+        <View
           style={{
             marginTop: '5%',
             width: '100%',
             height: '3%',
-            justifyContent: 'center',
+            justifyContent: 'space-between',
             borderWidth: 1,
             borderColor: 'rgba(0,0,0,0.3)',
             borderRadius: 4,
+            alignItems: 'center',
             backgroundColor: 'white',
-            paddingHorizontal: '5%',
+            paddingHorizontal: '3%',
+            flexDirection: 'row',
             shadowOffset: {
               width: 0,
               height: 1,
@@ -990,7 +1017,19 @@ const CreateCouponScreen = ({navigation}) => {
             elevation: 5,
           }}>
           <Text>Select Influencer Stores*</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setIsStoresModalVisible(true)}
+            style={{
+              height: '80%',
+              width: '30%',
+              borderRadius: 4,
+              backgroundColor: 'black',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text style={{color: 'white'}}>Pick Stores</Text>
+          </TouchableOpacity>
+        </View>
         {selectedStores.length !== 0 && (
           <View style={{flexDirection: 'row', marginVertical: '5%'}}>
             <Entypo name="check" size={15} color={'black'} />

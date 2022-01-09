@@ -26,10 +26,15 @@ const InstaNotification = () => {
               paddingRight: '2%',
               marginBottom: '1%',
             }}>
-            <Text style={{fontWeight: '600', color: 'black'}}>Gia Garg</Text>
-            <Text style={{color: 'rgba(0,0,0,0.3)'}}>2 hours ago</Text>
+            <Text style={{fontFamily: 'Roboto-Black', color: 'black'}}>
+              Gia Garg
+            </Text>
+            <Text
+              style={{color: 'rgba(0,0,0,0.3)', fontFamily: 'Roboto-Regular'}}>
+              2 hours ago
+            </Text>
           </View>
-          <Text>
+          <Text style={{fontFamily: 'Roboto-Regular'}}>
             Commented "pp" on your "Latest Pastel Nike Shoes For Women"
           </Text>
         </View>
@@ -56,7 +61,7 @@ const InstaNotification = () => {
             borderWidth: 1,
             borderColor: 'rgba(0,0,0,0.1)',
           }}>
-          <Ionicons name="send" size={20} color={'grey'} />
+          <Ionicons name="send" size={20} color={'black'} />
         </View>
       </View>
     </View>
@@ -84,5 +89,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 3,
     marginBottom: 2,
     borderRadius: 4,
+    fontFamily: 'Roboto-Regular',
   },
 });

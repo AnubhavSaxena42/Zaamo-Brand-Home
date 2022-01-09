@@ -114,7 +114,8 @@ const CollectionCard = ({
               paddingVertical: '2%',
               borderRadius: 15,
             }}>
-            <View style={{...styles.editIcon, backgroundColor: 'black'}}>
+            <View
+              style={{...styles.editIcon, backgroundColor: 'rgba(0,0,0,0)'}}>
               <Ionicons name="link" size={15} color={'white'} />
             </View>
             <Text style={{color: 'white'}}>Copy Link</Text>

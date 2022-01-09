@@ -55,6 +55,11 @@ const ConnectMySocialScreen = ({navigation, route}) => {
             borderRadius: 4,
             paddingHorizontal: '5%',
             backgroundColor: 'white',
+            shadowColor: '#000',
+            shadowOffset: {width: 0, height: 1},
+            shadowOpacity: 0.8,
+            shadowRadius: 2,
+            elevation: 5,
           }}
           placeholder={'@yourinstahandle'}
         />
@@ -67,6 +72,11 @@ const ConnectMySocialScreen = ({navigation, route}) => {
             borderRadius: 4,
             backgroundColor: 'white',
             paddingHorizontal: '5%',
+            shadowColor: '#000',
+            shadowOffset: {width: 0, height: 1},
+            shadowOpacity: 0.8,
+            shadowRadius: 2,
+            elevation: 5,
           }}
           placeholder={'@yourythandle'}
         />
@@ -107,6 +117,11 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: 'black',
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
     justifyContent: 'center',
   },
 });

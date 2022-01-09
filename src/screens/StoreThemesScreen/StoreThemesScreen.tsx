@@ -100,6 +100,7 @@ export default StoreThemesScreen;
 const styles = StyleSheet.create({
   storeThemesContainer: {
     flex: 1,
+    backgroundColor: 'white',
   },
   button: {
     marginBottom: '10%',
@@ -123,5 +124,10 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: 'white',
     borderColor: 'rgba(0,0,0,0.2)',
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
   },
 });

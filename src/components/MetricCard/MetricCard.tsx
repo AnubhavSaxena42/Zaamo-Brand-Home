@@ -16,7 +16,7 @@ const MetricCard = ({color, metric}) => {
         style={{
           fontSize: 36,
           color: 'black',
-          fontFamily: 'Roboto-Bold',
+          fontFamily: 'Montserrat-Bold',
           textAlign: 'center',
         }}>
         {metric.value}
@@ -26,8 +26,7 @@ const MetricCard = ({color, metric}) => {
           fontSize: 16,
           color: 'black',
           textAlign: 'center',
-          fontFamily: 'Roboto-Bold',
-          fontWeight: 'bold',
+          fontFamily: 'Montserrat-Bold',
         }}>
         {metric.type}
       </Text>

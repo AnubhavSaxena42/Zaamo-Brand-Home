@@ -31,6 +31,7 @@ const InstaWorldScreen = () => {
             fontSize: 22,
             paddingHorizontal: '10%',
             textAlign: 'center',
+            fontFamily: 'Roboto-Bold',
           }}>
           Insta World
         </Text>
@@ -42,6 +43,7 @@ const InstaWorldScreen = () => {
             fontSize: 16,
             paddingHorizontal: '10%',
             textAlign: 'center',
+            fontFamily: 'Roboto-Regular',
           }}>
           Send your customers your customised price without letting your
           competitors know

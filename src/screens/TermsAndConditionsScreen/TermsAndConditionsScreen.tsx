@@ -54,13 +54,15 @@ const TermsAndConditionsScreen = ({navigation, route}) => {
               flexDirection: 'row',
               padding: '1%',
               borderWidth: 1,
-              justifyContent: 'center',
+              justifyContent: 'space-between',
+              paddingHorizontal: '3%',
               alignItems: 'center',
+              width: 70,
               borderRadius: 4,
               borderColor: 'rgba(0,0,0,0.2)',
             }}>
             <Text>Edit</Text>
-            <MaterialCommunityIcons name="pencil" size={12} color="black" />
+            <MaterialCommunityIcons name="pencil" size={16} color="black" />
           </TouchableOpacity>
         </View>
         <Text style={{marginTop: '4%'}}>
@@ -127,6 +129,7 @@ export default TermsAndConditionsScreen;
 const styles = StyleSheet.create({
   termsAndConditionsContainer: {
     flex: 1,
+    backgroundColor: 'white',
   },
   button: {
     marginBottom: '10%',

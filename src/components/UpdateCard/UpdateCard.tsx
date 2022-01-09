@@ -38,10 +38,12 @@ const styles = StyleSheet.create({
   notificationText: {
     marginBottom: '2%',
     fontSize: 16,
+    fontFamily: 'Roboto-Regular',
     color: 'black',
   },
   notificationTime: {
     fontSize: 16,
+    fontFamily: 'Roboto-Regular',
     color: 'rgba(0,0,0,0.5)',
   },
 });

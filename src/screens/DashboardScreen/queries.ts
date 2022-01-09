@@ -94,13 +94,17 @@ export const GET_STORE = gql`
 `;
 
 export const GET_AUTHORISED_BRANDS = gql`
-  query ($mobileNo: String!) {
+  query ($mobileNo: String!, $endCursor: String!) {
     userByMobile(mobileNo: $mobileNo) {
       authorisedBrands {
         id
         brandName
         warehouse
-        products(first: 100) {
+        products(first: 20, after: $endCursor) {
+          pageInfo {
+            hasNextPage
+            endCursor
+          }
           edges {
             node {
               id
@@ -145,7 +149,7 @@ export const GET_AUTHORISED_BRANDS = gql`
 export const GET_COUPONS = gql`
   query {
     vouchers(
-      first: 100
+      first: 10
       filter: {status: ACTIVE}
       sortBy: {field: START_DATE, direction: DESC}
     ) {

@@ -26,6 +26,15 @@ const PaymentDetailsScreen = ({navigation, route}) => {
   const [bankAccountNumber, setBankAccountNumber] = useState('');
   const [confirmBankAccountNumber, setConfirmBankAccountNumber] = useState('');
   const [bankIfscCode, setBankIfscCode] = useState('');
+  const [accountHolderNameError, setAccountHolderNameError] = useState(false);
+  const [upiIdError, setUpiIdError] = useState(false);
+  const [addressError, setAddressError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [panNumberError, setPanNumberError] = useState(false);
+  const [bankAccountNumberError, setBankAccountNumberError] = useState(false);
+  const [confirmBankAccountNumberError, setConfirmBankAccountNumberError] =
+    useState(false);
+  const [bankIfscCodeError, setBankIfscCodeError] = useState(false);
   const brandId = useSelector(state => {
     if (
       state.user.authorisedBrands &&
@@ -61,9 +70,61 @@ const PaymentDetailsScreen = ({navigation, route}) => {
     else dispatch(setLoaderStatus(false));
   });
   const onBankCreate = () => {
+    let flag = 0;
+    if (!accountHolderName || accountHolderName === '') {
+      flag++;
+      setAccountHolderNameError(true);
+    }
+    if (!bankAccountNumber || bankAccountNumber === '') {
+      flag++;
+      setBankAccountNumberError(true);
+    }
+    if (!confirmBankAccountNumber || confirmBankAccountNumber === '') {
+      flag++;
+      setConfirmBankAccountNumber(true);
+    }
+    if (!bankIfscCode || bankIfscCode === '') {
+      flag++;
+      setBankIfscCodeError(true);
+    }
+    if (!address || address === '') {
+      flag++;
+      setAddressError(true);
+    }
+    if (!email || email === '') {
+      flag++;
+      setEmailError(true);
+    }
+    if (!panNumber || panNumber === '') {
+      flag++;
+      setPanNumberError(true);
+    }
+    if (flag > 0) return;
     bankAccountCreate();
   };
   const onUpiCreate = () => {
+    let flag = 0;
+    if (!accountHolderName || accountHolderName === '') {
+      flag++;
+      setAccountHolderNameError(true);
+    }
+    if (!upiId || upiId === '') {
+      flag++;
+      setUpiIdError(true);
+    }
+    if (!address || address === '') {
+      flag++;
+      setAddressError(true);
+    }
+    if (!email || email === '') {
+      flag++;
+      setEmailError(true);
+    }
+    if (!panNumber || panNumber === '') {
+      flag++;
+      setPanNumberError(true);
+    }
+    if (flag > 0) return;
     brandUpiIdCreate();
   };
   useEffect(() => {
@@ -88,6 +149,15 @@ const PaymentDetailsScreen = ({navigation, route}) => {
       }
     }
   }, [upiResponse.data]);
+  const ErrorMessage = ({message}) => {
+    return (
+      <View style={styles.errorMessageContainer}>
+        <Text style={styles.errorMessageText}>
+          {message ? message : 'This Field is required*'}
+        </Text>
+      </View>
+    );
+  };
   return (
     <View style={styles.paymentDetailsContainer}>
       <View style={{alignItems: 'center'}}>
@@ -172,9 +242,15 @@ const PaymentDetailsScreen = ({navigation, route}) => {
               borderRadius: 4,
               paddingHorizontal: '5%',
               backgroundColor: 'white',
+              shadowColor: '#000',
+              shadowOffset: {width: 0, height: 1},
+              shadowOpacity: 0.8,
+              shadowRadius: 2,
+              elevation: 5,
             }}
             placeholder={'Enter Account Holder Name'}
           />
+          {accountHolderNameError && <ErrorMessage />}
           <Text style={{marginVertical: '5%'}}>UPI ID</Text>
           <TextInput
             value={upiId}
@@ -186,9 +262,15 @@ const PaymentDetailsScreen = ({navigation, route}) => {
               borderRadius: 4,
               backgroundColor: 'white',
               paddingHorizontal: '5%',
+              shadowColor: '#000',
+              shadowOffset: {width: 0, height: 1},
+              shadowOpacity: 0.8,
+              shadowRadius: 2,
+              elevation: 5,
             }}
             placeholder={'Enter UPI ID'}
           />
+          {upiIdError && <ErrorMessage />}
           <Text style={{marginVertical: '5%'}}>Address</Text>
           <TextInput
             value={address}
@@ -200,9 +282,15 @@ const PaymentDetailsScreen = ({navigation, route}) => {
               borderRadius: 4,
               backgroundColor: 'white',
               paddingHorizontal: '5%',
+              shadowColor: '#000',
+              shadowOffset: {width: 0, height: 1},
+              shadowOpacity: 0.8,
+              shadowRadius: 2,
+              elevation: 5,
             }}
             placeholder={'Enter your Address'}
           />
+          {addressError && <ErrorMessage />}
           <Text style={{marginVertical: '5%'}}>Email</Text>
           <TextInput
             value={email}
@@ -214,9 +302,15 @@ const PaymentDetailsScreen = ({navigation, route}) => {
               borderRadius: 4,
               backgroundColor: 'white',
               paddingHorizontal: '5%',
+              shadowColor: '#000',
+              shadowOffset: {width: 0, height: 1},
+              shadowOpacity: 0.8,
+              shadowRadius: 2,
+              elevation: 5,
             }}
             placeholder={'Enter your Email'}
           />
+          {emailError && <ErrorMessage />}
           <Text style={{marginVertical: '5%'}}>PAN Number</Text>
           <TextInput
             value={panNumber}
@@ -228,9 +322,15 @@ const PaymentDetailsScreen = ({navigation, route}) => {
               borderRadius: 4,
               backgroundColor: 'white',
               paddingHorizontal: '5%',
+              shadowColor: '#000',
+              shadowOffset: {width: 0, height: 1},
+              shadowOpacity: 0.8,
+              shadowRadius: 2,
+              elevation: 5,
             }}
             placeholder={'Enter your PAN Number'}
           />
+          {panNumberError && <ErrorMessage />}
           <View
             style={{
               justifyContent: 'center',
@@ -265,9 +365,15 @@ const PaymentDetailsScreen = ({navigation, route}) => {
               borderRadius: 4,
               paddingHorizontal: '5%',
               backgroundColor: 'white',
+              shadowColor: '#000',
+              shadowOffset: {width: 0, height: 1},
+              shadowOpacity: 0.8,
+              shadowRadius: 2,
+              elevation: 5,
             }}
             placeholder={'Enter Account Holder Name'}
           />
+          {accountHolderNameError && <ErrorMessage />}
           <Text style={{marginVertical: '5%'}}>Bank Account Number</Text>
           <TextInput
             value={bankAccountNumber}
@@ -279,9 +385,15 @@ const PaymentDetailsScreen = ({navigation, route}) => {
               borderRadius: 4,
               backgroundColor: 'white',
               paddingHorizontal: '5%',
+              shadowColor: '#000',
+              shadowOffset: {width: 0, height: 1},
+              shadowOpacity: 0.8,
+              shadowRadius: 2,
+              elevation: 5,
             }}
             placeholder={'Enter Bank Account Number'}
           />
+          {bankAccountNumberError && <ErrorMessage />}
           <Text style={{marginVertical: '5%'}}>Confirm Account Number</Text>
           <TextInput
             value={confirmBankAccountNumber}
@@ -293,9 +405,15 @@ const PaymentDetailsScreen = ({navigation, route}) => {
               borderRadius: 4,
               backgroundColor: 'white',
               paddingHorizontal: '5%',
+              shadowColor: '#000',
+              shadowOffset: {width: 0, height: 1},
+              shadowOpacity: 0.8,
+              shadowRadius: 2,
+              elevation: 5,
             }}
             placeholder={'Re-Enter Bank Account Number'}
           />
+          {confirmBankAccountNumberError && <ErrorMessage />}
           <Text style={{marginVertical: '5%'}}>Bank IFSC Code</Text>
           <TextInput
             value={bankIfscCode}
@@ -307,9 +425,15 @@ const PaymentDetailsScreen = ({navigation, route}) => {
               borderRadius: 4,
               backgroundColor: 'white',
               paddingHorizontal: '5%',
+              shadowColor: '#000',
+              shadowOffset: {width: 0, height: 1},
+              shadowOpacity: 0.8,
+              shadowRadius: 2,
+              elevation: 5,
             }}
             placeholder={'Enter Bank IFSC Code'}
           />
+          {bankIfscCodeError && <ErrorMessage />}
           <Text style={{marginVertical: '5%'}}>Address</Text>
           <TextInput
             value={address}
@@ -321,9 +445,15 @@ const PaymentDetailsScreen = ({navigation, route}) => {
               borderRadius: 4,
               backgroundColor: 'white',
               paddingHorizontal: '5%',
+              shadowColor: '#000',
+              shadowOffset: {width: 0, height: 1},
+              shadowOpacity: 0.8,
+              shadowRadius: 2,
+              elevation: 5,
             }}
             placeholder={'Enter Address'}
           />
+          {addressError && <ErrorMessage />}
           <Text style={{marginVertical: '5%'}}>Email</Text>
           <TextInput
             value={email}
@@ -335,9 +465,15 @@ const PaymentDetailsScreen = ({navigation, route}) => {
               borderRadius: 4,
               backgroundColor: 'white',
               paddingHorizontal: '5%',
+              shadowColor: '#000',
+              shadowOffset: {width: 0, height: 1},
+              shadowOpacity: 0.8,
+              shadowRadius: 2,
+              elevation: 5,
             }}
             placeholder={'Enter Your Email'}
           />
+          {emailError && <ErrorMessage />}
           <Text style={{marginVertical: '5%'}}>PAN Number</Text>
           <TextInput
             value={panNumber}
@@ -349,9 +485,15 @@ const PaymentDetailsScreen = ({navigation, route}) => {
               borderRadius: 4,
               backgroundColor: 'white',
               paddingHorizontal: '5%',
+              shadowColor: '#000',
+              shadowOffset: {width: 0, height: 1},
+              shadowOpacity: 0.8,
+              shadowRadius: 2,
+              elevation: 5,
             }}
             placeholder={'Enter Your PAN Number'}
           />
+          {panNumberError && <ErrorMessage />}
           <View
             style={{
               justifyContent: 'center',
@@ -378,7 +520,6 @@ const styles = StyleSheet.create({
   paymentDetailsContainer: {
     flex: 1,
   },
-
   button: {
     marginBottom: '10%',
     height: 35,
@@ -389,5 +530,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  errorMessageContainer: {
+    marginTop: '1%',
+  },
+  errorMessageText: {
+    fontSize: 12,
+    color: 'red',
   },
 });

@@ -43,11 +43,12 @@ const styles = StyleSheet.create({
   value: {
     fontSize: 20,
     color: 'black',
-    fontWeight: 'bold',
+    fontFamily: 'Roboto-Bold',
   },
   key: {
     fontSize: 12,
     color: 'rgba(0,0,0,0.5)',
+    fontFamily: 'Roboto-Regular',
   },
   metricContainer: {
     justifyContent: 'center',

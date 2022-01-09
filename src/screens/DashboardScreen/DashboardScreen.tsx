@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Image,
@@ -106,10 +106,10 @@ const DashboardScreen = ({navigation, route}) => {
   };
 
   const storeResponse = useQuery(GET_STORE);
-  console.log('Number:', mobileNumber);
   const brandResponse = useQuery(GET_AUTHORISED_BRANDS, {
     variables: {
       mobileNo: '91' + mobileNumber,
+      endCursor: '',
     },
   });
   useEffect(() => {
@@ -144,7 +144,7 @@ const DashboardScreen = ({navigation, route}) => {
   }, [storeResponse.data]);
   useEffect(() => {
     if (brandResponse.data) {
-      console.log(brandResponse.data);
+      console.log('Look here:', brandResponse.data);
       if (
         brandResponse.data.userByMobile &&
         brandResponse.data.userByMobile.authorisedBrands[0] &&
@@ -184,15 +184,14 @@ const DashboardScreen = ({navigation, route}) => {
       }
     }
   }, [brandResponse.data]);
-  const couponResponse = useQuery(GET_COUPONS, {
-    pollInterval: 2000,
-  });
+  const couponResponse = useQuery(GET_COUPONS, {});
   useEffect(() => {
     console.log('data update');
     if (couponResponse.data) {
       const newCoupons = couponResponse.data.vouchers.edges.map(({node}) => {
         return node;
       });
+
       dispatch(setStoreVouchers(newCoupons));
     }
   }, [couponResponse.data]);
@@ -206,6 +205,7 @@ const DashboardScreen = ({navigation, route}) => {
           paddingTop: '5%',
           color: 'white',
           fontSize: 18,
+          fontFamily: 'Roboto-Bold',
         }}>
         Overview
       </Text>
@@ -275,9 +275,10 @@ const DashboardScreen = ({navigation, route}) => {
       <Text
         style={{
           color: 'black',
-          fontWeight: 'bold',
+
           fontSize: 15,
           paddingLeft: '3%',
+          fontFamily: 'Roboto-Bold',
         }}>
         Recent Updates
       </Text>

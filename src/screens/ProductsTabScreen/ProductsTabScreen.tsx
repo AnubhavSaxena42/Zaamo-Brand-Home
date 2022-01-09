@@ -6,6 +6,7 @@ import {
   View,
   Modal,
   TouchableOpacity,
+  FlatList,
 } from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -33,6 +34,14 @@ const ProductsTabScreen = ({navigation}) => {
   const [thumbnailUri, setThumbnailUri] = useState('');
   const [products, setProducts] = useState([]);
   const [isThumbnailModalVisible, setIsThumbnailModalVisible] = useState(false);
+  const [productsPageInfo, setProductsPageInfo] = useState({
+    hasNextPage: true,
+    endCursor: '',
+  });
+  const [collectionsPageInfo, setCollectionsPageInfo] = useState({
+    hasNextPage: true,
+    endCursor: '',
+  });
   const newCollections = useSelector(state => state.store.collections);
   const dispatch = useDispatch();
   const onSelectTakePhoto = async () => {
@@ -85,8 +94,10 @@ const ProductsTabScreen = ({navigation}) => {
   const brandResponse = useQuery(GET_AUTHORISED_BRANDS, {
     variables: {
       mobileNo: '91' + mobileNumber,
+      endCursor: '',
     },
   });
+  console.log('Products Page Info:', productsPageInfo);
   useEffect(() => {
     if (brandResponse.data) {
       if (
@@ -95,6 +106,13 @@ const ProductsTabScreen = ({navigation}) => {
         brandResponse.data.userByMobile.authorisedBrands[0].products
       ) {
         console.log('Here');
+
+        const {hasNextPage, endCursor} =
+          brandResponse.data.userByMobile.authorisedBrands[0].products.pageInfo;
+        setProductsPageInfo({
+          hasNextPage,
+          endCursor,
+        });
         const newStoreProducts =
           brandResponse.data.userByMobile.authorisedBrands[0].products.edges.map(
             ({node}) => {
@@ -112,7 +130,7 @@ const ProductsTabScreen = ({navigation}) => {
               };
             },
           );
-        setProducts(newStoreProducts);
+        setProducts([...products, ...newStoreProducts]);
       }
     }
   }, [brandResponse.data]);
@@ -163,6 +181,7 @@ const ProductsTabScreen = ({navigation}) => {
       toastService.showToast('Collection has been updated', true);
     }
   }, [collectionUpdateResponse.data]);
+  console.log(brandResponse.loading);
   useEffect(() => {
     if (collectionUpdateResponse.loading) dispatch(setLoaderStatus(true));
     else dispatch(setLoaderStatus(false));
@@ -206,6 +225,24 @@ const ProductsTabScreen = ({navigation}) => {
           dispatch(setLoaderStatus(false));
         });
     });
+  };
+  const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
+    const paddingToBottom = 20;
+    return (
+      layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - paddingToBottom
+    );
+  };
+  const fetchMoreProducts = () => {
+    if (productsPageInfo.hasNextPage) {
+      console.log('here');
+      brandResponse.fetchMore({
+        variables: {
+          mobileNo: mobileNumber,
+          endCursor: productsPageInfo.endCursor,
+        },
+      });
+    }
   };
 
   return (
@@ -309,6 +346,12 @@ const ProductsTabScreen = ({navigation}) => {
       </View>
       {isViewing === 1 && (
         <ScrollView
+          onScrollEndDrag={fetchMoreProducts}
+          onScroll={({nativeEvent}) => {
+            if (isCloseToBottom(nativeEvent)) {
+              fetchMoreProducts();
+            }
+          }}
           contentContainerStyle={{
             width: '100%',
             flexDirection: 'row',
@@ -319,6 +362,13 @@ const ProductsTabScreen = ({navigation}) => {
             <ProductCard key={product.id} product={product} />
           ))}
         </ScrollView>
+        /*<FlatList
+          data={products}
+          onEndReached={fetchMoreProducts}
+          numColumns={2}
+          keyExtractor={item => item.id}
+          renderItem={({item}) => <ProductCard product={item} />}
+        />*/
       )}
       {isViewing === 2 && (
         <ScrollView

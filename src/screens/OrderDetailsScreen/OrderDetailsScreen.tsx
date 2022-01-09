@@ -68,6 +68,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
           fontSize: 16,
           textAlign: 'center',
           marginTop: '5%',
+          fontFamily: 'Roboto-Bold',
         }}>
         Order Details
       </Text>

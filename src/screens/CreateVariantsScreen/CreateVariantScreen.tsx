@@ -50,12 +50,22 @@ const VariantRow = ({variant}) => {
     </View>
   );
 };
+const ErrorMessage = ({message}) => {
+  return (
+    <View style={styles.errorMessageContainer}>
+      <Text style={styles.errorMessageText}>
+        {message ? message : 'This Field is required*'}
+      </Text>
+    </View>
+  );
+};
 const CreateVariantScreen = ({navigation, route}) => {
   const {variations, productID} = route.params;
   console.log('Variations:', variations);
   const [variants, setVariants] = useState();
   console.log(productID);
   const dispatch = useDispatch();
+  const [error, setError] = useState(false);
   const [productVariantBulkCreate, variantCreateResponse] = useMutation(
     CREATE_VARIANTS,
     {
@@ -68,7 +78,10 @@ const CreateVariantScreen = ({navigation, route}) => {
   const warehouseId = useSelector(state => state.store.warehouse);
   console.log(variations);
   const onVariantsCreate = () => {
+    let flag = 0;
     const newVariants = variations.map(variant => {
+      if (!variant.stock || variant.stock === '') flag++;
+      if (!variant.price || variant.price === '') flag++;
       return {
         attributes: variant.attributes,
         stocks: [{warehouse: warehouseId, quantity: parseInt(variant.stock)}],
@@ -81,7 +94,10 @@ const CreateVariantScreen = ({navigation, route}) => {
         trackInventory: true,
       };
     });
-
+    if (flag > 0) {
+      setError(true);
+      return;
+    }
     setVariants(newVariants);
   };
 
@@ -126,6 +142,7 @@ const CreateVariantScreen = ({navigation, route}) => {
           <VariantRow variant={variation} />
         ))}
       </View>
+      {error && <ErrorMessage message="Please fill all the information" />}
       <TouchableOpacity onPress={onVariantsCreate}>
         <View style={styles.confirmButtonContainer}>
           <View style={styles.confirmButton}>
@@ -199,6 +216,14 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: 'black',
     fontWeight: '700',
+  },
+  errorMessageContainer: {
+    marginTop: '1%',
+    alignSelf: 'center',
+  },
+  errorMessageText: {
+    fontSize: 12,
+    color: 'red',
   },
   confirmButtonContainer: {
     marginVertical: '12%',

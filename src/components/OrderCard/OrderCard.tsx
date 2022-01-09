@@ -48,12 +48,17 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
         <Text
           numberOfLines={1}
           ellipsizeMode="tail"
-          style={{fontSize: 14, color: 'black'}}>
+          style={{fontSize: 14, color: 'black', fontFamily: 'Roboto-Regular'}}>
           {order ? `#${order.number}` : '#'}{' '}
           {order?.user ? order.user.firstName : 'Anchal'}{' '}
           {order?.user ? order.user.lastName : 'Sharma'}
         </Text>
-        <Text style={{fontSize: 10, color: 'rgba(0,0,0,0.5)'}}>
+        <Text
+          style={{
+            fontSize: 10,
+            color: 'rgba(0,0,0,0.5)',
+            fontFamily: 'Roboto-Regular',
+          }}>
           {order ? order.created : ''}
         </Text>
         <View
@@ -74,6 +79,7 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
               textShadowRadius: 2,
               textShadowOffset: {width: 1, height: 1},
               textAlignVertical: 'center',
+              fontFamily: 'Roboto-Regular',
             }}>
             {status ? status : 'NO STATUS'}
           </Text>
@@ -87,6 +93,7 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
               textShadowRadius: 2,
               textShadowOffset: {width: 1, height: 1},
               textAlignVertical: 'center',
+              fontFamily: 'Roboto-Regular',
             }}>
             {order?.user
               ? `${order.user.defaultBillingAddress.postalCode}`

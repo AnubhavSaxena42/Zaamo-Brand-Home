@@ -15,8 +15,6 @@ import {
 } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Header from '../../components/Header';
-
-import Dropdown from '../../components/Dropdown';
 import Checkbox from '../../components/Checkbox';
 import TaggedComponent from '../../components/TaggedComponent';
 import {useMutation, useQuery} from '@apollo/client';
@@ -29,10 +27,12 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {GET_COLOR_VALUES} from '../ProductsTabScreen/queries';
 import {ReactNativeFile} from 'apollo-upload-client';
 //import GestureRecognizer from 'react-native-swipe-gestures';
-const ErrorMessage = () => {
+const ErrorMessage = ({message}) => {
   return (
     <View style={styles.errorMessageContainer}>
-      <Text style={styles.errorMessageText}>This Field is required*</Text>
+      <Text style={styles.errorMessageText}>
+        {message ? message : 'This Field is required*'}
+      </Text>
     </View>
   );
 };
@@ -44,12 +44,11 @@ const CreateProductScreen = ({navigation, route}) => {
   const [isNameError, setIsNameError] = useState(false);
   const [isPriceError, setisPriceError] = useState(false);
   const [isStockError, setIsStockError] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const [isDescriptionError, setIsDescriptionError] = useState(false);
   const [productType, setProductType] = useState('UHJvZHVjdFR5cGU6NjU=');
   const [isColorModalVisible, setIsColorModalVisible] = useState(false);
   const [productTypeItems, setProductTypeItems] = useState([]);
-  const [isVariationNameError, setIsVariationNameError] = useState(false);
-  const [trigger, setTrigger] = useState(true);
   const [image, setImage] = useState();
   const [sizeAttributeId, setSizeAttributeId] = useState('');
   const [sizeAttributeValues, setSizeAttributeValues] = useState([]);
@@ -60,7 +59,8 @@ const CreateProductScreen = ({navigation, route}) => {
   const [newProductId, setNewProductId] = useState();
   const [isProductTypeModalVisible, setIsProductTypeModalVisible] =
     useState(false);
-  const brandId = useSelector(state => state.user.authorisedBrands[0].id);
+  const [variationsError, setVariationsError] = useState(false);
+  const brandId = useSelector(state => state.user.authorisedBrands[0]?.id);
   console.log(brandId);
 
   const colorResponse = useQuery(GET_COLOR_VALUES);
@@ -68,7 +68,7 @@ const CreateProductScreen = ({navigation, route}) => {
     if (colorResponse.data) {
       console.log(colorResponse.data);
       const newColorAttributeId =
-        colorResponse.data.attributes.edges[0].node.id;
+        colorResponse.data.attributes.edges[0].node?.id;
       const newColorAttributeValues =
         colorResponse.data.attributes.edges[0].node.values
           .slice(0, 10)
@@ -108,7 +108,7 @@ const CreateProductScreen = ({navigation, route}) => {
           };
         },
       );
-      setSizeAttributeId(sizeResponse.data.attribute.id);
+      setSizeAttributeId(sizeResponse.data.attribute?.id);
       setSizeAttributeValues(newSizeAttributeValues);
     }
   }, [sizeResponse.data]);
@@ -212,6 +212,7 @@ const CreateProductScreen = ({navigation, route}) => {
       navigation.navigate('variants', {variations});
     }
   };
+  console.log(brandId);
   const products = useSelector(state => state.store.products);
   let productInput = {
     productType: productType,
@@ -220,8 +221,7 @@ const CreateProductScreen = ({navigation, route}) => {
     description: productDescription,
     basePrice: parseInt(price),
   };
-  console.log(productInput);
-  console.log('Product Type:', productType);
+
   const [productCreate, productResponse] = useMutation(CREATE_PRODUCT, {
     variables: {
       input: productInput,
@@ -232,8 +232,7 @@ const CreateProductScreen = ({navigation, route}) => {
     type: image?.type,
     name: image?.fileName,
   });
-  console.log(newProductId);
-  console.log(file);
+
   const [productImageCreate, productImageResponse] = useMutation(
     CREATE_PRODUCT_IMAGE,
     {
@@ -291,6 +290,29 @@ const CreateProductScreen = ({navigation, route}) => {
   }, [productResponse.loading]);
   const onPressCreate = () => {
     //dispatch(setLoaderStatus(true));
+    let flag = 0;
+    if (!productType) flag++;
+    if (!price || price === '') {
+      setisPriceError(true);
+      flag++;
+    }
+    if (!productName || productName === '') {
+      setIsNameError(true);
+      flag++;
+    }
+    if (!image) {
+      flag++;
+      setImageError(true);
+    }
+    if (!productDescription || productDescription === '') {
+      flag++;
+      setIsDescriptionError(true);
+    }
+    if (variations.length === 0) {
+      flag++;
+      setVariationsError(true);
+    }
+    if (flag > 0) return;
     productCreate();
     /*const variationsCreate = variations.map(variation => {
       return {
@@ -325,7 +347,6 @@ const CreateProductScreen = ({navigation, route}) => {
           );
         });
         if (!isAlreadyAdded) {
-          console.log('adding');
           newVariations.push({
             name: colorItem.name + ',' + sizeAttributeValues[i].name,
             attributes: [
@@ -534,6 +555,9 @@ const CreateProductScreen = ({navigation, route}) => {
               <Entypo name="camera" color="darkgray" size={35} />
             </TouchableOpacity>
           </View>
+          {imageError && (
+            <ErrorMessage message={'Please add an image for your product!'} />
+          )}
           {/*<View style={styles.selectCategoryContainer}>
             <Text style={styles.labelText}>Select Product Types</Text>
             <TouchableOpacity
@@ -624,23 +648,37 @@ const CreateProductScreen = ({navigation, route}) => {
           </View>*/}
           <View style={styles.selectCategoryContainer}>
             <Text style={styles.labelText}>Select Color</Text>
-            <TouchableOpacity
-              onPress={() => {
-                setIsColorModalVisible(true);
-              }}
+            <View
               style={{
                 height: 50,
                 width: '100%',
-                justifyContent: 'center',
+                justifyContent: 'space-between',
                 alignItems: 'center',
                 borderWidth: 1,
                 borderColor: 'rgba(0,0,0,0.2)',
                 backgroundColor: 'white',
                 marginTop: '2%',
                 borderRadius: 5,
+                flexDirection: 'row',
+                paddingHorizontal: '2%',
+                marginBottom: '2%',
               }}>
               <Text>{colorItem ? colorItem.name : 'Select Color'}</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  setIsColorModalVisible(true);
+                }}
+                style={{
+                  height: '80%',
+                  width: '30%',
+                  borderRadius: 4,
+                  backgroundColor: 'black',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text style={{color: 'white'}}>Pick</Text>
+              </TouchableOpacity>
+            </View>
           </View>
           <View
             style={{
@@ -673,6 +711,11 @@ const CreateProductScreen = ({navigation, route}) => {
               </View>
             </View>
           </TouchableOpacity>
+          {variationsError && (
+            <ErrorMessage
+              message={'Please add Variants before creating product*'}
+            />
+          )}
         </View>
         {/*<View style={{height: '2%', backgroundColor: 'white'}}></View>
 

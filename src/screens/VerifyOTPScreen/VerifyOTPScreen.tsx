@@ -15,6 +15,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import PhoneSVG from '../MobileOTPScreen/phone';
 import toastService from '../../services/toast-service';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
+import {saveItemToStorage} from '../../services/storage-service';
 const VerifyOTPScreen = ({navigation, route}) => {
   const [otp, setOtp] = useState('');
   const [errorMessage, setErrorMessage] = useState(false);
@@ -29,6 +30,7 @@ const VerifyOTPScreen = ({navigation, route}) => {
     if (data) {
       if (data.verifyOtp.success) {
         toastService.showToast('OTP Verified!', true);
+        saveItemToStorage('Mobile Number', route.params.mobileNumber);
         navigation.navigate('LoginSuccessScreen', {
           mobileNumber: route.params.mobileNumber,
         });
@@ -77,6 +79,7 @@ const VerifyOTPScreen = ({navigation, route}) => {
       )}
       <TouchableOpacity
         onPress={() => {
+          saveItemToStorage('Mobile Number', route.params.mobileNumber);
           navigation.navigate('LoginSuccessScreen', {
             mobileNumber: route.params.mobileNumber,
           });

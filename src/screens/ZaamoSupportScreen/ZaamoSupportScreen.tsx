@@ -9,23 +9,28 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
+import {useSelector} from 'react-redux';
+import toastService from '../../services/toast-service';
 import {CREATE_SUPPORT_QUERY} from './mutations';
 const windowWidth = Dimensions.get('window').width;
 const ZaamoSupportScreen = ({navigation, route}) => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const mobileNumber = useSelector(state => state.user.mobileNumber);
   const [supportQueryCreate, {data, error, loading}] = useMutation(
     CREATE_SUPPORT_QUERY,
     {
       variables: {
         email: email,
         message: message,
-        mobileNo: '+919599243067',
+        mobileNo: '91' + mobileNumber,
       },
     },
   );
   const onQueryCreate = () => {
-    supportQueryCreate();
+    toastService.showToast('In Development', true);
+    navigation.navigate('SettingsScreen');
+    //supportQueryCreate();
   };
   console.log(data, error, loading);
   return (
@@ -138,9 +143,7 @@ const ZaamoSupportScreen = ({navigation, route}) => {
           textAlignVertical={'top'}
           placeholder={'Enter your Message'}
         />
-        <TouchableOpacity
-          onPress={() => supportQueryCreate()}
-          style={styles.button}>
+        <TouchableOpacity onPress={() => onQueryCreate()} style={styles.button}>
           <Text style={{color: 'white', fontWeight: 'bold'}}>Save</Text>
         </TouchableOpacity>
       </View>

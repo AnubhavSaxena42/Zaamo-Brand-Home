@@ -20,6 +20,39 @@ export const COLLECTION_CREATE = gql`
         descriptionJson
         slug
         imageUrl
+        products(first: 10) {
+          edges {
+            node {
+              id
+              name
+              brand {
+                brandName
+              }
+              thumbnail {
+                url
+                alt
+              }
+              pricing {
+                discount {
+                  gross {
+                    amount
+                  }
+                }
+                priceRange {
+                  start {
+                    net {
+                      amount
+                    }
+                  }
+                }
+              }
+              productType {
+                name
+              }
+              name
+            }
+          }
+        }
         isPublished
       }
     }

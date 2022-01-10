@@ -147,9 +147,10 @@ export const GET_AUTHORISED_BRANDS = gql`
   }
 `;
 export const GET_COUPONS = gql`
-  query {
+  query ($endCursor: String!) {
     vouchers(
       first: 10
+      after: $endCursor
       filter: {status: ACTIVE}
       sortBy: {field: START_DATE, direction: DESC}
     ) {

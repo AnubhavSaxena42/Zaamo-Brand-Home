@@ -195,10 +195,20 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
       console.log('Data:', data);
       if (data.collectionCreate.collection) {
         dispatch(setLoaderStatus(true));
-        const newCollections = [
-          ...collections,
-          data.collectionCreate.collection,
-        ];
+        console.log('Collection Create:', data.collectionCreate.collection);
+        const newCollection = {
+          id: data.collectionCreate.collection.id,
+          products: data.collectionCreate.collection.products
+            ? data.collectionCreate.collection.products.edges
+            : [],
+          imageUrl: data.collectionCreate.collection.imageUrl
+            ? data.collectionCreate.collection.imageUrl
+            : '',
+          name: data.collectionCreate.collection.name
+            ? data.collectionCreate.collection.name
+            : '',
+        };
+        const newCollections = [...collections, newCollection];
         console.log('Old collections:', collections);
         console.log('New Collections:', newCollections);
         dispatch(setStoreCollections(newCollections));

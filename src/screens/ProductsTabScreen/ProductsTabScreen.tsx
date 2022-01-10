@@ -90,7 +90,7 @@ const ProductsTabScreen = ({navigation}) => {
       },
     );
   };
-  const mobileNumber = '9953724117';
+  const mobileNumber = useSelector(state => state.user.mobileNumber);
   const brandResponse = useQuery(GET_AUTHORISED_BRANDS, {
     variables: {
       mobileNo: '91' + mobileNumber,
@@ -234,17 +234,18 @@ const ProductsTabScreen = ({navigation}) => {
     );
   };
   const fetchMoreProducts = () => {
+    console.log(productsPageInfo.hasNextPage);
+
     if (productsPageInfo.hasNextPage) {
+      console.log(productsPageInfo.endCursor);
       console.log('here');
-      brandResponse.fetchMore({
-        variables: {
-          mobileNo: mobileNumber,
-          endCursor: productsPageInfo.endCursor,
-        },
+      brandResponse.refetch({
+        mobileNo: '91' + mobileNumber,
+        endCursor: productsPageInfo.endCursor,
       });
     }
   };
-
+  console.log(brandResponse.loading);
   return (
     <View style={styles.productsTabContainer}>
       {(isNewCollectionModalVisible || isThumbnailModalVisible) && (
@@ -346,7 +347,6 @@ const ProductsTabScreen = ({navigation}) => {
       </View>
       {isViewing === 1 && (
         <ScrollView
-          onScrollEndDrag={fetchMoreProducts}
           onScroll={({nativeEvent}) => {
             if (isCloseToBottom(nativeEvent)) {
               fetchMoreProducts();

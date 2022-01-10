@@ -8,6 +8,7 @@ import TaggingPanelStack from './navigation/MainNavigator';
 import {HomeTabNavigator} from './navigation/MainNavigator';
 import {AuthorizationStack} from './navigation/MainNavigator';
 import {MainStackNavigator} from './navigation/MainNavigator';
+import {relayStylePagination} from '@apollo/client/utilities';
 import Loader from './components/Loader/Loader';
 import {
   ApolloClient,
@@ -40,7 +41,21 @@ const authLink = setContext(async (_, {headers}) => {
 
 const client = new ApolloClient({
   link: authLink.concat(uploadLink),
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      Brand: {
+        merge: true,
+        fields: {
+          products: relayStylePagination(),
+        },
+      },
+      Query: {
+        fields: {
+          products: relayStylePagination(),
+        },
+      },
+    },
+  }),
 });
 
 const App = () => {

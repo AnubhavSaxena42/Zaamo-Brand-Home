@@ -115,7 +115,7 @@ const CollectionViewScreen = ({navigation, route}) => {
           paddingBottom: 40,
         }}>
         {selectedCollection &&
-          selectedCollection.products.map(({node}) => {
+          selectedCollection.products?.map(({node}) => {
             const product = {
               brandName: node.brand.brandName,
               id: node.id,

@@ -7,7 +7,6 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import smugcat from '../../assets/images/smugcat.jpg';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useMutation} from '@apollo/client';
 import {GENERATE_OTP} from './mutations';
@@ -29,7 +28,7 @@ const MobileOTPScreen = ({navigation, route}) => {
   useEffect(() => {
     if (data) {
       if (data.generateOtp.success) {
-        navigation.navigate('VerifyOTPScreen', {
+        navigation.replace('VerifyOTPScreen', {
           mobileNumber: mobileNumber,
         });
       } else {
@@ -83,7 +82,10 @@ const MobileOTPScreen = ({navigation, route}) => {
             return;
           } else {
             console.log('in else block');
-            generateOtp();
+            navigation.navigate('VerifyOTPScreen', {
+              mobileNumber: mobileNumber,
+            });
+            //generateOtp();
           }
         }}
         style={styles.button}>

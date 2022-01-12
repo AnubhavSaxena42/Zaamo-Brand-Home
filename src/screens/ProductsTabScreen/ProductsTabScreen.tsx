@@ -7,6 +7,7 @@ import {
   Modal,
   TouchableOpacity,
   FlatList,
+  Animated,
 } from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -247,6 +248,16 @@ const ProductsTabScreen = ({navigation}) => {
     }
   };
   console.log(brandResponse.loading);
+  const [xTabOne, setXTabOne] = useState(0);
+  const [xTabTwo, setXTabTwo] = useState(0);
+  const [translateX, setTranslateX] = useState(new Animated.Value(0));
+  const handleSlide = type => {
+    Animated.spring(translateX, {
+      toValue: type,
+      duration: 100,
+      useNativeDriver: true,
+    }).start();
+  };
   return (
     <View style={styles.productsTabContainer}>
       {(isNewCollectionModalVisible || isThumbnailModalVisible) && (
@@ -314,11 +325,27 @@ const ProductsTabScreen = ({navigation}) => {
           flexDirection: 'row',
           alignSelf: 'center',
           marginBottom: '3%',
+          position: 'relative',
         }}>
-        <TouchableOpacity
-          onPress={() => setIsViewing(1)}
+        <Animated.View
           style={{
-            backgroundColor: isViewing === 1 ? 'black' : 'whitesmoke',
+            position: 'absolute',
+            width: '50%',
+            height: '100%',
+            top: 0,
+            left: 0,
+            borderRadius: 5,
+            backgroundColor: 'rgba(0,0,0,1)',
+            transform: [{translateX}],
+          }}
+        />
+        <TouchableOpacity
+          onPress={() => {
+            setIsViewing(1);
+            handleSlide(xTabOne);
+          }}
+          onLayout={event => setXTabOne(event.nativeEvent.layout.x)}
+          style={{
             width: '50%',
             height: '100%',
             justifyContent: 'center',
@@ -331,9 +358,12 @@ const ProductsTabScreen = ({navigation}) => {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => setIsViewing(2)}
+          onPress={() => {
+            setIsViewing(2);
+            handleSlide(xTabTwo);
+          }}
+          onLayout={event => setXTabTwo(event.nativeEvent.layout.x)}
           style={{
-            backgroundColor: isViewing === 2 ? 'black' : 'whitesmoke',
             width: '50%',
             height: '100%',
             justifyContent: 'center',

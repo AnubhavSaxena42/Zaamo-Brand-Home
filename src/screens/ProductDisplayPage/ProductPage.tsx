@@ -10,8 +10,6 @@ import {
   FlatList,
 } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import Swiper from 'react-native-swiper';
 const ProductPage = ({navigation, route}) => {
   const {product} = route.params;
   console.log('Product:' + JSON.stringify(product));

@@ -9,6 +9,7 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  Animated,
   Dimensions,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
@@ -158,6 +159,16 @@ const PaymentDetailsScreen = ({navigation, route}) => {
       </View>
     );
   };
+  const [xTabOne, setXTabOne] = useState(0);
+  const [xTabTwo, setXTabTwo] = useState(0);
+  const [translateX, setTranslateX] = useState(new Animated.Value(0));
+  const handleSlide = type => {
+    Animated.spring(translateX, {
+      toValue: type,
+      duration: 100,
+      useNativeDriver: true,
+    }).start();
+  };
   return (
     <View style={styles.paymentDetailsContainer}>
       <View style={{alignItems: 'center'}}>
@@ -192,11 +203,27 @@ const PaymentDetailsScreen = ({navigation, route}) => {
           flexDirection: 'row',
           alignSelf: 'center',
           marginBottom: '3%',
+          position: 'relative',
         }}>
-        <TouchableOpacity
-          onPress={() => setIsViewing(1)}
+        <Animated.View
           style={{
-            backgroundColor: isViewing === 1 ? 'black' : 'white',
+            position: 'absolute',
+            width: '50%',
+            height: '100%',
+            top: 0,
+            left: 0,
+            borderRadius: 5,
+            backgroundColor: 'rgba(0,0,0,1)',
+            transform: [{translateX}],
+          }}
+        />
+        <TouchableOpacity
+          onPress={() => {
+            setIsViewing(1);
+            handleSlide(xTabOne);
+          }}
+          onLayout={event => setXTabOne(event.nativeEvent.layout.x)}
+          style={{
             width: '50%',
             height: '100%',
             justifyContent: 'center',
@@ -209,9 +236,12 @@ const PaymentDetailsScreen = ({navigation, route}) => {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => setIsViewing(2)}
+          onPress={() => {
+            setIsViewing(2);
+            handleSlide(xTabTwo);
+          }}
+          onLayout={event => setXTabTwo(event.nativeEvent.layout.x)}
           style={{
-            backgroundColor: isViewing === 2 ? 'black' : 'white',
             width: '50%',
             height: '100%',
             justifyContent: 'center',

@@ -10,9 +10,16 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Clipboard from '@react-native-clipboard/clipboard';
 import toastService from '../../services/toast-service';
-const ProductCard = ({product, inCollectionView, setProductIdToRemove}) => {
+const ProductCard = ({
+  product,
+  navigation,
+  inCollectionView,
+  setProductIdToRemove,
+}) => {
   return (
-    <View style={styles.productCardContainer}>
+    <TouchableOpacity
+      onPress={() => navigation.navigate('ProductPage', {product: product})}
+      style={styles.productCardContainer}>
       <ImageBackground
         style={styles.imageStyle}
         source={{
@@ -140,7 +147,7 @@ const ProductCard = ({product, inCollectionView, setProductIdToRemove}) => {
           </TouchableOpacity>
         </View>
       )}
-    </View>
+    </TouchableOpacity>
   );
 };
 

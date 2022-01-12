@@ -18,6 +18,7 @@ import OrderDetailsScreen from '../screens/OrderDetailsScreen/OrderDetailsScreen
 import ProductsTabScreen from '../screens/ProductsTabScreen/ProductsTabScreen';
 import SettingsScreen from '../screens/SettingsScreen/SettingsScreen';
 import MarketingScreen from '../screens/MarketingScreen/MarketingScreen';
+import ProductPage from '../screens/ProductDisplayPage/ProductPage';
 import SplashScreen from '../screens/SplashScreen/SplashScreen';
 import InstaWorldScreen from '../screens/InstaWorldScreen/InstaWorldScreen';
 import ConnectMySocialScreen from '../screens/ConnectMySocialScreen/ConnectMySocialScreen';
@@ -159,6 +160,7 @@ export const ProductStackNavigator = () => {
         name="CollectionViewScreen"
         component={CollectionViewScreen}
       />
+      <ProductStack.Screen name="ProductPage" component={ProductPage} />
     </ProductStack.Navigator>
   );
 };

@@ -1,4 +1,3 @@
-//import 'react-native-gesture-handler';
 import React, {useMemo} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {Provider} from 'react-redux';
@@ -9,6 +8,7 @@ import {HomeTabNavigator} from './navigation/MainNavigator';
 import {AuthorizationStack} from './navigation/MainNavigator';
 import {MainStackNavigator} from './navigation/MainNavigator';
 import {relayStylePagination} from '@apollo/client/utilities';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import Loader from './components/Loader/Loader';
 import {
   ApolloClient,
@@ -68,8 +68,10 @@ const App = () => {
     <NavigationContainer>
       <ApolloProvider client={client}>
         <Provider store={store}>
-          <Spinner />
-          <MainStackNavigator />
+          <GestureHandlerRootView style={{flex: 1}}>
+            <Spinner />
+            <MainStackNavigator />
+          </GestureHandlerRootView>
         </Provider>
       </ApolloProvider>
     </NavigationContainer>

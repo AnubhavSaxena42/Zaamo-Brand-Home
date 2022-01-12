@@ -109,6 +109,9 @@ export const GET_AUTHORISED_BRANDS = gql`
             node {
               id
               name
+              images {
+                url(size: 1080)
+              }
               url
               descriptionJson
               brand {

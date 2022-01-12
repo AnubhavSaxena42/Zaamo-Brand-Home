@@ -121,6 +121,7 @@ const ProductsTabScreen = ({navigation}) => {
                 id: node.id,
                 name: node.name,
                 url: node.url,
+                images: node.images,
                 thumbnail: node.thumbnail
                   ? node.thumbnail.url
                   : 'https://media-exp1.licdn.com/dms/image/C4E0BAQGymyKm7OE3wg/company-logo_200_200/0/1636442519943?e=2159024400&v=beta&t=19hHu3puobGsregS0-31D-KiANWe3NqrKZESktzQC30',
@@ -360,7 +361,11 @@ const ProductsTabScreen = ({navigation}) => {
             flexWrap: 'wrap',
           }}>
           {products.map(product => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard
+              navigation={navigation}
+              key={product.id}
+              product={product}
+            />
           ))}
         </ScrollView>
         /*<FlatList

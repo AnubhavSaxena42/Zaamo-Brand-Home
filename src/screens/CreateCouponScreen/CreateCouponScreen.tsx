@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
   Text,
+  FlatList,
   Platform,
   View,
 } from 'react-native';
@@ -18,7 +19,6 @@ import Header from '../../components/Header';
 import {CREATE_VOUCHER} from './mutations';
 import {useDispatch, useSelector} from 'react-redux';
 import {GET_STORES, GET_BRANDS} from './queries';
-import {FlatList} from 'react-native-gesture-handler';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import toastService from '../../services/toast-service';
 import {GET_COUPONS} from '../DashboardScreen/queries';
@@ -338,6 +338,7 @@ const CreateCouponScreen = ({navigation}) => {
           flexDirection: 'row',
           justifyContent: 'space-between',
           paddingHorizontal: '5%',
+          paddingVertical: '2%',
           width: '100%',
           borderBottomColor: 'rgba(0,0,0,0.2)',
           borderBottomWidth: 1,
@@ -475,7 +476,12 @@ const CreateCouponScreen = ({navigation}) => {
               ))*/}
 
           {
-            <View style={{flex: 1}}>
+            <View
+              style={{
+                flex: 1,
+                borderTopColor: 'rgba(0,0,0,0.1)',
+                borderTopWidth: 1,
+              }}>
               <FlatList
                 data={influencerStoreItems}
                 renderItem={({item}) => (
@@ -999,7 +1005,7 @@ const CreateCouponScreen = ({navigation}) => {
           style={{
             marginTop: '5%',
             width: '100%',
-            height: '3%',
+            height: 50,
             justifyContent: 'space-between',
             borderWidth: 1,
             borderColor: 'rgba(0,0,0,0.3)',

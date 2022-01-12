@@ -134,7 +134,7 @@ const OrdersScreen = ({navigation}) => {
           sortByStatus(fulfillmentOverallStatus, value);
         }
       });
-      setBrandOrders(orders);
+      setBrandOrders(allOrders);
       setBrandInProcessOrders(inProcessOrders);
       setBrandShippedOrders(shippedOrders);
       setBrandDeliveredOrders(deliveredOrders);

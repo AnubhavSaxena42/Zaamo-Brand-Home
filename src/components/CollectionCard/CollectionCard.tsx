@@ -82,6 +82,7 @@ const CollectionCard = ({
                 textShadowColor: 'rgba(0,0,0,0.7)',
                 textShadowRadius: 2,
                 textShadowOffset: {width: 1, height: 1},
+                fontFamily: 'Roboto-Bold',
               }}>
               {collection.name}
             </Text>
@@ -92,6 +93,7 @@ const CollectionCard = ({
                 textShadowColor: 'rgba(0,0,0,0.7)',
                 textShadowRadius: 0.1,
                 textShadowOffset: {width: 1, height: 1},
+                fontFamily: 'Roboto-Bold',
               }}>
               {collection.products && collection.products.length.toString()}{' '}
               Products

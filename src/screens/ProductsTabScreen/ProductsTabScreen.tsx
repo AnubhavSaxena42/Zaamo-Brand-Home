@@ -347,6 +347,7 @@ const ProductsTabScreen = ({navigation}) => {
       </View>
       {isViewing === 1 && (
         <ScrollView
+          showsVerticalScrollIndicator={false}
           onScroll={({nativeEvent}) => {
             if (isCloseToBottom(nativeEvent)) {
               fetchMoreProducts();
@@ -372,6 +373,7 @@ const ProductsTabScreen = ({navigation}) => {
       )}
       {isViewing === 2 && (
         <ScrollView
+          showsVerticalScrollIndicator={false}
           contentContainerStyle={{
             width: '100%',
             flexDirection: 'row',

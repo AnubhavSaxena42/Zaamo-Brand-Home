@@ -33,7 +33,7 @@ const ProductCard = ({product, inCollectionView, setProductIdToRemove}) => {
           style={{
             position: 'absolute',
             width: '100%',
-            paddingHorizontal: '3%',
+            paddingHorizontal: '5%',
             bottom: 10,
           }}>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -43,7 +43,7 @@ const ProductCard = ({product, inCollectionView, setProductIdToRemove}) => {
               style={{...styles.rowOneText, width: '50%'}}>
               {product.brandName}
             </Text>
-            <Text style={styles.rowOneText}>Rs.{product.price}</Text>
+            <Text style={styles.rowOneText}>₹{product.price}</Text>
           </View>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <Text
@@ -57,7 +57,7 @@ const ProductCard = ({product, inCollectionView, setProductIdToRemove}) => {
                 ...styles.rowTwoText,
                 textDecorationLine: 'line-through',
               }}>
-              Rs.750
+              ₹750
             </Text>
           </View>
         </View>
@@ -69,12 +69,18 @@ const ProductCard = ({product, inCollectionView, setProductIdToRemove}) => {
             width: '100%',
             justifyContent: 'space-between',
             alignItems: 'center',
-            paddingHorizontal: '5%',
+            paddingHorizontal: '7%',
             paddingVertical: '4%',
           }}>
-          <Text style={{color: 'black', fontSize: 12}}>
+          <Text
+            style={{
+              color: 'black',
+              fontSize: 12,
+              fontFamily: 'Roboto-Regular',
+            }}>
             Inventory:
-            <Text style={{color: 'black', fontSize: 14, fontWeight: 'bold'}}>
+            <Text
+              style={{color: 'black', fontSize: 14, fontFamily: 'Roboto-Bold'}}>
               4
             </Text>
           </Text>
@@ -88,12 +94,20 @@ const ProductCard = ({product, inCollectionView, setProductIdToRemove}) => {
               alignItems: 'center',
               backgroundColor: 'black',
               paddingHorizontal: '3%',
+              paddingVertical: '1%',
               borderRadius: 10,
             }}>
             <View style={{...styles.editIcon}}>
-              <Ionicons name="pencil" size={5} color={'black'} />
+              <Ionicons name="pencil" size={6} color={'black'} />
             </View>
-            <Text style={{color: 'white'}}>Edit</Text>
+            <Text
+              style={{
+                color: 'white',
+                fontSize: 12,
+                fontFamily: 'Roboto-Regular',
+              }}>
+              Edit
+            </Text>
           </TouchableOpacity>
         </View>
       )}
@@ -138,12 +152,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(0,0,0,0.2)',
     borderRadius: 15,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 0},
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    elevation: 3,
+    backgroundColor: 'white',
     marginVertical: '2%',
   },
   editIcon: {
-    height: 12,
-    width: 12,
-    borderRadius: 6,
+    height: 14,
+    width: 14,
+    borderRadius: 7,
     marginRight: '3%',
     justifyContent: 'center',
     alignItems: 'center',
@@ -154,14 +174,15 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontFamily: 'Roboto-Bold',
     color: 'white',
-    textShadowColor: 'rgba(0,0,0,0.4)',
+    textShadowColor: 'rgba(0,0,0,0.3)',
     textShadowRadius: 0.1,
     textShadowOffset: {width: 1, height: 1},
   },
   rowTwoText: {
     fontSize: 14,
+    fontFamily: 'Roboto-Bold',
     color: 'white',
-    textShadowColor: 'rgba(0,0,0,0.4)',
+    textShadowColor: 'rgba(0,0,0,0.3)',
     textShadowRadius: 0.1,
     textShadowOffset: {width: 1, height: 1},
   },
@@ -177,9 +198,9 @@ const styles = StyleSheet.create({
     right: 10,
   },
   imageStyle: {
-    height: 250,
+    height: 280,
     width: '100%',
-    borderRadius: 10,
+    borderRadius: 15,
     overflow: 'hidden',
   },
 });

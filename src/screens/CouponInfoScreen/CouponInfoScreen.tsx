@@ -15,7 +15,7 @@ const CouponInfoScreen = ({navigation, route}) => {
   return (
     <ScrollView
       contentContainerStyle={{
-        paddingBottom: '50%',
+        paddingBottom: '30%',
       }}>
       <Image
         source={require('../../assets/images/DashboardEllipse.png')}
@@ -82,6 +82,7 @@ const CouponInfoScreen = ({navigation, route}) => {
         {route.params.coupon.products.edges.map(({node}) => {
           return (
             <View
+              key={node.code}
               style={{
                 width: '100%',
                 flexDirection: 'row',

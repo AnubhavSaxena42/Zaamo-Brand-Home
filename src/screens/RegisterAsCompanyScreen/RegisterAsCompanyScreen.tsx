@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {launchImageLibrary} from 'react-native-image-picker';
 import Entypo from 'react-native-vector-icons/Entypo';
 import toastService from '../../services/toast-service';
@@ -57,6 +58,11 @@ const RegisterAsCompanyScreen = ({navigation, route}) => {
           }}>
           Register as a Company
         </Text>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{zIndex: 2, marginTop: '6%', position: 'absolute', left: 10}}>
+          <Ionicons name="arrow-back-sharp" color={'white'} size={35} />
+        </TouchableOpacity>
       </View>
       <View
         style={{

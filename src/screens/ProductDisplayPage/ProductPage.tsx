@@ -5,10 +5,12 @@ import {
   View,
   Dimensions,
   Image,
+  TouchableOpacity,
   Animated,
   ImageBackground,
   FlatList,
 } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import BottomSheet from '@gorhom/bottom-sheet';
 const ProductPage = ({navigation, route}) => {
   const {product} = route.params;
@@ -35,6 +37,11 @@ const ProductPage = ({navigation, route}) => {
   const scrollY = React.useRef(new Animated.Value(0)).current;
   return (
     <View style={styles.productPageContainer}>
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={{zIndex: 2, position: 'absolute', left: 10, top: 10}}>
+        <Ionicons name="arrow-back-sharp" color={'black'} size={35} />
+      </TouchableOpacity>
       {/* <ImageBackground
         source={{uri: product.thumbnail}}
         resizeMode="cover"

@@ -6,10 +6,12 @@ import {
   Text,
   View,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 import InstaNotification from '../../components/InstaNotification/InstaNotification';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 const windowWidth = Dimensions.get('window').width;
-const InstaWorldScreen = () => {
+const InstaWorldScreen = ({navigation}) => {
   return (
     <View style={styles.instaWorldContainer}>
       <View style={{alignItems: 'center'}}>
@@ -23,6 +25,11 @@ const InstaWorldScreen = () => {
             top: -275,
           }}
         />
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{zIndex: 2, position: 'absolute', left: 10, top: '15%'}}>
+          <Ionicons name="arrow-back-sharp" color={'white'} size={35} />
+        </TouchableOpacity>
         <Text
           style={{
             color: 'white',

@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import OrderCard from '../../components/OrderCard/OrderCard';
 import OrderItem from '../../components/OrderItem/OrderItem';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 import {useMutation} from '@apollo/client';
 import {UPDATE_FULFILLMENT} from './mutations';
@@ -72,6 +73,11 @@ const OrderDetailsScreen = ({navigation, route}) => {
         }}>
         Order Details
       </Text>
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={{zIndex: 2, position: 'absolute', left: 10, top: 10}}>
+        <Ionicons name="arrow-back-sharp" color={'white'} size={35} />
+      </TouchableOpacity>
       <Image
         source={require('../../assets/images/DashboardEllipse.png')}
         style={{

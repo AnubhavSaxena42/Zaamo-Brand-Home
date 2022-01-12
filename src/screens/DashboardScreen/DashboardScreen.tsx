@@ -13,7 +13,10 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MetricCard from '../../components/MetricCard/MetricCard';
 import UpdateCard from '../../components/UpdateCard/UpdateCard';
-import {getItemFromStorage} from '../../services/storage-service';
+import {
+  deleteAllItemsFromStorage,
+  getItemFromStorage,
+} from '../../services/storage-service';
 import authService from '../../services/auth-service';
 import {useSelector, useDispatch} from 'react-redux';
 import {request, PERMISSIONS, openSettings} from 'react-native-permissions';
@@ -28,6 +31,7 @@ import {
 } from '../../redux/reducers/storeReducer';
 import {setAuthorisedBrands} from '../../redux/reducers/userReducer';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
+import toastService from '../../services/toast-service';
 
 //For web it has to be a scrollview , implement fab properly
 const DashboardScreen = ({navigation, route}) => {
@@ -195,20 +199,55 @@ const DashboardScreen = ({navigation, route}) => {
       dispatch(setStoreVouchers(newCoupons));
     }
   }, [couponResponse.data]);
-
+  const logout = () => {
+    dispatch(setLoaderStatus(true));
+    deleteAllItemsFromStorage()
+      .then(() => {
+        toastService.showToast('Logged out successfully', true);
+        navigation.replace('AuthStack');
+        dispatch(setLoaderStatus(false));
+      })
+      .catch(() => {
+        toastService.showToast('Log out Fail', true);
+        dispatch(setLoaderStatus(false));
+      });
+  };
   return (
     <View style={styles.dashboardContainer}>
-      <Text
+      <View
         style={{
-          zIndex: 2,
-          paddingLeft: '3%',
-          paddingTop: '5%',
-          color: 'white',
-          fontSize: 18,
-          fontFamily: 'Roboto-Bold',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
         }}>
-        Overview
-      </Text>
+        <Text
+          style={{
+            zIndex: 2,
+            paddingLeft: '3%',
+            paddingTop: '5%',
+            color: 'white',
+            fontSize: 18,
+            fontFamily: 'Roboto-Bold',
+          }}>
+          Overview
+        </Text>
+        <TouchableOpacity
+          style={{
+            zIndex: 2,
+            paddingRight: '5%',
+            paddingTop: '5%',
+          }}
+          onPress={logout}>
+          <Text
+            style={{
+              color: 'white',
+              fontSize: 12,
+              fontFamily: 'Roboto-Bold',
+            }}>
+            Logout
+          </Text>
+        </TouchableOpacity>
+      </View>
       {
         <Image
           source={require('../../assets/images/DashboardEllipse.png')}

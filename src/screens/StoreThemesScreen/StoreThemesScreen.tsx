@@ -7,6 +7,7 @@ import {
   Text,
   View,
 } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import ThemeSelector from '../../components/ThemeSelector/ThemeSelector';
 import toastService from '../../services/toast-service';
 const windowWidth = Dimensions.get('window').width;
@@ -24,6 +25,11 @@ const StoreThemesScreen = ({navigation, route}) => {
             top: -300,
           }}
         />
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{zIndex: 2, marginTop: '6%', position: 'absolute', left: 10}}>
+          <Ionicons name="arrow-back-sharp" color={'white'} size={35} />
+        </TouchableOpacity>
         <Text
           style={{
             color: 'white',

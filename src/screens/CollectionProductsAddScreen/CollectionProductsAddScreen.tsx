@@ -10,7 +10,7 @@ import {
   Platform,
   TouchableNativeFeedback,
 } from 'react-native';
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import AddProductCard from '../../components/AddProductCard/AddProductCard';
 import {useDispatch, useSelector} from 'react-redux';
 import {setStoreProducts} from '../../redux/reducers/storeReducer';
@@ -310,6 +310,11 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
           alignItems: 'center',
           paddingVertical: '4%',
         }}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{zIndex: 2, position: 'absolute', left: 10}}>
+          <Ionicons name="arrow-back-sharp" color={'black'} size={35} />
+        </TouchableOpacity>
         <Text
           style={{
             fontSize: 20,

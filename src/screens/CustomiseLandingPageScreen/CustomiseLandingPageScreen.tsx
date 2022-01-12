@@ -1,7 +1,7 @@
 import React from 'react';
-import {StyleSheet, Text, View, Image} from 'react-native';
-
-const CustomiseLandingPageScreen = () => {
+import {StyleSheet, TouchableOpacity, Text, View, Image} from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+const CustomiseLandingPageScreen = ({navigation}) => {
   return (
     <View style={styles.customiseLandingPageContainer}>
       <Text
@@ -13,6 +13,12 @@ const CustomiseLandingPageScreen = () => {
         }}>
         NO DESIGNS AVAILABLE FOR THIS PAGE
       </Text>
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={{zIndex: 2, top: 10, position: 'absolute', left: 10}}>
+        <Ionicons name="arrow-back-sharp" color={'black'} size={35} />
+      </TouchableOpacity>
+
       <Image
         source={require('../../assets/images/Mitsuba.jpg')}
         style={{height: 300, width: 300}}

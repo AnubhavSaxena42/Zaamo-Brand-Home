@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {useMutation} from '@apollo/client';
 import {BANK_ACCOUNT_CREATE, BRAND_UPI_ID_CREATE} from './mutations';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {
   StyleSheet,
   ScrollView,
@@ -182,6 +183,12 @@ const PaymentDetailsScreen = ({navigation, route}) => {
             top: -300,
           }}
         />
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{zIndex: 2, marginTop: '6%', position: 'absolute', left: 10}}>
+          <Ionicons name="arrow-back-sharp" color={'white'} size={35} />
+        </TouchableOpacity>
+
         <Text
           style={{
             color: 'white',

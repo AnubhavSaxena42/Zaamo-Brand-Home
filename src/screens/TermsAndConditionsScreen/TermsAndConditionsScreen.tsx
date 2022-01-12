@@ -8,6 +8,7 @@ import {
   Image,
   View,
 } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import toastService from '../../services/toast-service';
 const windowWidth = Dimensions.get('window').width;
@@ -25,6 +26,12 @@ const TermsAndConditionsScreen = ({navigation, route}) => {
             top: -300,
           }}
         />
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{zIndex: 2, marginTop: '6%', position: 'absolute', left: 10}}>
+          <Ionicons name="arrow-back-sharp" color={'white'} size={35} />
+        </TouchableOpacity>
+
         <Text
           style={{
             color: 'white',
@@ -33,6 +40,7 @@ const TermsAndConditionsScreen = ({navigation, route}) => {
             fontSize: 22,
             paddingHorizontal: '10%',
             textAlign: 'center',
+            fontFamily: 'Roboto-Bold',
           }}>
           Terms And Conditions
         </Text>
@@ -46,6 +54,7 @@ const TermsAndConditionsScreen = ({navigation, route}) => {
         }}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Text>Terms And Conditions</Text>
+
           <TouchableOpacity
             onPress={() => {
               toastService.showToast('Feature in Development', true);

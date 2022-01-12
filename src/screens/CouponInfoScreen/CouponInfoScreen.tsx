@@ -3,10 +3,12 @@ import {
   StyleSheet,
   Text,
   Image,
+  TouchableOpacity,
   Dimensions,
   ScrollView,
   View,
 } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import Coupon from '../../components/Coupon/Coupon';
 import CouponOverview from '../../components/CouponOverview/CouponOverview';
 const windowWidth = Dimensions.get('window').width;
@@ -27,17 +29,30 @@ const CouponInfoScreen = ({navigation, route}) => {
           top: -80,
         }}
       />
-      <Text
+      <View
         style={{
-          color: 'white',
-          zIndex: 2,
+          flexDirection: 'row',
           marginTop: '5%',
-          fontSize: 15,
-          paddingHorizontal: '5%',
           marginBottom: '8%',
+          alignItems: 'center',
+          paddingLeft: '2%',
         }}>
-        Marketing
-      </Text>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{zIndex: 2}}>
+          <Ionicons name="arrow-back-sharp" color={'white'} size={35} />
+        </TouchableOpacity>
+        <Text
+          style={{
+            color: 'white',
+            zIndex: 2,
+            fontFamily: 'Roboto-Bold',
+            fontSize: 15,
+            paddingHorizontal: '5%',
+          }}>
+          Marketing
+        </Text>
+      </View>
       <CouponOverview coupon={route.params.coupon} />
       <View
         style={{

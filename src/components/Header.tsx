@@ -1,8 +1,8 @@
-import {HeaderHeightContext} from '@react-navigation/stack';
 import React from 'react';
 import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
-const Header = ({tag, fontSize, icon, onPress}) => {
+import Ionicons from 'react-native-vector-icons/Ionicons';
+const Header = ({tag, fontSize, icon, back, navigation, onPress}) => {
   return (
     <View style={styles.headerContainer}>
       <Text style={{...styles.headerText, fontSize: fontSize ? fontSize : 28}}>
@@ -13,6 +13,13 @@ const Header = ({tag, fontSize, icon, onPress}) => {
           onPress={onPress}
           style={{position: 'absolute', right: 5}}>
           <Entypo name="plus" size={30} color={'white'} />
+        </TouchableOpacity>
+      )}
+      {back && (
+        <TouchableOpacity
+          style={{position: 'absolute', left: 10}}
+          onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back-sharp" color={'white'} size={35} />
         </TouchableOpacity>
       )}
     </View>

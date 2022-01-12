@@ -8,6 +8,7 @@ import {
   Image,
   TextInput,
 } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import toastService from '../../services/toast-service';
 const windowWidth = Dimensions.get('window').width;
 const ConnectMySocialScreen = ({navigation, route}) => {
@@ -24,6 +25,12 @@ const ConnectMySocialScreen = ({navigation, route}) => {
             top: -300,
           }}
         />
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{zIndex: 2, marginTop: '6%', position: 'absolute', left: 10}}>
+          <Ionicons name="arrow-back-sharp" color={'white'} size={35} />
+        </TouchableOpacity>
+
         <Text
           style={{
             color: 'white',

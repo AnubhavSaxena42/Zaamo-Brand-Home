@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import ProductCard from '../../components/ProductCard/ProductCard';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {REMOVE_PRODUCT_COLLECTION} from './mutations';
 import {useDispatch, useSelector} from 'react-redux';
 import {setStoreCollections} from '../../redux/reducers/storeReducer';
@@ -88,6 +89,11 @@ const CollectionViewScreen = ({navigation, route}) => {
           borderBottomWidth: 1,
           borderBottomColor: 'rgba(0,0,0,0.2)',
         }}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{zIndex: 2, position: 'absolute', left: 10}}>
+          <Ionicons name="arrow-back-sharp" color={'black'} size={35} />
+        </TouchableOpacity>
         <Text
           style={{
             alignSelf: 'center',

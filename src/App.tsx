@@ -49,10 +49,24 @@ export const client = new ApolloClient({
           products: relayStylePagination(),
         },
       },
+      Store: {
+        merge: true,
+        fields: {
+          collections: relayStylePagination(),
+        },
+      },
+      Collection: {
+        merge: true,
+        fields: {
+          products: relayStylePagination(),
+        },
+      },
       Query: {
         merge: true,
         fields: {
           products: relayStylePagination(),
+          vouchers: relayStylePagination(),
+          collections: relayStylePagination(),
         },
       },
     },

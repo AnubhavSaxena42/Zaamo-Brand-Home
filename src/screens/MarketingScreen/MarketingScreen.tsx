@@ -1,18 +1,23 @@
-import React, {useState, useEffect} from 'react';
-import {StyleSheet, ScrollView, Text, View} from 'react-native';
+import React, {useState, useMemo, useEffect} from 'react';
+import {
+  StyleSheet,
+  FlatList,
+  ActivityIndicator,
+  ScrollView,
+  Text,
+  View,
+} from 'react-native';
 import Coupon from '../../components/Coupon/Coupon';
 import Header from '../../components/Header';
 import {useSelector, useDispatch} from 'react-redux';
-import {setStoreVouchers} from '../../redux/reducers/storeReducer';
-import {useQuery} from '@apollo/client';
+import {useQuery, NetworkStatus} from '@apollo/client';
 import {GET_COUPONS} from '../DashboardScreen/queries';
-import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 const MarketingScreen = ({navigation}) => {
-  const dispatch = useDispatch();
   const couponResponse = useQuery(GET_COUPONS, {
     variables: {
       endCursor: '',
     },
+    notifyOnNetworkStatusChange: true,
   });
   const [vouchers, setVouchers] = useState([]);
   const [couponPageInfo, setCouponPageInfo] = useState({
@@ -26,48 +31,81 @@ const MarketingScreen = ({navigation}) => {
         return node;
       });
       setCouponPageInfo(couponResponse.data.vouchers.pageInfo);
-      setVouchers([...vouchers, ...newCoupons]);
+      setVouchers(newCoupons);
     }
   }, [couponResponse.data]);
-  useEffect(() => {
-    if (couponResponse.loading) dispatch(setLoaderStatus(true));
-    else dispatch(setLoaderStatus(false));
-  }, [couponResponse.loading]);
-  const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
-    const paddingToBottom = 20;
-    return (
-      layoutMeasurement.height + contentOffset.y >=
-      contentSize.height - paddingToBottom
-    );
-  };
-  const fetchMoreVouchers = () => {
+
+  const refreshing = couponResponse.networkStatus === NetworkStatus.refetch;
+  const handleOnEndReached = () => {
     console.log(couponPageInfo.hasNextPage);
     if (couponPageInfo.hasNextPage) {
       console.log(couponPageInfo.endCursor);
       console.log('here');
-      couponResponse.refetch({
-        endCursor: couponPageInfo.endCursor,
+      couponResponse.fetchMore({
+        variables: {
+          endCursor: couponPageInfo.endCursor,
+        },
       });
     }
   };
+  const _renderItem = ({item}) => (
+    <Coupon key={item.id} navigation={navigation} coupon={item} />
+  );
+  const memoizedVoucher = useMemo(() => _renderItem, [vouchers]);
+
   return (
-    <ScrollView
-      style={styles.marketingContainer}
-      onScroll={({nativeEvent}) => {
-        if (isCloseToBottom(nativeEvent)) {
-          fetchMoreVouchers();
-        }
-      }}>
+    <View style={styles.marketingContainer}>
       <Header
         tag={'Marketing'}
         fontSize={22}
         icon={true}
         onPress={() => navigation.navigate('CreateCouponScreen')}
       />
-      {vouchers.map(coupon => (
+      {/*{vouchers.map(coupon => (
         <Coupon key={coupon.id} navigation={navigation} coupon={coupon} />
-      ))}
-    </ScrollView>
+      ))}*/}
+      <FlatList
+        data={vouchers}
+        onEndReached={handleOnEndReached}
+        onEndReachedThreshold={0.5}
+        contentContainerStyle={{paddingBottom: '5%'}}
+        onRefresh={couponResponse.refetch}
+        refreshing={refreshing}
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={
+          !couponResponse.loading
+            ? () => (
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <ActivityIndicator size={'large'} color="black" />
+                </View>
+              )
+            : null
+        }
+        ListFooterComponent={
+          couponResponse.loading
+            ? () => {
+                return (
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <ActivityIndicator size={50} color="black" />
+                  </View>
+                );
+              }
+            : null
+        }
+        keyExtractor={item => item.id}
+        renderItem={memoizedVoucher}
+      />
+    </View>
   );
 };
 

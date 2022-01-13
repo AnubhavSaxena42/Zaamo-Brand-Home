@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useMemo, useEffect} from 'react';
 import {
   StyleSheet,
   Modal,
@@ -8,26 +8,32 @@ import {
   FlatList,
   TouchableOpacity,
   Platform,
+  ActivityIndicator,
   TouchableNativeFeedback,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AddProductCard from '../../components/AddProductCard/AddProductCard';
 import {useDispatch, useSelector} from 'react-redux';
 import {setStoreProducts} from '../../redux/reducers/storeReducer';
-import {useMutation, useQuery} from '@apollo/client';
+import {useMutation, NetworkStatus, useQuery} from '@apollo/client';
 import {ADD_PRODUCTS_COLLECTION, COLLECTION_CREATE} from './mutations';
 import {setStoreCollections} from '../../redux/reducers/storeReducer';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import toastService from '../../services/toast-service';
 import {GET_PRODUCTS_BY_BRAND} from './queries';
-
+import {GET_AUTHORISED_BRANDS, GET_STORE} from '../DashboardScreen/queries';
+import {GET_COLLECTION_BY_ID} from '../CollectionViewScreen/queries';
 const CollectionProductsAddScreen = ({navigation, route, collection}) => {
   const productsStore = useSelector(state => state.store.products);
-  const [products, setProducts] = useState([]);
   const collections = useSelector(state => state.store.collections);
+  const mobileNumber = useSelector(state => state.user.mobileNumber);
+  const [products, setProducts] = useState([]);
+  const [productsPageInfo, setProductsPageInfo] = useState({
+    hasNextPage: true,
+    endCursor: '',
+  });
   const [brand, setBrand] = useState('');
   const [selectedProducts, setSelectedProducts] = useState([]);
-
   const [isBrandSelectModalVisible, setIsBrandSelectModalVisible] =
     useState(false);
   const dispatch = useDispatch();
@@ -40,13 +46,87 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
         collectionId: route.params.collection ? route.params.collection.id : '',
         products: selectedProducts,
       },
+      refetchQueries: [GET_STORE, GET_COLLECTION_BY_ID],
     },
   );
   const brandResponse = useQuery(GET_PRODUCTS_BY_BRAND, {
     variables: {
       brands: [brand],
+      endCursor: '',
     },
+    notifyOnNetworkStatusChange: true,
   });
+  const storeProductsResponse = useQuery(GET_AUTHORISED_BRANDS, {
+    variables: {
+      mobileNo: '91' + mobileNumber,
+      endCursor: '',
+    },
+    notifyOnNetworkStatusChange: true,
+  });
+
+  useEffect(() => {
+    console.log('running');
+    if (!route.params.fromVoucherCreate) {
+      if (storeProductsResponse.data) {
+        if (
+          storeProductsResponse.data.userByMobile &&
+          storeProductsResponse.data.userByMobile.authorisedBrands[0] &&
+          storeProductsResponse.data.userByMobile.authorisedBrands[0].products
+        ) {
+          console.log('Here');
+          console.log(storeProductsResponse.data);
+          const {hasNextPage, endCursor} =
+            storeProductsResponse.data.userByMobile.authorisedBrands[0].products
+              .pageInfo;
+          setProductsPageInfo({
+            hasNextPage,
+            endCursor,
+          });
+          const newStoreProducts =
+            storeProductsResponse.data.userByMobile.authorisedBrands[0].products.edges.map(
+              ({node}) => {
+                return {
+                  brandName: node.brand.brandName,
+                  id: node.id,
+                  name: node.name,
+                  url: node.url,
+                  images: node.images,
+                  thumbnail: node.thumbnail
+                    ? node.thumbnail.url
+                    : 'https://media-exp1.licdn.com/dms/image/C4E0BAQGymyKm7OE3wg/company-logo_200_200/0/1636442519943?e=2159024400&v=beta&t=19hHu3puobGsregS0-31D-KiANWe3NqrKZESktzQC30',
+                  price: node.pricing.priceRange
+                    ? node.pricing.priceRange.start.net.amount
+                    : 0,
+                };
+              },
+            );
+          console.log('New Store Products:', newStoreProducts.length);
+          /*if (route.params.collection) {
+          console.log('in collection case');
+          const excludeIds = route.params.collection.products.map(
+            ({node}) => node.id,
+          );
+          console.log('Ids to exclude:', excludeIds);
+          let newProducts = newStoreProducts.filter(product => {
+            const productIncluded = excludeIds.some(id => id === product.id);
+            return !productIncluded;
+          });
+          newProducts = [
+            ...newProducts,
+            ...products.filter(product => {
+              const productIncluded = excludeIds.some(id => id === product.id);
+              return !productIncluded;
+            }),
+          ];
+          console.log('filtered Products:', newProducts);
+          setProducts(newProducts);
+        }*/
+          setProducts(newStoreProducts);
+        }
+      }
+    }
+  }, [storeProductsResponse.data]);
+
   useEffect(() => {
     if (collectionAddResponse.data) {
       toastService.showToast('Products have been added successfully', true);
@@ -72,6 +152,7 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
         }
       });
       dispatch(setStoreCollections(newCollections));
+      storeProductsResponse.refetch();
       navigation.goBack();
     }
   }, [collectionAddResponse.data]);
@@ -89,6 +170,11 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
           brandResponse.data.products &&
           brandResponse.data.products.length !== 0
         ) {
+          const {hasNextPage, endCursor} = brandResponse.data.products.pageInfo;
+          setProductsPageInfo({
+            hasNextPage,
+            endCursor,
+          });
           const newProducts = brandResponse.data.products.edges.map(
             ({node}) => {
               return {
@@ -106,23 +192,21 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
           );
           console.log(newProducts);
           setProducts(newProducts);
-          dispatch(setLoaderStatus(false));
         }
-      } else {
-        dispatch(setLoaderStatus(false));
       }
     }
   }, [brandResponse.data]);
-  useEffect(() => {
+  /* useEffect(() => {
     if (brandResponse.loading) dispatch(setLoaderStatus(true));
     else dispatch(setLoaderStatus(false));
   }, [brandResponse.loading]);
-
+*/
   console.log('brandResponse:', brandResponse.data);
+  /*
   useEffect(() => {
     dispatch(setLoaderStatus(true));
     if (!route.params.fromVoucherCreate && !route.params.collection) {
-      setProducts(productsStore);
+      setProducts([]);
     }
     if (route.params.collection) {
       const excludeIds = route.params.collection.products.map(
@@ -136,13 +220,14 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
     }
     dispatch(setLoaderStatus(false));
   }, []);
-
+*/
   const ModalItem = ({name, value, selectedItem, setSelectedItem}) => {
     const onPressHandler = () => {
       if (selectedItem === value) {
         return;
       } else {
         dispatch(setLoaderStatus(true));
+        setTimeout(() => dispatch(setLoaderStatus(false)), 3000);
         setSelectedItem(value);
       }
     };
@@ -237,7 +322,67 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
       collectionCreate();
     }
   };
-  console.log(selectedProducts);
+  console.log('select:', selectedProducts);
+  const _renderProduct = ({item}) => (
+    <AddProductCard
+      selectedProducts={selectedProducts}
+      setSelectedProducts={setSelectedProducts}
+      product={item}
+    />
+  );
+  const refreshing =
+    storeProductsResponse.networkStatus === NetworkStatus.refetch;
+  const handleOnEndReached = () => {
+    console.log('Next Page:', productsPageInfo.hasNextPage);
+    if (productsPageInfo.hasNextPage && !storeProductsResponse.loading) {
+      console.log('FetchingMoreProducts');
+      if (!route.params.fromVoucherCreate) {
+        return storeProductsResponse.fetchMore({
+          variables: {
+            mobileNo: '91' + mobileNumber,
+            endCursor: productsPageInfo.endCursor,
+          },
+        });
+      } else {
+        return brandResponse.fetchMore({
+          variables: {
+            endCursor: productsPageInfo.endCursor,
+          },
+        });
+      }
+    }
+  };
+  const ListFooterComponent = () => {
+    if (route.params.fromVoucherCreate) {
+      if (brandResponse.loading) {
+        return (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <ActivityIndicator size={'large'} color="black" />
+          </View>
+        );
+      } else return null;
+    } else {
+      if (storeProductsResponse.loading) {
+        return (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <ActivityIndicator size={'large'} color="black" />
+          </View>
+        );
+      } else {
+        return null;
+      }
+    }
+  };
   return (
     <View style={styles.collectionProductsAddScreenContainer}>
       <Modal visible={isBrandSelectModalVisible} transparent={true}>
@@ -372,7 +517,7 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
           </TouchableOpacity>
         </View>
       )}
-      <ScrollView
+      {/*<ScrollView
         contentContainerStyle={{
           width: '100%',
           flexDirection: 'row',
@@ -387,7 +532,30 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
             product={product}
           />
         ))}
-      </ScrollView>
+      </ScrollView>*/}
+      <FlatList
+        data={products}
+        onEndReached={handleOnEndReached}
+        onEndReachedThreshold={0.5}
+        onRefresh={
+          route.params.fromVoucherCreate
+            ? brandResponse.refetch
+            : storeProductsResponse.refetch
+        }
+        refreshing={refreshing}
+        numColumns={2}
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={() => (
+          <View
+            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <ActivityIndicator size={'large'} color="black" />
+          </View>
+        )}
+        ListFooterComponent={ListFooterComponent}
+        keyExtractor={item => item.id}
+        columnWrapperStyle={{justifyContent: 'space-around'}}
+        renderItem={_renderProduct}
+      />
     </View>
   );
 };
@@ -397,5 +565,6 @@ export default CollectionProductsAddScreen;
 const styles = StyleSheet.create({
   collectionProductsAddScreenContainer: {
     flex: 1,
+    backgroundColor: 'white',
   },
 });

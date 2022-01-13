@@ -32,6 +32,9 @@ export const COLLECTION_CREATE = gql`
                 url
                 alt
               }
+              images {
+                url(size: 720)
+              }
               pricing {
                 discount {
                   gross {

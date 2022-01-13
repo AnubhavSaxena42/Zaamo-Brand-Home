@@ -10,16 +10,20 @@ import {
 import Entypo from 'react-native-vector-icons/Entypo';
 const AddProductCard = ({product, setSelectedProducts, selectedProducts}) => {
   const selectionHandler = () => {
+    console.log('selectedProducts:', selectedProducts);
+    console.log('Product to add:', product);
     if (selectedProducts.includes(product.id)) {
+      console.log('In selected Case');
       const newSelectedProducts = selectedProducts.filter(selectedProduct => {
-        console.log(selectedProduct, product.id);
         return selectedProduct !== product.id;
       });
-
       setSelectedProducts(newSelectedProducts);
+      console.log('New Selected Products:', newSelectedProducts);
     } else {
+      console.log('In adding case');
       const addSelectedProducts = [...selectedProducts, product.id];
       setSelectedProducts(addSelectedProducts);
+      console.log('New Selected Products:', addSelectedProducts);
     }
   };
   return (
@@ -82,16 +86,29 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0,0,0,0.2)',
     borderRadius: 15,
     marginVertical: '2%',
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 0},
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    elevation: 3,
+    backgroundColor: 'white',
   },
   rowOneText: {
     fontSize: 18,
     fontWeight: 'bold',
     fontFamily: 'Roboto-Bold',
     color: 'white',
+    textShadowColor: 'rgba(0,0,0,0.5)',
+    textShadowRadius: 0.1,
+    textShadowOffset: {width: 1, height: 1},
   },
   rowTwoText: {
-    fontSize: 12,
+    fontSize: 14,
     color: 'white',
+    fontFamily: 'Roboto-Bold',
+    textShadowColor: 'rgba(0,0,0,0.5)',
+    textShadowRadius: 0.1,
+    textShadowOffset: {width: 1, height: 1},
   },
   iconContainer: {
     height: 30,

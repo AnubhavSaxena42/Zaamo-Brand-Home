@@ -1,8 +1,12 @@
 import {gql} from '@apollo/client';
 
 export const GET_PRODUCTS_BY_BRAND = gql`
-  query ($brands: [ID]) {
-    products(first: 100, filter: {brands: $brands}) {
+  query ($brands: [ID], $endCursor: String!) {
+    products(first: 20, after: $endCursor, filter: {brands: $brands}) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
       edges {
         node {
           id
@@ -10,7 +14,7 @@ export const GET_PRODUCTS_BY_BRAND = gql`
           brand {
             brandName
           }
-          thumbnail {
+          thumbnail(size: 1080) {
             url
             alt
           }

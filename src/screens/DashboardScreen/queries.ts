@@ -2,7 +2,7 @@ import {gql} from '@apollo/client';
 import {getItemFromStorage} from '../../services/storage-service';
 
 export const GET_STORE = gql`
-  query {
+  query ($collectionEndCursor: String!) {
     store {
       storeName
       id
@@ -49,7 +49,11 @@ export const GET_STORE = gql`
           }
         }
       }
-      collections(first: 20) {
+      collections(first: 20, after: $collectionEndCursor) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
         edges {
           node {
             id

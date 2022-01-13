@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {useMutation} from '@apollo/client';
+import {useMutation, useQuery, NetworkStatus} from '@apollo/client';
 import {
   StyleSheet,
   ScrollView,
   Text,
   Image,
+  FlatList,
+  ActivityIndicator,
   View,
   TouchableOpacity,
 } from 'react-native';
@@ -15,12 +17,19 @@ import {useDispatch, useSelector} from 'react-redux';
 import {setStoreCollections} from '../../redux/reducers/storeReducer';
 import toastService from '../../services/toast-service';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
+import {GET_STORE} from '../DashboardScreen/queries';
+import {GET_COLLECTION_BY_ID} from './queries';
 const CollectionViewScreen = ({navigation, route}) => {
   const {collection} = route.params;
   const [selectedCollection, setSelectedCollection] = useState();
   const currentCollections = useSelector(state => state.store.collections);
   const [productIdToRemove, setProductIdToRemove] = useState('');
   const dispatch = useDispatch();
+  const [collectionProducts, setCollectionProducts] = useState([]);
+  const [productsPageInfo, setProductsPageInfo] = useState({
+    hasNextPage: true,
+    endCursor: '',
+  });
 
   const [collectionRemoveProducts, productRemoveResponse] = useMutation(
     REMOVE_PRODUCT_COLLECTION,
@@ -29,8 +38,41 @@ const CollectionViewScreen = ({navigation, route}) => {
         collectionId: collection.id,
         products: [productIdToRemove],
       },
+      refetchQueries: [GET_STORE, GET_COLLECTION_BY_ID],
     },
   );
+  const collectionResponse = useQuery(GET_COLLECTION_BY_ID, {
+    variables: {
+      id: collection.id,
+      endCursor: '',
+    },
+    notifyOnNetworkStatusChange: true,
+  });
+  const refreshing = collectionResponse.networkStatus === NetworkStatus.refetch;
+  console.log('Products:', collectionProducts);
+  console.log('Page info:', productsPageInfo);
+  useEffect(() => {
+    if (collectionResponse.data) {
+      console.log(collectionResponse.data);
+      const newCollectionProducts =
+        collectionResponse.data.collection.products.edges.map(({node}) => {
+          return {
+            brandName: node.brand.brandName,
+            id: node.id,
+            name: node.name,
+            images: node.images,
+            thumbnail: node.thumbnail
+              ? node.thumbnail.url
+              : 'https://media-exp1.licdn.com/dms/image/C4E0BAQGymyKm7OE3wg/company-logo_200_200/0/1636442519943?e=2159024400&v=beta&t=19hHu3puobGsregS0-31D-KiANWe3NqrKZESktzQC30',
+            price: node.pricing.priceRange
+              ? node.pricing.priceRange.start.net.amount
+              : 0,
+          };
+        });
+      setCollectionProducts(newCollectionProducts);
+      setProductsPageInfo(collectionResponse.data.collection.products.pageInfo);
+    }
+  }, [collectionResponse.data]);
   useEffect(() => {
     if (productRemoveResponse.data) {
       console.log('Current Collections:', currentCollections);
@@ -76,6 +118,27 @@ const CollectionViewScreen = ({navigation, route}) => {
     setSelectedCollection(collection);
   }, []);
 
+  const handleOnEndReached = () => {
+    console.log('Next Page:', productsPageInfo.hasNextPage);
+
+    if (productsPageInfo.hasNextPage && !collectionResponse.loading) {
+      console.log('FetchingMoreProducts');
+      return collectionResponse.fetchMore({
+        variables: {
+          id: collection.id,
+          endCursor: productsPageInfo.endCursor,
+        },
+      });
+    }
+  };
+  const _renderProduct = ({item}) => (
+    <ProductCard
+      navigation={navigation}
+      inCollectionView={true}
+      product={item}
+      setProductIdToRemove={setProductIdToRemove}
+    />
+  );
   return (
     <View style={styles.collectionViewContainer}>
       <View
@@ -112,7 +175,7 @@ const CollectionViewScreen = ({navigation, route}) => {
             : require('../../assets/images/smugcat.jpg')
         }
       />*/}
-      <ScrollView
+      {/*<ScrollView
         contentContainerStyle={{
           width: '100%',
           flexDirection: 'row',
@@ -144,7 +207,50 @@ const CollectionViewScreen = ({navigation, route}) => {
               />
             );
           })}
-      </ScrollView>
+      </ScrollView>*/}
+      <FlatList
+        data={collectionProducts}
+        onEndReached={handleOnEndReached}
+        onEndReachedThreshold={0.5}
+        onRefresh={collectionResponse.refetch}
+        refreshing={refreshing}
+        numColumns={2}
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={
+          !collectionResponse.loading
+            ? () => (
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <ActivityIndicator size={'large'} color="black" />
+                </View>
+              )
+            : null
+        }
+        ListFooterComponent={
+          collectionResponse.loading
+            ? () => {
+                return (
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <ActivityIndicator size={'large'} color="black" />
+                  </View>
+                );
+              }
+            : null
+        }
+        keyExtractor={item => item.id}
+        columnWrapperStyle={{justifyContent: 'space-around'}}
+        renderItem={_renderProduct}
+      />
+
       <TouchableOpacity
         onPress={() => {
           navigation.navigate('CollectionProductsAddScreen', {
@@ -160,8 +266,7 @@ const CollectionViewScreen = ({navigation, route}) => {
           height: 40,
           justifyContent: 'center',
           alignItems: 'center',
-          position: 'absolute',
-          bottom: 10,
+          marginVertical: '2%',
         }}>
         <Text style={{color: 'white'}}>Add Products</Text>
       </TouchableOpacity>

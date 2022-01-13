@@ -7,7 +7,6 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useMutation} from '@apollo/client';
 import {GENERATE_OTP} from './mutations';
 import PhoneSVG from './phone';
@@ -45,13 +44,6 @@ const MobileOTPScreen = ({navigation, route}) => {
   }, [loading]);
   return (
     <View style={styles.mobileOTPContainer}>
-      <View style={styles.iconContainer}>
-        <MaterialIcons
-          name="arrow-back-ios"
-          size={20}
-          color={'rgba(0,0,0,0.5)'}
-        />
-      </View>
       <PhoneSVG />
       <Text style={styles.headingText}>OTP Verification</Text>
       <Text style={styles.infoText}>

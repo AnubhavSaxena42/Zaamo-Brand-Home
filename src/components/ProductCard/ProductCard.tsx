@@ -93,6 +93,7 @@ const ProductCard = ({
           </Text>
           <TouchableOpacity
             onPress={() => {
+              console.log('Product:', JSON.stringify(product));
               toastService.showToast('Feature in Development', true);
             }}
             style={{

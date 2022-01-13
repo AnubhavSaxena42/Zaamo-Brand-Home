@@ -17,6 +17,9 @@ export const GET_STORE = gql`
             node {
               id
               name
+              images {
+                url(size: 1080)
+              }
               brand {
                 brandName
               }
@@ -51,6 +54,7 @@ export const GET_STORE = gql`
           node {
             id
             name
+
             slug
             imageUrl
             products(first: 10) {
@@ -58,6 +62,9 @@ export const GET_STORE = gql`
                 node {
                   id
                   name
+                  images {
+                    url(size: 1080)
+                  }
                   brand {
                     brandName
                   }
@@ -100,7 +107,7 @@ export const GET_AUTHORISED_BRANDS = gql`
         id
         brandName
         warehouse
-        products(first: 20, after: $endCursor) {
+        products(first: 10, after: $endCursor) {
           pageInfo {
             hasNextPage
             endCursor

@@ -126,6 +126,7 @@ const CollectionViewScreen = ({navigation, route}) => {
               brandName: node.brand.brandName,
               id: node.id,
               name: node.name,
+              images: node.images,
               thumbnail: node.thumbnail
                 ? node.thumbnail.url
                 : 'https://media-exp1.licdn.com/dms/image/C4E0BAQGymyKm7OE3wg/company-logo_200_200/0/1636442519943?e=2159024400&v=beta&t=19hHu3puobGsregS0-31D-KiANWe3NqrKZESktzQC30',
@@ -135,6 +136,7 @@ const CollectionViewScreen = ({navigation, route}) => {
             };
             return (
               <ProductCard
+                navigation={navigation}
                 key={product.id}
                 inCollectionView={true}
                 product={product}

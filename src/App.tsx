@@ -50,6 +50,7 @@ export const client = new ApolloClient({
         },
       },
       Query: {
+        merge: true,
         fields: {
           products: relayStylePagination(),
         },

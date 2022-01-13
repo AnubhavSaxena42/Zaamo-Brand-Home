@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useMemo, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   FlatList,
   Animated,
+  ActivityIndicator,
 } from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -15,7 +16,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CollectionCard from '../../components/CollectionCard/CollectionCard';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import {useDispatch, useSelector} from 'react-redux';
-import {useMutation, useQuery} from '@apollo/client';
+import {useMutation, NetworkStatus, useQuery} from '@apollo/client';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import axios from 'axios';
 import {GET_AUTHORISED_BRANDS} from '../DashboardScreen/queries';
@@ -97,6 +98,7 @@ const ProductsTabScreen = ({navigation}) => {
       mobileNo: '91' + mobileNumber,
       endCursor: '',
     },
+    notifyOnNetworkStatusChange: true,
   });
   console.log('Products Page Info:', productsPageInfo);
   useEffect(() => {
@@ -107,7 +109,7 @@ const ProductsTabScreen = ({navigation}) => {
         brandResponse.data.userByMobile.authorisedBrands[0].products
       ) {
         console.log('Here');
-
+        console.log(brandResponse.data);
         const {hasNextPage, endCursor} =
           brandResponse.data.userByMobile.authorisedBrands[0].products.pageInfo;
         setProductsPageInfo({
@@ -132,15 +134,19 @@ const ProductsTabScreen = ({navigation}) => {
               };
             },
           );
-        setProducts([...products, ...newStoreProducts]);
+        setProducts(newStoreProducts);
       }
     }
   }, [brandResponse.data]);
-  useEffect(() => {
+  /* useEffect(() => {
     if (brandResponse.loading) dispatch(setLoaderStatus(true));
     else dispatch(setLoaderStatus(false));
   }, [brandResponse.loading]);
-
+*/
+  const _renderItem = ({item}) => (
+    <ProductCard navigation={navigation} product={item} />
+  );
+  const memoizedProduct = useMemo(() => _renderItem, [products]);
   const [collectionUpdate, collectionUpdateResponse] = useMutation(
     UPDATE_COLLECTION,
     {
@@ -183,7 +189,7 @@ const ProductsTabScreen = ({navigation}) => {
       toastService.showToast('Collection has been updated', true);
     }
   }, [collectionUpdateResponse.data]);
-  console.log(brandResponse.loading);
+
   useEffect(() => {
     if (collectionUpdateResponse.loading) dispatch(setLoaderStatus(true));
     else dispatch(setLoaderStatus(false));
@@ -235,18 +241,56 @@ const ProductsTabScreen = ({navigation}) => {
       contentSize.height - paddingToBottom
     );
   };
-  const fetchMoreProducts = () => {
-    console.log(productsPageInfo.hasNextPage);
+  const onUpdate = (prev, {fetchMoreResult}) => {
+    if (!fetchMoreResult) return prev;
+    console.log('Prev:', prev);
+    console.log('Fetch More Result:', fetchMoreResult);
+    const newAuthorisedBrands = prev.userByMobile.authorisedBrands.map(
+      (authorisedBrand, index) => {
+        return {
+          ...authorisedBrand,
+          products: {
+            ...fetchMoreResult.userByMobile.authorisedBrands[index].products,
+            edges: [
+              ...prev.userByMobile.authorisedBrands[index].products.edges,
+              ...fetchMoreResult.userByMobile.authorisedBrands[index].products
+                .edges,
+            ],
+          },
+        };
+      },
+    );
+    const newQueryResult = {
+      userByMobile: {
+        authorisedBrands: newAuthorisedBrands,
+        __typename: prev.userByMobile.__typename,
+      },
+    };
+    return newQueryResult;
+  };
+  const handleOnEndReached = () => {
+    console.log('Next Page:', productsPageInfo.hasNextPage);
 
-    if (productsPageInfo.hasNextPage) {
-      console.log(productsPageInfo.endCursor);
-      console.log('here');
-      brandResponse.refetch({
-        mobileNo: '91' + mobileNumber,
-        endCursor: productsPageInfo.endCursor,
+    if (productsPageInfo.hasNextPage && !brandResponse.loading) {
+      console.log('FetchingMoreProducts');
+      return brandResponse.fetchMore({
+        variables: {
+          mobileNo: '91' + mobileNumber,
+          endCursor: productsPageInfo.endCursor,
+        },
       });
     }
   };
+
+  const refreshing = brandResponse.networkStatus === NetworkStatus.refetch;
+  // prevent the loading indicator from appearing while refreshing
+  if (brandResponse.loading && products.length === 0 && !refreshing)
+    return (
+      <View>
+        <ActivityIndicator size="large" color="rgb(0, 122, 255)" />
+      </View>
+    );
+
   console.log(brandResponse.loading);
   const [xTabOne, setXTabOne] = useState(0);
   const [xTabTwo, setXTabTwo] = useState(0);
@@ -377,7 +421,7 @@ const ProductsTabScreen = ({navigation}) => {
         </TouchableOpacity>
       </View>
       {isViewing === 1 && (
-        <ScrollView
+        /*<ScrollView
           showsVerticalScrollIndicator={false}
           onScroll={({nativeEvent}) => {
             if (isCloseToBottom(nativeEvent)) {
@@ -397,14 +441,42 @@ const ProductsTabScreen = ({navigation}) => {
               product={product}
             />
           ))}
-        </ScrollView>
-        /*<FlatList
+        </ScrollView>*/
+
+        <FlatList
           data={products}
-          onEndReached={fetchMoreProducts}
+          onEndReached={handleOnEndReached}
+          onEndReachedThreshold={1}
+          onRefresh={brandResponse.refetch}
+          refreshing={refreshing}
           numColumns={2}
+          showsVerticalScrollIndicator={false}
+          ListEmptyComponent={() => (
+            <View
+              style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+              <ActivityIndicator size={'large'} color="black" />
+            </View>
+          )}
+          ListFooterComponent={
+            brandResponse.loading
+              ? () => {
+                  return (
+                    <View
+                      style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
+                      <ActivityIndicator size={'large'} color="black" />
+                    </View>
+                  );
+                }
+              : null
+          }
           keyExtractor={item => item.id}
-          renderItem={({item}) => <ProductCard product={item} />}
-        />*/
+          columnWrapperStyle={{justifyContent: 'space-around'}}
+          renderItem={memoizedProduct}
+        />
       )}
       {isViewing === 2 && (
         <ScrollView

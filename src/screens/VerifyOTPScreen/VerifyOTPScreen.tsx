@@ -48,13 +48,6 @@ const VerifyOTPScreen = ({navigation, route}) => {
   }, [loading]);
   return (
     <View style={styles.verifyOTPContainer}>
-      <View style={styles.iconContainer}>
-        <MaterialIcons
-          name="arrow-back-ios"
-          size={20}
-          color={'rgba(0,0,0,0.5)'}
-        />
-      </View>
       <PhoneSVG />
       <Text style={styles.headingText}>OTP Verification</Text>
       <Text style={styles.infoText}>
@@ -83,6 +76,7 @@ const VerifyOTPScreen = ({navigation, route}) => {
           navigation.navigate('LoginSuccessScreen', {
             mobileNumber: route.params.mobileNumber,
           });
+
           /*if (otp.length < 4) {
             setErrorMessage(true);
             return;

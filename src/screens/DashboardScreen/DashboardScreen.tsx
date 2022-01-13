@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {client} from '../../App';
 import MetricCard from '../../components/MetricCard/MetricCard';
 import UpdateCard from '../../components/UpdateCard/UpdateCard';
 import {
@@ -108,7 +109,8 @@ const DashboardScreen = ({navigation, route}) => {
       }
     });
   };
-
+  const storeName = useSelector(state => state.store.storeInfo);
+  console.log('Look:', storeName);
   const storeResponse = useQuery(GET_STORE);
   const brandResponse = useQuery(GET_AUTHORISED_BRANDS, {
     variables: {
@@ -204,8 +206,17 @@ const DashboardScreen = ({navigation, route}) => {
     deleteAllItemsFromStorage()
       .then(() => {
         toastService.showToast('Logged out successfully', true);
-        navigation.replace('AuthStack');
-        dispatch(setLoaderStatus(false));
+        client.cache
+          .reset()
+          .then(() => {
+            console.log('apollo success');
+            navigation.replace('AuthStack');
+            dispatch(setLoaderStatus(false));
+          })
+          .catch(() => {
+            console.log('fail client');
+            dispatch(setLoaderStatus(false));
+          });
       })
       .catch(() => {
         toastService.showToast('Log out Fail', true);

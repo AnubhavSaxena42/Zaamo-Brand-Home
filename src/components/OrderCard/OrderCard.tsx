@@ -8,10 +8,10 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
       else if (status === 'Shipped') return '#eee6a1';
       else if (status === 'Delivered') return '#ddfcb6';
       else if (status === 'Cancelled') return '#b5cbed';
-      else if (status === 'Return Requested') return 'pink';
-      else if (status === 'Return Initiated') return 'pink';
-      else if (status == 'Return Completed') return 'pink';
-      else if (status === 'Fulfilled') return 'pink';
+      else if (status === 'Return Requested') return 'rgba(180,7,182,0.4)';
+      else if (status === 'Return Initiated') return 'rgba(254,72,24,0.4)';
+      else if (status == 'Return Completed') return 'rgba(0,163,98,0.5)';
+      else if (status === 'Fulfilled') return 'rgba(0,0,0,0.3)';
     } else return 'pink';
   };
   const getTextTheme = status => {
@@ -20,12 +20,13 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
       else if (status === 'Shipped') return '#d29f4b';
       else if (status === 'Delivered') return '#4c8305';
       else if (status === 'Cancelled') return '#3b5998';
-      else if (status === 'Return Requested') return 'pink';
-      else if (status === 'Return Initiated') return 'pink';
-      else if (status == 'Return Completed') return 'pink';
-      else if (status === 'Fulfilled') return 'pink';
+      else if (status === 'Return Requested') return '#660066';
+      else if (status === 'Return Initiated') return 'rgb(254,72,24)';
+      else if (status == 'Return Completed') return 'rgb(0,163,98)';
+      else if (status === 'Fulfilled') return 'black';
     } else return 'pink';
   };
+  console.log('User:', order.user);
   return (
     <TouchableOpacity
       onPress={() => {

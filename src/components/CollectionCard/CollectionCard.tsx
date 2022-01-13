@@ -51,6 +51,11 @@ const CollectionCard = ({
             position: 'absolute',
             top: 10,
             right: 10,
+            shadowColor: '#000',
+            shadowOffset: {width: 0, height: 0},
+            shadowOpacity: 0.8,
+            shadowRadius: 2,
+            elevation: 5,
           }}>
           <View
             style={{
@@ -115,6 +120,11 @@ const CollectionCard = ({
               paddingHorizontal: '3%',
               paddingVertical: '2%',
               borderRadius: 15,
+              shadowColor: '#000',
+              shadowOffset: {width: 0, height: 0},
+              shadowOpacity: 0.8,
+              shadowRadius: 2,
+              elevation: 5,
             }}>
             <View
               style={{...styles.editIcon, backgroundColor: 'rgba(0,0,0,0)'}}>

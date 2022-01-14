@@ -14,6 +14,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import Header from '../../components/Header';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import toastService from '../../services/toast-service';
+import {GET_AUTHORISED_BRANDS} from '../DashboardScreen/queries';
 import {CREATE_VARIANTS} from './mutations';
 const VariantRow = ({variant}) => {
   const [stock, setStock] = useState('');
@@ -73,6 +74,7 @@ const CreateVariantScreen = ({navigation, route}) => {
         product: productID,
         variants: variants,
       },
+      refetchQueries: [GET_AUTHORISED_BRANDS],
     },
   );
   const warehouseId = useSelector(state => state.store.warehouse);

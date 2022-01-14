@@ -13,6 +13,7 @@ export const GET_STORE = gql`
         name
         imageUrl
         products(first: 50) {
+          totalCount
           edges {
             node {
               id
@@ -58,10 +59,10 @@ export const GET_STORE = gql`
           node {
             id
             name
-
             slug
             imageUrl
             products(first: 10) {
+              totalCount
               edges {
                 node {
                   id

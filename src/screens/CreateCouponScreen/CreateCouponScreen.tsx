@@ -673,6 +673,7 @@ const CreateCouponScreen = ({navigation}) => {
               Value
             </Text>
             <TextInput
+              keyboardType="number-pad"
               value={minValue}
               onChangeText={text => setMinValue(parseInt(text))}
               style={{
@@ -698,6 +699,7 @@ const CreateCouponScreen = ({navigation}) => {
             </Text>
             <TextInput
               value={minQuantity}
+              keyboardType="number-pad"
               onChangeText={text => setMinQuantity(parseInt(text))}
               style={{
                 width: '100%',

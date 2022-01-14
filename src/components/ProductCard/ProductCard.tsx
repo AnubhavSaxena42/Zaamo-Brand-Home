@@ -18,6 +18,7 @@ const ProductCard = ({
 }) => {
   return (
     <TouchableOpacity
+      activeOpacity={0.3}
       onPress={() => navigation.navigate('ProductPage', {product: product})}
       style={styles.productCardContainer}>
       <ImageBackground
@@ -138,7 +139,8 @@ const ProductCard = ({
               justifyContent: 'center',
               alignItems: 'center',
               backgroundColor: 'black',
-              paddingHorizontal: '3%',
+              paddingHorizontal: '5%',
+              paddingVertical: '2%',
               borderRadius: 10,
             }}>
             <View style={styles.editIcon}>
@@ -182,16 +184,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontFamily: 'Roboto-Bold',
     color: 'white',
-    textShadowColor: 'rgba(0,0,0,0.3)',
-    textShadowRadius: 0.1,
+    textShadowColor: 'rgba(0,0,0,0.6)',
+    textShadowRadius: 0.3,
     textShadowOffset: {width: 1, height: 1},
   },
   rowTwoText: {
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: 'Roboto-Bold',
     color: 'white',
-    textShadowColor: 'rgba(0,0,0,0.3)',
-    textShadowRadius: 0.1,
+    textShadowColor: 'rgba(0,0,0,0.6)',
+    textShadowRadius: 0.3,
     textShadowOffset: {width: 1, height: 1},
   },
   iconContainer: {

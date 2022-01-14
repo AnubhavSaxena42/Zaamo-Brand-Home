@@ -66,6 +66,9 @@ const ProductsTabScreen = ({navigation}) => {
             products: node.products ? node.products.edges : [],
             imageUrl: node.imageUrl ? node.imageUrl : '',
             name: node.name ? node.name : '',
+            totalCount: node.products.totalCount
+              ? node.products.totalCount
+              : '0',
           };
         },
       );
@@ -318,6 +321,7 @@ const ProductsTabScreen = ({navigation}) => {
             top: 0,
             left: 0,
             bottom: 0,
+            elevation: 4,
             right: 0,
             zIndex: 5,
           }}
@@ -372,6 +376,12 @@ const ProductsTabScreen = ({navigation}) => {
           height: '5%',
           borderRadius: 5,
           marginTop: '2%',
+          shadowColor: '#000',
+          shadowOffset: {width: 0, height: 0},
+          shadowOpacity: 0.5,
+          shadowRadius: 5,
+          elevation: 4,
+          backgroundColor: 'white',
           flexDirection: 'row',
           alignSelf: 'center',
           marginBottom: '3%',
@@ -400,8 +410,7 @@ const ProductsTabScreen = ({navigation}) => {
             height: '100%',
             justifyContent: 'center',
             alignItems: 'center',
-            borderTopLeftRadius: 5,
-            borderBottomLeftRadius: 5,
+            borderRadius: 10,
           }}>
           <Text style={{color: isViewing === 1 ? 'white' : 'black'}}>
             Products
@@ -418,8 +427,8 @@ const ProductsTabScreen = ({navigation}) => {
             height: '100%',
             justifyContent: 'center',
             alignItems: 'center',
-            borderTopRightRadius: 5,
-            borderBottomRightRadius: 5,
+            borderTopRightRadius: 10,
+            borderBottomRightRadius: 10,
           }}>
           <Text style={{color: isViewing === 2 ? 'white' : 'black'}}>
             Collections
@@ -680,14 +689,23 @@ const ProductsTabScreen = ({navigation}) => {
           refreshing={refreshing}
           numColumns={2}
           showsVerticalScrollIndicator={false}
-          ListEmptyComponent={() => (
-            <View
-              style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-              <ActivityIndicator size={'large'} color="black" />
-            </View>
-          )}
+          contentContainerStyle={{paddingBottom: 25}}
+          ListEmptyComponent={
+            !brandResponse.loading
+              ? () => (
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <Text>No Products Available</Text>
+                  </View>
+                )
+              : null
+          }
           ListFooterComponent={
-            brandResponse.loading
+            !refreshing && brandResponse.loading
               ? () => {
                   return (
                     <View
@@ -740,6 +758,7 @@ const ProductsTabScreen = ({navigation}) => {
           onRefresh={storeResponse.refetch}
           refreshing={refreshingCollections}
           numColumns={1}
+          contentContainerStyle={{paddingBottom: 25}}
           showsVerticalScrollIndicator={false}
           ListEmptyComponent={
             !storeResponse.loading
@@ -756,7 +775,7 @@ const ProductsTabScreen = ({navigation}) => {
               : null
           }
           ListFooterComponent={
-            storeResponse.loading
+            !refreshingCollections && storeResponse.loading
               ? () => {
                   return (
                     <View

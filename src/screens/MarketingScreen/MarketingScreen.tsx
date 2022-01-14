@@ -68,7 +68,7 @@ const MarketingScreen = ({navigation}) => {
         data={vouchers}
         onEndReached={handleOnEndReached}
         onEndReachedThreshold={0.5}
-        contentContainerStyle={{paddingBottom: '5%'}}
+        contentContainerStyle={{paddingBottom: '15%'}}
         onRefresh={couponResponse.refetch}
         refreshing={refreshing}
         showsVerticalScrollIndicator={false}
@@ -81,13 +81,13 @@ const MarketingScreen = ({navigation}) => {
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}>
-                  <ActivityIndicator size={'large'} color="black" />
+                  <Text>No Coupons Available</Text>
                 </View>
               )
             : null
         }
         ListFooterComponent={
-          couponResponse.loading
+          !refreshing && couponResponse.loading
             ? () => {
                 return (
                   <View

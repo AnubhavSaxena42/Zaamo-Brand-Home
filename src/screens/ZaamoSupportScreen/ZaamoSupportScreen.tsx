@@ -1,5 +1,5 @@
 import {useMutation} from '@apollo/client';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -12,6 +12,7 @@ import {
 import {useSelector} from 'react-redux';
 import toastService from '../../services/toast-service';
 import {CREATE_SUPPORT_QUERY} from './mutations';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 const windowWidth = Dimensions.get('window').width;
 const ZaamoSupportScreen = ({navigation, route}) => {
   const [email, setEmail] = useState('');
@@ -32,6 +33,11 @@ const ZaamoSupportScreen = ({navigation, route}) => {
     navigation.navigate('SettingsScreen');
     //supportQueryCreate();
   };
+  useEffect(() => {
+    if (data) {
+      console.log(data);
+    }
+  }, [data]);
   console.log(data, error, loading);
   return (
     <View style={styles.zaamoSupportContainer}>
@@ -46,6 +52,13 @@ const ZaamoSupportScreen = ({navigation, route}) => {
             top: -300,
           }}
         />
+
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{zIndex: 2, marginTop: '6%', position: 'absolute', left: 10}}>
+          <Ionicons name="arrow-back-sharp" color={'white'} size={35} />
+        </TouchableOpacity>
+
         <Text
           style={{
             color: 'white',

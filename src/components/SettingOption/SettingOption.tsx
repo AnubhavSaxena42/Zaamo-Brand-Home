@@ -10,6 +10,12 @@ const SettingOption = ({setting, onPress, imageUrl}) => {
         width: 150,
         marginVertical: '4%',
         borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 0},
+        shadowOpacity: 0.5,
+        shadowRadius: 5,
+        elevation: 2,
+        backgroundColor: 'white',
       }}>
       <View
         style={{

@@ -26,6 +26,7 @@ import toastService from '../../services/toast-service';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {GET_COLOR_VALUES} from '../ProductsTabScreen/queries';
 import {ReactNativeFile} from 'apollo-upload-client';
+import {GET_AUTHORISED_BRANDS} from '../DashboardScreen/queries';
 //import GestureRecognizer from 'react-native-swipe-gestures';
 const ErrorMessage = ({message}) => {
   return (
@@ -226,6 +227,7 @@ const CreateProductScreen = ({navigation, route}) => {
     variables: {
       input: productInput,
     },
+    refetchQueries: [GET_AUTHORISED_BRANDS],
   });
   const file = new ReactNativeFile({
     uri: image?.uri,

@@ -211,6 +211,12 @@ const PaymentDetailsScreen = ({navigation, route}) => {
           alignSelf: 'center',
           marginBottom: '3%',
           position: 'relative',
+          shadowColor: '#000',
+          shadowOffset: {width: 0, height: 0},
+          shadowOpacity: 0.5,
+          shadowRadius: 5,
+          elevation: 3,
+          backgroundColor: 'white',
         }}>
         <Animated.View
           style={{
@@ -235,8 +241,7 @@ const PaymentDetailsScreen = ({navigation, route}) => {
             height: '100%',
             justifyContent: 'center',
             alignItems: 'center',
-            borderTopLeftRadius: 5,
-            borderBottomLeftRadius: 5,
+            borderRadius: 5,
           }}>
           <Text style={{color: isViewing === 1 ? 'white' : 'black'}}>
             UPI ID
@@ -253,8 +258,7 @@ const PaymentDetailsScreen = ({navigation, route}) => {
             height: '100%',
             justifyContent: 'center',
             alignItems: 'center',
-            borderTopRightRadius: 5,
-            borderBottomRightRadius: 5,
+            borderRadius: 5,
           }}>
           <Text style={{color: isViewing === 2 ? 'white' : 'black'}}>
             Bank Details

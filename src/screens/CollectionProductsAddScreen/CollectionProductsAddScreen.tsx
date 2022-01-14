@@ -238,6 +238,7 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
           flexDirection: 'row',
           justifyContent: 'space-between',
           paddingHorizontal: '5%',
+          paddingVertical: '2%',
           width: '100%',
           borderBottomColor: 'rgba(0,0,0,0.2)',
           borderBottomWidth: 1,
@@ -454,18 +455,15 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
           justifyContent: 'space-between',
           alignItems: 'center',
           paddingVertical: '4%',
+          paddingHorizontal: '2%',
         }}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={{zIndex: 2, position: 'absolute', left: 10}}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back-sharp" color={'black'} size={35} />
         </TouchableOpacity>
         <Text
           style={{
             fontSize: 20,
-            textAlign: 'center',
-            flex: 5,
-            fontWeight: '500',
+            fontFamily: 'Roboto-Bold',
             color: 'black',
           }}>
           Products
@@ -473,7 +471,6 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
         <TouchableNativeFeedback
           onPress={onPressComplete}
           style={{
-            flex: 1,
             backgroundColor: 'black',
             paddingHorizontal: '5%',
             paddingVertical: '5%',
@@ -481,7 +478,6 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
           <Text
             style={{
               color: 'black',
-              marginRight: '5%',
             }}>
             {route.params.fromVoucherCreate ? 'Add Products' : 'Confirm'}
           </Text>

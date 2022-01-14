@@ -135,7 +135,7 @@ const ProductPage = ({navigation, route}) => {
         ref={bottomSheetRef}
         index={0}
         snapPoints={snapPoints}
-        handleStyle={{backgroundColor: 'whitesmoke', borderRadius: 40}}
+        handleStyle={{backgroundColor: 'whitesmoke', borderRadius: 100}}
         onChange={handleSheetChanges}>
         <View style={styles.contentContainer}>
           <View style={styles.productOverview}>

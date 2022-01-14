@@ -30,8 +30,10 @@ const AddProductCard = ({product, setSelectedProducts, selectedProducts}) => {
     <View style={styles.addProductCardContainer}>
       <ImageBackground
         style={styles.imageStyle}
+        resizeMode="cover"
         source={{uri: product.thumbnail}}>
         <TouchableOpacity
+          activeOpacity={0.3}
           onPress={selectionHandler}
           style={styles.iconContainer}>
           {selectedProducts.includes(product.id) ? (
@@ -111,11 +113,11 @@ const styles = StyleSheet.create({
     textShadowOffset: {width: 1, height: 1},
   },
   iconContainer: {
-    height: 30,
-    width: 30,
+    height: 36,
+    width: 36,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 15,
+    borderRadius: 18,
     backgroundColor: 'white',
     position: 'absolute',
     top: 10,

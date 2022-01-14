@@ -18,8 +18,10 @@ const CollectionCard = ({
   setThumbnailUri,
   navigation,
 }) => {
+  console.log('Collections:', collection);
   return (
     <TouchableOpacity
+      activeOpacity={0.3}
       onPress={() => {
         navigation.navigate('CollectionViewScreen', {
           collection: collection,
@@ -81,26 +83,26 @@ const CollectionCard = ({
           <View>
             <Text
               style={{
-                fontSize: 20,
+                fontSize: 22,
                 color: 'white',
                 fontWeight: '500',
                 textShadowColor: 'rgba(0,0,0,0.7)',
-                textShadowRadius: 2,
-                textShadowOffset: {width: 1, height: 1},
+                textShadowRadius: 1,
+                textShadowOffset: {width: 1, height: 1.2},
                 fontFamily: 'Roboto-Bold',
               }}>
               {collection.name}
             </Text>
             <Text
               style={{
-                fontSize: 15,
+                fontSize: 16,
                 color: 'white',
                 textShadowColor: 'rgba(0,0,0,0.7)',
                 textShadowRadius: 0.1,
                 textShadowOffset: {width: 1, height: 1},
                 fontFamily: 'Roboto-Bold',
               }}>
-              {collection.products && collection.products.length.toString()}{' '}
+              {collection.totalCount && collection.totalCount.toString()}{' '}
               Products
             </Text>
           </View>

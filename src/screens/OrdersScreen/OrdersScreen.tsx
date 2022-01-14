@@ -166,7 +166,7 @@ const OrdersScreen = ({navigation}) => {
         style={{
           zIndex: 2,
           color: 'white',
-          fontSize: 16,
+          fontSize: 18,
           textAlign: 'center',
           marginTop: '5%',
           fontFamily: 'Roboto-Bold',
@@ -189,7 +189,7 @@ const OrdersScreen = ({navigation}) => {
           alignItems: 'center',
           justifyContent: 'center',
           width: '100%',
-          marginTop: '10%',
+          marginTop: '5%',
           paddingBottom: '2%',
           borderBottomColor: 'rgba(0,0,0,0.1)',
           borderBottomWidth: 1,

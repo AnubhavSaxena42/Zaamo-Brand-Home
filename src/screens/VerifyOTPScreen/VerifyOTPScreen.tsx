@@ -14,6 +14,7 @@ import {useDispatch} from 'react-redux';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import PhoneSVG from '../MobileOTPScreen/phone';
 import toastService from '../../services/toast-service';
+import {GENERATE_OTP} from '../MobileOTPScreen/mutations';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import {saveItemToStorage} from '../../services/storage-service';
 const VerifyOTPScreen = ({navigation, route}) => {
@@ -26,6 +27,29 @@ const VerifyOTPScreen = ({navigation, route}) => {
       otp: parseInt(otp),
     },
   });
+  const [generateOtp, sendOTPResponse] = useMutation(GENERATE_OTP, {
+    variables: {
+      mobileNo: '91' + route.params.mobileNumber,
+    },
+  });
+  useEffect(() => {
+    if (sendOTPResponse.data) {
+      console.log(sendOTPResponse.data);
+      if (sendOTPResponse.data.generateOtp.success) {
+        toastService.showToast('OTP Sent Successfully', true);
+      } else {
+        toastService.showToast('Could not generate OTP,Try again.', true);
+      }
+    }
+  }, [sendOTPResponse.data]);
+  useEffect(() => {
+    if (sendOTPResponse.loading) {
+      dispatch(setLoaderStatus(true));
+    } else {
+      dispatch(setLoaderStatus(false));
+    }
+  }, [sendOTPResponse.loading]);
+
   useEffect(() => {
     if (data) {
       if (data.verifyOtp.success) {
@@ -63,9 +87,12 @@ const VerifyOTPScreen = ({navigation, route}) => {
         }}
         style={styles.numberInput}
       />
+
       <Text style={{...styles.infoText, marginBottom: '7%'}}>
-        Didn't receive the OTP?
-        <Text style={styles.otpText}>RESEND OTP</Text>
+        Didn't receive the OTP?{' '}
+        <Text onPress={() => generateOtp()} style={styles.otpText}>
+          RESEND OTP
+        </Text>
       </Text>
       {errorMessage && (
         <Text style={{marginBottom: '5%'}}>Please enter a valid OTP</Text>

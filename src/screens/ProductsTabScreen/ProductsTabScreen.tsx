@@ -683,6 +683,8 @@ const ProductsTabScreen = ({navigation}) => {
 
         <FlatList
           data={products}
+          maxToRenderPerBatch={5}
+          windowSize={5}
           onEndReached={handleOnEndReached}
           onEndReachedThreshold={0.5}
           onRefresh={brandResponse.refetch}

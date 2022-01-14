@@ -6,7 +6,12 @@ const UpdateCard = () => {
     <View style={styles.updateCardContainer}>
       <Image
         source={require('../../assets/images/smugcat.jpg')}
-        style={{height: 60, width: 60, borderRadius: 30}}
+        style={{
+          alignSelf: 'flex-start',
+          height: 70,
+          width: 70,
+          borderRadius: 35,
+        }}
       />
       <View style={styles.notificationContainer}>
         <Text style={styles.notificationText}>
@@ -24,12 +29,13 @@ export default UpdateCard;
 const styles = StyleSheet.create({
   updateCardContainer: {
     width: '100%',
-    paddingHorizontal: '5%',
+    paddingHorizontal: '3%',
     flexDirection: 'row',
     alignItems: 'center',
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(0,0,0,0.2)',
-    paddingVertical: '5%',
+    paddingTop: '3%',
+    paddingBottom: '5%',
   },
   notificationContainer: {
     flex: 1,

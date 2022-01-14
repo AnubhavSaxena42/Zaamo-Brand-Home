@@ -106,6 +106,8 @@ const ProductPage = ({navigation, route}) => {
           [{nativeEvent: {contentOffset: {y: scrollY}}}],
           {useNativeDriver: true},
         )}
+        disableIntervalMomentum
+        decelerationRate={'fast'}
         snapToOffsets={offsets}
         alwaysBounceVertical
         showsVerticalScrollIndicator={false}
@@ -117,6 +119,11 @@ const ProductPage = ({navigation, route}) => {
                 height: height,
                 alignItems: 'center',
                 justifyContent: 'center',
+                shadowColor: '#000',
+                shadowOffset: {width: 0, height: 1},
+                shadowOpacity: 0.5,
+                shadowRadius: 5,
+                elevation: 5,
               }}>
               <Image
                 source={{uri: item}}
@@ -124,6 +131,10 @@ const ProductPage = ({navigation, route}) => {
                   marginBottom: '25%',
                   width: imageW,
                   height: imageH,
+                  shadowColor: '#000',
+                  shadowOffset: {width: 0, height: 1},
+                  shadowOpacity: 0.5,
+                  shadowRadius: 5,
                   resizeMode: 'cover',
                 }}
               />
@@ -168,9 +179,9 @@ const ProductPage = ({navigation, route}) => {
               </Text>
             </View>
           </View>
-          <View style={{paddingHorizontal: '3%', marginTop: '2%'}}>
+          {/*<View style={{paddingHorizontal: '3%', marginTop: '2%'}}>
             <Text>Select Size</Text>
-            {/*<View style={{flexDirection: 'row', marginVertical: '2%'}}>
+            <View style={{flexDirection: 'row', marginVertical: '2%'}}>
                 {product.variants.map(variant => {
                   return (
                     <View
@@ -188,9 +199,9 @@ const ProductPage = ({navigation, route}) => {
                     </View>
                   );
                 })}
-              </View>*/}
+              </View>
             <Text>Product Description</Text>
-          </View>
+          </View>*/}
         </View>
       </BottomSheet>
     </View>

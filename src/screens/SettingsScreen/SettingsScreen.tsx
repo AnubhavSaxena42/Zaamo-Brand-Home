@@ -5,13 +5,44 @@ import {
   Image,
   Dimensions,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import SettingOption from '../../components/SettingOption/SettingOption';
+import {useDispatch} from 'react-redux';
+import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
+import {deleteAllItemsFromStorage} from '../../services/storage-service';
+import toastService from '../../services/toast-service';
+import {client} from '../../App';
 const windowWidth = Dimensions.get('window').width;
 const SettingsScreen = ({navigation, route}) => {
+  const dispatch = useDispatch();
+  const logout = () => {
+    dispatch(setLoaderStatus(true));
+    deleteAllItemsFromStorage()
+      .then(() => {
+        toastService.showToast('Logged out successfully', true);
+        client.cache
+          .reset()
+          .then(() => {
+            console.log('apollo success');
+            navigation.replace('AuthStack');
+            dispatch(setLoaderStatus(false));
+          })
+          .catch(() => {
+            console.log('fail client');
+            dispatch(setLoaderStatus(false));
+          });
+      })
+      .catch(() => {
+        toastService.showToast('Log out Fail', true);
+        dispatch(setLoaderStatus(false));
+      });
+  };
   return (
-    <ScrollView style={styles.settingsContainer}>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      style={styles.settingsContainer}>
       <View style={{alignItems: 'center'}}>
         <Image
           source={require('../../assets/images/DashboardEllipse.png')}
@@ -107,6 +138,20 @@ const SettingsScreen = ({navigation, route}) => {
             imageUrl={require('../../assets/icons/brandguidelines.png')}
           />
         </View>
+        <TouchableOpacity
+          onPress={logout}
+          style={{
+            alignSelf: 'center',
+            width: '80%',
+            backgroundColor: 'black',
+            borderRadius: 10,
+            height: 40,
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginVertical: '2%',
+          }}>
+          <Text style={{color: 'white'}}>Logout</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );

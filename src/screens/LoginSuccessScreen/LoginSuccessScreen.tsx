@@ -15,6 +15,7 @@ import {
 } from '../../services/storage-service';
 import CongratulationsSVG from './Congratulations';
 import toastService from '../../services/toast-service';
+import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 const LoginSuccessScreen = ({navigation, route}) => {
   console.log('Route mobile number:', route.params.mobileNumber);
   const [createToken, {data, loading, error}] = useMutation(TOKEN_CREATE, {
@@ -121,6 +122,10 @@ const LoginSuccessScreen = ({navigation, route}) => {
       userRegister();
     }
   }, [data]);
+  useEffect(() => {
+    if (loading) dispatch(setLoaderStatus(true));
+    else dispatch(setLoaderStatus(false));
+  }, [loading]);
   useEffect(() => {
     if (registerData) {
       console.log(registerData);

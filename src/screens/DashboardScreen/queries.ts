@@ -129,7 +129,7 @@ export const GET_AUTHORISED_BRANDS = gql`
               brand {
                 brandName
               }
-              thumbnail(size: 720) {
+              thumbnail(size: 480) {
                 url
                 alt
               }

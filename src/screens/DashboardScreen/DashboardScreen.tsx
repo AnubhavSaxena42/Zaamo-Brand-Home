@@ -229,7 +229,7 @@ const DashboardScreen = ({navigation, route}) => {
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          justifyContent: 'space-between',
+          justifyContent: 'center',
         }}>
         <Text
           style={{
@@ -242,7 +242,7 @@ const DashboardScreen = ({navigation, route}) => {
           }}>
           Overview
         </Text>
-        <TouchableOpacity
+        {/*<TouchableOpacity
           style={{
             zIndex: 2,
             paddingRight: '5%',
@@ -257,13 +257,13 @@ const DashboardScreen = ({navigation, route}) => {
             }}>
             Logout
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity>*/}
       </View>
       {
         <Image
           source={require('../../assets/images/DashboardEllipse.png')}
           style={{
-            height: 400,
+            height: 350,
             width: windowWidth,
             zIndex: 1,
             position: 'absolute',
@@ -277,7 +277,7 @@ const DashboardScreen = ({navigation, route}) => {
           width: '100%',
           flexDirection: 'row',
           justifyContent: 'space-around',
-          marginTop: '10%',
+          marginTop: '5%',
         }}>
         <MetricCard
           metric={{type: 'Total Orders', value: '27'}}
@@ -313,11 +313,11 @@ const DashboardScreen = ({navigation, route}) => {
           position: 'absolute',
           bottom: 50,
           right: 20,
-          height: 70,
-          width: 70,
+          height: 66,
+          width: 66,
           justifyContent: 'center',
           alignItems: 'center',
-          borderRadius: 35,
+          borderRadius: 33,
           zIndex: 3,
         }}>
         <Ionicons name="logo-instagram" size={35} color="white" />
@@ -329,6 +329,7 @@ const DashboardScreen = ({navigation, route}) => {
           fontSize: 15,
           paddingLeft: '3%',
           fontFamily: 'Roboto-Bold',
+          marginBottom: '2%',
         }}>
         Recent Updates
       </Text>

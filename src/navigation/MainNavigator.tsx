@@ -1,4 +1,5 @@
 import React from 'react';
+import {useSafeArea} from 'react-native-safe-area-context';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -184,17 +185,25 @@ export const OrderStackNavigator = () => {
   );
 };
 export const HomeTabNavigator = () => {
+  const insets = useSafeArea();
   return (
     <HomeTabs.Navigator
       tabBarOptions={{
         activeTintColor: 'black',
+        labelStyle: {
+          paddingBottom: 10,
+        },
+        style: {
+          height: '8%',
+          paddingVertical: 8,
+        },
       }}>
       <HomeTabs.Screen
         name="Home"
         component={HomeStackNavigator}
         options={{
-          tabBarIcon: focused => (
-            <Entypo name="home" size={25} color={focused ? 'black' : 'gray'} />
+          tabBarIcon: ({focused, color}) => (
+            <Entypo name="home" size={25} color={focused ? color : ''} />
           ),
         }}
       />
@@ -202,11 +211,11 @@ export const HomeTabNavigator = () => {
         name="Orders"
         component={OrderStackNavigator}
         options={{
-          tabBarIcon: focused => (
+          tabBarIcon: ({focused, color}) => (
             <Ionicons
               name="reorder-three"
-              size={25}
-              color={focused ? 'black' : 'gray'}
+              size={30}
+              color={focused ? color : ''}
             />
           ),
         }}
@@ -215,12 +224,8 @@ export const HomeTabNavigator = () => {
         name="Products"
         component={ProductStackNavigator}
         options={{
-          tabBarIcon: focused => (
-            <Entypo
-              name="price-tag"
-              size={25}
-              color={focused ? 'black' : 'gray'}
-            />
+          tabBarIcon: ({focused, color}) => (
+            <Entypo name="price-tag" size={25} color={focused ? color : ''} />
           ),
         }}
       />
@@ -228,12 +233,8 @@ export const HomeTabNavigator = () => {
         name="Marketing"
         component={MarketingStackNavigator}
         options={{
-          tabBarIcon: focused => (
-            <Entypo
-              name="line-graph"
-              size={25}
-              color={focused ? 'black' : 'gray'}
-            />
+          tabBarIcon: ({focused, color}) => (
+            <Entypo name="line-graph" size={25} color={focused ? color : ''} />
           ),
         }}
       />
@@ -241,11 +242,11 @@ export const HomeTabNavigator = () => {
         name="Store"
         component={StoreStackNavigator}
         options={{
-          tabBarIcon: focused => (
+          tabBarIcon: ({focused, color}) => (
             <Fontisto
               name="shopping-store"
               size={25}
-              color={focused ? 'black' : 'gray'}
+              color={focused ? color : ''}
             />
           ),
         }}

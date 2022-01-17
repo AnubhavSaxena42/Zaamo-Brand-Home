@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Text,
   View,
+  Pressable,
 } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -20,8 +21,7 @@ const CollectionCard = ({
 }) => {
   console.log('Collections:', collection);
   return (
-    <TouchableOpacity
-      activeOpacity={0.3}
+    <Pressable
       onPress={() => {
         navigation.navigate('CollectionViewScreen', {
           collection: collection,
@@ -86,7 +86,7 @@ const CollectionCard = ({
                 fontSize: 22,
                 color: 'white',
                 fontWeight: '500',
-                textShadowColor: 'rgba(0,0,0,0.7)',
+                textShadowColor: 'rgba(0,0,0,0.3)',
                 textShadowRadius: 1,
                 textShadowOffset: {width: 1, height: 1.2},
                 fontFamily: 'Roboto-Bold',
@@ -95,9 +95,9 @@ const CollectionCard = ({
             </Text>
             <Text
               style={{
-                fontSize: 16,
+                fontSize: 14,
                 color: 'white',
-                textShadowColor: 'rgba(0,0,0,0.7)',
+                textShadowColor: 'rgba(0,0,0,0.3)',
                 textShadowRadius: 0.1,
                 textShadowOffset: {width: 1, height: 1},
                 fontFamily: 'Roboto-Bold',
@@ -136,7 +136,7 @@ const CollectionCard = ({
           </TouchableOpacity>
         </View>
       </ImageBackground>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
@@ -158,6 +158,6 @@ const styles = StyleSheet.create({
   },
   imageStyle: {
     width: '100%',
-    height: 300,
+    height: 350,
   },
 });

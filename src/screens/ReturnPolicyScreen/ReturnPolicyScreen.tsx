@@ -41,6 +41,7 @@ const ReturnPolicyScreen = ({navigation, route}) => {
             fontSize: 22,
             paddingHorizontal: '10%',
             textAlign: 'center',
+            fontFamily: 'Roboto-Bold',
           }}>
           Return Policy
         </Text>

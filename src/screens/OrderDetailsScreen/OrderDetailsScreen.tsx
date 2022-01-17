@@ -66,7 +66,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
         style={{
           zIndex: 2,
           color: 'white',
-          fontSize: 16,
+          fontSize: 18,
           textAlign: 'center',
           marginTop: '5%',
           fontFamily: 'Roboto-Bold',
@@ -93,7 +93,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
           width: '100%',
           zIndex: 2,
           alignItems: 'center',
-          marginTop: '12%',
+          marginTop: '5%',
         }}>
         <OrderCard
           order={order}

@@ -1,9 +1,16 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, Text, Image, View} from 'react-native';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  Pressable,
+  Text,
+  Image,
+  View,
+} from 'react-native';
 
 const SettingOption = ({setting, onPress, imageUrl}) => {
   return (
-    <TouchableOpacity
+    <Pressable
       onPress={onPress}
       style={{
         height: 60,
@@ -26,10 +33,11 @@ const SettingOption = ({setting, onPress, imageUrl}) => {
           justifyContent: 'center',
           alignItems: 'center',
           paddingHorizontal: '7%',
-
           borderRadius: 10,
         }}>
-        <Text style={{textAlign: 'center'}}>{setting}</Text>
+        <Text style={{textAlign: 'center', color: 'rgba(0,0,0,0.6)'}}>
+          {setting}
+        </Text>
       </View>
       <View
         style={{
@@ -48,7 +56,7 @@ const SettingOption = ({setting, onPress, imageUrl}) => {
         }}>
         <Image source={imageUrl} style={{height: 20, width: 20}} />
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 

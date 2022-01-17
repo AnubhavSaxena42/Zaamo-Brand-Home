@@ -11,6 +11,7 @@ import {
   ActivityIndicator,
   TouchableNativeFeedback,
 } from 'react-native';
+import {BarIndicator} from 'react-native-indicators';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AddProductCard from '../../components/AddProductCard/AddProductCard';
 import {useDispatch, useSelector} from 'react-redux';
@@ -363,7 +364,7 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <ActivityIndicator size={'large'} color="black" />
+            <BarIndicator size={30} count={5} color="black" />
           </View>
         );
       } else return null;
@@ -376,7 +377,7 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <ActivityIndicator size={'large'} color="black" />
+            <BarIndicator size={30} count={5} color="black" />
           </View>
         );
       } else {
@@ -447,7 +448,7 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
       <View
         style={{
           width: '100%',
-          height: '10%',
+          height: 60,
           flexDirection: 'row',
           backgroundColor: 'white',
           borderBottomWidth: 1,
@@ -544,7 +545,7 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
         ListEmptyComponent={() => (
           <View
             style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <ActivityIndicator size={'large'} color="black" />
+            <Text>Empty</Text>
           </View>
         )}
         ListFooterComponent={ListFooterComponent}

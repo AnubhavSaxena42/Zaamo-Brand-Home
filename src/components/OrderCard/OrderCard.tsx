@@ -1,5 +1,12 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, Image, Text, View} from 'react-native';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  Text,
+  Pressable,
+  View,
+} from 'react-native';
 
 const OrderCard = ({navigation, status, isDetails, order}) => {
   const getTheme = status => {
@@ -28,7 +35,7 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
   };
   console.log('User:', order.user);
   return (
-    <TouchableOpacity
+    <Pressable
       onPress={() => {
         navigation.navigate('OrderDetailsScreen', {
           order: order,
@@ -37,6 +44,8 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
       }}
       style={{
         ...styles.orderCardContainer,
+        height: isDetails ? 100 : 120,
+        borderRightWidth: !isDetails ? 10 : 0,
         borderRightColor: getTheme(status),
       }}>
       {!isDetails && (
@@ -49,14 +58,14 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
         <Text
           numberOfLines={1}
           ellipsizeMode="tail"
-          style={{fontSize: 14, color: 'black', fontFamily: 'Roboto-Regular'}}>
+          style={{fontSize: 14, color: 'black', fontWeight: '400'}}>
           {order ? `#${order.number}` : '#'}{' '}
           {order?.user ? order.user.firstName : 'Anchal'}{' '}
           {order?.user ? order.user.lastName : 'Sharma'}
         </Text>
         <Text
           style={{
-            fontSize: 10,
+            fontSize: 12,
             color: 'rgba(0,0,0,0.5)',
             fontFamily: 'Roboto-Regular',
           }}>
@@ -66,7 +75,7 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
-            marginTop: '20%',
+            marginTop: isDetails ? '5%' : '20%',
           }}>
           <Text
             style={{
@@ -81,6 +90,7 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
               textShadowOffset: {width: 1, height: 1},
               textAlignVertical: 'center',
               fontFamily: 'Roboto-Regular',
+              marginRight: 10,
             }}>
             {status ? status : 'NO STATUS'}
           </Text>
@@ -96,9 +106,10 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
               textAlignVertical: 'center',
               fontFamily: 'Roboto-Regular',
             }}>
-            {order?.user
-              ? `${order.user.defaultBillingAddress.postalCode}`
-              : '110011-Saket'}
+            {!isDetails &&
+              (order?.user
+                ? `${order.user.defaultBillingAddress.postalCode}`
+                : '110011-Saket')}
           </Text>
         </View>
       </View>
@@ -106,9 +117,8 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
         <Text
           numberOfLines={1}
           ellipsizeMode="tail"
-          style={{fontSize: 14, color: 'black'}}>
-          {order ? order.total?.net.currency : 'Rs'}
-          {order ? order.total?.net.amount : '???'}
+          style={{fontSize: 14, color: 'black', fontWeight: '400'}}>
+          ₹{order ? order.total?.net.amount : '???'}
         </Text>
         <Text
           numberOfLines={1}
@@ -118,7 +128,7 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
           {order?.lines?.length > 1 ? 'items' : 'item'}
         </Text>
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
@@ -128,7 +138,6 @@ const styles = StyleSheet.create({
   orderCardContainer: {
     flexDirection: 'row',
     width: '95%',
-    height: 130,
     justifyContent: 'space-around',
     alignItems: 'center',
     borderRightColor: 'pink',
@@ -143,7 +152,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   imageStyle: {
-    height: '90%',
+    height: '100%',
     width: '35%',
     borderRadius: 10,
   },

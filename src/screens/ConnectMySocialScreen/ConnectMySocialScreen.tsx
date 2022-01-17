@@ -7,13 +7,14 @@ import {
   View,
   Image,
   TextInput,
+  ScrollView,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import toastService from '../../services/toast-service';
 const windowWidth = Dimensions.get('window').width;
 const ConnectMySocialScreen = ({navigation, route}) => {
   return (
-    <View>
+    <ScrollView contentContainerStyle={styles.connectMySocialContainer}>
       <View style={{alignItems: 'center'}}>
         <Image
           source={require('../../assets/images/DashboardEllipse.png')}
@@ -39,6 +40,7 @@ const ConnectMySocialScreen = ({navigation, route}) => {
             fontSize: 22,
             paddingHorizontal: '10%',
             textAlign: 'center',
+            fontFamily: 'Roboto-Bold',
           }}>
           Connect My Social
         </Text>
@@ -105,7 +107,7 @@ const ConnectMySocialScreen = ({navigation, route}) => {
           <Text style={{color: 'white', fontWeight: 'bold'}}>Save</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

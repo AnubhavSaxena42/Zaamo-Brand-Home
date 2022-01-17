@@ -96,22 +96,23 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   rowOneText: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
     fontFamily: 'Roboto-Bold',
     color: 'white',
     textShadowColor: 'rgba(0,0,0,0.5)',
-    textShadowRadius: 0.1,
+    textShadowRadius: 0.3,
     textShadowOffset: {width: 1, height: 1},
   },
   rowTwoText: {
-    fontSize: 14,
-    color: 'white',
+    fontSize: 12,
     fontFamily: 'Roboto-Bold',
+    color: 'white',
     textShadowColor: 'rgba(0,0,0,0.5)',
-    textShadowRadius: 0.1,
+    textShadowRadius: 0.3,
     textShadowOffset: {width: 1, height: 1},
   },
+
   iconContainer: {
     height: 32,
     width: 32,
@@ -124,7 +125,7 @@ const styles = StyleSheet.create({
     right: 10,
   },
   imageStyle: {
-    height: 250,
+    height: 270,
     width: '100%',
     borderRadius: 10,
     overflow: 'hidden',

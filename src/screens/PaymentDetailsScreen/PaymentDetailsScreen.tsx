@@ -197,6 +197,7 @@ const PaymentDetailsScreen = ({navigation, route}) => {
             fontSize: 22,
             paddingHorizontal: '10%',
             textAlign: 'center',
+            fontFamily: 'Roboto-Bold',
           }}>
           Payment Details
         </Text>

@@ -62,6 +62,7 @@ const SettingsScreen = ({navigation, route}) => {
             fontSize: 22,
             paddingHorizontal: '10%',
             textAlign: 'center',
+            fontFamily: 'Roboto-Bold',
           }}>
           Lets customise your store as you want it!!
         </Text>

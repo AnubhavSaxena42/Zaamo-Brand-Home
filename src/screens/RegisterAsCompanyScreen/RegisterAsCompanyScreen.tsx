@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  ScrollView,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {launchImageLibrary} from 'react-native-image-picker';
@@ -35,7 +36,7 @@ const RegisterAsCompanyScreen = ({navigation, route}) => {
     });
   };
   return (
-    <View style={styles.registerAsCompanyContainer}>
+    <ScrollView contentContainerStyle={styles.registerAsCompanyContainer}>
       <View style={{alignItems: 'center'}}>
         <Image
           source={require('../../assets/images/DashboardEllipse.png')}
@@ -55,6 +56,7 @@ const RegisterAsCompanyScreen = ({navigation, route}) => {
             fontSize: 22,
             paddingHorizontal: '10%',
             textAlign: 'center',
+            fontFamily: 'Roboto-Bold',
           }}>
           Register as a Company
         </Text>
@@ -180,7 +182,7 @@ const RegisterAsCompanyScreen = ({navigation, route}) => {
           <Text style={{color: 'white', fontWeight: 'bold'}}>Save</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

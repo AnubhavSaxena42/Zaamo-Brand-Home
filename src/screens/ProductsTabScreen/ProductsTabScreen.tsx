@@ -9,6 +9,8 @@ import {
   FlatList,
   Animated,
   ActivityIndicator,
+  TouchableWithoutFeedback,
+  Pressable,
 } from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -18,6 +20,13 @@ import ProductCard from '../../components/ProductCard/ProductCard';
 import {useDispatch, useSelector} from 'react-redux';
 import {useMutation, NetworkStatus, useQuery} from '@apollo/client';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {
+  PacmanIndicator,
+  SkypeIndicator,
+  MaterialIndicator,
+  BarIndicator,
+  UIActivityIndicator,
+} from 'react-native-indicators';
 import axios from 'axios';
 import {GET_AUTHORISED_BRANDS, GET_STORE} from '../DashboardScreen/queries';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
@@ -314,7 +323,13 @@ const ProductsTabScreen = ({navigation}) => {
   return (
     <View style={styles.productsTabContainer}>
       {(isNewCollectionModalVisible || isThumbnailModalVisible) && (
-        <View
+        <Pressable
+          onPress={() => {
+            console.log('pressed');
+            if (isNewCollectionModalVisible)
+              setIsNewCollectionModalVisible(false);
+            else setIsThumbnailModalVisible(false);
+          }}
           style={{
             backgroundColor: 'rgba(0,0,0,0.5)',
             position: 'absolute',
@@ -332,7 +347,7 @@ const ProductsTabScreen = ({navigation}) => {
           flexDirection: 'row',
           alignItems: 'center',
           width: '100%',
-          height: 80,
+          height: 60,
           justifyContent: 'center',
           backgroundColor: 'white',
           borderBottomWidth: 1,
@@ -341,7 +356,7 @@ const ProductsTabScreen = ({navigation}) => {
         <Text
           style={{
             alignSelf: 'center',
-            fontSize: 24,
+            fontSize: 22,
             color: 'black',
             fontFamily: 'Roboto-Bold',
           }}>
@@ -439,224 +454,237 @@ const ProductsTabScreen = ({navigation}) => {
         transparent={true}
         visible={isThumbnailModalVisible}
         animationType="slide">
-        <ScrollView
-          style={{
-            backgroundColor: 'white',
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: '35%',
-            paddingHorizontal: '4%',
-            borderTopLeftRadius: 15,
-            borderTopRightRadius: 15,
-          }}>
-          <View
+        <Pressable
+          onPress={() => setIsThumbnailModalVisible(false)}
+          style={{flex: 1}}>
+          <Pressable
+            onPress={() => {}}
             style={{
-              width: '100%',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              paddingHorizontal: '5%',
-              marginVertical: '5%',
+              backgroundColor: 'white',
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: '35%',
+              paddingHorizontal: '4%',
+              borderTopLeftRadius: 15,
+              borderTopRightRadius: 15,
             }}>
-            <Text style={{color: 'black', fontSize: 20, fontWeight: '600'}}>
-              Upload Image
-            </Text>
-            <TouchableOpacity
-              onPress={() => {
-                setIsThumbnailModalVisible(false);
-                setIsNewCollectionModalVisible(true);
-              }}
+            <View
               style={{
-                justifyContent: 'center',
+                width: '100%',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
                 alignItems: 'center',
-                width: 24,
-                height: 24,
-                borderRadius: 12,
-                borderColor: 'rgba(0,0,0,0.8)',
-                borderWidth: 2,
+                paddingHorizontal: '5%',
+                marginVertical: '5%',
               }}>
-              <Entypo name="cross" size={14} color={'rgba(0,0,0,0.8)'} />
-            </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'space-around',
-              alignItems: 'center',
-              flexDirection: 'row',
-              paddingBottom: '5%',
-            }}>
-            <TouchableOpacity
-              onPress={onSelectTakePhoto}
-              style={{justifyContent: 'center', alignItems: 'center'}}>
-              <Entypo name="camera" size={40} color={'black'} />
-              <Text>Take a Photo</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={onSelectGallery}
-              style={{justifyContent: 'center', alignItems: 'center'}}>
-              <FontAwesome name="photo" size={40} color={'black'} />
-              <Text>Select from Gallery</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
+              <Text style={{color: 'black', fontSize: 20, fontWeight: '600'}}>
+                Upload Image
+              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  setIsThumbnailModalVisible(false);
+                  setIsNewCollectionModalVisible(true);
+                }}
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: 24,
+                  height: 24,
+                  borderRadius: 12,
+                  borderColor: 'rgba(0,0,0,0.8)',
+                  borderWidth: 2,
+                }}>
+                <Entypo name="cross" size={14} color={'rgba(0,0,0,0.8)'} />
+              </TouchableOpacity>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'space-around',
+                alignItems: 'center',
+                flexDirection: 'row',
+                paddingBottom: '5%',
+              }}>
+              <TouchableOpacity
+                onPress={onSelectTakePhoto}
+                style={{justifyContent: 'center', alignItems: 'center'}}>
+                <Entypo name="camera" size={40} color={'black'} />
+                <Text>Take a Photo</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={onSelectGallery}
+                style={{justifyContent: 'center', alignItems: 'center'}}>
+                <FontAwesome name="photo" size={40} color={'black'} />
+                <Text>Select from Gallery</Text>
+              </TouchableOpacity>
+            </View>
+          </Pressable>
+        </Pressable>
       </Modal>
 
       <Modal
         transparent={true}
         visible={isNewCollectionModalVisible}
         animationType="slide">
-        <View
-          style={{
-            backgroundColor: 'white',
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: '50%',
-            paddingHorizontal: '4%',
-            borderTopLeftRadius: 15,
-            borderTopRightRadius: 15,
-          }}>
-          <Text
+        <Pressable
+          onPress={() => setIsNewCollectionModalVisible(false)}
+          style={{flex: 1}}>
+          <Pressable
+            onPress={() => {}}
             style={{
-              textAlign: 'center',
-              color: 'black',
-              fontSize: 20,
-              fontWeight: '700',
-              marginVertical: '4%',
-            }}>
-            {isCollectionEdit
-              ? 'Edit Collection'
-              : 'Excited for the new Collection!'}
-          </Text>
-          <Text
-            style={{
-              marginVertical: '2%',
-              fontSize: 16,
-              color: 'black',
-              fontWeight: '500',
-            }}>
-            Collection Name
-          </Text>
-          <TextInput
-            value={newCollectionName}
-            onChangeText={text => setNewCollectionName(text)}
-            style={{
-              width: '100%',
-              borderWidth: 1,
-              borderColor: 'rgba(0,0,0,0.3)',
-              borderRadius: 4,
-              paddingHorizontal: '5%',
               backgroundColor: 'white',
-              height: 50,
-            }}
-            placeholder={'Enter Collection Name'}
-          />
-          <Text
-            style={{
-              marginVertical: '2%',
-              fontSize: 16,
-              color: 'black',
-              fontWeight: '500',
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: '50%',
+              paddingHorizontal: '4%',
+              borderTopLeftRadius: 15,
+              borderTopRightRadius: 15,
             }}>
-            {isCollectionEdit ? 'Update Thumbnail' : 'Thumbnail'}
-          </Text>
-          <View
-            style={{
-              width: '100%',
-              borderWidth: 1,
-              height: 50,
-              borderColor: 'rgba(0,0,0,0.3)',
-              borderRadius: 4,
-              paddingHorizontal: '1%',
-              backgroundColor: 'white',
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            <TouchableOpacity
-              onPress={() => {
-                setIsNewCollectionModalVisible(false);
-                setIsThumbnailModalVisible(true);
-              }}
+            <Text
               style={{
-                height: '80%',
+                textAlign: 'center',
+                color: 'black',
+                fontSize: 20,
+                fontWeight: '700',
+                marginVertical: '4%',
+              }}>
+              {isCollectionEdit
+                ? 'Edit Collection'
+                : 'Excited for the new Collection!'}
+            </Text>
+            <Text
+              style={{
+                marginVertical: '2%',
+                fontSize: 16,
+                color: 'black',
+                fontWeight: '500',
+              }}>
+              Collection Name
+            </Text>
+            <TextInput
+              value={newCollectionName}
+              onChangeText={text => setNewCollectionName(text)}
+              style={{
+                width: '100%',
+                borderWidth: 1,
+                borderColor: 'rgba(0,0,0,0.3)',
+                borderRadius: 4,
+                paddingHorizontal: '5%',
+                backgroundColor: 'white',
+                height: 50,
+              }}
+              placeholder={'Enter Collection Name'}
+            />
+            <Text
+              style={{
+                marginVertical: '2%',
+                fontSize: 16,
+                color: 'black',
+                fontWeight: '500',
+              }}>
+              {isCollectionEdit ? 'Update Thumbnail' : 'Thumbnail'}
+            </Text>
+            <View
+              style={{
+                width: '100%',
+                borderWidth: 1,
+                height: 50,
+                borderColor: 'rgba(0,0,0,0.3)',
+                borderRadius: 4,
+                paddingHorizontal: '1%',
+                backgroundColor: 'white',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <TouchableOpacity
+                onPress={() => {
+                  setIsNewCollectionModalVisible(false);
+                  setIsThumbnailModalVisible(true);
+                }}
+                style={{
+                  height: '80%',
+                  backgroundColor: 'black',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: 5,
+                  paddingHorizontal: '5%',
+                }}>
+                <Entypo name="upload" size={14} color={'white'} />
+                <Text style={{color: 'white'}}>Upload</Text>
+              </TouchableOpacity>
+              <Text
+                numberOfLines={2}
+                ellipsizeMode="tail"
+                style={{width: '50%'}}>
+                {file ? file.fileName : ''}
+              </Text>
+            </View>
+            <TouchableOpacity
+              onPress={
+                isCollectionEdit
+                  ? onEditCollection
+                  : () => {
+                      setIsNewCollectionModalVisible(false);
+                      navigation.navigate('CollectionProductsAddScreen', {
+                        collectionName: newCollectionName,
+                        collectionThumbnail: thumbnailUri,
+                      });
+                    }
+              }
+              style={{
+                width: '100%',
                 backgroundColor: 'black',
+                borderRadius: 4,
+                height: '15%',
                 flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'center',
-                borderRadius: 5,
+                marginVertical: '5%',
                 paddingHorizontal: '5%',
               }}>
-              <Entypo name="upload" size={14} color={'white'} />
-              <Text style={{color: 'white'}}>Upload</Text>
+              {!isCollectionEdit && (
+                <View
+                  style={{
+                    height: 30,
+                    width: 30,
+                    borderRadius: 15,
+                    marginRight: '2%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: 'white',
+                  }}>
+                  <Entypo name="plus" size={14} color={'black'} />
+                </View>
+              )}
+              <Text style={{color: 'white'}}>
+                {isCollectionEdit ? 'Update Collection' : 'Add Products'}
+              </Text>
             </TouchableOpacity>
-            <Text numberOfLines={2} ellipsizeMode="tail" style={{width: '50%'}}>
-              {file ? file.fileName : ''}
+            <Text
+              onPress={() => {
+                if (isCollectionEdit) {
+                  setThumbnailUri('');
+                  setIsCollectionEdit(false);
+                }
+                setNewCollectionName('');
+                setIsNewCollectionModalVisible(false);
+              }}
+              style={{
+                textAlign: 'center',
+                color: 'black',
+                fontSize: 14,
+                fontWeight: '600',
+                marginTop: '5%',
+              }}>
+              Cancel
             </Text>
-          </View>
-          <TouchableOpacity
-            onPress={
-              isCollectionEdit
-                ? onEditCollection
-                : () => {
-                    setIsNewCollectionModalVisible(false);
-                    navigation.navigate('CollectionProductsAddScreen', {
-                      collectionName: newCollectionName,
-                      collectionThumbnail: thumbnailUri,
-                    });
-                  }
-            }
-            style={{
-              width: '100%',
-              backgroundColor: 'black',
-              borderRadius: 4,
-              height: '15%',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginVertical: '5%',
-              paddingHorizontal: '5%',
-            }}>
-            {!isCollectionEdit && (
-              <View
-                style={{
-                  height: 30,
-                  width: 30,
-                  borderRadius: 15,
-                  marginRight: '2%',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  backgroundColor: 'white',
-                }}>
-                <Entypo name="plus" size={14} color={'black'} />
-              </View>
-            )}
-            <Text style={{color: 'white'}}>
-              {isCollectionEdit ? 'Update Collection' : 'Add Products'}
-            </Text>
-          </TouchableOpacity>
-          <Text
-            onPress={() => {
-              if (isCollectionEdit) {
-                setThumbnailUri('');
-                setIsCollectionEdit(false);
-              }
-              setNewCollectionName('');
-              setIsNewCollectionModalVisible(false);
-            }}
-            style={{
-              textAlign: 'center',
-              color: 'black',
-              fontSize: 14,
-              fontWeight: '600',
-              marginTop: '5%',
-            }}>
-            Cancel
-          </Text>
-        </View>
+          </Pressable>
+        </Pressable>
       </Modal>
       {isViewing === 1 && (
         /*<ScrollView
@@ -691,7 +719,7 @@ const ProductsTabScreen = ({navigation}) => {
           refreshing={refreshing}
           numColumns={2}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{paddingBottom: 25}}
+          contentContainerStyle={{paddingBottom: 30}}
           ListEmptyComponent={
             !brandResponse.loading
               ? () => (
@@ -715,8 +743,9 @@ const ProductsTabScreen = ({navigation}) => {
                         flex: 1,
                         justifyContent: 'center',
                         alignItems: 'center',
+                        paddingVertical: '3%',
                       }}>
-                      <ActivityIndicator size={'large'} color="black" />
+                      <BarIndicator size={30} count={5} color="black" />
                     </View>
                   );
                 }
@@ -771,7 +800,7 @@ const ProductsTabScreen = ({navigation}) => {
                       justifyContent: 'center',
                       alignItems: 'center',
                     }}>
-                    <ActivityIndicator size={'large'} color="black" />
+                    <Text>No collections available</Text>
                   </View>
                 )
               : null
@@ -786,7 +815,7 @@ const ProductsTabScreen = ({navigation}) => {
                         justifyContent: 'center',
                         alignItems: 'center',
                       }}>
-                      <ActivityIndicator size={'large'} color="black" />
+                      <BarIndicator size={30} count={5} color="black" />
                     </View>
                   );
                 }

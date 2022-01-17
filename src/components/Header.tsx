@@ -41,8 +41,7 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: Platform.OS === 'web' ? 'left' : 'center',
     marginLeft: Platform.OS === 'web' ? '2%' : 0,
-    fontFamily: 'Merriweather-Regular',
-    fontWeight: '400',
+    fontFamily: 'Roboto-Bold',
     fontSize: Platform.OS === 'web' ? 36 : 28,
   },
 });

@@ -10,23 +10,23 @@ const MetricCard = ({color, metric}) => {
           alignSelf: 'center',
           height: '10%',
           backgroundColor: color,
-          borderRadius: 15,
+          borderRadius: 10,
         }}></View>
       <Text
         style={{
-          fontSize: 36,
+          fontSize: 28,
           color: 'black',
-          fontFamily: 'Montserrat-Bold',
+          fontFamily: 'Roboto-Black',
           textAlign: 'center',
         }}>
         {metric.value}
       </Text>
       <Text
         style={{
-          fontSize: 16,
+          fontSize: 12,
           color: 'black',
           textAlign: 'center',
-          fontFamily: 'Montserrat-Bold',
+          fontFamily: 'Roboto-Black',
         }}>
         {metric.type}
       </Text>
@@ -38,8 +38,8 @@ export default MetricCard;
 
 const styles = StyleSheet.create({
   metricCardContainer: {
-    width: '40%',
-    height: 120,
+    width: '35%',
+    height: 100,
     justifyContent: 'space-around',
     alignItems: 'center',
     borderWidth: 1,
@@ -47,5 +47,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: '3%',
     backgroundColor: 'white',
+    marginHorizontal: '5%',
   },
 });

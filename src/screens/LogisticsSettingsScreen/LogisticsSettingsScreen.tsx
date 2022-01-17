@@ -6,6 +6,7 @@ import {
   Text,
   Image,
   Dimensions,
+  ScrollView,
   View,
 } from 'react-native';
 import toastService from '../../services/toast-service';
@@ -13,7 +14,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 const windowWidth = Dimensions.get('window').width;
 const LogisticsSettingsScreen = ({navigation, route}) => {
   return (
-    <View style={styles.logisticsSettingsContainer}>
+    <ScrollView contentContainerStyle={styles.logisticsSettingsContainer}>
       <View style={{alignItems: 'center'}}>
         <Image
           source={require('../../assets/images/DashboardEllipse.png')}
@@ -40,6 +41,7 @@ const LogisticsSettingsScreen = ({navigation, route}) => {
             fontSize: 22,
             paddingHorizontal: '10%',
             textAlign: 'center',
+            fontFamily: 'Roboto-Bold',
           }}>
           Logistics Settings
         </Text>
@@ -109,7 +111,7 @@ const LogisticsSettingsScreen = ({navigation, route}) => {
           <Text style={{color: 'white', fontWeight: 'bold'}}>Save</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

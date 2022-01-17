@@ -267,7 +267,7 @@ const DashboardScreen = ({navigation, route}) => {
             width: windowWidth,
             zIndex: 1,
             position: 'absolute',
-            top: -80,
+            top: -100,
           }}
         />
       }
@@ -276,7 +276,7 @@ const DashboardScreen = ({navigation, route}) => {
           zIndex: 2,
           width: '100%',
           flexDirection: 'row',
-          justifyContent: 'space-around',
+          justifyContent: 'center',
           marginTop: '5%',
         }}>
         <MetricCard
@@ -292,7 +292,7 @@ const DashboardScreen = ({navigation, route}) => {
         style={{
           width: '100%',
           flexDirection: 'row',
-          justifyContent: 'space-around',
+          justifyContent: 'center',
           zIndex: 2,
         }}>
         <MetricCard
@@ -313,23 +313,23 @@ const DashboardScreen = ({navigation, route}) => {
           position: 'absolute',
           bottom: 50,
           right: 20,
-          height: 66,
-          width: 66,
+          height: 60,
+          width: 60,
           justifyContent: 'center',
           alignItems: 'center',
-          borderRadius: 33,
+          borderRadius: 30,
           zIndex: 3,
         }}>
-        <Ionicons name="logo-instagram" size={35} color="white" />
+        <Ionicons name="logo-instagram" size={30} color="white" />
       </TouchableOpacity>
       <Text
         style={{
           color: 'black',
-
-          fontSize: 15,
+          fontSize: 14,
           paddingLeft: '3%',
           fontFamily: 'Roboto-Bold',
           marginBottom: '2%',
+          marginTop: '2%',
         }}>
         Recent Updates
       </Text>

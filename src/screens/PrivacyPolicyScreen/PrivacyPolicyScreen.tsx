@@ -41,6 +41,7 @@ const PrivacyPolicyScreen = ({navigation, route}) => {
             fontSize: 22,
             paddingHorizontal: '10%',
             textAlign: 'center',
+            fontFamily: 'Roboto-Bold',
           }}>
           Privacy Policy
         </Text>

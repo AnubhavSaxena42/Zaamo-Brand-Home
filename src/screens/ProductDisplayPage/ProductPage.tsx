@@ -32,8 +32,8 @@ const ProductPage = ({navigation, route}) => {
     else return height * index;
   });
   console.log('data:', data);
-  const imageW = width * 0.8;
-  const imageH = imageW * 1.6;
+  const imageW = width * 0.9;
+  const imageH = imageW * 1.2;
   const scrollY = React.useRef(new Animated.Value(0)).current;
   return (
     <View style={styles.productPageContainer}>
@@ -129,7 +129,7 @@ const ProductPage = ({navigation, route}) => {
                 source={{uri: item}}
                 style={{
                   marginBottom: '25%',
-                  width: imageW,
+                  width: width,
                   height: imageH,
                   shadowColor: '#000',
                   shadowOffset: {width: 0, height: 1},
@@ -146,7 +146,7 @@ const ProductPage = ({navigation, route}) => {
         ref={bottomSheetRef}
         index={0}
         snapPoints={snapPoints}
-        handleStyle={{backgroundColor: 'whitesmoke', borderRadius: 100}}
+        handleStyle={{backgroundColor: 'white', borderRadius: 100}}
         onChange={handleSheetChanges}>
         <View style={styles.contentContainer}>
           <View style={styles.productOverview}>
@@ -157,21 +157,32 @@ const ProductPage = ({navigation, route}) => {
                 paddingHorizontal: '3%',
                 alignItems: 'center',
                 borderBottomWidth: 1,
-                borderColor: 'lightgray',
+                borderColor: 'rgba(0,0,0,0.1)',
                 paddingBottom: '5%',
               }}>
+              <View style={{width: '70%'}}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    maxWidth: '70%',
+                    fontWeight: 'bold',
+                    color: 'black',
+                  }}>
+                  {product.brandName}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    maxWidth: '70%',
+                    fontWeight: 'bold',
+                    color: 'black',
+                  }}>
+                  {product.name}
+                </Text>
+              </View>
               <Text
                 style={{
                   fontSize: 20,
-                  maxWidth: '70%',
-                  fontWeight: 'bold',
-                  color: 'black',
-                }}>
-                {product.name}
-              </Text>
-              <Text
-                style={{
-                  fontSize: 24,
                   fontWeight: 'bold',
                   color: 'black',
                 }}>
@@ -179,8 +190,8 @@ const ProductPage = ({navigation, route}) => {
               </Text>
             </View>
           </View>
-          {/*<View style={{paddingHorizontal: '3%', marginTop: '2%'}}>
-            <Text>Select Size</Text>
+          <View style={{paddingHorizontal: '3%', marginTop: '2%'}}>
+            {/*<Text>Select Size</Text>
             <View style={{flexDirection: 'row', marginVertical: '2%'}}>
                 {product.variants.map(variant => {
                   return (
@@ -199,9 +210,9 @@ const ProductPage = ({navigation, route}) => {
                     </View>
                   );
                 })}
-              </View>
-            <Text>Product Description</Text>
-          </View>*/}
+              </View>*/}
+            <Text style={{color: 'gray'}}>Product Description</Text>
+          </View>
         </View>
       </BottomSheet>
     </View>
@@ -218,7 +229,7 @@ const styles = StyleSheet.create({
   productOverview: {},
   contentContainer: {
     flex: 1,
-    backgroundColor: 'whitesmoke',
+    backgroundColor: 'white',
   },
   wrapper: {},
   slide1: {

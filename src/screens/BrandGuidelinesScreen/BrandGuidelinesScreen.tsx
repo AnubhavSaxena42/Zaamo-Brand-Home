@@ -7,13 +7,14 @@ import {
   View,
   Dimensions,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import toastService from '../../services/toast-service';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 const windowWidth = Dimensions.get('window').width;
 const BrandGuidelinesScreen = ({navigation, route}) => {
   return (
-    <View style={styles.brandGuidelinesContainer}>
+    <ScrollView contentContainerStyle={styles.brandGuidelinesContainer}>
       <View style={{alignItems: 'center'}}>
         <Image
           source={require('../../assets/images/DashboardEllipse.png')}
@@ -40,6 +41,7 @@ const BrandGuidelinesScreen = ({navigation, route}) => {
             fontSize: 22,
             paddingHorizontal: '10%',
             textAlign: 'center',
+            fontFamily: 'Roboto-Bold',
           }}>
           Brand Guidelines
         </Text>
@@ -111,7 +113,7 @@ const BrandGuidelinesScreen = ({navigation, route}) => {
           <Text style={{color: 'white', fontWeight: 'bold'}}>Save</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

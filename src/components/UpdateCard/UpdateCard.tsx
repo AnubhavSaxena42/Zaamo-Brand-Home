@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(0,0,0,0.2)',
     paddingTop: '3%',
-    paddingBottom: '5%',
+    paddingBottom: '3%',
   },
   notificationContainer: {
     flex: 1,
@@ -43,12 +43,12 @@ const styles = StyleSheet.create({
   },
   notificationText: {
     marginBottom: '2%',
-    fontSize: 16,
+    fontSize: 15,
     fontFamily: 'Roboto-Regular',
     color: 'black',
   },
   notificationTime: {
-    fontSize: 16,
+    fontSize: 15,
     fontFamily: 'Roboto-Regular',
     color: 'rgba(0,0,0,0.5)',
   },

@@ -1,9 +1,16 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, Text, View, Image} from 'react-native';
+import {
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Text,
+  View,
+  Image,
+} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 const CustomiseLandingPageScreen = ({navigation}) => {
   return (
-    <View style={styles.customiseLandingPageContainer}>
+    <ScrollView contentContainerStyle={styles.customiseLandingPageContainer}>
       <Text
         style={{
           fontSize: 16,
@@ -23,7 +30,7 @@ const CustomiseLandingPageScreen = ({navigation}) => {
         source={require('../../assets/images/Mitsuba.jpg')}
         style={{height: 300, width: 300}}
       />
-    </View>
+    </ScrollView>
   );
 };
 

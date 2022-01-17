@@ -215,6 +215,7 @@ const OrdersScreen = ({navigation}) => {
               textShadowOffset: {width: 1, height: 1},
               borderBottomWidth: selectedIndex === 0 ? 1 : 0,
               borderColor: 'black',
+              color: 'black',
             }}>
             All Orders
           </Text>
@@ -230,6 +231,7 @@ const OrdersScreen = ({navigation}) => {
               textShadowOffset: {width: 1, height: 1},
               borderBottomWidth: selectedIndex === 1 ? 1 : 0,
               borderColor: 'black',
+              color: 'black',
             }}>
             Shipped
           </Text>
@@ -244,6 +246,7 @@ const OrdersScreen = ({navigation}) => {
               textShadowOffset: {width: 1, height: 1},
               borderBottomWidth: selectedIndex === 2 ? 1 : 0,
               borderColor: 'black',
+              color: 'black',
             }}>
             In Process
           </Text>
@@ -258,6 +261,7 @@ const OrdersScreen = ({navigation}) => {
               textShadowOffset: {width: 1, height: 1},
               borderBottomWidth: selectedIndex === 3 ? 1 : 0,
               borderColor: 'black',
+              color: 'black',
             }}>
             Delivered
           </Text>
@@ -272,6 +276,7 @@ const OrdersScreen = ({navigation}) => {
               textShadowOffset: {width: 1, height: 1},
               borderBottomWidth: selectedIndex === 4 ? 1 : 0,
               borderColor: 'black',
+              color: 'black',
             }}>
             Cancelled
           </Text>
@@ -286,6 +291,7 @@ const OrdersScreen = ({navigation}) => {
               textShadowOffset: {width: 1, height: 1},
               borderBottomWidth: selectedIndex === 5 ? 1 : 0,
               borderColor: 'black',
+              color: 'black',
             }}>
             Return Requested
           </Text>
@@ -300,6 +306,7 @@ const OrdersScreen = ({navigation}) => {
               textShadowOffset: {width: 1, height: 1},
               borderBottomWidth: selectedIndex === 6 ? 1 : 0,
               borderColor: 'black',
+              color: 'black',
             }}>
             Return Initiated
           </Text>
@@ -314,6 +321,7 @@ const OrdersScreen = ({navigation}) => {
               textShadowOffset: {width: 1, height: 1},
               borderBottomWidth: selectedIndex === 7 ? 1 : 0,
               borderColor: 'black',
+              color: 'black',
             }}>
             Return Completed
           </Text>
@@ -328,6 +336,7 @@ const OrdersScreen = ({navigation}) => {
               textShadowOffset: {width: 1, height: 1},
               borderBottomWidth: selectedIndex === 8 ? 1 : 0,
               borderColor: 'black',
+              color: 'black',
             }}>
             Fulfilled
           </Text>

@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Pressable,
 } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -17,8 +18,7 @@ const ProductCard = ({
   setProductIdToRemove,
 }) => {
   return (
-    <TouchableOpacity
-      activeOpacity={0.3}
+    <Pressable
       onPress={() => navigation.navigate('ProductPage', {product: product})}
       style={styles.productCardContainer}>
       <ImageBackground
@@ -27,6 +27,7 @@ const ProductCard = ({
           uri: product.thumbnail,
         }}>
         <TouchableOpacity
+          activeOpacity={0}
           onPress={() => {
             Clipboard.setString(product.url);
             toastService.showToast(
@@ -86,13 +87,14 @@ const ProductCard = ({
               fontSize: 12,
               fontFamily: 'Roboto-Regular',
             }}>
-            Inventory:
+            Inventory:{' '}
             <Text
               style={{color: 'black', fontSize: 14, fontFamily: 'Roboto-Bold'}}>
               4
             </Text>
           </Text>
           <TouchableOpacity
+            activeOpacity={0}
             onPress={() => {
               console.log('Product:', JSON.stringify(product));
               toastService.showToast('Feature in Development', true);
@@ -102,8 +104,8 @@ const ProductCard = ({
               justifyContent: 'center',
               alignItems: 'center',
               backgroundColor: 'black',
-              paddingHorizontal: '3%',
-              paddingVertical: '1%',
+              paddingHorizontal: '4%',
+              paddingVertical: '2%',
               borderRadius: 10,
             }}>
             <View style={{...styles.editIcon}}>
@@ -131,6 +133,7 @@ const ProductCard = ({
             paddingVertical: '4%',
           }}>
           <TouchableOpacity
+            activeOpacity={0}
             onPress={() => {
               setProductIdToRemove(product.id);
             }}
@@ -150,7 +153,7 @@ const ProductCard = ({
           </TouchableOpacity>
         </View>
       )}
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
@@ -180,11 +183,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   rowOneText: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
     fontFamily: 'Roboto-Bold',
     color: 'white',
-    textShadowColor: 'rgba(0,0,0,0.6)',
+    textShadowColor: 'rgba(0,0,0,0.5)',
     textShadowRadius: 0.3,
     textShadowOffset: {width: 1, height: 1},
   },
@@ -192,7 +195,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: 'Roboto-Bold',
     color: 'white',
-    textShadowColor: 'rgba(0,0,0,0.6)',
+    textShadowColor: 'rgba(0,0,0,0.5)',
     textShadowRadius: 0.3,
     textShadowOffset: {width: 1, height: 1},
   },
@@ -208,7 +211,7 @@ const styles = StyleSheet.create({
     right: 10,
   },
   imageStyle: {
-    height: 280,
+    height: 270,
     width: '100%',
     borderRadius: 15,
     overflow: 'hidden',

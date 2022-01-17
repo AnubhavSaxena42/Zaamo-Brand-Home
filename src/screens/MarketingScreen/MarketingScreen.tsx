@@ -7,6 +7,7 @@ import {
   Text,
   View,
 } from 'react-native';
+import {BarIndicator} from 'react-native-indicators';
 import Coupon from '../../components/Coupon/Coupon';
 import Header from '../../components/Header';
 import {useSelector, useDispatch} from 'react-redux';
@@ -96,7 +97,7 @@ const MarketingScreen = ({navigation}) => {
                       justifyContent: 'center',
                       alignItems: 'center',
                     }}>
-                    <ActivityIndicator size={50} color="black" />
+                    <BarIndicator size={30} count={5} color="black" />
                   </View>
                 );
               }
@@ -114,5 +115,6 @@ export default MarketingScreen;
 const styles = StyleSheet.create({
   marketingContainer: {
     flex: 1,
+    backgroundColor: 'white',
   },
 });

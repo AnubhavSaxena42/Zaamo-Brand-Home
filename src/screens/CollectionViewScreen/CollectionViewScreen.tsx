@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import ProductCard from '../../components/ProductCard/ProductCard';
+import {BarIndicator} from 'react-native-indicators';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {REMOVE_PRODUCT_COLLECTION} from './mutations';
 import {useDispatch, useSelector} from 'react-redux';
@@ -146,7 +147,7 @@ const CollectionViewScreen = ({navigation, route}) => {
           flexDirection: 'row',
           alignItems: 'center',
           width: '100%',
-          height: 80,
+          height: 60,
           justifyContent: 'center',
           backgroundColor: 'white',
           borderBottomWidth: 1,
@@ -164,7 +165,7 @@ const CollectionViewScreen = ({navigation, route}) => {
             color: 'black',
             fontFamily: 'Roboto-Bold',
           }}>
-          {collection.name.toUpperCase()}
+          {collection.name}
         </Text>
       </View>
       {/*<Image
@@ -217,7 +218,7 @@ const CollectionViewScreen = ({navigation, route}) => {
         numColumns={2}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
-          !collectionResponse.loading
+          !refreshing && !collectionResponse.loading
             ? () => (
                 <View
                   style={{
@@ -225,7 +226,7 @@ const CollectionViewScreen = ({navigation, route}) => {
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}>
-                  <ActivityIndicator size={'large'} color="black" />
+                  <Text>No Products</Text>
                 </View>
               )
             : null
@@ -240,7 +241,7 @@ const CollectionViewScreen = ({navigation, route}) => {
                       justifyContent: 'center',
                       alignItems: 'center',
                     }}>
-                    <ActivityIndicator size={'large'} color="black" />
+                    <BarIndicator size={30} count={5} color="black" />
                   </View>
                 );
               }
@@ -279,6 +280,7 @@ export default CollectionViewScreen;
 const styles = StyleSheet.create({
   collectionViewContainer: {
     flex: 1,
+    backgroundColor: 'white',
   },
   imageStyle: {
     width: '100%',

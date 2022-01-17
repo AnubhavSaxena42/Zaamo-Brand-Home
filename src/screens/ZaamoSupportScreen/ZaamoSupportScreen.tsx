@@ -7,6 +7,7 @@ import {
   Dimensions,
   Image,
   TextInput,
+  ScrollView,
   TouchableOpacity,
 } from 'react-native';
 import {useSelector} from 'react-redux';
@@ -40,7 +41,7 @@ const ZaamoSupportScreen = ({navigation, route}) => {
   }, [data]);
   console.log(data, error, loading);
   return (
-    <View style={styles.zaamoSupportContainer}>
+    <ScrollView contentContainerStyle={styles.zaamoSupportContainer}>
       <View style={{alignItems: 'center'}}>
         <Image
           source={require('../../assets/images/DashboardEllipse.png')}
@@ -67,6 +68,7 @@ const ZaamoSupportScreen = ({navigation, route}) => {
             fontSize: 22,
             paddingHorizontal: '10%',
             textAlign: 'center',
+            fontFamily: 'Roboto-Bold',
           }}>
           We'd Love to hear from you!
         </Text>
@@ -160,7 +162,7 @@ const ZaamoSupportScreen = ({navigation, route}) => {
           <Text style={{color: 'white', fontWeight: 'bold'}}>Save</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

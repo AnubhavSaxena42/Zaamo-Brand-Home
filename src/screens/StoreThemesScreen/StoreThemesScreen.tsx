@@ -3,6 +3,7 @@ import {
   Dimensions,
   TouchableOpacity,
   StyleSheet,
+  ScrollView,
   Image,
   Text,
   View,
@@ -13,7 +14,7 @@ import toastService from '../../services/toast-service';
 const windowWidth = Dimensions.get('window').width;
 const StoreThemesScreen = ({navigation, route}) => {
   return (
-    <View style={styles.storeThemesContainer}>
+    <ScrollView contentContainerStyle={styles.storeThemesContainer}>
       <View style={{alignItems: 'center'}}>
         <Image
           source={require('../../assets/images/DashboardEllipse.png')}
@@ -38,6 +39,8 @@ const StoreThemesScreen = ({navigation, route}) => {
             fontSize: 22,
             paddingHorizontal: '10%',
             textAlign: 'center',
+            fontWeight: '500',
+            fontFamily: 'Roboto-Bold',
           }}>
           Store Themes
         </Text>
@@ -97,7 +100,7 @@ const StoreThemesScreen = ({navigation, route}) => {
           <Text style={{color: 'white', fontWeight: 'bold'}}>Save</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

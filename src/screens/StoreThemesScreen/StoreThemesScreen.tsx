@@ -57,7 +57,7 @@ const StoreThemesScreen = ({navigation, route}) => {
       <Text
         style={{
           color: 'black',
-          fontSize: 16,
+          fontSize: 14,
           marginTop: '2%',
           paddingLeft: '2%',
         }}>
@@ -129,6 +129,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     textAlign: 'center',
     fontSize: 14,
+    color: 'gray',
+
     borderWidth: 1,
     borderRadius: 4,
     backgroundColor: 'white',

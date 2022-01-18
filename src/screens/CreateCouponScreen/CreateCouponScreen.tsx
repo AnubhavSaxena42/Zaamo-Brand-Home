@@ -165,7 +165,6 @@ const CreateCouponScreen = ({navigation}) => {
   let input = {
     type: couponType,
     name: couponName,
-    code: couponCode,
     discountValueType: discountType,
     discountValue: discountValue,
     owner: owner,
@@ -222,10 +221,7 @@ const CreateCouponScreen = ({navigation}) => {
     if (!couponTitle || couponTitle === '') {
       setCouponTitleFieldError(true);
     }
-    if (!couponCode || couponCode === '') {
-      setCouponCodeFieldError(true);
-      return;
-    }
+
     if (!selectedStores || selectedStores.length === 0) {
       setSelectedStoresFieldError(true);
       return;
@@ -271,7 +267,7 @@ const CreateCouponScreen = ({navigation}) => {
     ) {
       input.products = selectedProducts;
     }
-    console.log('New Input:', input);
+    console.log('New Input:', JSON.stringify(input));
     voucherBulkCreate();
   };
   const [voucherBulkCreate, voucherResponse] = useMutation(CREATE_VOUCHER, {
@@ -308,7 +304,7 @@ const CreateCouponScreen = ({navigation}) => {
     }
   }, [owner]);
 
-  console.log('Selected Stores:', selectedStores);
+  console.log('Selected Stores:', JSON.stringify(selectedStores));
   console.log('Selected Brands:', selectedBrands);
   console.log('Selected Products:', selectedProducts);
 
@@ -1053,7 +1049,7 @@ const CreateCouponScreen = ({navigation}) => {
           }}>
           Coupon Naming
         </Text>
-        <Text
+        {/*<Text
           style={{
             marginVertical: '5%',
             fontSize: 15,
@@ -1076,7 +1072,7 @@ const CreateCouponScreen = ({navigation}) => {
             paddingHorizontal: '5%',
           }}
           placeholder={'Enter Coupon Short Name'}
-        />
+        />*/}
         {couponCodeFieldError && <ErrorMessage />}
         <Text
           style={{

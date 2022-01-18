@@ -199,6 +199,7 @@ export const HomeTabNavigator = () => {
     <HomeTabs.Navigator
       tabBarOptions={{
         activeTintColor: 'black',
+        keyboardHidesTabBar: true,
         inactiveTintColor: 'gray',
         labelStyle: {
           paddingBottom: 10,

@@ -75,7 +75,7 @@ const Coupon = ({navigation, coupon}) => {
             alignItems: 'center',
             justifyContent: 'space-between',
           }}>
-          <Text style={{fontSize: 14}}>{coupon.name}</Text>
+          <Text style={{fontSize: 14, color: 'gray'}}>{coupon.name}</Text>
           <Text style={{fontSize: 12, color: '#3eb988', fontWeight: '700'}}>
             Available
           </Text>

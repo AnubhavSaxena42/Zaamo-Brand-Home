@@ -274,7 +274,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     backgroundColor: 'white',
-
     marginVertical: '2%',
   },
   imageStyle: {

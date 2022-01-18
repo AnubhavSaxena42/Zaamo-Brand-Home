@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
     marginLeft: 7,
   },
   labelText: {
+    color: 'black',
     fontSize: 16,
   },
 });

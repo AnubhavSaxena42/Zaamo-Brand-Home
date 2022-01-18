@@ -64,7 +64,8 @@ const CreateVariantScreen = ({navigation, route}) => {
   const {variations, productID} = route.params;
   console.log('Variations:', variations);
   const [variants, setVariants] = useState();
-  console.log(productID);
+  console.log('product ID:', productID);
+  console.log('Variants:', JSON.stringify(variants));
   const dispatch = useDispatch();
   const [error, setError] = useState(false);
   const [productVariantBulkCreate, variantCreateResponse] = useMutation(
@@ -75,6 +76,7 @@ const CreateVariantScreen = ({navigation, route}) => {
         variants: variants,
       },
       refetchQueries: [GET_AUTHORISED_BRANDS],
+      notifyOnNetworkStatusChange: true,
     },
   );
   const warehouseId = useSelector(state => state.store.warehouse);
@@ -115,6 +117,8 @@ const CreateVariantScreen = ({navigation, route}) => {
       ) {
         toastService.showToast('Variants Created Successfully', true);
         navigation.replace('ProductsTabScreen');
+      } else {
+        toastService.showToast('Failed to create Variants', true);
       }
     }
   }, [variantCreateResponse.data]);

@@ -62,12 +62,10 @@ const CreateProductScreen = ({navigation, route}) => {
     useState(false);
   const [variationsError, setVariationsError] = useState(false);
   const brandId = useSelector(state => state.user.authorisedBrands[0]?.id);
-  console.log(brandId);
 
   const colorResponse = useQuery(GET_COLOR_VALUES);
   useEffect(() => {
     if (colorResponse.data) {
-      console.log(colorResponse.data);
       const newColorAttributeId =
         colorResponse.data.attributes.edges[0].node?.id;
       const newColorAttributeValues =
@@ -88,7 +86,6 @@ const CreateProductScreen = ({navigation, route}) => {
   const sizeResponse = useQuery(GET_SIZE_VALUES);
   useEffect(() => {
     if (sizeResponse.data) {
-      console.log('sizeResponse:', sizeResponse.data);
       /*const newSizeAttributeId = sizeResponse.data.attributes.edges[5].node.id;
       const newSizeAttributeValues =
         sizeResponse.data.attributes.edges[5].node.values.map(value => {
@@ -187,7 +184,6 @@ const CreateProductScreen = ({navigation, route}) => {
       const newProductTypes = data.productTypes.edges.map(({node}) => {
         return node;
       });
-      console.log('Product Types:', newProductTypes);
       setProductTypeItems(newProductTypes);
     }
   }, [data]);
@@ -214,7 +210,6 @@ const CreateProductScreen = ({navigation, route}) => {
       navigation.navigate('variants', {variations});
     }
   };
-  console.log(brandId);
   const products = useSelector(state => state.store.products);
   let productInput = {
     productType: productType,
@@ -247,6 +242,7 @@ const CreateProductScreen = ({navigation, route}) => {
   );
   useEffect(() => {
     if (productImageResponse.data) {
+      console.log('Product Image Response Data:', productImageResponse.data);
       navigation.navigate('CreateVariantScreen', {
         variations: variations,
         productID: newProductId,
@@ -264,22 +260,10 @@ const CreateProductScreen = ({navigation, route}) => {
   }, [productImageResponse.loading]);
   const dispatch = useDispatch();
   useEffect(() => {
+    console.log('Created Product data:', productResponse);
     if (productResponse.data) {
-      console.log('Created Product:', productResponse.data);
-      const newProducts = [
-        ...products,
-        {
-          id: productResponse.data.productCreate.product.id,
-          name: productResponse.data.productCreate.product.name,
-          brandName: productResponse.data.productCreate.product.brand.brandName,
-          price: 0,
-          thumbnail: productResponse.data.productCreate.product.thumbnail
-            ? productResponse.data.productCreate.product.thumbnail.url
-            : 'https://media-exp1.licdn.com/dms/image/C4E0BAQGymyKm7OE3wg/company-logo_200_200/0/1636442519943?e=2159024400&v=beta&t=19hHu3puobGsregS0-31D-KiANWe3NqrKZESktzQC30',
-        },
-      ];
+      console.log('Created Product :', productResponse.data);
       setNewProductId(productResponse.data.productCreate.product.id);
-      dispatch(setStoreProducts(newProducts));
       dispatch(setLoaderStatus(false));
       toastService.showToast(
         `Product created succesfully:${productResponse.data.productCreate.product.name}`,
@@ -316,6 +300,7 @@ const CreateProductScreen = ({navigation, route}) => {
       setVariationsError(true);
     }
     if (flag > 0) return;
+    console.log('Product create Input:', JSON.stringify(productInput));
     productCreate();
     /*const variationsCreate = variations.map(variation => {
       return {
@@ -883,7 +868,6 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-around',
     alignItems: 'center',
-
     marginVertical: '5%',
   },
   addVariantsContainer: {

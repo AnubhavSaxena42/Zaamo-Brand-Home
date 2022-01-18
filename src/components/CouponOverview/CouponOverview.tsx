@@ -37,7 +37,8 @@ const CouponOverview = ({coupon}) => {
           {coupon.name}
         </Text>
         {coupon.metadata[1] ? (
-          <Text style={{textAlign: 'center', marginBottom: '10%'}}>
+          <Text
+            style={{textAlign: 'center', color: 'gray', marginBottom: '10%'}}>
             {coupon.metadata[1].value}
           </Text>
         ) : (

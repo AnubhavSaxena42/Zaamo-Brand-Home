@@ -392,7 +392,7 @@ const ProductsTabScreen = ({navigation}) => {
       <View
         style={{
           width: '90%',
-          height: '5%',
+          height: 35,
           borderRadius: 5,
           marginTop: '2%',
           shadowColor: '#000',

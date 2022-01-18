@@ -36,10 +36,11 @@ const CouponInfoScreen = ({navigation, route}) => {
           marginBottom: '8%',
           alignItems: 'center',
           paddingLeft: '2%',
+          justifyContent: 'center',
         }}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          style={{zIndex: 2}}>
+          style={{zIndex: 2, position: 'absolute', left: 10}}>
           <Ionicons name="arrow-back-sharp" color={'white'} size={35} />
         </TouchableOpacity>
         <Text
@@ -47,7 +48,7 @@ const CouponInfoScreen = ({navigation, route}) => {
             color: 'white',
             zIndex: 2,
             fontFamily: 'Roboto-Bold',
-            fontSize: 15,
+            fontSize: 22,
             paddingHorizontal: '5%',
           }}>
           Marketing
@@ -68,10 +69,22 @@ const CouponInfoScreen = ({navigation, route}) => {
           shadowRadius: 2,
           elevation: 5,
         }}>
-        <Text style={{textAlign: 'center', marginVertical: '2%', fontSize: 16}}>
+        <Text
+          style={{
+            textAlign: 'center',
+            color: 'black',
+            marginVertical: '2%',
+            fontSize: 16,
+          }}>
           Description
         </Text>
-        <Text style={{textAlign: 'center', marginVertical: '1%', fontSize: 14}}>
+        <Text
+          style={{
+            textAlign: 'center',
+            color: 'black',
+            marginVertical: '1%',
+            fontSize: 14,
+          }}>
           {route.params.coupon.metadata[0].value}
         </Text>
       </View>
@@ -91,7 +104,8 @@ const CouponInfoScreen = ({navigation, route}) => {
           shadowRadius: 2,
           elevation: 5,
         }}>
-        <Text style={{fontFamily: 'Roboto-Black', fontSize: 14}}>
+        <Text
+          style={{fontFamily: 'Roboto-Black', color: 'black', fontSize: 14}}>
           Applicable Products
         </Text>
         {route.params.coupon.products.edges.map(({node}) => {
@@ -114,7 +128,7 @@ const CouponInfoScreen = ({navigation, route}) => {
                 }}
                 source={{uri: node.thumbnail?.url ? node.thumbnail?.url : ''}}
               />
-              <Text style={{flex: 1}}>{node.name}</Text>
+              <Text style={{flex: 1, color: 'black'}}>{node.name}</Text>
             </View>
           );
         })}

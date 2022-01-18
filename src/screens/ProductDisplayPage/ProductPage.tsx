@@ -2,6 +2,7 @@ import React, {useState, useMemo, useRef, useCallback} from 'react';
 import {
   StyleSheet,
   Text,
+  ScrollView,
   View,
   Dimensions,
   Image,
@@ -20,7 +21,7 @@ const ProductPage = ({navigation, route}) => {
   // ref
   const bottomSheetRef = useRef<BottomSheet>(null);
   // variables
-  const snapPoints = useMemo(() => ['12%', '50%'], []);
+  const snapPoints = useMemo(() => ['12%', '75%'], []);
 
   // callbacks
   const handleSheetChanges = useCallback((index: number) => {}, []);
@@ -42,8 +43,24 @@ const ProductPage = ({navigation, route}) => {
     <View style={styles.productPageContainer}>
       <TouchableOpacity
         onPress={() => navigation.goBack()}
-        style={{zIndex: 2, position: 'absolute', left: 10, top: 10}}>
-        <Ionicons name="arrow-back-sharp" color={'black'} size={35} />
+        style={{
+          zIndex: 2,
+          position: 'absolute',
+          backgroundColor: 'white',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: 40,
+          shadowColor: '#000',
+          shadowOffset: {width: 0, height: 0},
+          shadowOpacity: 0.5,
+          shadowRadius: 5,
+          elevation: 3,
+          height: 40,
+          borderRadius: 10,
+          left: 10,
+          top: 10,
+        }}>
+        <Ionicons name="arrow-back-sharp" color={'black'} size={30} />
       </TouchableOpacity>
       {data.length !== 1 && (
         <View
@@ -186,18 +203,19 @@ const ProductPage = ({navigation, route}) => {
               <View style={{width: '70%'}}>
                 <Text
                   style={{
-                    fontSize: 16,
+                    fontSize: 20,
+                    letterSpacing: 1,
                     maxWidth: '70%',
-                    fontWeight: 'bold',
+                    fontWeight: '400',
                     color: 'black',
                   }}>
                   {product.brandName}
                 </Text>
                 <Text
                   style={{
-                    fontSize: 12,
+                    fontSize: 14,
                     maxWidth: '70%',
-                    fontWeight: 'bold',
+                    fontWeight: '400',
                     color: 'black',
                   }}>
                   {product.name}
@@ -234,7 +252,7 @@ const ProductPage = ({navigation, route}) => {
                   );
                 })}
               </View>*/}
-            <Text style={{color: 'black', fontSize: 14}}>Sizes Available</Text>
+            <Text style={{color: 'black', fontSize: 16}}>Sizes Available</Text>
             <View
               style={{
                 flexDirection: 'row',
@@ -255,16 +273,16 @@ const ProductPage = ({navigation, route}) => {
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}>
-                  <Text style={{color: 'black', fontSize: 12}}>
+                  <Text style={{color: 'black', fontSize: 14}}>
                     {variant.name}
                   </Text>
                 </View>
               ))}
             </View>
-            <Text style={{color: 'black', fontSize: 14}}>
+            <Text style={{color: 'black', fontSize: 16}}>
               Product Description
             </Text>
-            <Text style={{color: 'gray', fontSize: 12}}>
+            <Text style={{color: 'gray', fontSize: 14}}>
               {product.description}
             </Text>
           </View>
@@ -284,6 +302,8 @@ const styles = StyleSheet.create({
   productOverview: {},
   contentContainer: {
     flex: 1,
+    position: 'absolute',
+    zIndex: 100,
     backgroundColor: 'white',
   },
   wrapper: {},

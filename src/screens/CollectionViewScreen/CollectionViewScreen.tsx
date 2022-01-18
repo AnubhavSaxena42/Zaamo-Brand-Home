@@ -149,20 +149,20 @@ const CollectionViewScreen = ({navigation, route}) => {
           width: '100%',
           height: 60,
           justifyContent: 'center',
-          backgroundColor: 'white',
+          backgroundColor: 'black',
           borderBottomWidth: 1,
           borderBottomColor: 'rgba(0,0,0,0.2)',
         }}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={{zIndex: 2, position: 'absolute', left: 10}}>
-          <Ionicons name="arrow-back-sharp" color={'black'} size={35} />
+          <Ionicons name="arrow-back-sharp" color={'white'} size={35} />
         </TouchableOpacity>
         <Text
           style={{
             alignSelf: 'center',
             fontSize: 24,
-            color: 'black',
+            color: 'white',
             fontFamily: 'Roboto-Bold',
           }}>
           {collection.name}

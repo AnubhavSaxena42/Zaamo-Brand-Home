@@ -273,12 +273,15 @@ const PaymentDetailsScreen = ({navigation, route}) => {
             height: '100%',
             width: '100%',
           }}>
-          <Text style={{marginVertical: '5%'}}>Account Holder Name</Text>
+          <Text style={{marginVertical: '5%', color: 'gray'}}>
+            Account Holder Name
+          </Text>
           <TextInput
             value={accountHolderName}
             onChangeText={text => setAccountHolderName(text)}
             style={{
               width: '100%',
+              color: 'gray',
               borderWidth: 1,
               borderColor: 'rgba(0,0,0,0.3)',
               borderRadius: 4,
@@ -293,13 +296,14 @@ const PaymentDetailsScreen = ({navigation, route}) => {
             placeholder={'Enter Account Holder Name'}
           />
           {accountHolderNameError && <ErrorMessage />}
-          <Text style={{marginVertical: '5%'}}>UPI ID</Text>
+          <Text style={{marginVertical: '5%', color: 'gray'}}>UPI ID</Text>
           <TextInput
             value={upiId}
             onChangeText={text => setUpiId(text)}
             style={{
               width: '100%',
               borderWidth: 1,
+              color: 'gray',
               borderColor: 'rgba(0,0,0,0.3)',
               borderRadius: 4,
               backgroundColor: 'white',
@@ -313,12 +317,13 @@ const PaymentDetailsScreen = ({navigation, route}) => {
             placeholder={'Enter UPI ID'}
           />
           {upiIdError && <ErrorMessage />}
-          <Text style={{marginVertical: '5%'}}>Address</Text>
+          <Text style={{marginVertical: '5%', color: 'gray'}}>Address</Text>
           <TextInput
             value={address}
             onChangeText={text => setAddress(text)}
             style={{
               width: '100%',
+              color: 'gray',
               borderWidth: 1,
               borderColor: 'rgba(0,0,0,0.3)',
               borderRadius: 4,
@@ -333,13 +338,14 @@ const PaymentDetailsScreen = ({navigation, route}) => {
             placeholder={'Enter your Address'}
           />
           {addressError && <ErrorMessage />}
-          <Text style={{marginVertical: '5%'}}>Email</Text>
+          <Text style={{marginVertical: '5%', color: 'gray'}}>Email</Text>
           <TextInput
             value={email}
             onChangeText={text => setEmail(text)}
             style={{
               width: '100%',
               borderWidth: 1,
+              color: 'gray',
               borderColor: 'rgba(0,0,0,0.3)',
               borderRadius: 4,
               backgroundColor: 'white',
@@ -353,13 +359,14 @@ const PaymentDetailsScreen = ({navigation, route}) => {
             placeholder={'Enter your Email'}
           />
           {emailError && <ErrorMessage />}
-          <Text style={{marginVertical: '5%'}}>PAN Number</Text>
+          <Text style={{marginVertical: '5%', color: 'gray'}}>PAN Number</Text>
           <TextInput
             value={panNumber}
             onChangeText={text => setPanNumber(text)}
             style={{
               width: '100%',
               borderWidth: 1,
+              color: 'gray',
               borderColor: 'rgba(0,0,0,0.3)',
               borderRadius: 4,
               backgroundColor: 'white',
@@ -396,12 +403,15 @@ const PaymentDetailsScreen = ({navigation, route}) => {
             height: '100%',
             width: '100%',
           }}>
-          <Text style={{marginVertical: '5%'}}>Account Holder Name</Text>
+          <Text style={{marginVertical: '5%', color: 'gray'}}>
+            Account Holder Name
+          </Text>
           <TextInput
             value={accountHolderName}
             onChangeText={text => setAccountHolderName(text)}
             style={{
               width: '100%',
+              color: 'gray',
               borderWidth: 1,
               borderColor: 'rgba(0,0,0,0.3)',
               borderRadius: 4,
@@ -416,7 +426,9 @@ const PaymentDetailsScreen = ({navigation, route}) => {
             placeholder={'Enter Account Holder Name'}
           />
           {accountHolderNameError && <ErrorMessage />}
-          <Text style={{marginVertical: '5%'}}>Bank Account Number</Text>
+          <Text style={{marginVertical: '5%', color: 'gray'}}>
+            Bank Account Number
+          </Text>
           <TextInput
             value={bankAccountNumber}
             onChangeText={text => setBankAccountNumber(text)}
@@ -424,6 +436,7 @@ const PaymentDetailsScreen = ({navigation, route}) => {
               width: '100%',
               borderWidth: 1,
               borderColor: 'rgba(0,0,0,0.3)',
+              color: 'gray',
               borderRadius: 4,
               backgroundColor: 'white',
               paddingHorizontal: '5%',
@@ -436,13 +449,16 @@ const PaymentDetailsScreen = ({navigation, route}) => {
             placeholder={'Enter Bank Account Number'}
           />
           {bankAccountNumberError && <ErrorMessage />}
-          <Text style={{marginVertical: '5%'}}>Confirm Account Number</Text>
+          <Text style={{color: 'gray', marginVertical: '5%'}}>
+            Confirm Account Number
+          </Text>
           <TextInput
             value={confirmBankAccountNumber}
             onChangeText={text => setConfirmBankAccountNumber(text)}
             style={{
               width: '100%',
               borderWidth: 1,
+              color: 'gray',
               borderColor: 'rgba(0,0,0,0.3)',
               borderRadius: 4,
               backgroundColor: 'white',
@@ -456,13 +472,16 @@ const PaymentDetailsScreen = ({navigation, route}) => {
             placeholder={'Re-Enter Bank Account Number'}
           />
           {confirmBankAccountNumberError && <ErrorMessage />}
-          <Text style={{marginVertical: '5%'}}>Bank IFSC Code</Text>
+          <Text style={{color: 'gray', marginVertical: '5%'}}>
+            Bank IFSC Code
+          </Text>
           <TextInput
             value={bankIfscCode}
             onChangeText={text => setBankIfscCode(text)}
             style={{
               width: '100%',
               borderWidth: 1,
+              color: 'gray',
               borderColor: 'rgba(0,0,0,0.3)',
               borderRadius: 4,
               backgroundColor: 'white',
@@ -476,13 +495,14 @@ const PaymentDetailsScreen = ({navigation, route}) => {
             placeholder={'Enter Bank IFSC Code'}
           />
           {bankIfscCodeError && <ErrorMessage />}
-          <Text style={{marginVertical: '5%'}}>Address</Text>
+          <Text style={{color: 'gray', marginVertical: '5%'}}>Address</Text>
           <TextInput
             value={address}
             onChangeText={text => setAddress(text)}
             style={{
               width: '100%',
               borderWidth: 1,
+              color: 'gray',
               borderColor: 'rgba(0,0,0,0.3)',
               borderRadius: 4,
               backgroundColor: 'white',
@@ -496,13 +516,14 @@ const PaymentDetailsScreen = ({navigation, route}) => {
             placeholder={'Enter Address'}
           />
           {addressError && <ErrorMessage />}
-          <Text style={{marginVertical: '5%'}}>Email</Text>
+          <Text style={{color: 'gray', marginVertical: '5%'}}>Email</Text>
           <TextInput
             value={email}
             onChangeText={text => setEmail(text)}
             style={{
               width: '100%',
               borderWidth: 1,
+              color: 'gray',
               borderColor: 'rgba(0,0,0,0.3)',
               borderRadius: 4,
               backgroundColor: 'white',
@@ -516,13 +537,14 @@ const PaymentDetailsScreen = ({navigation, route}) => {
             placeholder={'Enter Your Email'}
           />
           {emailError && <ErrorMessage />}
-          <Text style={{marginVertical: '5%'}}>PAN Number</Text>
+          <Text style={{color: 'gray', marginVertical: '5%'}}>PAN Number</Text>
           <TextInput
             value={panNumber}
             onChangeText={text => setPanNumber(text)}
             style={{
               width: '100%',
               borderWidth: 1,
+              color: 'gray',
               borderColor: 'rgba(0,0,0,0.3)',
               borderRadius: 4,
               backgroundColor: 'white',

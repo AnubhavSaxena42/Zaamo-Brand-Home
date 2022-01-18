@@ -4,11 +4,17 @@ import {
   TouchableOpacity,
   Text,
   View,
+  Pressable,
   ImageBackground,
 } from 'react-native';
 
 import Entypo from 'react-native-vector-icons/Entypo';
-const AddProductCard = ({product, setSelectedProducts, selectedProducts}) => {
+const AddProductCard = ({
+  product,
+  navigation,
+  setSelectedProducts,
+  selectedProducts,
+}) => {
   const selectionHandler = () => {
     console.log('selectedProducts:', selectedProducts);
     console.log('Product to add:', product);
@@ -27,7 +33,9 @@ const AddProductCard = ({product, setSelectedProducts, selectedProducts}) => {
     }
   };
   return (
-    <View style={styles.addProductCardContainer}>
+    <Pressable
+      onPress={() => navigation.navigate('ProductPage', {product: product})}
+      style={styles.addProductCardContainer}>
       <ImageBackground
         style={styles.imageStyle}
         resizeMode="cover"
@@ -75,7 +83,7 @@ const AddProductCard = ({product, setSelectedProducts, selectedProducts}) => {
           </View>
         </View>
       </ImageBackground>
-    </View>
+    </Pressable>
   );
 };
 

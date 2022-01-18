@@ -66,6 +66,7 @@ const BrandGuidelinesScreen = ({navigation, route}) => {
           style={{
             width: '100%',
             borderWidth: 1,
+            color: 'gray',
             borderColor: 'rgba(0,0,0,0.3)',
             borderRadius: 4,
             paddingHorizontal: '5%',
@@ -85,6 +86,7 @@ const BrandGuidelinesScreen = ({navigation, route}) => {
         <TextInput
           style={{
             width: '100%',
+            color: 'gray',
             borderWidth: 1,
             borderColor: 'rgba(0,0,0,0.3)',
             borderRadius: 4,

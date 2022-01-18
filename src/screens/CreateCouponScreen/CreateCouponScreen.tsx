@@ -43,7 +43,7 @@ const webDropdownStyle = {
 };
 
 const mobileDropdownStyle = {
-  height: 50,
+  height: 35,
   width: '100%',
   borderRadius: 5,
   alignItems: 'center',
@@ -60,7 +60,7 @@ const mobileDropdownStyle = {
   zIndex: 200,
 };
 const mobileDropdownValuesContainerStyle = {
-  top: 40,
+  top: 34,
   width: '102%',
   alignSelf: 'center',
   borderWidth: 1,
@@ -376,7 +376,7 @@ const CreateCouponScreen = ({navigation}) => {
 
   return (
     <ScrollView
-      contentContainerStyle={{paddingBottom: '35%'}}
+      contentContainerStyle={{paddingBottom: '5%'}}
       style={styles.createCouponContainer}>
       <Header tag={'Marketing'} fontSize={22} />
       {isBrandsModalVisible && (
@@ -512,15 +512,32 @@ const CreateCouponScreen = ({navigation}) => {
           </TouchableOpacity>
         </View>
       </Modal>
-      <View style={{flex: 1, paddingHorizontal: '5%', paddingVertical: '4%'}}>
-        <Text style={{fontSize: 28, color: 'black'}}>Create Coupon</Text>
-        <Text style={{fontSize: 22, color: 'black', marginTop: '4%'}}>
+      <View
+        style={{
+          height: 65,
+          backgroundColor: 'white',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100%',
+        }}>
+        <Text style={{fontSize: 22, color: 'black', fontWeight: '500'}}>
+          Create Coupon
+        </Text>
+      </View>
+      <View style={{flex: 1, paddingHorizontal: '5%'}}>
+        <Text
+          style={{
+            textAlign: 'center',
+            fontSize: 18,
+            color: 'black',
+            marginTop: '4%',
+          }}>
           Coupon Details
         </Text>
         <Text
           style={{
             marginVertical: '5%',
-            fontSize: 16,
+            fontSize: 15,
             color: 'black',
             fontWeight: '500',
           }}>
@@ -551,9 +568,9 @@ const CreateCouponScreen = ({navigation}) => {
           }
         />
         {couponType !== '' && (
-          <View style={{flexDirection: 'row', marginVertical: '5%'}}>
+          <View style={{flexDirection: 'row', marginTop: '5%'}}>
             <Entypo name="check" size={15} color={'black'} />
-            <Text style={{marginBottom: '5%', marginLeft: '3%'}}>
+            <Text style={{color: 'black', marginLeft: '3%'}}>
               Coupon Type Selected
             </Text>
           </View>
@@ -562,7 +579,7 @@ const CreateCouponScreen = ({navigation}) => {
         <Text
           style={{
             marginVertical: '5%',
-            fontSize: 16,
+            fontSize: 15,
             color: 'black',
             fontWeight: '500',
           }}>
@@ -595,18 +612,16 @@ const CreateCouponScreen = ({navigation}) => {
           }
         />
         {discountType !== '' && (
-          <View style={{flexDirection: 'row', marginVertical: '5%'}}>
+          <View style={{flexDirection: 'row', marginTop: '5%'}}>
             <Entypo name="check" size={15} color={'black'} />
-            <Text style={{marginBottom: '5%', marginLeft: '3%'}}>
-              Discount Type Selected
-            </Text>
+            <Text style={{marginLeft: '3%'}}>Discount Type Selected</Text>
           </View>
         )}
         {discountTypeFieldError && <ErrorMessage />}
         <Text
           style={{
             marginVertical: '5%',
-            fontSize: 16,
+            fontSize: 15,
             color: 'black',
             fontWeight: '500',
           }}>
@@ -620,18 +635,20 @@ const CreateCouponScreen = ({navigation}) => {
           style={{
             width: '100%',
             borderWidth: 1,
+            height: 40,
+            color: 'gray',
             borderColor: 'rgba(0,0,0,0.3)',
             borderRadius: 4,
             backgroundColor: 'white',
             paddingHorizontal: '5%',
           }}
-          placeholder={'Select Discount Value'}
+          placeholder={'Enter Discount Value'}
         />
         {discountValueFieldError && <ErrorMessage />}
         <Text
           style={{
             marginVertical: '5%',
-            fontSize: 16,
+            fontSize: 15,
             color: 'black',
             fontWeight: '500',
           }}>
@@ -645,6 +662,8 @@ const CreateCouponScreen = ({navigation}) => {
           style={{
             width: '100%',
             borderWidth: 1,
+            height: 40,
+            color: 'gray',
             borderColor: 'rgba(0,0,0,0.3)',
             borderRadius: 4,
             backgroundColor: 'white',
@@ -655,7 +674,7 @@ const CreateCouponScreen = ({navigation}) => {
         <Text
           style={{
             marginTop: '5%',
-            fontSize: 16,
+            fontSize: 15,
             color: 'black',
             fontWeight: '500',
           }}>
@@ -666,7 +685,7 @@ const CreateCouponScreen = ({navigation}) => {
             <Text
               style={{
                 marginVertical: '5%',
-                fontSize: 16,
+                fontSize: 14,
                 color: 'black',
                 fontWeight: '500',
               }}>
@@ -679,6 +698,8 @@ const CreateCouponScreen = ({navigation}) => {
               style={{
                 width: '100%',
                 borderWidth: 1,
+                color: 'gray',
+                height: 40,
                 borderColor: 'rgba(0,0,0,0.3)',
                 borderRadius: 4,
                 backgroundColor: 'white',
@@ -691,7 +712,7 @@ const CreateCouponScreen = ({navigation}) => {
             <Text
               style={{
                 marginVertical: '5%',
-                fontSize: 16,
+                fontSize: 14,
                 color: 'black',
                 fontWeight: '500',
               }}>
@@ -704,6 +725,8 @@ const CreateCouponScreen = ({navigation}) => {
               style={{
                 width: '100%',
                 borderWidth: 1,
+                color: 'gray',
+                height: 40,
                 borderColor: 'rgba(0,0,0,0.3)',
                 borderRadius: 4,
                 backgroundColor: 'white',
@@ -718,7 +741,7 @@ const CreateCouponScreen = ({navigation}) => {
             <Text
               style={{
                 marginTop: '5%',
-                fontSize: 16,
+                fontSize: 15,
                 color: 'black',
                 fontWeight: '500',
               }}>
@@ -728,7 +751,7 @@ const CreateCouponScreen = ({navigation}) => {
               style={{
                 marginVertical: '5%',
                 width: '100%',
-                height: 50,
+                height: 40,
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'space-between',
@@ -737,34 +760,25 @@ const CreateCouponScreen = ({navigation}) => {
                 borderRadius: 4,
                 paddingHorizontal: '3%',
                 backgroundColor: 'white',
-                shadowOffset: {
-                  width: 0,
-                  height: 1,
-                },
-                shadowRadius: 2,
-                shadowOpacity: 1.0,
-                elevation: 5,
               }}>
-              <Text>Select Brands*</Text>
+              <Text style={{color: 'gray'}}>Select Brands*</Text>
               <TouchableOpacity
                 onPress={() => setIsBrandsModalVisible(true)}
                 style={{
                   height: '80%',
-                  width: '30%',
+                  width: '25%',
                   borderRadius: 4,
                   backgroundColor: 'black',
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
-                <Text style={{color: 'white'}}>Pick Brands</Text>
+                <Text style={{color: 'white', fontSize: 12}}>Pick Brands</Text>
               </TouchableOpacity>
             </View>
             {selectedBrands.length !== 0 && (
               <View style={{flexDirection: 'row'}}>
                 <Entypo name="check" size={15} color={'black'} />
-                <Text style={{marginBottom: '5%', marginLeft: '3%'}}>
-                  Brands Selected
-                </Text>
+                <Text style={{marginLeft: '3%'}}>Brands Selected</Text>
               </View>
             )}
             {selectedBrandsFieldError && <ErrorMessage />}
@@ -776,7 +790,7 @@ const CreateCouponScreen = ({navigation}) => {
             <Text
               style={{
                 marginTop: '5%',
-                fontSize: 16,
+                fontSize: 15,
                 color: 'black',
                 fontWeight: '500',
               }}>
@@ -786,7 +800,7 @@ const CreateCouponScreen = ({navigation}) => {
               style={{
                 marginVertical: '5%',
                 width: '100%',
-                height: 50,
+                height: 40,
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'space-between',
@@ -795,15 +809,8 @@ const CreateCouponScreen = ({navigation}) => {
                 borderRadius: 4,
                 paddingHorizontal: '3%',
                 backgroundColor: 'white',
-                shadowOffset: {
-                  width: 0,
-                  height: 1,
-                },
-                shadowRadius: 2,
-                shadowOpacity: 1.0,
-                elevation: 5,
               }}>
-              <Text>Select Products*</Text>
+              <Text style={{color: 'gray'}}>Select Products*</Text>
               <TouchableOpacity
                 onPress={() => {
                   navigation.navigate('CollectionProductsAddScreen', {
@@ -815,32 +822,31 @@ const CreateCouponScreen = ({navigation}) => {
                 }}
                 style={{
                   height: '80%',
-                  width: '30%',
+                  width: '25%',
                   borderRadius: 4,
                   backgroundColor: 'black',
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
-                <Text style={{color: 'white'}}>Pick Products</Text>
+                <Text style={{color: 'white', fontSize: 12}}>
+                  Pick Products
+                </Text>
               </TouchableOpacity>
             </View>
             {selectedProducts.length !== 0 && (
               <View style={{flexDirection: 'row'}}>
                 <Entypo name="check" size={15} color={'black'} />
-                <Text style={{marginBottom: '5%', marginLeft: '3%'}}>
-                  Products Selected
-                </Text>
+                <Text style={{marginLeft: '3%'}}>Products Selected</Text>
               </View>
             )}
 
             {selectedBrandsFieldError && <ErrorMessage />}
           </View>
         )}
-
         <Text
           style={{
             marginVertical: '5%',
-            fontSize: 16,
+            fontSize: 15,
             color: 'black',
             fontWeight: '500',
           }}>
@@ -873,11 +879,9 @@ const CreateCouponScreen = ({navigation}) => {
           }
         />
         {owner !== '' && (
-          <View style={{flexDirection: 'row', marginVertical: '5%'}}>
+          <View style={{flexDirection: 'row', marginTop: '5%'}}>
             <Entypo name="check" size={15} color={'black'} />
-            <Text style={{marginBottom: '5%', marginLeft: '3%'}}>
-              Owner Selected
-            </Text>
+            <Text style={{marginLeft: '3%'}}>Owner Selected</Text>
           </View>
         )}
         {ownerFieldError && <ErrorMessage />}
@@ -889,22 +893,16 @@ const CreateCouponScreen = ({navigation}) => {
             borderRadius: 4,
             paddingHorizontal: '5%',
             backgroundColor: 'white',
-            height: 50,
+            height: 40,
             justifyContent: 'center',
             alignItems: 'center',
             marginTop: '5%',
-            fontSize: 16,
+            fontSize: 15,
             color: 'black',
+
             textAlign: 'center',
             textAlignVertical: 'center',
             fontWeight: '500',
-            shadowOffset: {
-              width: 0,
-              height: 1,
-            },
-            shadowRadius: 2,
-            shadowOpacity: 1.0,
-            elevation: 5,
           }}>
           Select Dates
           <Entypo name="arrow-down" size={15} color={'black'} />
@@ -921,8 +919,9 @@ const CreateCouponScreen = ({navigation}) => {
                   backgroundColor: 'white',
                   paddingHorizontal: '5%',
                   marginVertical: '5%',
-                  fontSize: 16,
+                  fontSize: 14,
                   color: 'black',
+                  textAlign: 'center',
                   fontWeight: '500',
                 }}>
                 Select Start Date
@@ -933,6 +932,8 @@ const CreateCouponScreen = ({navigation}) => {
                   borderWidth: 1,
                   borderColor: 'rgba(0,0,0,0.3)',
                   borderRadius: 4,
+                  color: 'gray',
+                  textAlign: 'center',
                   backgroundColor: 'white',
                   paddingHorizontal: '5%',
                 }}>
@@ -961,7 +962,8 @@ const CreateCouponScreen = ({navigation}) => {
                   backgroundColor: 'white',
                   paddingHorizontal: '5%',
                   marginVertical: '5%',
-                  fontSize: 16,
+                  fontSize: 14,
+                  textAlign: 'center',
                   color: 'black',
                   fontWeight: '500',
                 }}>
@@ -973,6 +975,8 @@ const CreateCouponScreen = ({navigation}) => {
                   borderWidth: 1,
                   borderColor: 'rgba(0,0,0,0.3)',
                   borderRadius: 4,
+                  color: 'gray',
+                  textAlign: 'center',
                   backgroundColor: 'white',
                   paddingHorizontal: '5%',
                 }}>
@@ -997,7 +1001,7 @@ const CreateCouponScreen = ({navigation}) => {
         <Text
           style={{
             marginTop: '5%',
-            fontSize: 16,
+            fontSize: 15,
             color: 'black',
             fontWeight: '500',
           }}>
@@ -1007,7 +1011,7 @@ const CreateCouponScreen = ({navigation}) => {
           style={{
             marginTop: '5%',
             width: '100%',
-            height: 50,
+            height: 40,
             justifyContent: 'space-between',
             borderWidth: 1,
             borderColor: 'rgba(0,0,0,0.3)',
@@ -1016,26 +1020,19 @@ const CreateCouponScreen = ({navigation}) => {
             backgroundColor: 'white',
             paddingHorizontal: '3%',
             flexDirection: 'row',
-            shadowOffset: {
-              width: 0,
-              height: 1,
-            },
-            shadowRadius: 2,
-            shadowOpacity: 1.0,
-            elevation: 5,
           }}>
           <Text>Select Influencer Stores*</Text>
           <TouchableOpacity
             onPress={() => setIsStoresModalVisible(true)}
             style={{
               height: '80%',
-              width: '30%',
+              width: '25%',
               borderRadius: 4,
               backgroundColor: 'black',
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <Text style={{color: 'white'}}>Pick Stores</Text>
+            <Text style={{color: 'white', fontSize: 12}}>Pick Stores</Text>
           </TouchableOpacity>
         </View>
         {selectedStores.length !== 0 && (
@@ -1047,13 +1044,19 @@ const CreateCouponScreen = ({navigation}) => {
           </View>
         )}
         {selectedStoresFieldError && <ErrorMessage />}
-        <Text style={{fontSize: 22, color: 'black', marginTop: '4%'}}>
+        <Text
+          style={{
+            textAlign: 'center',
+            fontSize: 18,
+            color: 'black',
+            marginTop: '10%',
+          }}>
           Coupon Naming
         </Text>
         <Text
           style={{
             marginVertical: '5%',
-            fontSize: 16,
+            fontSize: 15,
             color: 'black',
             fontWeight: '500',
           }}>
@@ -1065,6 +1068,8 @@ const CreateCouponScreen = ({navigation}) => {
           style={{
             width: '100%',
             borderWidth: 1,
+            color: 'gray',
+            height: 40,
             borderColor: 'rgba(0,0,0,0.3)',
             borderRadius: 4,
             backgroundColor: 'white',
@@ -1076,7 +1081,7 @@ const CreateCouponScreen = ({navigation}) => {
         <Text
           style={{
             marginVertical: '5%',
-            fontSize: 16,
+            fontSize: 15,
             color: 'black',
             fontWeight: '500',
           }}>
@@ -1088,6 +1093,8 @@ const CreateCouponScreen = ({navigation}) => {
           style={{
             width: '100%',
             borderWidth: 1,
+            color: 'gray',
+            height: 40,
             borderColor: 'rgba(0,0,0,0.3)',
             borderRadius: 4,
             backgroundColor: 'white',
@@ -1099,7 +1106,7 @@ const CreateCouponScreen = ({navigation}) => {
         <Text
           style={{
             marginVertical: '5%',
-            fontSize: 16,
+            fontSize: 15,
             color: 'black',
             fontWeight: '500',
           }}>
@@ -1113,6 +1120,9 @@ const CreateCouponScreen = ({navigation}) => {
             borderWidth: 1,
             borderColor: 'rgba(0,0,0,0.3)',
             borderRadius: 4,
+            color: 'gray',
+            height: 40,
+
             backgroundColor: 'white',
             paddingHorizontal: '5%',
           }}
@@ -1122,7 +1132,7 @@ const CreateCouponScreen = ({navigation}) => {
         <Text
           style={{
             marginVertical: '5%',
-            fontSize: 16,
+            fontSize: 15,
             color: 'black',
             fontWeight: '500',
           }}>
@@ -1134,6 +1144,7 @@ const CreateCouponScreen = ({navigation}) => {
           style={{
             width: '100%',
             borderWidth: 1,
+            color: 'gray',
             borderColor: 'rgba(0,0,0,0.3)',
             borderRadius: 4,
             backgroundColor: 'white',
@@ -1172,7 +1183,7 @@ const styles = StyleSheet.create({
     color: 'red',
   },
   button: {
-    height: '3%',
+    height: 40,
     borderRadius: 5,
     width: '30%',
     alignSelf: 'center',

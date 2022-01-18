@@ -133,6 +133,7 @@ const DashboardScreen = ({navigation, route}) => {
           id: storeResponse.data.store.id,
           storeName: storeResponse.data.store.storeName,
           storeType: storeResponse.data.store.storeType,
+          storeUrl: storeResponse.data.store.storeUrl,
         }),
       );
       const storeCollections = storeResponse.data.store.collections.edges.map(
@@ -142,6 +143,7 @@ const DashboardScreen = ({navigation, route}) => {
             products: node.products ? node.products.edges : [],
             imageUrl: node.imageUrl ? node.imageUrl : '',
             name: node.name ? node.name : '',
+            slug: node?.slug,
           };
         },
       );
@@ -234,10 +236,9 @@ const DashboardScreen = ({navigation, route}) => {
         <Text
           style={{
             zIndex: 2,
-            paddingLeft: '3%',
-            paddingTop: '5%',
+            paddingTop: '3%',
             color: 'white',
-            fontSize: 18,
+            fontSize: 22,
             fontFamily: 'Roboto-Bold',
           }}>
           Overview
@@ -277,7 +278,7 @@ const DashboardScreen = ({navigation, route}) => {
           width: '100%',
           flexDirection: 'row',
           justifyContent: 'center',
-          marginTop: '5%',
+          marginTop: '4%',
         }}>
         <MetricCard
           metric={{type: 'Total Orders', value: '27'}}

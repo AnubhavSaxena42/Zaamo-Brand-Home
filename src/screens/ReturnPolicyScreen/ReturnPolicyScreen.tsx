@@ -54,7 +54,7 @@ const ReturnPolicyScreen = ({navigation, route}) => {
           width: '100%',
         }}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Text>Return Policy</Text>
+          <Text style={{color: 'gray'}}>Return Policy</Text>
           <TouchableOpacity
             onPress={() => {
               toastService.showToast('Feature in Development', true);
@@ -70,11 +70,11 @@ const ReturnPolicyScreen = ({navigation, route}) => {
               borderRadius: 4,
               borderColor: 'rgba(0,0,0,0.2)',
             }}>
-            <Text>Edit</Text>
+            <Text style={{color: 'gray'}}>Edit</Text>
             <MaterialCommunityIcons name="pencil" size={16} color="black" />
           </TouchableOpacity>
         </View>
-        <Text style={{marginTop: '4%'}}>
+        <Text style={{color: 'gray', marginTop: '4%'}}>
           We want you to love what you ordered, but if something isn't right,
           let us know. We'll give you an exchange on that piece in another
           color, a different size, or an entirely new style. In the unlikely

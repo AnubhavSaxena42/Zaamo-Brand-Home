@@ -1,7 +1,7 @@
 import React from 'react';
-import {useSafeArea} from 'react-native-safe-area-context';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {View} from 'react-native';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -37,6 +37,7 @@ import CouponInfoScreen from '../screens/CouponInfoScreen/CouponInfoScreen';
 import CreateCouponScreen from '../screens/CreateCouponScreen/CreateCouponScreen';
 import CollectionViewScreen from '../screens/CollectionViewScreen/CollectionViewScreen';
 import CollectionProductsAddScreen from '../screens/CollectionProductsAddScreen/CollectionProductsAddScreen';
+import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 const TaggingStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 const HomeStack = createStackNavigator();
@@ -69,6 +70,7 @@ export const MarketingStackNavigator = () => {
         name="CollectionProductsAddScreen"
         component={CollectionProductsAddScreen}
       />
+      <MarketingStack.Screen name="ProductPage" component={ProductPage} />
     </MarketingStack.Navigator>
   );
 };
@@ -185,11 +187,19 @@ export const OrderStackNavigator = () => {
   );
 };
 export const HomeTabNavigator = () => {
-  const insets = useSafeArea();
+  const getTabBarVisibility = route => {
+    const routeName = getFocusedRouteNameFromRoute(route);
+    if (routeName === 'ProductPage') {
+      return false;
+    }
+
+    return true;
+  };
   return (
     <HomeTabs.Navigator
       tabBarOptions={{
         activeTintColor: 'black',
+        inactiveTintColor: 'gray',
         labelStyle: {
           paddingBottom: 10,
         },
@@ -203,7 +213,7 @@ export const HomeTabNavigator = () => {
         component={HomeStackNavigator}
         options={{
           tabBarIcon: ({focused, color}) => (
-            <Entypo name="home" size={25} color={focused ? color : ''} />
+            <Entypo name="home" size={22} color={focused ? color : 'gray'} />
           ),
         }}
       />
@@ -212,21 +222,45 @@ export const HomeTabNavigator = () => {
         component={OrderStackNavigator}
         options={{
           tabBarIcon: ({focused, color}) => (
-            <Ionicons
-              name="reorder-three"
-              size={30}
-              color={focused ? color : ''}
-            />
+            <View
+              style={{
+                position: 'relative',
+                alignItems: 'center',
+                marginTop: 7,
+              }}>
+              <View style={{position: 'absolute', top: -9}}>
+                <Entypo
+                  name="dots-three-horizontal"
+                  size={22}
+                  style={{marginVertical: 0}}
+                  color={focused ? color : 'gray'}
+                />
+              </View>
+              <View style={{position: 'absolute', bottom: -6}}>
+                <Entypo
+                  name="dots-three-horizontal"
+                  size={22}
+                  color={focused ? color : 'gray'}
+                />
+              </View>
+            </View>
           ),
         }}
       />
       <HomeTabs.Screen
         name="Products"
         component={ProductStackNavigator}
-        options={{
-          tabBarIcon: ({focused, color}) => (
-            <Entypo name="price-tag" size={25} color={focused ? color : ''} />
-          ),
+        options={({route}) => {
+          return {
+            tabBarIcon: ({focused, color}) => (
+              <Entypo
+                name="price-tag"
+                size={22}
+                color={focused ? color : 'gray'}
+              />
+            ),
+            tabBarVisible: getTabBarVisibility(route),
+          };
         }}
       />
       <HomeTabs.Screen
@@ -234,7 +268,11 @@ export const HomeTabNavigator = () => {
         component={MarketingStackNavigator}
         options={{
           tabBarIcon: ({focused, color}) => (
-            <Entypo name="line-graph" size={25} color={focused ? color : ''} />
+            <Entypo
+              name="line-graph"
+              size={22}
+              color={focused ? color : 'gray'}
+            />
           ),
         }}
       />
@@ -245,8 +283,8 @@ export const HomeTabNavigator = () => {
           tabBarIcon: ({focused, color}) => (
             <Fontisto
               name="shopping-store"
-              size={25}
-              color={focused ? color : ''}
+              size={22}
+              color={focused ? color : 'gray'}
             />
           ),
         }}

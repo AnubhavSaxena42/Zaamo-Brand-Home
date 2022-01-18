@@ -98,7 +98,7 @@ const Coupon = ({navigation, coupon}) => {
               height: 35,
               borderRadius: 5,
             }}>
-            <Text>{coupon.code}</Text>
+            <Text style={{color: 'black'}}>{coupon.code}</Text>
             <TouchableOpacity
               onPress={() => {
                 Clipboard.setString(coupon.code);

@@ -54,7 +54,7 @@ const PrivacyPolicyScreen = ({navigation, route}) => {
           width: '100%',
         }}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Text>Privacy Policy</Text>
+          <Text style={{color: 'gray'}}>Privacy Policy</Text>
           <TouchableOpacity
             onPress={() => {
               toastService.showToast('Feature in Development', true);
@@ -70,11 +70,11 @@ const PrivacyPolicyScreen = ({navigation, route}) => {
               borderRadius: 4,
               borderColor: 'rgba(0,0,0,0.2)',
             }}>
-            <Text>Edit</Text>
+            <Text style={{color: 'gray'}}>Edit</Text>
             <MaterialCommunityIcons name="pencil" size={16} color="black" />
           </TouchableOpacity>
         </View>
-        <Text style={{marginTop: '4%'}}>
+        <Text style={{color: 'gray', marginTop: '4%'}}>
           These are the general terms and conditions governing your use of this
           website and our services. By accessing, browsing, using or signing up
           for this website, our newsletters or social media updates, or any

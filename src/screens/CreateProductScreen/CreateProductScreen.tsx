@@ -164,6 +164,7 @@ const CreateProductScreen = ({navigation, route}) => {
           flexDirection: 'row',
           justifyContent: 'space-between',
           paddingHorizontal: '5%',
+          paddingVertical: '2%',
           width: '100%',
           borderBottomColor: 'rgba(0,0,0,0.2)',
           borderBottomWidth: 1,
@@ -652,7 +653,7 @@ const CreateProductScreen = ({navigation, route}) => {
             <Text style={styles.labelText}>Select Color</Text>
             <View
               style={{
-                height: 50,
+                height: 40,
                 width: '100%',
                 justifyContent: 'space-between',
                 alignItems: 'center',
@@ -678,7 +679,7 @@ const CreateProductScreen = ({navigation, route}) => {
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
-                <Text style={{color: 'white'}}>Pick</Text>
+                <Text style={{color: 'white', fontSize: 12}}>Pick</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -687,7 +688,6 @@ const CreateProductScreen = ({navigation, route}) => {
               width: '100%',
               flexDirection: 'row',
               flexWrap: 'wrap',
-
               marginVertical: '4%',
             }}>
             {sizeAttributeValues.map(value => {
@@ -786,14 +786,16 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   createProductHeaderContainer: {
+    height: 65,
     backgroundColor: 'white',
-    paddingVertical: '5%',
-    paddingHorizontal: '5%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
   },
   createProductHeaderText: {
     color: 'black',
-    fontSize: 28,
-    fontWeight: '600',
+    fontSize: 22,
+    fontWeight: '500',
   },
   errorMessageContainer: {
     marginTop: '1%',
@@ -809,16 +811,17 @@ const styles = StyleSheet.create({
   },
   productDetailsHeaderContainer: {},
   headerText: {
-    fontSize: 24,
-    fontWeight: '500',
+    fontSize: 18,
     color: 'black',
+    textAlign: 'center',
     marginTop: '3%',
   },
   productNameInputContainer: {},
   labelText: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '400',
     marginTop: '3%',
+    color: 'grey',
   },
   imageContainer: {
     flexDirection: 'row',
@@ -833,10 +836,14 @@ const styles = StyleSheet.create({
     borderColor: '#b7b9ba',
     borderRadius: 5,
     marginTop: '2%',
+    height: 40,
+    color: 'gray',
     backgroundColor: 'white',
   },
   priceInput: {
     borderWidth: 1,
+    height: 40,
+    color: 'gray',
     borderColor: '#b7b9ba',
     borderRadius: 5,
     marginTop: '2%',
@@ -907,19 +914,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'white',
     justifyContent: 'center',
-    paddingVertical: '5%',
+    paddingVertical: '3%',
     marginTop: '5%',
   },
   nextButton: {
     backgroundColor: 'black',
-    width: '50%',
-    padding: '3%',
-    marginBottom: '5%',
+    width: '40%',
+    paddingHorizontal: '3%',
+    paddingVertical: '2%',
     borderRadius: 10,
   },
   nextButtonText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: 14,
     textAlign: 'center',
   },
 });

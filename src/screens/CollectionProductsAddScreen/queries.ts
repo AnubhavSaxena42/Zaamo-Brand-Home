@@ -18,6 +18,9 @@ export const GET_PRODUCTS_BY_BRAND = gql`
             url
             alt
           }
+          images {
+            url(size: 1080)
+          }
           pricing {
             discount {
               gross {

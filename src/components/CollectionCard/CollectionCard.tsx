@@ -10,6 +10,7 @@ import {
 import Clipboard from '@react-native-clipboard/clipboard';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import toastService from '../../services/toast-service';
+import {useSelector} from 'react-redux';
 const CollectionCard = ({
   collection,
   editModalOpen,
@@ -20,6 +21,7 @@ const CollectionCard = ({
   navigation,
 }) => {
   console.log('Collections:', collection);
+  const storeUrl = useSelector(state => state.store.storeInfo.storeUrl);
   return (
     <Pressable
       onPress={() => {
@@ -108,9 +110,11 @@ const CollectionCard = ({
           </View>
           <TouchableOpacity
             onPress={() => {
-              Clipboard.setString(collection.id);
+              Clipboard.setString(storeUrl + '/collection/' + collection.slug);
               toastService.showToast(
-                `Collection ID copied to clipboard:"  ${collection.id}  "`,
+                `Collection Url copied to clipboard:"  ${
+                  storeUrl + '/collection/' + collection.slug
+                }  "`,
                 true,
               );
             }}

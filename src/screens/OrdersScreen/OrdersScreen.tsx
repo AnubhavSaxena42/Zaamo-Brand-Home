@@ -166,9 +166,9 @@ const OrdersScreen = ({navigation}) => {
         style={{
           zIndex: 2,
           color: 'white',
-          fontSize: 18,
+          fontSize: 22,
           textAlign: 'center',
-          marginTop: '5%',
+          marginTop: '3%',
           fontFamily: 'Roboto-Bold',
         }}>
         Orders
@@ -189,8 +189,8 @@ const OrdersScreen = ({navigation}) => {
           alignItems: 'center',
           justifyContent: 'center',
           width: '100%',
-          marginTop: '5%',
-          paddingBottom: '2%',
+          marginTop: '4%',
+          marginBottom: '2%',
           borderBottomColor: 'rgba(0,0,0,0.1)',
           borderBottomWidth: 1,
         }}>
@@ -213,8 +213,11 @@ const OrdersScreen = ({navigation}) => {
               textShadowColor: 'rgba(0,0,0,0.1)',
               textShadowRadius: 2,
               textShadowOffset: {width: 1, height: 1},
-              borderBottomWidth: selectedIndex === 0 ? 1 : 0,
+              borderBottomWidth: selectedIndex === 0 ? 2 : 0,
+              paddingBottom: 10,
+              paddingBottom: 5,
               borderColor: 'black',
+              paddingBottom: 5,
               color: 'black',
             }}>
             All Orders
@@ -229,7 +232,9 @@ const OrdersScreen = ({navigation}) => {
               textShadowColor: 'rgba(0,0,0,0.1)',
               textShadowRadius: 2,
               textShadowOffset: {width: 1, height: 1},
-              borderBottomWidth: selectedIndex === 1 ? 1 : 0,
+              borderBottomWidth: selectedIndex === 1 ? 2 : 0,
+              paddingBottom: 10,
+              paddingBottom: 5,
               borderColor: 'black',
               color: 'black',
             }}>
@@ -244,7 +249,9 @@ const OrdersScreen = ({navigation}) => {
               textShadowColor: 'rgba(0,0,0,0.1)',
               textShadowRadius: 2,
               textShadowOffset: {width: 1, height: 1},
-              borderBottomWidth: selectedIndex === 2 ? 1 : 0,
+              borderBottomWidth: selectedIndex === 2 ? 2 : 0,
+              paddingBottom: 10,
+              paddingBottom: 5,
               borderColor: 'black',
               color: 'black',
             }}>
@@ -259,7 +266,9 @@ const OrdersScreen = ({navigation}) => {
               textShadowColor: 'rgba(0,0,0,0.1)',
               textShadowRadius: 2,
               textShadowOffset: {width: 1, height: 1},
-              borderBottomWidth: selectedIndex === 3 ? 1 : 0,
+              borderBottomWidth: selectedIndex === 3 ? 2 : 0,
+              paddingBottom: 10,
+              paddingBottom: 5,
               borderColor: 'black',
               color: 'black',
             }}>
@@ -274,7 +283,9 @@ const OrdersScreen = ({navigation}) => {
               textShadowColor: 'rgba(0,0,0,0.1)',
               textShadowRadius: 2,
               textShadowOffset: {width: 1, height: 1},
-              borderBottomWidth: selectedIndex === 4 ? 1 : 0,
+              borderBottomWidth: selectedIndex === 4 ? 2 : 0,
+              paddingBottom: 10,
+              paddingBottom: 5,
               borderColor: 'black',
               color: 'black',
             }}>
@@ -289,7 +300,9 @@ const OrdersScreen = ({navigation}) => {
               textShadowColor: 'rgba(0,0,0,0.1)',
               textShadowRadius: 2,
               textShadowOffset: {width: 1, height: 1},
-              borderBottomWidth: selectedIndex === 5 ? 1 : 0,
+              borderBottomWidth: selectedIndex === 5 ? 2 : 0,
+              paddingBottom: 10,
+              paddingBottom: 5,
               borderColor: 'black',
               color: 'black',
             }}>
@@ -304,7 +317,9 @@ const OrdersScreen = ({navigation}) => {
               textShadowColor: 'rgba(0,0,0,0.1)',
               textShadowRadius: 2,
               textShadowOffset: {width: 1, height: 1},
-              borderBottomWidth: selectedIndex === 6 ? 1 : 0,
+              borderBottomWidth: selectedIndex === 6 ? 2 : 0,
+              paddingBottom: 10,
+              paddingBottom: 5,
               borderColor: 'black',
               color: 'black',
             }}>
@@ -319,7 +334,9 @@ const OrdersScreen = ({navigation}) => {
               textShadowColor: 'rgba(0,0,0,0.1)',
               textShadowRadius: 2,
               textShadowOffset: {width: 1, height: 1},
-              borderBottomWidth: selectedIndex === 7 ? 1 : 0,
+              borderBottomWidth: selectedIndex === 7 ? 2 : 0,
+              paddingBottom: 10,
+              paddingBottom: 5,
               borderColor: 'black',
               color: 'black',
             }}>
@@ -334,7 +351,9 @@ const OrdersScreen = ({navigation}) => {
               textShadowColor: 'rgba(0,0,0,0.1)',
               textShadowRadius: 2,
               textShadowOffset: {width: 1, height: 1},
-              borderBottomWidth: selectedIndex === 8 ? 1 : 0,
+              borderBottomWidth: selectedIndex === 8 ? 2 : 0,
+              paddingBottom: 10,
+              paddingBottom: 5,
               borderColor: 'black',
               color: 'black',
             }}>
@@ -350,170 +369,188 @@ const OrdersScreen = ({navigation}) => {
           console.log(index);
           setSelectedIndex(index);
         }}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            zIndex: 2,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          {brandOrders.map(order => {
-            return (
-              <OrderCard
-                key={order.node.id}
-                navigation={navigation}
-                order={order.node}
-                status={order?.status}
-              />
-            );
-          })}
-        </ScrollView>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            zIndex: 2,
+        <View>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              zIndex: 2,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            {brandOrders.map(order => {
+              return (
+                <OrderCard
+                  key={order.node.id}
+                  navigation={navigation}
+                  order={order.node}
+                  status={order?.status}
+                />
+              );
+            })}
+          </ScrollView>
+        </View>
+        <View>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              zIndex: 2,
 
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          {brandShippedOrders.map(order => {
-            return (
-              <OrderCard
-                key={order.node.id}
-                navigation={navigation}
-                order={order.node}
-                status={order?.status}
-              />
-            );
-          })}
-        </ScrollView>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            zIndex: 2,
-            marginTop: '5%',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          {brandInProcessOrders.map(order => {
-            return (
-              <OrderCard
-                key={order.node.id}
-                navigation={navigation}
-                order={order.node}
-                status={order?.status}
-              />
-            );
-          })}
-        </ScrollView>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            zIndex: 2,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          {brandDeliveredOrders.map(order => {
-            return (
-              <OrderCard
-                key={order.node.id}
-                navigation={navigation}
-                order={order.node}
-                status={order?.status}
-              />
-            );
-          })}
-        </ScrollView>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            zIndex: 2,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          {brandCancelledOrders.map(order => {
-            return (
-              <OrderCard
-                key={order.node.id}
-                navigation={navigation}
-                order={order.node}
-                status={order?.status}
-              />
-            );
-          })}
-        </ScrollView>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            zIndex: 2,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          {brandReturnRequestedOrders.map(order => {
-            return (
-              <OrderCard
-                key={order.node.id}
-                navigation={navigation}
-                order={order.node}
-                status={order?.status}
-              />
-            );
-          })}
-        </ScrollView>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            zIndex: 2,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          {brandReturnInitiatedOrders.map(order => {
-            return (
-              <OrderCard
-                key={order.node.id}
-                navigation={navigation}
-                order={order.node}
-                status={order?.status}
-              />
-            );
-          })}
-        </ScrollView>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            zIndex: 2,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          {brandReturnCompletedOrders.map(order => {
-            return (
-              <OrderCard
-                key={order.node.id}
-                navigation={navigation}
-                order={order.node}
-                status={order?.status}
-              />
-            );
-          })}
-        </ScrollView>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            zIndex: 2,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          {brandFulfilledOrders.map(order => {
-            return (
-              <OrderCard
-                key={order.node.id}
-                navigation={navigation}
-                order={order.node}
-                status={order?.status}
-              />
-            );
-          })}
-        </ScrollView>
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            {brandShippedOrders.map(order => {
+              return (
+                <OrderCard
+                  key={order.node.id}
+                  navigation={navigation}
+                  order={order.node}
+                  status={order?.status}
+                />
+              );
+            })}
+          </ScrollView>
+        </View>
+        <View>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              zIndex: 2,
+
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            {brandInProcessOrders.map(order => {
+              return (
+                <OrderCard
+                  key={order.node.id}
+                  navigation={navigation}
+                  order={order.node}
+                  status={order?.status}
+                />
+              );
+            })}
+          </ScrollView>
+        </View>
+        <View>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              zIndex: 2,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            {brandDeliveredOrders.map(order => {
+              return (
+                <OrderCard
+                  key={order.node.id}
+                  navigation={navigation}
+                  order={order.node}
+                  status={order?.status}
+                />
+              );
+            })}
+          </ScrollView>
+        </View>
+        <View>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              zIndex: 2,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            {brandCancelledOrders.map(order => {
+              return (
+                <OrderCard
+                  key={order.node.id}
+                  navigation={navigation}
+                  order={order.node}
+                  status={order?.status}
+                />
+              );
+            })}
+          </ScrollView>
+        </View>
+        <View>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              zIndex: 2,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            {brandReturnRequestedOrders.map(order => {
+              return (
+                <OrderCard
+                  key={order.node.id}
+                  navigation={navigation}
+                  order={order.node}
+                  status={order?.status}
+                />
+              );
+            })}
+          </ScrollView>
+        </View>
+        <View>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              zIndex: 2,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            {brandReturnInitiatedOrders.map(order => {
+              return (
+                <OrderCard
+                  key={order.node.id}
+                  navigation={navigation}
+                  order={order.node}
+                  status={order?.status}
+                />
+              );
+            })}
+          </ScrollView>
+        </View>
+        <View>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              zIndex: 2,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            {brandReturnCompletedOrders.map(order => {
+              return (
+                <OrderCard
+                  key={order.node.id}
+                  navigation={navigation}
+                  order={order.node}
+                  status={order?.status}
+                />
+              );
+            })}
+          </ScrollView>
+        </View>
+        <View>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              zIndex: 2,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            {brandFulfilledOrders.map(order => {
+              return (
+                <OrderCard
+                  key={order.node.id}
+                  navigation={navigation}
+                  order={order.node}
+                  status={order?.status}
+                />
+              );
+            })}
+          </ScrollView>
+        </View>
       </Swiper>
     </View>
   );

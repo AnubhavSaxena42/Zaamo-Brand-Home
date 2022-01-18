@@ -185,6 +185,9 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
                   ? node.pricing.priceRange.start.net.amount
                   : 0,
                 name: node.name ? node.name : '',
+                slug: node.slug,
+                images: node.images,
+
                 thumbnail: node.thumbnail
                   ? node.thumbnail.url
                   : 'https://media-exp1.licdn.com/dms/image/C4E0BAQGymyKm7OE3wg/company-logo_200_200/0/1636442519943?e=2159024400&v=beta&t=19hHu3puobGsregS0-31D-KiANWe3NqrKZESktzQC30',
@@ -327,6 +330,7 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
   console.log('select:', selectedProducts);
   const _renderProduct = ({item}) => (
     <AddProductCard
+      navigation={navigation}
       selectedProducts={selectedProducts}
       setSelectedProducts={setSelectedProducts}
       product={item}
@@ -450,25 +454,28 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
           width: '100%',
           height: 60,
           flexDirection: 'row',
-          backgroundColor: 'white',
+          backgroundColor: 'black',
           borderBottomWidth: 1,
           borderBottomColor: 'rgba(0,0,0,0.2)',
           justifyContent: 'space-between',
           alignItems: 'center',
-          paddingVertical: '4%',
           paddingHorizontal: '2%',
         }}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back-sharp" color={'black'} size={35} />
+          <View>
+            <Ionicons name="arrow-back-sharp" color={'white'} size={35} />
+          </View>
         </TouchableOpacity>
-        <Text
-          style={{
-            fontSize: 20,
-            fontFamily: 'Roboto-Bold',
-            color: 'black',
-          }}>
-          Products
-        </Text>
+        <View>
+          <Text
+            style={{
+              fontSize: 20,
+              fontFamily: 'Roboto-Bold',
+              color: 'white',
+            }}>
+            Products
+          </Text>
+        </View>
         <TouchableNativeFeedback
           onPress={onPressComplete}
           style={{
@@ -478,7 +485,7 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
           }}>
           <Text
             style={{
-              color: 'black',
+              color: 'white',
             }}>
             {route.params.fromVoucherCreate ? 'Add Products' : 'Confirm'}
           </Text>
@@ -488,7 +495,7 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
         <View
           style={{
             width: '100%',
-            height: 80,
+            height: 60,
             backgroundColor: 'white',
             justifyContent: 'center',
             alignItems: 'center',
@@ -496,9 +503,9 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
           <TouchableOpacity
             onPress={() => setIsBrandSelectModalVisible(true)}
             style={{
-              borderColor: 'rgba(0,0,0,0.5)',
+              borderColor: 'rgba(0,0,0,1)',
               borderWidth: 1,
-              height: 50,
+              height: 40,
               width: 300,
               borderRadius: 10,
               justifyContent: 'center',
@@ -510,7 +517,7 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
               shadowRadius: 2,
               shadowOpacity: 1.0,
             }}>
-            <Text>Select Brand</Text>
+            <Text style={{color: 'black'}}>Select Brand</Text>
           </TouchableOpacity>
         </View>
       )}

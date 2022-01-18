@@ -66,7 +66,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
         style={{
           zIndex: 2,
           color: 'white',
-          fontSize: 18,
+          fontSize: 22,
           textAlign: 'center',
           marginTop: '5%',
           fontFamily: 'Roboto-Bold',
@@ -75,7 +75,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
       </Text>
       <TouchableOpacity
         onPress={() => navigation.goBack()}
-        style={{zIndex: 2, position: 'absolute', left: 10, top: 10}}>
+        style={{zIndex: 2, position: 'absolute', left: 10, top: 20}}>
         <Ionicons name="arrow-back-sharp" color={'white'} size={35} />
       </TouchableOpacity>
       <Image
@@ -93,7 +93,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
           width: '100%',
           zIndex: 2,
           alignItems: 'center',
-          marginTop: '5%',
+          marginTop: '4%',
         }}>
         <OrderCard
           order={order}
@@ -193,6 +193,7 @@ const styles = StyleSheet.create({
   },
   detailText: {
     marginBottom: '5%',
+    color: 'black',
   },
   button: {
     marginBottom: '10%',

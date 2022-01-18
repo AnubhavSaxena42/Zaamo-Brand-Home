@@ -88,6 +88,7 @@ const RegisterAsCompanyScreen = ({navigation, route}) => {
             borderWidth: 1,
             borderColor: 'rgba(0,0,0,0.3)',
             borderRadius: 4,
+            color: 'gray',
             paddingHorizontal: '5%',
             backgroundColor: 'white',
           }}
@@ -108,6 +109,7 @@ const RegisterAsCompanyScreen = ({navigation, route}) => {
             borderWidth: 1,
             borderColor: 'rgba(0,0,0,0.3)',
             borderRadius: 4,
+            color: 'gray',
             backgroundColor: 'white',
             paddingHorizontal: '5%',
           }}
@@ -123,7 +125,7 @@ const RegisterAsCompanyScreen = ({navigation, route}) => {
           <TouchableOpacity onPress={onGSTUpload}>
             <Entypo name="plus" size={25} color={'black'} />
           </TouchableOpacity>
-          <Text style={{marginLeft: '5%'}}>
+          <Text style={{color: 'gray', marginLeft: '5%'}}>
             Upload a photo of your GST certificate
             <Text style={{color: 'red'}}>*</Text>
           </Text>
@@ -143,6 +145,7 @@ const RegisterAsCompanyScreen = ({navigation, route}) => {
             borderWidth: 1,
             borderColor: 'rgba(0,0,0,0.3)',
             borderRadius: 4,
+            color: 'gray',
             backgroundColor: 'white',
             paddingHorizontal: '5%',
           }}
@@ -151,14 +154,13 @@ const RegisterAsCompanyScreen = ({navigation, route}) => {
         <View
           style={{
             flexDirection: 'row',
-
             alignItems: 'center',
             marginTop: '2%',
           }}>
           <TouchableOpacity onPress={onPANUpload}>
             <Entypo name="plus" size={25} color={'black'} />
           </TouchableOpacity>
-          <Text style={{marginLeft: '5%'}}>
+          <Text style={{color: 'gray', marginLeft: '5%'}}>
             Upload a photo of your PAN Card
             <Text style={{color: 'red'}}>*</Text>
           </Text>

@@ -87,6 +87,7 @@ const OrderItem = ({line, id, status, setData, fulfillment}) => {
           flexDirection: 'row',
           justifyContent: 'space-between',
           paddingHorizontal: '5%',
+          paddingVertical: '2%',
           width: '100%',
           borderBottomColor: 'rgba(0,0,0,0.2)',
           borderBottomWidth: 1,
@@ -255,6 +256,7 @@ const OrderItem = ({line, id, status, setData, fulfillment}) => {
                 backgroundColor: 'black',
                 justifyContent: 'center',
                 alignItems: 'center',
+                borderRadius: 5,
               }}>
               <Text style={{color: 'white'}}>Change</Text>
             </TouchableOpacity>

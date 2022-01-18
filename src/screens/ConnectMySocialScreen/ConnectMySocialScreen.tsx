@@ -55,11 +55,12 @@ const ConnectMySocialScreen = ({navigation, route}) => {
         <Text style={{fontSize: 18, color: 'black', fontWeight: '600'}}>
           Connect your Social Handles
         </Text>
-        <Text style={{marginVertical: '5%'}}>Instagram</Text>
+        <Text style={{marginVertical: '5%', color: 'gray'}}>Instagram</Text>
         <TextInput
           style={{
             width: '100%',
             borderWidth: 1,
+            color: 'gray',
             borderColor: 'rgba(0,0,0,0.3)',
             borderRadius: 4,
             paddingHorizontal: '5%',
@@ -72,9 +73,10 @@ const ConnectMySocialScreen = ({navigation, route}) => {
           }}
           placeholder={'@yourinstahandle'}
         />
-        <Text style={{marginVertical: '5%'}}>Youtube</Text>
+        <Text style={{color: 'gray', marginVertical: '5%'}}>Youtube</Text>
         <TextInput
           style={{
+            color: 'gray',
             width: '100%',
             borderWidth: 1,
             borderColor: 'rgba(0,0,0,0.3)',

@@ -8,6 +8,7 @@ export const GET_STORE = gql`
       id
       slug
       storeType
+      storeUrl
       defaultCollection {
         id
         name
@@ -18,6 +19,11 @@ export const GET_STORE = gql`
             node {
               id
               name
+              descriptionJson
+              variants {
+                id
+                name
+              }
               images {
                 url(size: 1080)
               }
@@ -112,7 +118,7 @@ export const GET_AUTHORISED_BRANDS = gql`
         id
         brandName
         warehouse
-        products(first: 10, after: $endCursor) {
+        products(first: 20, after: $endCursor) {
           pageInfo {
             hasNextPage
             endCursor
@@ -121,6 +127,11 @@ export const GET_AUTHORISED_BRANDS = gql`
             node {
               id
               name
+              slug
+              variants {
+                id
+                name
+              }
               images {
                 url(size: 1080)
               }

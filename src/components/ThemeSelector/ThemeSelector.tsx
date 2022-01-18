@@ -17,7 +17,7 @@ const ColorPalette = ({color}) => {
 const ThemeSelector = ({selectorTag}) => {
   return (
     <View style={styles.themeSelectorContainer}>
-      <Text style={{color: 'black', fontSize: 16}}>{selectorTag}</Text>
+      <Text style={{color: 'black', fontSize: 14}}>{selectorTag}</Text>
       <View
         style={{
           marginTop: '2%',

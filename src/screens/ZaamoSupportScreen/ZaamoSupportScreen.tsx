@@ -129,6 +129,7 @@ const ZaamoSupportScreen = ({navigation, route}) => {
             borderWidth: 1,
             borderColor: 'rgba(0,0,0,0.3)',
             borderRadius: 4,
+            color: 'gray',
             paddingHorizontal: '5%',
             backgroundColor: 'white',
           }}
@@ -149,6 +150,7 @@ const ZaamoSupportScreen = ({navigation, route}) => {
           style={{
             width: '100%',
             borderWidth: 1,
+            color: 'gray',
             borderColor: 'rgba(0,0,0,0.3)',
             borderRadius: 4,
             backgroundColor: 'white',

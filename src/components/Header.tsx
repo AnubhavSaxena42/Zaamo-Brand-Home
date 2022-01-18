@@ -12,7 +12,7 @@ const Header = ({tag, fontSize, icon, back, navigation, onPress}) => {
         <TouchableOpacity
           onPress={onPress}
           style={{position: 'absolute', right: 5}}>
-          <Entypo name="plus" size={30} color={'white'} />
+          <Entypo name="plus" size={35} color={'white'} />
         </TouchableOpacity>
       )}
       {back && (

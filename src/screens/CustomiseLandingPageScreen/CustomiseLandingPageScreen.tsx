@@ -27,7 +27,7 @@ const CustomiseLandingPageScreen = ({navigation}) => {
       </TouchableOpacity>
 
       <Image
-        source={require('../../assets/images/Mitsuba.jpg')}
+        source={require('../../assets/images/smugcat.jpg')}
         style={{height: 300, width: 300}}
       />
     </ScrollView>

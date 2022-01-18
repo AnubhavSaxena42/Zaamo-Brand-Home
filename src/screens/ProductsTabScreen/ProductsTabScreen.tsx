@@ -75,6 +75,7 @@ const ProductsTabScreen = ({navigation}) => {
             products: node.products ? node.products.edges : [],
             imageUrl: node.imageUrl ? node.imageUrl : '',
             name: node.name ? node.name : '',
+            slug: node?.slug,
             totalCount: node.products.totalCount
               ? node.products.totalCount
               : '0',
@@ -161,7 +162,11 @@ const ProductsTabScreen = ({navigation}) => {
                 id: node.id,
                 name: node.name,
                 url: node.url,
+                slug: node.slug,
+                description: JSON.parse(node?.descriptionJson)
+                  ?.description_text,
                 images: node.images,
+                variants: node.variants,
                 thumbnail: node.thumbnail
                   ? node.thumbnail.url
                   : 'https://media-exp1.licdn.com/dms/image/C4E0BAQGymyKm7OE3wg/company-logo_200_200/0/1636442519943?e=2159024400&v=beta&t=19hHu3puobGsregS0-31D-KiANWe3NqrKZESktzQC30',
@@ -349,7 +354,7 @@ const ProductsTabScreen = ({navigation}) => {
           width: '100%',
           height: 60,
           justifyContent: 'center',
-          backgroundColor: 'white',
+          backgroundColor: 'black',
           borderBottomWidth: 1,
           borderBottomColor: 'rgba(0,0,0,0.2)',
         }}>
@@ -357,7 +362,7 @@ const ProductsTabScreen = ({navigation}) => {
           style={{
             alignSelf: 'center',
             fontSize: 22,
-            color: 'black',
+            color: 'white',
             fontFamily: 'Roboto-Bold',
           }}>
           {isViewing === 1 ? 'Products' : 'Collections'}
@@ -379,10 +384,9 @@ const ProductsTabScreen = ({navigation}) => {
           style={{
             position: 'absolute',
             right: 5,
-            top: '25%',
             alignContent: 'flex-end',
           }}>
-          <Entypo name="plus" size={35} color={'black'} />
+          <Entypo name="plus" size={35} color={'white'} />
         </TouchableOpacity>
       </View>
       <View
@@ -679,7 +683,6 @@ const ProductsTabScreen = ({navigation}) => {
                 color: 'black',
                 fontSize: 14,
                 fontWeight: '600',
-                marginTop: '5%',
               }}>
               Cancel
             </Text>
@@ -711,8 +714,6 @@ const ProductsTabScreen = ({navigation}) => {
 
         <FlatList
           data={products}
-          maxToRenderPerBatch={5}
-          windowSize={5}
           onEndReached={handleOnEndReached}
           onEndReachedThreshold={0.5}
           onRefresh={brandResponse.refetch}

@@ -11,15 +11,24 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Clipboard from '@react-native-clipboard/clipboard';
 import toastService from '../../services/toast-service';
+import {useDispatch, useSelector} from 'react-redux';
+import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 const ProductCard = ({
   product,
   navigation,
   inCollectionView,
   setProductIdToRemove,
 }) => {
+  const storeUrl = useSelector(state => state.store.storeInfo.storeUrl);
+  const dispatch = useDispatch();
+
   return (
     <Pressable
-      onPress={() => navigation.navigate('ProductPage', {product: product})}
+      onPress={() => {
+        dispatch(setLoaderStatus(true));
+        navigation.navigate('ProductPage', {product: product});
+        dispatch(setLoaderStatus(false));
+      }}
       style={styles.productCardContainer}>
       <ImageBackground
         style={styles.imageStyle}
@@ -29,9 +38,11 @@ const ProductCard = ({
         <TouchableOpacity
           activeOpacity={0}
           onPress={() => {
-            Clipboard.setString(product.url);
+            Clipboard.setString(storeUrl + '/products/' + product.slug);
             toastService.showToast(
-              `Product URL copied to clipboard:  ${product.url}  `,
+              `Product URL copied to clipboard:  ${
+                storeUrl + '/products/' + product.slug
+              }  `,
               true,
             );
           }}

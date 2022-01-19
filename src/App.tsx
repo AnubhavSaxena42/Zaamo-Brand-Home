@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, {useMemo, useRef} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {Provider} from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
@@ -6,6 +6,7 @@ import {store} from './redux/store/store';
 import TaggingPanelStack from './navigation/MainNavigator';
 import {HomeTabNavigator} from './navigation/MainNavigator';
 import {AuthorizationStack} from './navigation/MainNavigator';
+import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
 import {MainStackNavigator} from './navigation/MainNavigator';
 import {relayStylePagination} from '@apollo/client/utilities';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
@@ -25,6 +26,58 @@ import {getItemFromStorage} from './services/storage-service';
 const uploadLink = createUploadLink({
   uri: 'https://beta.zaamo.co/graphql/',
 });
+
+export const toastConfig = {
+  success: props => (
+    <BaseToast
+      {...props}
+      style={{
+        borderLeftColor: 'gray',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+      contentContainerStyle={{
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        paddingHorizontal: 10,
+        flex: 1,
+      }}
+      text2Style={{
+        color: 'white',
+      }}
+      text1Style={{
+        color: 'white',
+        fontSize: 15,
+        fontWeight: '400',
+      }}
+    />
+  ),
+  error: props => (
+    <ErrorToast
+      {...props}
+      text1Style={{
+        fontSize: 17,
+      }}
+      text2Style={{
+        fontSize: 15,
+      }}
+    />
+  ),
+  zaamoToast: ({text1, props}) => (
+    <View
+      style={{
+        width: '75%',
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: '4%',
+        paddingVertical: '2%',
+        backgroundColor: 'rgba(0,0,0,0.5)',
+      }}>
+      <Text style={{color: 'white', fontSize: 12}}>{text1}</Text>
+    </View>
+  ),
+};
+
 const authLink = setContext(async (_, {headers}) => {
   // get the authentication token from local storage if it exists
   const token = await getItemFromStorage('Token');
@@ -86,6 +139,7 @@ const App = () => {
           <GestureHandlerRootView style={{flex: 1}}>
             <Spinner />
             <MainStackNavigator />
+            <Toast config={toastConfig} />
           </GestureHandlerRootView>
         </Provider>
       </ApolloProvider>

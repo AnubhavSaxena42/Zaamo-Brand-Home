@@ -15,6 +15,7 @@ import {
 import {ScrollView} from 'react-native-gesture-handler';
 import axios from 'axios';
 import Entypo from 'react-native-vector-icons/Entypo';
+import {toastConfig} from '../../App';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CollectionCard from '../../components/CollectionCard/CollectionCard';
 import ProductCard from '../../components/ProductCard/ProductCard';
@@ -34,6 +35,7 @@ import {setStoreCollections} from '../../redux/reducers/storeReducer';
 import {UPDATE_COLLECTION} from './mutations';
 import toastService from '../../services/toast-service';
 import {WEBSERVER_BASE_URL} from '../../core/constants';
+import Toast from 'react-native-toast-message';
 const ProductsTabScreen = ({navigation}) => {
   const [isViewing, setIsViewing] = useState(1);
   const [isCollectionEdit, setIsCollectionEdit] = useState(false);
@@ -146,7 +148,6 @@ const ProductsTabScreen = ({navigation}) => {
           .catch(e => {
             console.log(e);
             dispatch(setLoaderStatus(false));
-            toastService.showToast('Could not upload Image,Try Again!', true);
           });
       },
     );
@@ -323,7 +324,6 @@ const ProductsTabScreen = ({navigation}) => {
           dispatch(setLoaderStatus(false));
         })
         .catch(e => {
-          toastService.showToast('Could not upload Image,Try Again!', true);
           dispatch(setLoaderStatus(false));
         });
     });
@@ -685,10 +685,7 @@ const ProductsTabScreen = ({navigation}) => {
                   ? onEditCollection
                   : () => {
                       if (newCollectionName === '' || thumbnailUri === '') {
-                        toastService.showToast(
-                          'Please fill in the new collection information before proceeding',
-                          true,
-                        );
+                        console.log('Handle');
                         return;
                       }
                       setIsNewCollectionModalVisible(false);

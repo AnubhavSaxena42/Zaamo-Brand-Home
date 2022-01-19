@@ -166,7 +166,7 @@ const LoginSuccessScreen = ({navigation, route}) => {
             .catch(err => console.log('Error storing token:', err));
           userRegister();
           toastService.showToast('Logged in successfully', true);
-          handlePermission();
+          setTimeout(() => handlePermission(), 3000);
         } else {
           getItemFromStorage('Mobile Number').then(mobileNumber => {
             if (mobileNumber) {

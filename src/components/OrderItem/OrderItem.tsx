@@ -107,7 +107,10 @@ const OrderItem = ({line, id, status, setData, fulfillment}) => {
 
   return (
     <View style={styles.orderItemContainer}>
-      <Modal visible={isFulfillmentModalOpen} transparent={true}>
+      <Modal
+        visible={isFulfillmentModalOpen}
+        onRequestClose={() => setIsFulfillmentModalOpen(false)}
+        transparent={true}>
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <View
             style={{
@@ -236,7 +239,7 @@ const OrderItem = ({line, id, status, setData, fulfillment}) => {
               paddingHorizontal: '2%',
               paddingVertical: '2%',
             }}>
-            <Text style={{textAlignVertical: 'center'}}>
+            <Text style={{textAlignVertical: 'center', color: 'gray'}}>
               {fulfillmentStatus
                 ? getFulfillmentStatusDisplay()
                 : 'Update Fulfillment status'}

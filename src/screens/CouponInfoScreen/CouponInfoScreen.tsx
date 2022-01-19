@@ -16,8 +16,9 @@ const CouponInfoScreen = ({navigation, route}) => {
   console.log(route.params.coupon);
   return (
     <ScrollView
+      showsVerticalScrollIndicator={false}
       contentContainerStyle={{
-        paddingBottom: '30%',
+        paddingBottom: 100,
       }}>
       <Image
         source={require('../../assets/images/DashboardEllipse.png')}

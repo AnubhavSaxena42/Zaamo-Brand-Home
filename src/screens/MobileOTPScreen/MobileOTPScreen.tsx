@@ -75,7 +75,7 @@ const MobileOTPScreen = ({navigation, route}) => {
           } else {
             console.log('in else block');
             navigation.navigate('VerifyOTPScreen', {
-              mobileNumber: mobileNumber,
+             mobileNumber: mobileNumber,
             });
             //generateOtp();
           }

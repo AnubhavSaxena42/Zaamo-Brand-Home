@@ -243,7 +243,7 @@ const CreateProductScreen = ({navigation, route}) => {
   useEffect(() => {
     if (productImageResponse.data) {
       console.log('Product Image Response Data:', productImageResponse.data);
-      navigation.navigate('CreateVariantScreen', {
+      navigation.replace('CreateVariantScreen', {
         variations: variations,
         productID: newProductId,
       });
@@ -338,7 +338,7 @@ const CreateProductScreen = ({navigation, route}) => {
           newVariations.push({
             name: colorItem.name + ',' + sizeAttributeValues[i].name,
             attributes: [
-              {id: colorAttributeId, values: [colorItem.id]},
+              {id: colorAttributeId, values: [colorItem.name]},
               {id: sizeAttributeId, values: [sizeAttributeValues[i].id]},
             ],
           });
@@ -359,7 +359,10 @@ const CreateProductScreen = ({navigation, route}) => {
       {/*<GestureRecognizer
         config={{directionalOffsetThreshold: 30, velocityThreshold: 0.5}}
         onSwipeRight={() => navigation.goBack()}>*/}
-      <Modal visible={isProductTypeModalVisible} transparent={true}>
+      <Modal
+        onRequestClose={() => setIsProductTypeModalVisible(false)}
+        visible={isProductTypeModalVisible}
+        transparent={true}>
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <View
             style={{
@@ -415,7 +418,10 @@ const CreateProductScreen = ({navigation, route}) => {
           </View>
         </View>
       </Modal>
-      <Modal visible={isColorModalVisible} transparent={true}>
+      <Modal
+        visible={isColorModalVisible}
+        onRequestClose={() => setIsColorModalVisible(false)}
+        transparent={true}>
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <View
             style={{

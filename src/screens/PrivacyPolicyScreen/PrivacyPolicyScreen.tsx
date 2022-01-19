@@ -111,15 +111,6 @@ const PrivacyPolicyScreen = ({navigation, route}) => {
           Us. You shall be equally bound by the stipulations therein once you
           agree to the Terms of Use with House of Masaba.
         </Text>
-      </ScrollView>
-      <View
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '100%',
-          position: 'absolute',
-          bottom: 0,
-        }}>
         <TouchableOpacity
           onPress={() => {
             toastService.showToast('Feature in Development', true);
@@ -128,7 +119,7 @@ const PrivacyPolicyScreen = ({navigation, route}) => {
           style={styles.button}>
           <Text style={{color: 'white', fontWeight: 'bold'}}>Save</Text>
         </TouchableOpacity>
-      </View>
+      </ScrollView>
     </View>
   );
 };

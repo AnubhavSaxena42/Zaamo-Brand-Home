@@ -1,5 +1,13 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, TouchableOpacity, Image, Text, View} from 'react-native';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
+  Image,
+  Alert,
+  Text,
+  View,
+} from 'react-native';
 import {useMutation} from '@apollo/client';
 import {TOKEN_CREATE, USER_REGISTER} from './mutations';
 import {useDispatch} from 'react-redux';
@@ -16,6 +24,7 @@ import {
 import CongratulationsSVG from './Congratulations';
 import toastService from '../../services/toast-service';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
+import {request, PERMISSIONS, openSettings} from 'react-native-permissions';
 const LoginSuccessScreen = ({navigation, route}) => {
   console.log('Route mobile number:', route.params.mobileNumber);
   const [createToken, {data, loading, error}] = useMutation(TOKEN_CREATE, {
@@ -23,12 +32,78 @@ const LoginSuccessScreen = ({navigation, route}) => {
       mobileNo: '91' + route.params.mobileNumber,
     },
   });
-  const [userRegister, {registerData, registerLoading, registerError}] =
-    useMutation(USER_REGISTER, {
-      variables: {
-        mobileNo: '91' + route.params.mobileNumber,
-      },
+  const [userRegister, registerResponse] = useMutation(USER_REGISTER, {
+    variables: {
+      mobileNo: '91' + route.params.mobileNumber,
+    },
+  });
+
+  const handlePermission = async () => {
+    async function requestAll() {
+      const cameraStatus = Platform.select({
+        android: PERMISSIONS.ANDROID.CAMERA,
+        ios: PERMISSIONS.IOS.CAMERA,
+      });
+
+      const audioStatus = Platform.select({
+        android: PERMISSIONS.ANDROID.RECORD_AUDIO,
+        ios: PERMISSIONS.IOS.CAMERA, //ios only
+      });
+
+      const photoLibrary = Platform.select({
+        // android: PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+        android: PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+        ios: PERMISSIONS.IOS.PHOTO_LIBRARY,
+      });
+
+      const writePhotoLibrary = Platform.select({
+        android: PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+        ios: PERMISSIONS.IOS.PHOTO_LIBRARY,
+      });
+
+      const isCamera = await request(cameraStatus);
+      const isAudio = await request(audioStatus);
+      const isPhotoLibrary = await request(photoLibrary);
+      const isWritePhotoLibrary = await request(writePhotoLibrary);
+      return {isCamera, isAudio, isPhotoLibrary, isWritePhotoLibrary};
+    }
+
+    requestAll().then(status => {
+      console.log('status', status);
+      if (
+        status.isAudio == 'granted' &&
+        status.isCamera == 'granted' &&
+        status.isPhotoLibrary == 'granted' &&
+        status.isWritePhotoLibrary == 'granted'
+      ) {
+        navigation.replace('StoreStack');
+      } else {
+        Alert.alert(
+          '',
+          'All Permissions' +
+            ' is required to use this app. Please grant the permission to continue',
+          [
+            {
+              text: 'OK',
+              onPress: () => {
+                if (
+                  status.isAudio == 'blocked' ||
+                  status.isCamera == 'blocked' ||
+                  status.isPhotoLibrary == 'blocked' ||
+                  status.isWritePhotoLibrary == 'blocked'
+                ) {
+                  openSettings();
+                } else {
+                  handlePermission();
+                }
+              },
+            },
+          ],
+        );
+      }
     });
+  };
+
   const dispatch = useDispatch();
   useEffect(() => {
     createToken();
@@ -91,7 +166,7 @@ const LoginSuccessScreen = ({navigation, route}) => {
             .catch(err => console.log('Error storing token:', err));
           userRegister();
           toastService.showToast('Logged in successfully', true);
-          navigation.replace('StoreStack');
+          handlePermission();
         } else {
           getItemFromStorage('Mobile Number').then(mobileNumber => {
             if (mobileNumber) {
@@ -127,10 +202,10 @@ const LoginSuccessScreen = ({navigation, route}) => {
     else dispatch(setLoaderStatus(false));
   }, [loading]);
   useEffect(() => {
-    if (registerData) {
-      console.log(registerData);
+    if (registerResponse) {
+      console.log(registerResponse);
     }
-  }, [registerData]);
+  }, [registerResponse]);
   return (
     <View style={styles.loginSuccessContainer}>
       <View

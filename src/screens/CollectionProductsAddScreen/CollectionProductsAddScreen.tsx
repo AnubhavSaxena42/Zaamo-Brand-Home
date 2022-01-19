@@ -268,6 +268,7 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
         imageUrl: route.params.collectionThumbnail,
         products: selectedProducts,
       },
+      refetchQueries: [GET_STORE],
     },
   );
   useEffect(() => {
@@ -391,7 +392,10 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
   };
   return (
     <View style={styles.collectionProductsAddScreenContainer}>
-      <Modal visible={isBrandSelectModalVisible} transparent={true}>
+      <Modal
+        onRequestClose={() => setIsBrandSelectModalVisible(false)}
+        visible={isBrandSelectModalVisible}
+        transparent={true}>
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <View
             style={{
@@ -552,7 +556,7 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
         ListEmptyComponent={() => (
           <View
             style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <Text>Empty</Text>
+            <Text></Text>
           </View>
         )}
         ListFooterComponent={ListFooterComponent}

@@ -388,7 +388,10 @@ const CreateCouponScreen = ({navigation}) => {
           }}
         />
       )}
-      <Modal visible={isBrandsModalVisible} transparent={true}>
+      <Modal
+        visible={isBrandsModalVisible}
+        transparent={true}
+        onRequestClose={() => setIsBrandsModalVisible(false)}>
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <View
             style={{
@@ -444,7 +447,10 @@ const CreateCouponScreen = ({navigation}) => {
           </View>
         </View>
       </Modal>
-      <Modal visible={isStoresModalVisible} transparent={true}>
+      <Modal
+        visible={isStoresModalVisible}
+        onRequestClose={() => setIsStoresModalVisible(false)}
+        transparent={true}>
         <View
           style={{
             flex: 1,

@@ -145,6 +145,13 @@ export const GET_AUTHORISED_BRANDS = gql`
                 alt
               }
               pricing {
+                priceRangeUndiscounted {
+                  start {
+                    net {
+                      amount
+                    }
+                  }
+                }
                 discount {
                   gross {
                     amount

@@ -98,15 +98,7 @@ const ReturnPolicyScreen = ({navigation, route}) => {
           We do not Return/exchange Gift Cards, Cosmetics, Masks, Swimwear and
           Jewellery, unless it is a manufacturing defect.
         </Text>
-      </ScrollView>
-      <View
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '100%',
-          position: 'absolute',
-          bottom: 0,
-        }}>
+
         <TouchableOpacity
           onPress={() => {
             toastService.showToast('Feature in development', true);
@@ -115,7 +107,7 @@ const ReturnPolicyScreen = ({navigation, route}) => {
           style={styles.button}>
           <Text style={{color: 'white', fontWeight: 'bold'}}>Save</Text>
         </TouchableOpacity>
-      </View>
+      </ScrollView>
     </View>
   );
 };

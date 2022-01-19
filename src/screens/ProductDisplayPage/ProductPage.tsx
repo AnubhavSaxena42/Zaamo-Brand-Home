@@ -12,7 +12,7 @@ import {
   FlatList,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet, {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 const ProductPage = ({navigation, route}) => {
   const {product} = route.params;
   console.log('Product:', product);
@@ -40,49 +40,50 @@ const ProductPage = ({navigation, route}) => {
     setActiveIndex(current);
   };
   return (
-    <View style={styles.productPageContainer}>
-      <TouchableOpacity
-        onPress={() => navigation.goBack()}
-        style={{
-          zIndex: 2,
-          position: 'absolute',
-          backgroundColor: 'white',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: 40,
-          shadowColor: '#000',
-          shadowOffset: {width: 0, height: 0},
-          shadowOpacity: 0.5,
-          shadowRadius: 5,
-          elevation: 3,
-          height: 40,
-          borderRadius: 10,
-          left: 10,
-          top: 10,
-        }}>
-        <Ionicons name="arrow-back-sharp" color={'black'} size={30} />
-      </TouchableOpacity>
-      {data.length !== 1 && (
-        <View
-          style={{zIndex: 4, position: 'absolute', right: '3%', top: '35%'}}>
-          {data.map((item, index) => {
-            return (
-              <View
-                key={index.toString()}
-                style={{
-                  marginVertical: '40%',
-                  height: 10,
-                  width: 10,
-                  borderRadius: 5,
-                  backgroundColor:
-                    activeIndex === index ? '#007aff' : 'rgba(0,0,0,0.2)',
-                }}
-              />
-            );
-          })}
-        </View>
-      )}
-      {/* <ImageBackground
+    <BottomSheetModalProvider>
+      <View style={styles.productPageContainer}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{
+            zIndex: 2,
+            position: 'absolute',
+            backgroundColor: 'white',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: 40,
+            shadowColor: '#000',
+            shadowOffset: {width: 0, height: 0},
+            shadowOpacity: 0.5,
+            shadowRadius: 5,
+            elevation: 3,
+            height: 40,
+            borderRadius: 10,
+            left: 10,
+            top: 10,
+          }}>
+          <Ionicons name="arrow-back-sharp" color={'black'} size={30} />
+        </TouchableOpacity>
+        {data.length !== 1 && (
+          <View
+            style={{zIndex: 1, position: 'absolute', right: '3%', top: '35%'}}>
+            {data.map((item, index) => {
+              return (
+                <View
+                  key={index.toString()}
+                  style={{
+                    marginVertical: '40%',
+                    height: 10,
+                    width: 10,
+                    borderRadius: 5,
+                    backgroundColor:
+                      activeIndex === index ? '#007aff' : 'rgba(0,0,0,0.2)',
+                  }}
+                />
+              );
+            })}
+          </View>
+        )}
+        {/* <ImageBackground
         source={{uri: product.thumbnail}}
         resizeMode="cover"
         blurRadius={5}
@@ -113,99 +114,90 @@ const ProductPage = ({navigation, route}) => {
         </Swiper>
         
       </ImageBackground>*/}
-      <View style={[StyleSheet.absoluteFillObject]}>
-        {data.map((image, index) => {
-          const inputRange = [
-            (index - 1) * height,
-            index * height,
-            (index + 1) * height,
-          ];
-          const opacity = scrollY.interpolate({
-            inputRange,
-            outputRange: [0, 1, 0],
-          });
-          return (
-            <Animated.Image
-              source={{uri: image}}
-              key={`Image-${index}`}
-              resizeMode="cover"
-              blurRadius={20}
-              style={[
-                StyleSheet.absoluteFillObject,
-                {
-                  opacity,
-                },
-              ]}
-            />
-          );
-        })}
-      </View>
-      <Animated.FlatList
-        data={data}
-        onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {y: scrollY}}}],
-          {useNativeDriver: true, listener: event => handleScroll(event)},
-        )}
-        disableIntervalMomentum
-        decelerationRate={'fast'}
-        snapToOffsets={offsets}
-        alwaysBounceVertical
-        showsVerticalScrollIndicator={false}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({item, index}) => {
-          return (
-            <View
-              style={{
-                height: height,
-                alignItems: 'center',
-                justifyContent: 'center',
-                shadowColor: '#000',
-                shadowOffset: {width: 0, height: 1},
-                shadowOpacity: 0.5,
-                shadowRadius: 5,
-                elevation: 5,
-              }}>
-              <Image
-                source={{uri: item}}
+        <View style={[StyleSheet.absoluteFillObject]}>
+          {data.map((image, index) => {
+            const inputRange = [
+              (index - 1) * height,
+              index * height,
+              (index + 1) * height,
+            ];
+            const opacity = scrollY.interpolate({
+              inputRange,
+              outputRange: [0, 1, 0],
+            });
+            return (
+              <Animated.Image
+                source={{uri: image}}
+                key={`Image-${index}`}
+                resizeMode="cover"
+                blurRadius={20}
+                style={[
+                  StyleSheet.absoluteFillObject,
+                  {
+                    opacity,
+                  },
+                ]}
+              />
+            );
+          })}
+        </View>
+        <Animated.FlatList
+          data={data}
+          onScroll={Animated.event(
+            [{nativeEvent: {contentOffset: {y: scrollY}}}],
+            {useNativeDriver: true, listener: event => handleScroll(event)},
+          )}
+          disableIntervalMomentum
+          decelerationRate={'fast'}
+          snapToOffsets={offsets}
+          alwaysBounceVertical
+          showsVerticalScrollIndicator={false}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({item, index}) => {
+            return (
+              <View
                 style={{
-                  marginBottom: '25%',
-                  width: width,
-                  height: imageH,
+                  height: height,
+                  alignItems: 'center',
+                  justifyContent: 'center',
                   shadowColor: '#000',
                   shadowOffset: {width: 0, height: 1},
                   shadowOpacity: 0.5,
                   shadowRadius: 5,
-                  resizeMode: 'cover',
-                }}
-              />
-            </View>
-          );
-        }}
-      />
-      <BottomSheet
-        ref={bottomSheetRef}
-        index={0}
-        snapPoints={snapPoints}
-        handleStyle={{backgroundColor: 'white', borderRadius: 100}}
-        onChange={handleSheetChanges}>
-        <View style={styles.contentContainer}>
-          <View style={styles.productOverview}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                paddingHorizontal: '3%',
-                alignItems: 'center',
-                borderBottomWidth: 1,
-                borderColor: 'rgba(0,0,0,0.1)',
-                paddingBottom: '5%',
-              }}>
-              <View style={{width: '70%'}}>
+                  elevation: 5,
+                }}>
+                <Image
+                  source={{uri: item}}
+                  style={{
+                    marginBottom: '25%',
+                    width: width,
+                    height: imageH,
+                    shadowColor: '#000',
+                    shadowOffset: {width: 0, height: 1},
+                    shadowOpacity: 0.5,
+                    shadowRadius: 5,
+                    resizeMode: 'cover',
+                  }}
+                />
+              </View>
+            );
+          }}
+        />
+        <BottomSheet
+          ref={bottomSheetRef}
+          index={0}
+          style={{zIndex: 5, elevation: 5}}
+          snapPoints={snapPoints}
+          handleStyle={{backgroundColor: 'white', borderRadius: 100, zIndex: 5}}
+          onChange={handleSheetChanges}>
+          <View style={styles.contentContainer}>
+            <View style={styles.productOverview}>
+              <View style={{maxWidth: '75%'}}>
                 <Text
                   style={{
                     fontSize: 20,
                     letterSpacing: 1,
-                    maxWidth: '70%',
+                    maxWidth: '100%',
                     fontWeight: '400',
                     color: 'black',
                   }}>
@@ -214,25 +206,26 @@ const ProductPage = ({navigation, route}) => {
                 <Text
                   style={{
                     fontSize: 14,
-                    maxWidth: '70%',
+                    maxWidth: '100%',
                     fontWeight: '400',
                     color: 'black',
                   }}>
                   {product.name}
                 </Text>
               </View>
-              <Text
-                style={{
-                  fontSize: 20,
-                  fontWeight: 'bold',
-                  color: 'black',
-                }}>
-                ₹{product.price}
-              </Text>
+              <View>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    fontWeight: 'bold',
+                    color: 'black',
+                  }}>
+                  ₹{product.price}
+                </Text>
+              </View>
             </View>
-          </View>
-          <View style={{paddingHorizontal: '3%', marginTop: '2%'}}>
-            {/*<Text>Select Size</Text>
+            <View style={{paddingHorizontal: '3%', marginTop: '2%'}}>
+              {/*<Text>Select Size</Text>
             <View style={{flexDirection: 'row', marginVertical: '2%'}}>
                 {product.variants.map(variant => {
                   return (
@@ -252,43 +245,52 @@ const ProductPage = ({navigation, route}) => {
                   );
                 })}
               </View>*/}
-            <Text style={{color: 'black', fontSize: 16}}>Sizes Available</Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                marginVertical: '2%',
-                width: '100%',
-                flexWrap: 'wrap',
-              }}>
-              {product.variants?.map(variant => (
-                <View
-                  style={{
-                    marginRight: '5%',
-                    backgroundColor: 'white',
-                    borderWidth: 1,
-                    borderRadius: 2,
-                    borderColor: 'rgba(0,0,0,0.3)',
-                    width: '9%',
-                    paddingVertical: '1%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <Text style={{color: 'black', fontSize: 14}}>
-                    {variant.name}
-                  </Text>
-                </View>
-              ))}
+              <Text style={{color: 'black', fontSize: 16}}>
+                Sizes Available
+              </Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginVertical: '2%',
+                  width: '100%',
+                  flexWrap: 'wrap',
+                }}>
+                {product.variants?.map(variant => (
+                  <View
+                    style={{
+                      marginRight: '5%',
+                      marginBottom: '2%',
+                      backgroundColor: 'white',
+                      borderWidth: 1,
+                      borderRadius: 5,
+                      shadowColor: '#000',
+                      shadowOffset: {width: 0, height: 0},
+                      shadowOpacity: 0.5,
+                      shadowRadius: 5,
+                      elevation: 1,
+                      borderColor: 'rgba(0,0,0,0.3)',
+                      paddingVertical: '1%',
+                      width: 35,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <Text style={{color: 'black', fontSize: 14}}>
+                      {variant.name}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+              <Text style={{color: 'black', fontSize: 16}}>
+                Product Description
+              </Text>
+              <Text style={{color: 'gray', fontSize: 14}}>
+                {product.description}
+              </Text>
             </View>
-            <Text style={{color: 'black', fontSize: 16}}>
-              Product Description
-            </Text>
-            <Text style={{color: 'gray', fontSize: 14}}>
-              {product.description}
-            </Text>
           </View>
-        </View>
-      </BottomSheet>
-    </View>
+        </BottomSheet>
+      </View>
+    </BottomSheetModalProvider>
   );
 };
 
@@ -299,11 +301,19 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
-  productOverview: {},
+  productOverview: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: '3%',
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderColor: 'rgba(0,0,0,0.1)',
+    paddingBottom: '5%',
+  },
   contentContainer: {
     flex: 1,
-    position: 'absolute',
-    zIndex: 100,
+    zIndex: 2,
+    elevation: 1,
     backgroundColor: 'white',
   },
   wrapper: {},

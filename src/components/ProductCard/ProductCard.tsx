@@ -72,13 +72,15 @@ const ProductCard = ({
               style={{...styles.rowTwoText, width: '70%'}}>
               {product.name}
             </Text>
-            <Text
-              style={{
-                ...styles.rowTwoText,
-                textDecorationLine: 'line-through',
-              }}>
-              ₹750
-            </Text>
+            {product.priceUndiscounted > product.price && (
+              <Text
+                style={{
+                  ...styles.rowTwoText,
+                  textDecorationLine: 'line-through',
+                }}>
+                ₹{product.priceUndiscounted}
+              </Text>
+            )}
           </View>
         </View>
       </ImageBackground>

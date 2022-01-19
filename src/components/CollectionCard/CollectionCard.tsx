@@ -21,6 +21,7 @@ const CollectionCard = ({
   navigation,
 }) => {
   console.log('Collections:', collection);
+  console.log(collection.imageUrl);
   const storeUrl = useSelector(state => state.store.storeInfo.storeUrl);
   return (
     <Pressable
@@ -162,6 +163,6 @@ const styles = StyleSheet.create({
   },
   imageStyle: {
     width: '100%',
-    height: 350,
+    height: 400,
   },
 });

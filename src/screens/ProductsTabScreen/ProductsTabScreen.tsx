@@ -13,6 +13,7 @@ import {
   Pressable,
 } from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
+import axios from 'axios';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CollectionCard from '../../components/CollectionCard/CollectionCard';
@@ -27,12 +28,12 @@ import {
   BarIndicator,
   UIActivityIndicator,
 } from 'react-native-indicators';
-import axios from 'axios';
 import {GET_AUTHORISED_BRANDS, GET_STORE} from '../DashboardScreen/queries';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import {setStoreCollections} from '../../redux/reducers/storeReducer';
 import {UPDATE_COLLECTION} from './mutations';
 import toastService from '../../services/toast-service';
+import {WEBSERVER_BASE_URL} from '../../core/constants';
 const ProductsTabScreen = ({navigation}) => {
   const [isViewing, setIsViewing] = useState(1);
   const [isCollectionEdit, setIsCollectionEdit] = useState(false);
@@ -107,7 +108,7 @@ const ProductsTabScreen = ({navigation}) => {
         });
         setFile(result.assets[0]);
         console.log(formData);
-        axios({
+        /*axios({
           method: 'post',
           url: 'https://betacontent.zaamo.co/engine/upload',
           data: formData,
@@ -127,6 +128,25 @@ const ProductsTabScreen = ({navigation}) => {
             //handle error
             console.log(response);
             dispatch(setLoaderStatus(false));
+          });
+        */
+        axios
+          .get(`${WEBSERVER_BASE_URL}/presigned/url/toupload/`, {
+            headers: {
+              'Service-Token': '2900ba48-85f6-4929-b19d-0c0da14dbc14',
+            },
+          })
+          .then(res => {
+            console.log(res.data);
+            setThumbnailUri(res.data?.streaming_url);
+            setIsThumbnailModalVisible(false);
+            setIsNewCollectionModalVisible(true);
+            dispatch(setLoaderStatus(false));
+          })
+          .catch(e => {
+            console.log(e);
+            dispatch(setLoaderStatus(false));
+            toastService.showToast('Could not upload Image,Try Again!', true);
           });
       },
     );
@@ -173,6 +193,8 @@ const ProductsTabScreen = ({navigation}) => {
                 price: node.pricing.priceRange
                   ? node.pricing.priceRange.start.net.amount
                   : 0,
+                priceUndiscounted:
+                  node.pricing.priceRangeUndiscounted?.start?.net?.amount,
               };
             },
           );
@@ -266,7 +288,7 @@ const ProductsTabScreen = ({navigation}) => {
         uri: res.assets[0].uri,
       });
       console.log(galleryFormData);
-      axios({
+      /*axios({
         method: 'post',
         url: 'https://betacontent.zaamo.co/engine/upload',
         data: galleryFormData,
@@ -285,6 +307,23 @@ const ProductsTabScreen = ({navigation}) => {
         .catch(function (response) {
           //handle error
           console.log(response);
+          dispatch(setLoaderStatus(false));
+        });*/
+      axios
+        .get(`${WEBSERVER_BASE_URL}/presigned/url/toupload/`, {
+          headers: {
+            'Service-Token': '2900ba48-85f6-4929-b19d-0c0da14dbc14',
+          },
+        })
+        .then(res => {
+          console.log(res.data);
+          setThumbnailUri(res.data?.streaming_url);
+          setIsThumbnailModalVisible(false);
+          setIsNewCollectionModalVisible(true);
+          dispatch(setLoaderStatus(false));
+        })
+        .catch(e => {
+          toastService.showToast('Could not upload Image,Try Again!', true);
           dispatch(setLoaderStatus(false));
         });
     });
@@ -391,72 +430,83 @@ const ProductsTabScreen = ({navigation}) => {
       </View>
       <View
         style={{
-          width: '90%',
-          height: 35,
-          borderRadius: 5,
-          marginTop: '2%',
-          shadowColor: '#000',
-          shadowOffset: {width: 0, height: 0},
-          shadowOpacity: 0.5,
-          shadowRadius: 5,
-          elevation: 4,
+          shadowColor: 'black',
+          shadowOffset: {width: 0, height: 5},
+          shadowOpacity: 1,
+          shadowRadius: 20,
+          elevation: 10,
           backgroundColor: 'white',
-          flexDirection: 'row',
-          alignSelf: 'center',
-          marginBottom: '3%',
-          position: 'relative',
         }}>
-        <Animated.View
+        <View
           style={{
-            position: 'absolute',
-            width: '50%',
-            height: '100%',
-            top: 0,
-            left: 0,
+            width: '90%',
+            height: 35,
             borderRadius: 5,
-            backgroundColor: 'rgba(0,0,0,1)',
-            transform: [{translateX}],
-          }}
-        />
-        <TouchableOpacity
-          onPress={() => {
-            setIsViewing(1);
-            handleSlide(xTabOne);
-          }}
-          onLayout={event => setXTabOne(event.nativeEvent.layout.x)}
-          style={{
-            width: '50%',
-            height: '100%',
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: 10,
+            marginTop: '2%',
+            shadowColor: '#000',
+            shadowOffset: {width: 0, height: 0},
+            shadowOpacity: 0.5,
+            shadowRadius: 5,
+            elevation: 4,
+            backgroundColor: 'white',
+            flexDirection: 'row',
+            alignSelf: 'center',
+            marginBottom: '3%',
+            position: 'relative',
           }}>
-          <Text style={{color: isViewing === 1 ? 'white' : 'black'}}>
-            Products
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            setIsViewing(2);
-            handleSlide(xTabTwo);
-          }}
-          onLayout={event => setXTabTwo(event.nativeEvent.layout.x)}
-          style={{
-            width: '50%',
-            height: '100%',
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderTopRightRadius: 10,
-            borderBottomRightRadius: 10,
-          }}>
-          <Text style={{color: isViewing === 2 ? 'white' : 'black'}}>
-            Collections
-          </Text>
-        </TouchableOpacity>
+          <Animated.View
+            style={{
+              position: 'absolute',
+              width: '50%',
+              height: '100%',
+              top: 0,
+              left: 0,
+              borderRadius: 5,
+              backgroundColor: 'rgba(0,0,0,1)',
+              transform: [{translateX}],
+            }}
+          />
+          <TouchableOpacity
+            onPress={() => {
+              setIsViewing(1);
+              handleSlide(xTabOne);
+            }}
+            onLayout={event => setXTabOne(event.nativeEvent.layout.x)}
+            style={{
+              width: '50%',
+              height: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 10,
+            }}>
+            <Text style={{color: isViewing === 1 ? 'white' : 'black'}}>
+              Products
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              setIsViewing(2);
+              handleSlide(xTabTwo);
+            }}
+            onLayout={event => setXTabTwo(event.nativeEvent.layout.x)}
+            style={{
+              width: '50%',
+              height: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderTopRightRadius: 10,
+              borderBottomRightRadius: 10,
+            }}>
+            <Text style={{color: isViewing === 2 ? 'white' : 'black'}}>
+              Collections
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
       <Modal
         transparent={true}
         visible={isThumbnailModalVisible}
+        onRequestClose={() => setIsThumbnailModalVisible(false)}
         animationType="slide">
         <Pressable
           onPress={() => setIsThumbnailModalVisible(false)}
@@ -531,6 +581,7 @@ const ProductsTabScreen = ({navigation}) => {
       <Modal
         transparent={true}
         visible={isNewCollectionModalVisible}
+        onRequestClose={() => setIsNewCollectionModalVisible(false)}
         animationType="slide">
         <Pressable
           onPress={() => setIsNewCollectionModalVisible(false)}
@@ -633,6 +684,13 @@ const ProductsTabScreen = ({navigation}) => {
                 isCollectionEdit
                   ? onEditCollection
                   : () => {
+                      if (newCollectionName === '' || thumbnailUri === '') {
+                        toastService.showToast(
+                          'Please fill in the new collection information before proceeding',
+                          true,
+                        );
+                        return;
+                      }
                       setIsNewCollectionModalVisible(false);
                       navigation.navigate('CollectionProductsAddScreen', {
                         collectionName: newCollectionName,

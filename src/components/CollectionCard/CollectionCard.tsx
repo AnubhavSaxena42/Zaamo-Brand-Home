@@ -20,8 +20,6 @@ const CollectionCard = ({
   setThumbnailUri,
   navigation,
 }) => {
-  console.log('Collections:', collection);
-  console.log(collection.imageUrl);
   const storeUrl = useSelector(state => state.store.storeInfo.storeUrl);
   return (
     <Pressable

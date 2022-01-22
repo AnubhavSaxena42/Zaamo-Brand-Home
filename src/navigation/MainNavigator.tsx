@@ -8,6 +8,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import ProductTaggingPanelScreen from '../screens/ProductTaggingPanelScreen';
 import CreateVariantScreen from '../screens/CreateVariantsScreen/CreateVariantScreen';
 import AddProductScreen from '../screens/AddProductScreen';
+import BrandHomeOnboardingScreen from '../screens/BrandHomeOnboardingScreen/BrandHomeOnboardingScreen';
 import CreateProductScreen from '../screens/CreateProductScreen/CreateProductScreen';
 import MobileOTPScreen from '../screens/MobileOTPScreen/MobileOTPScreen';
 import VerifyOTPScreen from '../screens/VerifyOTPScreen/VerifyOTPScreen';
@@ -302,6 +303,10 @@ export const AuthorizationStack = () => {
         headerShown: false,
       }}>
       <AuthStack.Screen name="MobileOTPScreen" component={MobileOTPScreen} />
+      <AuthStack.Screen
+        name="BrandHomeOnboardingScreen"
+        component={BrandHomeOnboardingScreen}
+      />
       <AuthStack.Screen name="VerifyOTPScreen" component={VerifyOTPScreen} />
       <AuthStack.Screen name="SplashScreen" component={SplashScreen} />
       <AuthStack.Screen

@@ -58,7 +58,8 @@ const MobileOTPScreen = ({navigation, route}) => {
       <TextInput
         onChangeText={text => {
           if (text.length > 10) return;
-          setMobileNumber(text);
+          const reg = new RegExp('[0-9]');
+          if (reg.test(text)) setMobileNumber(text);
         }}
         style={styles.numberInput}
         keyboardType="number-pad"
@@ -75,7 +76,7 @@ const MobileOTPScreen = ({navigation, route}) => {
           } else {
             console.log('in else block');
             navigation.navigate('VerifyOTPScreen', {
-             mobileNumber: mobileNumber,
+              mobileNumber: mobileNumber,
             });
             //generateOtp();
           }

@@ -5,8 +5,11 @@ import {
   ScrollView,
   Image,
   Dimensions,
+  TouchableOpacity,
   Text,
+  FlatList,
   View,
+  Animated,
 } from 'react-native';
 import Swiper from 'react-native-swiper';
 import OrderCard from '../../components/OrderCard/OrderCard';
@@ -16,10 +19,12 @@ import {GET_ORDERS} from './queries';
 import {useSelector, useDispatch} from 'react-redux';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 const OrdersScreen = ({navigation}) => {
-  const windowWidth = Dimensions.get('window').width;
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const {data, error, loading} = useQuery(GET_ORDERS);
+  const {width, height} = Dimensions.get('screen');
+  const {data, error, loading} = useQuery(GET_ORDERS, {
+    notifyOnNetworkStatusChange: true,
+  });
   const [brandOrders, setBrandOrders] = useState([]);
+  const [listData, setListData] = useState([]);
   const [brandShippedOrders, setBrandShippedOrders] = useState([]);
   const [brandInProcessOrders, setBrandInProcessOrders] = useState([]);
   const [brandDeliveredOrders, setBrandDeliveredOrders] = useState([]);
@@ -35,7 +40,138 @@ const OrdersScreen = ({navigation}) => {
     [],
   );
   const [brandFulfilledOrders, setBrandFulfilledOrders] = useState([]);
-  const swiperRef = useRef();
+
+  const _renderSubItem = ({item}) => {
+    return (
+      <OrderCard
+        key={item.node.id}
+        navigation={navigation}
+        order={item.node}
+        status={item?.status}
+      />
+    );
+  };
+
+  const _renderItem = ({item, index}) => {
+    return (
+      <View>
+        <FlatList
+          data={item}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{width, alignItems: 'center'}}
+          keyExtractor={index => index.toString()}
+          renderItem={_renderSubItem}
+        />
+      </View>
+    );
+  };
+
+  const Tab = React.forwardRef(({item, onItemPress}, ref) => {
+    return (
+      <TouchableOpacity onPress={onItemPress}>
+        <View ref={ref} style={{marginRight: 10, marginBottom: 5}}>
+          <Text style={{color: 'black'}}>{item.text}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  });
+  const scrollX = React.useRef(new Animated.Value(0)).current;
+
+  const Indicator = ({measures, scrollX, scrollViewRef, data}) => {
+    const indicatorRef = useRef();
+    const inputRange = data.map((_, i) => i * width);
+    const indicatorWidth = scrollX.interpolate({
+      inputRange,
+      outputRange: measures.map(measure => measure.width),
+    });
+    const translateX = scrollX.interpolate({
+      inputRange,
+      outputRange: measures.map(measure => measure.x),
+    });
+    return (
+      <Animated.View
+        ref={indicatorRef}
+        style={{
+          position: 'absolute',
+          transform: [
+            {
+              translateX,
+            },
+          ],
+          bottom: 0,
+          height: 2.5,
+          width: indicatorWidth,
+          backgroundColor: 'black',
+        }}
+      />
+    );
+  };
+
+  const Tabs = ({data, onItemPress, scrollX}) => {
+    const containerRef = useRef();
+    const scrollViewRef = useRef();
+    const [measures, setMeasures] = useState([]);
+    React.useLayoutEffect(() => {
+      console.log('Container Ref:', containerRef.current);
+      let m = [];
+      setTimeout(() => {
+        data.forEach(item => {
+          item?.ref?.current?.measureLayout(
+            containerRef.current,
+            (x, y, width, height) => {
+              console.log(x, y, width, height);
+              m.push({
+                x,
+                y,
+                width,
+                height,
+              });
+            },
+            error => {
+              console.log('Error:', error);
+            },
+          );
+        });
+        setTimeout(() => setMeasures(m), 0);
+      }, 0);
+    }, []);
+
+    return (
+      <View style={{paddingHorizontal: 10}}>
+        <ScrollView
+          ref={scrollViewRef}
+          showsHorizontalScrollIndicator={false}
+          horizontal>
+          <View ref={containerRef} style={{flexDirection: 'row'}}>
+            {data.map((item, index) => {
+              return (
+                <Tab
+                  key={item.text}
+                  onItemPress={() => onItemPress(index)}
+                  item={item}
+                  ref={item.ref}
+                />
+              );
+            })}
+            {measures.length > 0 && (
+              <Indicator
+                data={data}
+                scrollViewRef={scrollViewRef}
+                measures={measures}
+                scrollX={scrollX}
+              />
+            )}
+          </View>
+        </ScrollView>
+      </View>
+    );
+  };
+  const onItemPress = React.useCallback(itemIndex => {
+    ref?.current.scrollToOffset({
+      offset: itemIndex * width,
+    });
+  });
+  const ref = React.useRef();
   useEffect(() => {
     if (data) {
       const orders = data.orders.edges.filter(
@@ -143,6 +279,17 @@ const OrdersScreen = ({navigation}) => {
       setBrandReturnInitiatedOrders(returnInitiatedOrders);
       setBrandReturnCompletedOrders(returnCompletedOrders);
       setBrandFulfilledOrders(fulfilledOrders);
+      setListData([
+        allOrders,
+        shippedOrders,
+        inProcessOrders,
+        deliveredOrders,
+        cancelledOrders,
+        returnRequestedOrders,
+        returnInitiatedOrders,
+        returnCompletedOrders,
+        fulfilledOrders,
+      ]);
     }
   }, [data]);
   console.log('Brand Orders:', brandOrders);
@@ -177,7 +324,7 @@ const OrdersScreen = ({navigation}) => {
         source={require('../../assets/images/DashboardEllipse.png')}
         style={{
           height: 400,
-          width: windowWidth,
+          width: width,
           zIndex: 1,
           position: 'absolute',
           top: -250,
@@ -195,7 +342,7 @@ const OrdersScreen = ({navigation}) => {
           borderBottomWidth: 1,
         }}>
         <OrdersOverviewCard />
-        <ScrollView
+        {/*<ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{
@@ -551,7 +698,42 @@ const OrdersScreen = ({navigation}) => {
             })}
           </ScrollView>
         </View>
-      </Swiper>
+      </Swiper>*/}
+      </View>
+      <View style={{flex: 1, backgroundColor: 'white'}}>
+        <View style={{paddingBottom: 10}}>
+          <Tabs
+            onItemPress={onItemPress}
+            scrollX={scrollX}
+            data={[
+              {text: 'All Orders', ref: React.createRef()},
+              {text: 'Shipped', ref: React.createRef()},
+              {text: 'In Process', ref: React.createRef()},
+              {text: 'Delivered', ref: React.createRef()},
+              {text: 'Cancelled', ref: React.createRef()},
+              {text: 'Return Requested', ref: React.createRef()},
+              {text: 'Return Initiated', ref: React.createRef()},
+              {text: 'Return Completed', ref: React.createRef()},
+              {text: 'Fulfilled', ref: React.createRef()},
+            ]}
+          />
+        </View>
+        <Animated.FlatList
+          ref={ref}
+          data={listData}
+          contentContainerStyle={{backgroundColor: 'white'}}
+          onScroll={Animated.event(
+            [{nativeEvent: {contentOffset: {x: scrollX}}}],
+            {useNativeDriver: false},
+          )}
+          showsHorizontalScrollIndicator={false}
+          horizontal
+          keyExtractor={index => index.toString()}
+          renderItem={_renderItem}
+          pagingEnabled
+          disableIntervalMomentum
+        />
+      </View>
     </View>
   );
 };
@@ -562,9 +744,5 @@ const styles = StyleSheet.create({
   ordersContainer: {
     flex: 1,
     backgroundColor: 'white',
-  },
-  selected: {
-    borderColor: 'black',
-    borderBottomWidth: 1,
   },
 });

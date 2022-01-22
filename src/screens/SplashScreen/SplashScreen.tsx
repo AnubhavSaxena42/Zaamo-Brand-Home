@@ -1,6 +1,9 @@
 import React, {useEffect} from 'react';
 import {StyleSheet, Text, Image, View} from 'react-native';
-import {getItemFromStorage} from '../../services/storage-service';
+import {
+  getItemFromStorage,
+  saveItemToStorage,
+} from '../../services/storage-service';
 import {useDispatch} from 'react-redux';
 import {
   setMobileNumber,
@@ -9,6 +12,7 @@ import {
 } from '../../redux/reducers/userReducer';
 const SplashScreen = ({navigation}) => {
   const dispatch = useDispatch();
+
   useEffect(() => {
     getItemFromStorage('Token')
       .then(token => {
@@ -32,14 +36,23 @@ const SplashScreen = ({navigation}) => {
           });
         } else {
           console.log('in else block 1');
-          getItemFromStorage('Mobile Number').then(mobileNumber => {
-            console.log('Mobile Number:', mobileNumber);
-            if (mobileNumber && mobileNumber.length !== 0) {
-              navigation.replace('LoginSuccessScreen', {
-                mobileNumber: mobileNumber,
-              });
+          getItemFromStorage('First Time User').then(firstTimeUser => {
+            if (!firstTimeUser) {
+              console.log('First Time User:', firstTimeUser);
+              saveItemToStorage('First Time User', 'false');
+              navigation.navigate('BrandHomeOnboardingScreen');
             } else {
-              navigation.replace('MobileOTPScreen');
+              console.log('Reaching where it should not reach');
+              getItemFromStorage('Mobile Number').then(mobileNumber => {
+                console.log('Mobile Number:', mobileNumber);
+                if (mobileNumber && mobileNumber.length !== 0) {
+                  navigation.replace('LoginSuccessScreen', {
+                    mobileNumber: mobileNumber,
+                  });
+                } else {
+                  navigation.replace('MobileOTPScreen');
+                }
+              });
             }
           });
         }

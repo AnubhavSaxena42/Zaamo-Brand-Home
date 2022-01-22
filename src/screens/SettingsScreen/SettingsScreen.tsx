@@ -11,7 +11,10 @@ import {
 import SettingOption from '../../components/SettingOption/SettingOption';
 import {useDispatch} from 'react-redux';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
-import {deleteAllItemsFromStorage} from '../../services/storage-service';
+import {
+  deleteAllItemsFromStorage,
+  saveItemToStorage,
+} from '../../services/storage-service';
 import toastService from '../../services/toast-service';
 import {client} from '../../App';
 const windowWidth = Dimensions.get('window').width;
@@ -22,6 +25,7 @@ const SettingsScreen = ({navigation, route}) => {
     deleteAllItemsFromStorage()
       .then(() => {
         toastService.showToast('Logged out successfully', true);
+        saveItemToStorage('First Time User', 'false');
         client.cache
           .reset()
           .then(() => {

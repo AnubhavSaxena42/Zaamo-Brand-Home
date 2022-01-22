@@ -8,6 +8,7 @@ class ToastService {
       text1: text,
       position: bottom ? 'bottom' : 'top',
       bottomOffset: 100,
+      topOffset: 100,
     });
   };
 }

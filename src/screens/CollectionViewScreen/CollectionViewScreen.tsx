@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {useMutation, useQuery, NetworkStatus} from '@apollo/client';
+import tailwind from 'tailwind-rn';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import {
   StyleSheet,
   ScrollView,
@@ -102,7 +104,7 @@ const CollectionViewScreen = ({navigation, route}) => {
       });
       toastService.showToast(
         'Product has been removed from the collection',
-        true,
+        false,
       );
     }
   }, [productRemoveResponse.data]);
@@ -216,17 +218,29 @@ const CollectionViewScreen = ({navigation, route}) => {
         onRefresh={collectionResponse.refetch}
         refreshing={refreshing}
         numColumns={2}
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent:
+            collectionProducts.length === 0 ? 'center' : 'flex-start',
+        }}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
           !refreshing && !collectionResponse.loading
             ? () => (
                 <View
-                  style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <Text>No Products</Text>
+                  style={[
+                    tailwind(
+                      'bg-white mt-1 mx-10   rounded border border-gray-400 flex-row items-center justify-center',
+                    ),
+                    {},
+                  ]}>
+                  <AntDesign name="tags" size={40} color="black" />
+                  <Text
+                    style={tailwind(
+                      'text-sm font-semibold text-center px-6 py-5 text-gray-600 ',
+                    )}>
+                    No Products Found
+                  </Text>
                 </View>
               )
             : null

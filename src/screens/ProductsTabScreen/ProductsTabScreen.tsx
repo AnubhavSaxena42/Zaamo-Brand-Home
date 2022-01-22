@@ -13,8 +13,11 @@ import {
   Pressable,
 } from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import axios from 'axios';
 import Entypo from 'react-native-vector-icons/Entypo';
+import {tailwind} from '../../core/tailwind';
 import {toastConfig} from '../../App';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CollectionCard from '../../components/CollectionCard/CollectionCard';
@@ -48,6 +51,8 @@ const ProductsTabScreen = ({navigation}) => {
   const [products, setProducts] = useState([]);
   const [collections, setCollections] = useState([]);
   const [isThumbnailModalVisible, setIsThumbnailModalVisible] = useState(false);
+  const [isCollectionError, setIsCollectionError] = useState(false);
+  const [isThumbnailError, setIsThumbnailError] = useState(false);
   const [productsPageInfo, setProductsPageInfo] = useState({
     hasNextPage: true,
     endCursor: '',
@@ -147,6 +152,7 @@ const ProductsTabScreen = ({navigation}) => {
           })
           .catch(e => {
             console.log(e);
+            setIsThumbnailError(true);
             dispatch(setLoaderStatus(false));
           });
       },
@@ -208,6 +214,15 @@ const ProductsTabScreen = ({navigation}) => {
     else dispatch(setLoaderStatus(false));
   }, [brandResponse.loading]);
 */
+  const ErrorMessage = ({message}) => {
+    return (
+      <View style={styles.errorMessageContainer}>
+        <Text style={styles.errorMessageText}>
+          {message ? message : 'This Field is required*'}
+        </Text>
+      </View>
+    );
+  };
   const _renderProduct = ({item}) => (
     <ProductCard navigation={navigation} product={item} />
   );
@@ -273,22 +288,26 @@ const ProductsTabScreen = ({navigation}) => {
     else dispatch(setLoaderStatus(false));
   }, [collectionUpdateResponse.loading]);
   const onSelectGallery = async () => {
-    const result = await launchImageLibrary({}, res => {
+    const result = await launchImageLibrary({}, async res => {
       dispatch(setLoaderStatus(true));
       console.log(res);
       if (res.didCancel) {
         dispatch(setLoaderStatus(false));
         return;
       }
-      var galleryFormData = new FormData();
-      setFile(res.assets[0]);
 
-      galleryFormData.append('file', {
+      setFile(res.assets[0]);
+      const fileToUpload = {
+        type: 'image/jpeg',
+        name: res.assets[0].fileName,
+        uri: res.assets[0].uri,
+      };
+      /*galleryFormData.append('file', {
         type: 'image/jpeg',
         name: res.assets[0].fileName,
         uri: res.assets[0].uri,
       });
-      console.log(galleryFormData);
+      console.log(galleryFormData);*/
       /*axios({
         method: 'post',
         url: 'https://betacontent.zaamo.co/engine/upload',
@@ -310,21 +329,43 @@ const ProductsTabScreen = ({navigation}) => {
           console.log(response);
           dispatch(setLoaderStatus(false));
         });*/
-      axios
+      const [streamUrl, url, fileKey] = await axios
         .get(`${WEBSERVER_BASE_URL}/presigned/url/toupload/`, {
           headers: {
             'Service-Token': '2900ba48-85f6-4929-b19d-0c0da14dbc14',
           },
         })
+        .then(response => {
+          console.log(response.data);
+          return [
+            response.data?.streaming_url,
+            response.data?.url,
+            response.data?.file_key,
+          ];
+          /*setThumbnailUri(res.data?.streaming_url);
+          setIsThumbnailModalVisible(false);
+          setIsNewCollectionModalVisible(true);
+          dispatch(setLoaderStatus(false));*/
+        })
+        .catch(e => {
+          return [null, null, null];
+          /*setIsThumbnailError(true);
+          dispatch(setLoaderStatus(false));*/
+        });
+      await axios
+        .put(url, fileToUpload, {})
         .then(res => {
-          console.log(res.data);
-          setThumbnailUri(res.data?.streaming_url);
+          console.log('image url Success: ', res);
+          setThumbnailUri(streamUrl);
           setIsThumbnailModalVisible(false);
           setIsNewCollectionModalVisible(true);
           dispatch(setLoaderStatus(false));
         })
-        .catch(e => {
+        .catch(err => {
+          console.log('err:', err);
+          setIsThumbnailError(true);
           dispatch(setLoaderStatus(false));
+          console.log('Handle error');
         });
     });
   };
@@ -574,6 +615,11 @@ const ProductsTabScreen = ({navigation}) => {
                 <Text>Select from Gallery</Text>
               </TouchableOpacity>
             </View>
+            {isThumbnailError && (
+              <View style={{marginBottom: '5%'}}>
+                <ErrorMessage message={'Failed to upload,Please try again'} />
+              </View>
+            )}
           </Pressable>
         </Pressable>
       </Modal>
@@ -685,7 +731,7 @@ const ProductsTabScreen = ({navigation}) => {
                   ? onEditCollection
                   : () => {
                       if (newCollectionName === '' || thumbnailUri === '') {
-                        console.log('Handle');
+                        setIsCollectionError(true);
                         return;
                       }
                       setIsNewCollectionModalVisible(false);
@@ -724,6 +770,11 @@ const ProductsTabScreen = ({navigation}) => {
                 {isCollectionEdit ? 'Update Collection' : 'Add Products'}
               </Text>
             </TouchableOpacity>
+            {isCollectionError && (
+              <ErrorMessage
+                message={'Please fill in the collection name and upload image'}
+              />
+            )}
             <Text
               onPress={() => {
                 if (isCollectionEdit) {
@@ -775,17 +826,28 @@ const ProductsTabScreen = ({navigation}) => {
           refreshing={refreshing}
           numColumns={2}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{paddingBottom: 30}}
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: products.length === 0 ? 'center' : 'flex-start',
+            paddingBottom: 30,
+          }}
           ListEmptyComponent={
-            !brandResponse.loading
+            !refreshing && !brandResponse.loading
               ? () => (
                   <View
-                    style={{
-                      flex: 1,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <Text>No Products Available</Text>
+                    style={[
+                      tailwind(
+                        'bg-white mt-1 mx-10   rounded border border-gray-400 flex-row items-center justify-center',
+                      ),
+                      {},
+                    ]}>
+                    <AntDesign name="tags" size={40} color="black" />
+                    <Text
+                      style={tailwind(
+                        'text-sm font-semibold text-center px-6 py-5 text-gray-600 ',
+                      )}>
+                      No Products Found
+                    </Text>
                   </View>
                 )
               : null
@@ -845,18 +907,29 @@ const ProductsTabScreen = ({navigation}) => {
           onRefresh={storeResponse.refetch}
           refreshing={refreshingCollections}
           numColumns={1}
-          contentContainerStyle={{paddingBottom: 25}}
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: collections.length === 0 ? 'center' : 'flex-start',
+            paddingBottom: 25,
+          }}
           showsVerticalScrollIndicator={false}
           ListEmptyComponent={
-            !storeResponse.loading
+            !refreshingCollections && !storeResponse.loading
               ? () => (
                   <View
-                    style={{
-                      flex: 1,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <Text>No collections available</Text>
+                    style={[
+                      tailwind(
+                        'bg-white mt-1 mx-10   rounded border border-gray-400 flex-row items-center justify-center',
+                      ),
+                      {},
+                    ]}>
+                    <MaterialIcons name="collections" size={40} color="black" />
+                    <Text
+                      style={tailwind(
+                        'text-sm font-semibold text-center px-6 py-5 text-gray-600 ',
+                      )}>
+                      No Collections Found
+                    </Text>
                   </View>
                 )
               : null
@@ -891,5 +964,13 @@ const styles = StyleSheet.create({
   productsTabContainer: {
     flex: 1,
     backgroundColor: 'white',
+  },
+  errorMessageContainer: {
+    alignSelf: 'center',
+    marginBottom: 2,
+  },
+  errorMessageText: {
+    fontSize: 12,
+    color: 'red',
   },
 });

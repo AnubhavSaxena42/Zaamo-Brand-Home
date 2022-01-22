@@ -2,20 +2,18 @@ import React, {useState, useMemo, useEffect} from 'react';
 import {
   StyleSheet,
   Modal,
-  ScrollView,
   Text,
   View,
   FlatList,
   TouchableOpacity,
-  Platform,
-  ActivityIndicator,
   TouchableNativeFeedback,
 } from 'react-native';
 import {BarIndicator} from 'react-native-indicators';
+import {tailwind} from '../../core/tailwind';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AddProductCard from '../../components/AddProductCard/AddProductCard';
 import {useDispatch, useSelector} from 'react-redux';
-import {setStoreProducts} from '../../redux/reducers/storeReducer';
 import {useMutation, NetworkStatus, useQuery} from '@apollo/client';
 import {ADD_PRODUCTS_COLLECTION, COLLECTION_CREATE} from './mutations';
 import {setStoreCollections} from '../../redux/reducers/storeReducer';
@@ -130,7 +128,7 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
 
   useEffect(() => {
     if (collectionAddResponse.data) {
-      toastService.showToast('Products have been added successfully', true);
+      toastService.showToast('Products have been added successfully', false);
       route.params.setSelectedCollection({
         ...route.params.collection,
         products:
@@ -322,9 +320,15 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
       route.params.setProducts(selectedProducts);
       navigation.goBack();
     } else if (route.params.collection) {
+      console.log('In wrong case');
       if (selectedProducts.length === 0) navigation.goBack();
       else collectionAddProducts();
     } else {
+      console.log('checkObj', {
+        name: route.params.collectionName,
+        imageUrl: route.params.collectionThumbnail,
+        products: selectedProducts,
+      });
       collectionCreate();
     }
   };
@@ -550,15 +554,34 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
             ? brandResponse.refetch
             : storeProductsResponse.refetch
         }
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: products.length === 0 ? 'center' : 'flex-start',
+        }}
         refreshing={refreshing}
         numColumns={2}
         showsVerticalScrollIndicator={false}
-        ListEmptyComponent={() => (
-          <View
-            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <Text></Text>
-          </View>
-        )}
+        ListEmptyComponent={
+          !brandResponse.loading && !storeProductsResponse.loading
+            ? () => (
+                <View
+                  style={[
+                    tailwind(
+                      'bg-white mt-1 mx-10   rounded border border-gray-400 flex-row items-center justify-center',
+                    ),
+                    {},
+                  ]}>
+                  <AntDesign name="tags" size={40} color="black" />
+                  <Text
+                    style={tailwind(
+                      'text-sm font-semibold text-center px-6 py-5 text-gray-600 ',
+                    )}>
+                    No Products Found
+                  </Text>
+                </View>
+              )
+            : null
+        }
         ListFooterComponent={ListFooterComponent}
         keyExtractor={item => item.id}
         columnWrapperStyle={{justifyContent: 'space-around'}}

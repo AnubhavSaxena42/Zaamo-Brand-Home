@@ -6,8 +6,11 @@ import {
   ScrollView,
   Text,
   View,
+  Image,
 } from 'react-native';
 import {BarIndicator} from 'react-native-indicators';
+import {tailwind} from '../../core/tailwind';
+
 import Coupon from '../../components/Coupon/Coupon';
 import Header from '../../components/Header';
 import {useSelector, useDispatch} from 'react-redux';
@@ -69,20 +72,37 @@ const MarketingScreen = ({navigation}) => {
         data={vouchers}
         onEndReached={handleOnEndReached}
         onEndReachedThreshold={0.5}
-        contentContainerStyle={{paddingBottom: '15%'}}
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingBottom: '15%',
+          justifyContent: vouchers.length === 0 ? 'center' : 'flex-start',
+        }}
         onRefresh={couponResponse.refetch}
         refreshing={refreshing}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
-          !couponResponse.loading
+          !refreshing && !couponResponse.loading
             ? () => (
                 <View
-                  style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <Text>No Coupons Available</Text>
+                  style={[
+                    tailwind(
+                      'bg-white mt-1 mx-10   rounded border border-gray-400 flex-row items-center justify-center',
+                    ),
+                    {},
+                  ]}>
+                  <Image
+                    style={{
+                      width: 60,
+                      height: 55,
+                    }}
+                    source={require('../../assets/images/voucher.png')}
+                  />
+                  <Text
+                    style={tailwind(
+                      'text-sm font-semibold text-center px-6 py-5 text-gray-600 ',
+                    )}>
+                    No Vouchers Found
+                  </Text>
                 </View>
               )
             : null

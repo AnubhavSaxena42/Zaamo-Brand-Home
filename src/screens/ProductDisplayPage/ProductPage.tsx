@@ -1,4 +1,4 @@
-import React, {useState, useMemo, useRef, useCallback} from 'react';
+import React, {useState, useMemo, useRef, useCallback, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -12,18 +12,28 @@ import {
   FlatList,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import BottomSheet, {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
+import BottomSheet, {
+  BottomSheetModalProvider,
+  BottomSheetModal,
+  BottomSheetScrollView,
+} from '@gorhom/bottom-sheet';
 const ProductPage = ({navigation, route}) => {
   const {product} = route.params;
   console.log('Product:', product);
   const {width, height} = Dimensions.get('window');
   const [activeIndex, setActiveIndex] = useState(0);
   // ref
-  const bottomSheetRef = useRef<BottomSheet>(null);
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
   // variables
   const snapPoints = useMemo(() => ['12%', '75%'], []);
-
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
   // callbacks
+  useEffect(() => {
+    handlePresentModalPress();
+  }, [bottomSheetModalRef.current]);
   const handleSheetChanges = useCallback((index: number) => {}, []);
   const data = product.images.map(image => image.url);
   const offsets = data.map((item, index) => {
@@ -42,79 +52,54 @@ const ProductPage = ({navigation, route}) => {
   return (
     <BottomSheetModalProvider>
       <View style={styles.productPageContainer}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={{
-            zIndex: 2,
-            position: 'absolute',
-            backgroundColor: 'white',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: 40,
-            shadowColor: '#000',
-            shadowOffset: {width: 0, height: 0},
-            shadowOpacity: 0.5,
-            shadowRadius: 5,
-            elevation: 3,
-            height: 40,
-            borderRadius: 10,
-            left: 10,
-            top: 10,
-          }}>
-          <Ionicons name="arrow-back-sharp" color={'black'} size={30} />
-        </TouchableOpacity>
-        {data.length !== 1 && (
-          <View
-            style={{zIndex: 1, position: 'absolute', right: '3%', top: '35%'}}>
-            {data.map((item, index) => {
-              return (
-                <View
-                  key={index.toString()}
-                  style={{
-                    marginVertical: '40%',
-                    height: 10,
-                    width: 10,
-                    borderRadius: 5,
-                    backgroundColor:
-                      activeIndex === index ? '#007aff' : 'rgba(0,0,0,0.2)',
-                  }}
-                />
-              );
-            })}
-          </View>
-        )}
-        {/* <ImageBackground
-        source={{uri: product.thumbnail}}
-        resizeMode="cover"
-        blurRadius={5}
-        style={{width: '100%', height: '100%'}}>
-        <Swiper
-          horizontal={false}
-          showsHorizontalScrollIndicator={false}
-          loop={false}
-          showsPagination={false}
-          style={styles.wrapper}>
-          {product.images.map(image => {
-            return (
-              <View style={styles.slide1}>
-                <Image
-                  source={{uri: image.url}}
-                  style={{
-                    flex: 1,
-                    width: '100%',
-                    alignSelf: 'center',
-                    height: '100%',
-                    marginBottom: '5%',
-                  }}
-                  resizeMode="contain"
-                />
-              </View>
-            );
-          })}
-        </Swiper>
-        
-      </ImageBackground>*/}
-        <View style={[StyleSheet.absoluteFillObject]}>
+        <View>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={{
+              position: 'absolute',
+              backgroundColor: 'white',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: 40,
+              shadowColor: '#000',
+              shadowOffset: {width: 0, height: 0},
+              shadowOpacity: 0.5,
+              shadowRadius: 5,
+              zIndex: 2,
+              height: 40,
+              borderRadius: 10,
+              left: 10,
+              top: 10,
+            }}>
+            <Ionicons name="arrow-back-sharp" color={'black'} size={30} />
+          </TouchableOpacity>
+
+          {data.length !== 1 && (
+            <View
+              style={{
+                position: 'absolute',
+                right: '3%',
+                top: '35%',
+                zIndex: 2,
+              }}>
+              {data.map((item, index) => {
+                return (
+                  <View
+                    key={index.toString()}
+                    style={{
+                      marginVertical: '40%',
+                      height: 10,
+                      width: 10,
+                      borderRadius: 5,
+                      backgroundColor:
+                        activeIndex === index ? '#007aff' : 'rgba(0,0,0,0.2)',
+                    }}
+                  />
+                );
+              })}
+            </View>
+          )}
+
           {data.map((image, index) => {
             const inputRange = [
               (index - 1) * height,
@@ -132,65 +117,59 @@ const ProductPage = ({navigation, route}) => {
                 resizeMode="cover"
                 blurRadius={20}
                 style={[
-                  StyleSheet.absoluteFillObject,
                   {
+                    position: 'absolute',
+                    height,
+                    width,
                     opacity,
                   },
                 ]}
               />
             );
           })}
-        </View>
-        <Animated.FlatList
-          data={data}
-          onScroll={Animated.event(
-            [{nativeEvent: {contentOffset: {y: scrollY}}}],
-            {useNativeDriver: true, listener: event => handleScroll(event)},
-          )}
-          disableIntervalMomentum
-          decelerationRate={'fast'}
-          snapToOffsets={offsets}
-          alwaysBounceVertical
-          showsVerticalScrollIndicator={false}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({item, index}) => {
-            return (
-              <View
-                style={{
-                  height: height,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  shadowColor: '#000',
-                  shadowOffset: {width: 0, height: 1},
-                  shadowOpacity: 0.5,
-                  shadowRadius: 5,
-                  elevation: 5,
-                }}>
-                <Image
-                  source={{uri: item}}
+
+          <Animated.FlatList
+            data={data}
+            onScroll={Animated.event(
+              [{nativeEvent: {contentOffset: {y: scrollY}}}],
+              {useNativeDriver: true, listener: event => handleScroll(event)},
+            )}
+            disableIntervalMomentum
+            decelerationRate={'fast'}
+            snapToOffsets={offsets}
+            showsVerticalScrollIndicator={false}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({item, index}) => {
+              return (
+                <View
                   style={{
-                    marginBottom: '25%',
-                    width: width,
-                    height: imageH,
-                    shadowColor: '#000',
-                    shadowOffset: {width: 0, height: 1},
-                    shadowOpacity: 0.5,
-                    shadowRadius: 5,
-                    resizeMode: 'cover',
-                  }}
-                />
-              </View>
-            );
-          }}
-        />
-        <BottomSheet
-          ref={bottomSheetRef}
+                    height: height,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <Image
+                    source={{uri: item}}
+                    style={{
+                      marginBottom: '25%',
+                      width: width,
+                      height: imageH,
+                      resizeMode: 'cover',
+                    }}
+                  />
+                </View>
+              );
+            }}
+          />
+        </View>
+        <BottomSheetModal
+          ref={bottomSheetModalRef}
           index={0}
           style={{zIndex: 5, elevation: 5}}
           snapPoints={snapPoints}
+          enablePanDownToClose={false}
           handleStyle={{backgroundColor: 'white', borderRadius: 100, zIndex: 5}}
           onChange={handleSheetChanges}>
-          <View style={styles.contentContainer}>
+          <BottomSheetScrollView style={styles.contentContainer}>
             <View style={styles.productOverview}>
               <View style={{maxWidth: '75%'}}>
                 <Text
@@ -225,26 +204,6 @@ const ProductPage = ({navigation, route}) => {
               </View>
             </View>
             <View style={{paddingHorizontal: '3%', marginTop: '2%'}}>
-              {/*<Text>Select Size</Text>
-            <View style={{flexDirection: 'row', marginVertical: '2%'}}>
-                {product.variants.map(variant => {
-                  return (
-                    <View
-                      style={{
-                        borderWidth: 1,
-                        width: 30,
-                        height: 30,
-                        justifyContent: 'center',
-                        backgroundColor: 'white',
-                        borderColor: 'gray',
-                        marginRight: '4%',
-                        borderRadius: 5,
-                      }}>
-                      <Text style={{textAlign: 'center'}}>{variant.name}</Text>
-                    </View>
-                  );
-                })}
-              </View>*/}
               <Text style={{color: 'black', fontSize: 16}}>
                 Sizes Available
               </Text>
@@ -270,7 +229,8 @@ const ProductPage = ({navigation, route}) => {
                       elevation: 1,
                       borderColor: 'rgba(0,0,0,0.3)',
                       paddingVertical: '1%',
-                      width: 35,
+                      maxWidth: 100,
+                      paddingHorizontal: '2%',
                       justifyContent: 'center',
                       alignItems: 'center',
                     }}>
@@ -287,8 +247,8 @@ const ProductPage = ({navigation, route}) => {
                 {product.description}
               </Text>
             </View>
-          </View>
-        </BottomSheet>
+          </BottomSheetScrollView>
+        </BottomSheetModal>
       </View>
     </BottomSheetModalProvider>
   );

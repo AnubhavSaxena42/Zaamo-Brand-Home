@@ -336,10 +336,8 @@ const OrdersScreen = ({navigation}) => {
           alignItems: 'center',
           justifyContent: 'center',
           width: '100%',
-          marginTop: '4%',
+          marginTop: '5%',
           marginBottom: '2%',
-          borderBottomColor: 'rgba(0,0,0,0.1)',
-          borderBottomWidth: 1,
         }}>
         <OrdersOverviewCard />
         {/*<ScrollView

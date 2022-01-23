@@ -1,13 +1,6 @@
 import React, {useEffect} from 'react';
-import {
-  StyleSheet,
-  TouchableOpacity,
-  Platform,
-  Image,
-  Alert,
-  Text,
-  View,
-} from 'react-native';
+import {StyleSheet, Platform, Alert, Text, View} from 'react-native';
+import AnimatedLottieView from 'lottie-react-native';
 import {useMutation} from '@apollo/client';
 import {TOKEN_CREATE, USER_REGISTER} from './mutations';
 import {useDispatch} from 'react-redux';
@@ -103,50 +96,16 @@ const LoginSuccessScreen = ({navigation, route}) => {
       }
     });
   };
-
-  const dispatch = useDispatch();
-  useEffect(() => {
-    createToken();
-  }, []);
-  useEffect(() => {
-    /*if (data && data.tokenCreate.user.isActive) {
-      console.log('in token create');
-      dispatch(setUser(data.tokenCreate.user));
-      dispatch(setToken(data.tokenCreate.token));
-      saveItemToStorage('User', JSON.stringify(data.tokenCreate.user));
-      authService
-        .getStoreId(data.tokenCreate.user.userId)
-        .then(store => {
-          console.log(store);
-          saveItemToStorage('Store-ID', store.store_id.toString());
-        })
-        .catch(err => console.log(err));
-      saveItemToStorage('Token', data.tokenCreate.token)
-        .then(res => console.log('Token Stored:', res))
-        .catch(err => console.log('Error storing token:', err));
-      navigation.navigate('StoreStack');
-    } else {
-      if (data && data.tokenCreate) {
-        console.log('in register');
-        dispatch(setUser(data.tokenCreate.user));
-        dispatch(setToken(data.tokenCreate.token));
-        saveItemToStorage('User', JSON.stringify(data.tokenCreate.user));
-        authService
-          .getStoreId(data.tokenCreate.user.userId)
-          .then(store => {
-            console.log(store);
-            saveItemToStorage('Store-ID', store.store_id.toString());
-          })
-          .catch(err => console.log(err));
-        saveItemToStorage('Token', data.tokenCreate.token)
-          .then(res => console.log('Token Stored:', res))
-          .catch(err => console.log('Error storing token:', err));
-        userRegister();
-      }
-    }*/ console.log('ran');
+  const handleLogin = () => {
     if (data && data.tokenCreate && data.tokenCreate.user) {
-      console.log('in 1');
       if (data.tokenCreate.user.isActive && data.tokenCreate.token) {
+        if (data.tokenCreate.user.authorisedBrands.length === 0) {
+          toastService.showToast(
+            'No Brands are authorised for this account, contact Zaamo Support',
+            true,
+          );
+          return;
+        }
         console.log('in token create');
         dispatch(setUser(data.tokenCreate.user));
         dispatch(setToken(data.tokenCreate.token));
@@ -196,6 +155,48 @@ const LoginSuccessScreen = ({navigation, route}) => {
       console.log('registering');
       userRegister();
     }
+  };
+  const dispatch = useDispatch();
+  useEffect(() => {
+    setTimeout(createToken, 2000);
+  }, []);
+  useEffect(() => {
+    /*if (data && data.tokenCreate.user.isActive) {
+      console.log('in token create');
+      dispatch(setUser(data.tokenCreate.user));
+      dispatch(setToken(data.tokenCreate.token));
+      saveItemToStorage('User', JSON.stringify(data.tokenCreate.user));
+      authService
+        .getStoreId(data.tokenCreate.user.userId)
+        .then(store => {
+          console.log(store);
+          saveItemToStorage('Store-ID', store.store_id.toString());
+        })
+        .catch(err => console.log(err));
+      saveItemToStorage('Token', data.tokenCreate.token)
+        .then(res => console.log('Token Stored:', res))
+        .catch(err => console.log('Error storing token:', err));
+      navigation.navigate('StoreStack');
+    } else {
+      if (data && data.tokenCreate) {
+        console.log('in register');
+        dispatch(setUser(data.tokenCreate.user));
+        dispatch(setToken(data.tokenCreate.token));
+        saveItemToStorage('User', JSON.stringify(data.tokenCreate.user));
+        authService
+          .getStoreId(data.tokenCreate.user.userId)
+          .then(store => {
+            console.log(store);
+            saveItemToStorage('Store-ID', store.store_id.toString());
+          })
+          .catch(err => console.log(err));
+        saveItemToStorage('Token', data.tokenCreate.token)
+          .then(res => console.log('Token Stored:', res))
+          .catch(err => console.log('Error storing token:', err));
+        userRegister();
+      }
+    }*/
+    handleLogin();
   }, [data]);
   useEffect(() => {
     if (loading) dispatch(setLoaderStatus(true));
@@ -208,18 +209,12 @@ const LoginSuccessScreen = ({navigation, route}) => {
   }, [registerResponse]);
   return (
     <View style={styles.loginSuccessContainer}>
-      <View
-        style={{
-          height: 100,
-          width: 100,
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: 'black',
-          borderRadius: 50,
-          marginBottom: '5%',
-        }}>
-        <CongratulationsSVG />
-      </View>
+      <AnimatedLottieView
+        source={require('../../assets/animations/congratulations.json')}
+        autoPlay
+        style={styles.congratulations}
+        loop={false}
+      />
       <Text
         style={{
           fontSize: 24,
@@ -265,5 +260,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  congratulations: {
+    height: 200,
   },
 });

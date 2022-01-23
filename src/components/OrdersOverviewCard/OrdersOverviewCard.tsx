@@ -5,19 +5,19 @@ const OrdersOverviewCard = () => {
   return (
     <View style={styles.ordersOverviewContainer}>
       <View style={styles.metricContainer}>
-        <Text style={styles.value}>27</Text>
+        <Text style={styles.value}>-</Text>
         <Text style={styles.key}>Total Orders</Text>
       </View>
       <View style={styles.metricContainer}>
-        <Text style={styles.value}>6</Text>
+        <Text style={styles.value}>-</Text>
         <Text style={styles.key}>New Orders</Text>
       </View>
       <View style={styles.metricContainer}>
-        <Text style={styles.value}>2</Text>
+        <Text style={styles.value}>-</Text>
         <Text style={styles.key}>Pending</Text>
       </View>
       <View style={styles.metricContainer}>
-        <Text style={styles.value}>4</Text>
+        <Text style={styles.value}>-</Text>
         <Text style={styles.key}>Delivered</Text>
       </View>
     </View>

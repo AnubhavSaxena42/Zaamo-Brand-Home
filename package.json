@@ -30,6 +30,7 @@
     "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-prettier": "^4.0.0",
     "graphql": "^15.7.2",
+    "lottie-react-native": "^5.0.1",
     "react": "17.0.2",
     "react-app-rewired": "^2.1.8",
     "react-dom": "^17.0.2",

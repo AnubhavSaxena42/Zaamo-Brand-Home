@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import toastService from '../../services/toast-service';
+import AnimatedLottieView from 'lottie-react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 const windowWidth = Dimensions.get('window').width;
 const LogisticsSettingsScreen = ({navigation, route}) => {
@@ -46,7 +47,15 @@ const LogisticsSettingsScreen = ({navigation, route}) => {
           Logistics Settings
         </Text>
       </View>
-      <View
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <AnimatedLottieView
+          source={require('../../assets/animations/coming-soon.json')}
+          style={{height: 160}}
+          loop
+          autoPlay
+        />
+      </View>
+      {/*<View
         style={{
           paddingHorizontal: '5%',
           height: '90%',
@@ -112,7 +121,7 @@ const LogisticsSettingsScreen = ({navigation, route}) => {
           style={styles.button}>
           <Text style={{color: 'white', fontWeight: 'bold'}}>Save</Text>
         </TouchableOpacity>
-      </View>
+      </View>*/}
     </ScrollView>
   );
 };
@@ -122,6 +131,7 @@ export default LogisticsSettingsScreen;
 const styles = StyleSheet.create({
   logisticsSettingsContainer: {
     flex: 1,
+    backgroundColor: 'white',
   },
   button: {
     marginBottom: '10%',

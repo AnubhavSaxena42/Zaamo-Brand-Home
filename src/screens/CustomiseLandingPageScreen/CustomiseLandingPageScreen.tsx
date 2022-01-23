@@ -7,28 +7,21 @@ import {
   View,
   Image,
 } from 'react-native';
+import AnimatedLottieView from 'lottie-react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 const CustomiseLandingPageScreen = ({navigation}) => {
   return (
     <ScrollView contentContainerStyle={styles.customiseLandingPageContainer}>
-      <Text
-        style={{
-          fontSize: 16,
-          marginBottom: '2%',
-          color: 'black',
-          textAlign: 'center',
-        }}>
-        NO DESIGNS AVAILABLE FOR THIS PAGE
-      </Text>
       <TouchableOpacity
         onPress={() => navigation.goBack()}
         style={{zIndex: 2, top: 10, position: 'absolute', left: 10}}>
         <Ionicons name="arrow-back-sharp" color={'black'} size={35} />
       </TouchableOpacity>
-
-      <Image
-        source={require('../../assets/images/smugcat.jpg')}
-        style={{height: 300, width: 300}}
+      <AnimatedLottieView
+        source={require('../../assets/animations/coming-soon.json')}
+        style={styles.comingSoonStyle}
+        loop
+        autoPlay
       />
     </ScrollView>
   );
@@ -41,5 +34,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'white',
+  },
+  comingSoonStyle: {
+    height: 160,
   },
 });

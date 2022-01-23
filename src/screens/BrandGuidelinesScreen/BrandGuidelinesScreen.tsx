@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import toastService from '../../services/toast-service';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AnimatedLottieView from 'lottie-react-native';
 const windowWidth = Dimensions.get('window').width;
 const BrandGuidelinesScreen = ({navigation, route}) => {
   return (
@@ -46,7 +47,15 @@ const BrandGuidelinesScreen = ({navigation, route}) => {
           Brand Guidelines
         </Text>
       </View>
-      <View
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <AnimatedLottieView
+          source={require('../../assets/animations/coming-soon.json')}
+          style={{height: 160}}
+          loop
+          autoPlay
+        />
+      </View>
+      {/*<View
         style={{
           paddingHorizontal: '5%',
           height: '90%',
@@ -114,7 +123,7 @@ const BrandGuidelinesScreen = ({navigation, route}) => {
           style={styles.button}>
           <Text style={{color: 'white', fontWeight: 'bold'}}>Save</Text>
         </TouchableOpacity>
-      </View>
+      </View>*/}
     </ScrollView>
   );
 };
@@ -124,8 +133,8 @@ export default BrandGuidelinesScreen;
 const styles = StyleSheet.create({
   brandGuidelinesContainer: {
     flex: 1,
+    backgroundColor: 'white',
   },
-
   button: {
     marginBottom: '10%',
     height: 35,

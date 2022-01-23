@@ -105,8 +105,7 @@ const CouponInfoScreen = ({navigation, route}) => {
           shadowRadius: 2,
           elevation: 5,
         }}>
-        <Text
-          style={{fontFamily: 'Roboto-Black', color: 'black', fontSize: 14}}>
+        <Text style={{fontFamily: 'Roboto-Black', color: 'gray', fontSize: 14}}>
           Applicable Products
         </Text>
         {route.params.coupon.products.edges.map(({node}) => {

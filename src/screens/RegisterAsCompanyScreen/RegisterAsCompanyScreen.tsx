@@ -12,6 +12,7 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {launchImageLibrary} from 'react-native-image-picker';
 import Entypo from 'react-native-vector-icons/Entypo';
+import AnimatedLottieView from 'lottie-react-native';
 import toastService from '../../services/toast-service';
 const windowWidth = Dimensions.get('window').width;
 const RegisterAsCompanyScreen = ({navigation, route}) => {
@@ -66,7 +67,15 @@ const RegisterAsCompanyScreen = ({navigation, route}) => {
           <Ionicons name="arrow-back-sharp" color={'white'} size={35} />
         </TouchableOpacity>
       </View>
-      <View
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <AnimatedLottieView
+          source={require('../../assets/animations/coming-soon.json')}
+          style={{height: 160}}
+          loop
+          autoPlay
+        />
+      </View>
+      {/*<View
         style={{
           paddingHorizontal: '5%',
           height: '90%',
@@ -183,7 +192,7 @@ const RegisterAsCompanyScreen = ({navigation, route}) => {
           style={styles.button}>
           <Text style={{color: 'white', fontWeight: 'bold'}}>Save</Text>
         </TouchableOpacity>
-      </View>
+      </View>*/}
     </ScrollView>
   );
 };
@@ -193,8 +202,8 @@ export default RegisterAsCompanyScreen;
 const styles = StyleSheet.create({
   registerAsCompanyContainer: {
     flex: 1,
+    backgroundColor: 'white',
   },
-
   button: {
     marginBottom: '10%',
     height: 35,

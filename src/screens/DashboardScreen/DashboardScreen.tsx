@@ -31,7 +31,7 @@ import {
 import {setAuthorisedBrands} from '../../redux/reducers/userReducer';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import toastService from '../../services/toast-service';
-
+import AnimatedLottieView from 'lottie-react-native';
 //For web it has to be a scrollview , implement fab properly
 const DashboardScreen = ({navigation, route}) => {
   const windowWidth = Dimensions.get('window').width;
@@ -209,11 +209,11 @@ const DashboardScreen = ({navigation, route}) => {
           marginTop: '4%',
         }}>
         <MetricCard
-          metric={{type: 'Total Orders', value: '27'}}
+          metric={{type: 'Total Orders', value: '-'}}
           color="lightpink"
         />
         <MetricCard
-          metric={{type: 'Total Revenue', value: '12,738'}}
+          metric={{type: 'Total Revenue', value: '-'}}
           color="darkseagreen"
         />
       </View>
@@ -225,15 +225,15 @@ const DashboardScreen = ({navigation, route}) => {
           zIndex: 2,
         }}>
         <MetricCard
-          metric={{type: 'Store Visits', value: '270'}}
+          metric={{type: 'Store Visits', value: '-'}}
           color="palegoldenrod"
         />
         <MetricCard
-          metric={{type: 'Product Views', value: '127'}}
+          metric={{type: 'Product Views', value: '-'}}
           color="lightblue"
         />
       </View>
-      <TouchableOpacity
+      {/*<TouchableOpacity
         onPress={() => {
           navigation.navigate('InstaWorldScreen');
         }}
@@ -250,7 +250,7 @@ const DashboardScreen = ({navigation, route}) => {
           zIndex: 3,
         }}>
         <Ionicons name="logo-instagram" size={30} color="white" />
-      </TouchableOpacity>
+      </TouchableOpacity>*/}
       <Text
         style={{
           color: 'black',
@@ -262,12 +262,25 @@ const DashboardScreen = ({navigation, route}) => {
         }}>
         Recent Updates
       </Text>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          paddingBottom: '10%',
+        }}
+        showsVerticalScrollIndicator={false}>
+        {/*<UpdateCard />
         <UpdateCard />
         <UpdateCard />
         <UpdateCard />
-        <UpdateCard />
-        <UpdateCard />
+        <UpdateCard />*/}
+        <AnimatedLottieView
+          source={require('../../assets/animations/coming-soon.json')}
+          style={styles.comingSoonStyle}
+          loop
+          autoPlay
+        />
       </ScrollView>
     </View>
   );
@@ -279,6 +292,9 @@ const styles = StyleSheet.create({
   dashboardContainer: {
     flex: 1,
     backgroundColor: 'white',
+  },
+  comingSoonStyle: {
+    height: 150,
   },
   metricsContainer: {
     width: '100%',

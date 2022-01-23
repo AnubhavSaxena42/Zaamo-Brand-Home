@@ -11,6 +11,7 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ThemeSelector from '../../components/ThemeSelector/ThemeSelector';
 import toastService from '../../services/toast-service';
+import AnimatedLottieView from 'lottie-react-native';
 const windowWidth = Dimensions.get('window').width;
 const StoreThemesScreen = ({navigation, route}) => {
   return (
@@ -45,7 +46,16 @@ const StoreThemesScreen = ({navigation, route}) => {
           Store Themes
         </Text>
       </View>
-      <View
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <AnimatedLottieView
+          source={require('../../assets/animations/coming-soon.json')}
+          style={{height: 160}}
+          loop
+          autoPlay
+        />
+      </View>
+
+      {/*<View
         style={{
           marginTop: '15%',
           paddingHorizontal: '2%',
@@ -99,7 +109,7 @@ const StoreThemesScreen = ({navigation, route}) => {
           style={styles.button}>
           <Text style={{color: 'white', fontWeight: 'bold'}}>Save</Text>
         </TouchableOpacity>
-      </View>
+      </View>*/}
     </ScrollView>
   );
 };

@@ -477,11 +477,11 @@ const CreateProductScreen = ({navigation, route}) => {
         </View>
       </Modal>
 
-      <Header navigation={navigation} back />
+      <Header tag={'Create Product'} navigation={navigation} back />
       <View style={styles.createProductContainer}>
-        <View style={styles.createProductHeaderContainer}>
+        {/*<View style={styles.createProductHeaderContainer}>
           <Text style={styles.createProductHeaderText}>Create product</Text>
-        </View>
+        </View>*/}
         <View style={styles.productDetailsContainer}>
           <View style={styles.productDetailsHeaderContainer}>
             <Text style={styles.headerText}>Product Details</Text>

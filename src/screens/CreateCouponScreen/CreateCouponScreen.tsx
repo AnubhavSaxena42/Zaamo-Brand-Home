@@ -374,7 +374,12 @@ const CreateCouponScreen = ({navigation}) => {
     <ScrollView
       contentContainerStyle={{paddingBottom: '5%'}}
       style={styles.createCouponContainer}>
-      <Header tag={'Marketing'} fontSize={22} />
+      <Header
+        tag={'Create Coupon'}
+        navigation={navigation}
+        back
+        fontSize={22}
+      />
       {isBrandsModalVisible && (
         <View
           style={{
@@ -514,7 +519,7 @@ const CreateCouponScreen = ({navigation}) => {
           </TouchableOpacity>
         </View>
       </Modal>
-      <View
+      {/*<View
         style={{
           height: 65,
           backgroundColor: 'white',
@@ -525,7 +530,7 @@ const CreateCouponScreen = ({navigation}) => {
         <Text style={{fontSize: 22, color: 'black', fontWeight: '500'}}>
           Create Coupon
         </Text>
-      </View>
+      </View>*/}
       <View style={{flex: 1, paddingHorizontal: '5%'}}>
         <Text
           style={{

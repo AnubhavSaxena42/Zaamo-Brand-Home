@@ -190,11 +190,9 @@ export const OrderStackNavigator = () => {
 export const HomeTabNavigator = () => {
   const getTabBarVisibility = route => {
     const routeName = getFocusedRouteNameFromRoute(route);
-    if (routeName === 'ProductPage') {
-      return false;
-    }
-
-    return true;
+    if (routeName === 'ProductPage') return false;
+    else if (routeName === 'OrderDetailsScreen') return false;
+    else return true;
   };
   return (
     <HomeTabs.Navigator
@@ -222,31 +220,34 @@ export const HomeTabNavigator = () => {
       <HomeTabs.Screen
         name="Orders"
         component={OrderStackNavigator}
-        options={{
-          tabBarIcon: ({focused, color}) => (
-            <View
-              style={{
-                position: 'relative',
-                alignItems: 'center',
-                marginTop: 7,
-              }}>
-              <View style={{position: 'absolute', top: -9}}>
-                <Entypo
-                  name="dots-three-horizontal"
-                  size={22}
-                  style={{marginVertical: 0}}
-                  color={focused ? color : 'gray'}
-                />
+        options={({route}) => {
+          return {
+            tabBarVisible: getTabBarVisibility(route),
+            tabBarIcon: ({focused, color}) => (
+              <View
+                style={{
+                  position: 'relative',
+                  alignItems: 'center',
+                  marginTop: 7,
+                }}>
+                <View style={{position: 'absolute', top: -9}}>
+                  <Entypo
+                    name="dots-three-horizontal"
+                    size={22}
+                    style={{marginVertical: 0}}
+                    color={focused ? color : 'gray'}
+                  />
+                </View>
+                <View style={{position: 'absolute', bottom: -6}}>
+                  <Entypo
+                    name="dots-three-horizontal"
+                    size={22}
+                    color={focused ? color : 'gray'}
+                  />
+                </View>
               </View>
-              <View style={{position: 'absolute', bottom: -6}}>
-                <Entypo
-                  name="dots-three-horizontal"
-                  size={22}
-                  color={focused ? color : 'gray'}
-                />
-              </View>
-            </View>
-          ),
+            ),
+          };
         }}
       />
       <HomeTabs.Screen

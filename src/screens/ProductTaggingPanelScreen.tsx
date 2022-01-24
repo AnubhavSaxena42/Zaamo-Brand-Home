@@ -173,13 +173,11 @@ const ProductTaggingPanelScreen = ({navigation, route}) => {
   };
   const mobileDropdownTextStyle = {
     fontSize: 14,
-    fontFamily: 'Open-Sans',
     fontWeight: '300',
     color: 'rgba(0, 0, 0, 0.75)',
   };
   const webDropdownTextStyle = {
     fontSize: 16,
-    fontFamily: 'Open-Sans',
     fontWeight: '300',
     color: 'rgba(0, 0, 0, 0.75)',
   };

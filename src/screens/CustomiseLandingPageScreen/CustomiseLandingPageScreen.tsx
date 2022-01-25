@@ -15,7 +15,7 @@ const CustomiseLandingPageScreen = ({navigation}) => {
     <SafeAreaView style={styles.customiseLandingPageContainer}>
       <TouchableOpacity
         onPress={() => navigation.goBack()}
-        style={{zIndex: 2, top: 10, position: 'absolute', left: 10}}>
+        style={{zIndex: 2, top: 40, position: 'absolute', left: 10}}>
         <Ionicons name="arrow-back-sharp" color={'black'} size={35} />
       </TouchableOpacity>
       <AnimatedLottieView

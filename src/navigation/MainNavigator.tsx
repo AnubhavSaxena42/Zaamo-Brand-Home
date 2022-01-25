@@ -1,7 +1,7 @@
 import React from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {View} from 'react-native';
+import {View,Platform} from 'react-native';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -201,10 +201,10 @@ export const HomeTabNavigator = () => {
         keyboardHidesTabBar: true,
         inactiveTintColor: 'gray',
         labelStyle: {
-          paddingBottom: 10,
+          paddingBottom: Platform.OS==='ios'?20:10,
         },
         style: {
-          height: '8%',
+          height: Platform.OS==='ios'?'12%':'8%',
           paddingVertical: 8,
         },
       }}>

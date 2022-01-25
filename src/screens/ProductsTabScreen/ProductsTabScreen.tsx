@@ -10,6 +10,7 @@ import {
   Animated,
   SafeAreaView,
   ActivityIndicator,
+  Platform,
   TouchableWithoutFeedback,
   Pressable,
 } from 'react-native';
@@ -383,6 +384,7 @@ const ProductsTabScreen = ({navigation}) => {
       });
     }
   };
+  console.log('New Collection Modal:',isNewCollectionModalVisible)
   const handleOnEndCollectionsReached = () => {
     console.log('Next Page:', collectionsPageInfo.hasNextPage);
 
@@ -547,6 +549,7 @@ const ProductsTabScreen = ({navigation}) => {
       </View>
       <Modal
         transparent={true}
+        presentationStyle='overFullScreen'
         visible={isThumbnailModalVisible}
         onRequestClose={() => setIsThumbnailModalVisible(false)}
         animationType="slide">
@@ -627,11 +630,12 @@ const ProductsTabScreen = ({navigation}) => {
 
       <Modal
         transparent={true}
+        presentationStyle='overFullScreen'
         visible={isNewCollectionModalVisible}
         onRequestClose={() => setIsNewCollectionModalVisible(false)}
         animationType="slide">
         <Pressable
-          onPress={() => setIsNewCollectionModalVisible(false)}
+          onPress={() => {setIsNewCollectionModalVisible(false)}}
           style={{flex: 1}}>
           <Pressable
             onPress={() => {}}

@@ -233,6 +233,7 @@ const OrderItem = ({line, id, status, setData, fulfillment}) => {
               width: 250,
               flexDirection: 'row',
               justifyContent: 'space-between',
+              alignItems:'center',
               borderWidth: 1,
               borderColor: 'rgba(0,0,0,0.1)',
               borderRadius: 5,

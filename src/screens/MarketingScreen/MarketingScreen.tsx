@@ -4,6 +4,7 @@ import {
   FlatList,
   ActivityIndicator,
   ScrollView,
+  SafeAreaView,
   Text,
   View,
   Image,
@@ -58,7 +59,8 @@ const MarketingScreen = ({navigation}) => {
   const memoizedVoucher = useMemo(() => _renderItem, [vouchers]);
 
   return (
-    <View style={styles.marketingContainer}>
+    
+    <SafeAreaView style={styles.marketingContainer}>
       <Header
         tag={'Marketing'}
         fontSize={22}
@@ -126,7 +128,7 @@ const MarketingScreen = ({navigation}) => {
         keyExtractor={item => item.id}
         renderItem={memoizedVoucher}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 

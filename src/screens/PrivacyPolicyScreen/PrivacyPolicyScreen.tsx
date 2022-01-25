@@ -6,6 +6,7 @@ import {
   Image,
   Dimensions,
   ScrollView,
+  SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
 import toastService from '../../services/toast-service';
@@ -14,7 +15,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 const windowWidth = Dimensions.get('window').width;
 const PrivacyPolicyScreen = ({navigation, route}) => {
   return (
-    <View style={styles.privacyPolicyContainer}>
+    <SafeAreaView style={styles.privacyPolicyContainer}>
       <View style={{alignItems: 'center'}}>
         <Image
           source={require('../../assets/images/DashboardEllipse.png')}
@@ -120,7 +121,7 @@ const PrivacyPolicyScreen = ({navigation, route}) => {
           <Text style={{color: 'white', fontWeight: 'bold'}}>Save</Text>
         </TouchableOpacity>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -5,6 +5,7 @@ import {
   ScrollView,
   Text,
   Dimensions,
+  SafeAreaView,
   Image,
   View,
 } from 'react-native';
@@ -14,7 +15,7 @@ import toastService from '../../services/toast-service';
 const windowWidth = Dimensions.get('window').width;
 const TermsAndConditionsScreen = ({navigation, route}) => {
   return (
-    <View style={styles.termsAndConditionsContainer}>
+    <SafeAreaView style={styles.termsAndConditionsContainer}>
       <View style={{alignItems: 'center'}}>
         <Image
           source={require('../../assets/images/DashboardEllipse.png')}
@@ -120,7 +121,7 @@ const TermsAndConditionsScreen = ({navigation, route}) => {
           <Text style={{color: 'white', fontWeight: 'bold'}}>Save</Text>
         </TouchableOpacity>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

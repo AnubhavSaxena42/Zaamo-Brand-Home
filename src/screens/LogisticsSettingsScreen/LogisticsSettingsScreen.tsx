@@ -7,6 +7,7 @@ import {
   Image,
   Dimensions,
   ScrollView,
+  SafeAreaView,
   View,
 } from 'react-native';
 import toastService from '../../services/toast-service';
@@ -15,6 +16,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 const windowWidth = Dimensions.get('window').width;
 const LogisticsSettingsScreen = ({navigation, route}) => {
   return (
+    <SafeAreaView style={{flex:1}}>
     <ScrollView contentContainerStyle={styles.logisticsSettingsContainer}>
       <View style={{alignItems: 'center'}}>
         <Image
@@ -123,6 +125,7 @@ const LogisticsSettingsScreen = ({navigation, route}) => {
         </TouchableOpacity>
       </View>*/}
     </ScrollView>
+    </SafeAreaView>
   );
 };
 

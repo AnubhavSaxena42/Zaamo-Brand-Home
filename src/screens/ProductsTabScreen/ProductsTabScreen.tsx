@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   FlatList,
   Animated,
+  SafeAreaView,
   ActivityIndicator,
   TouchableWithoutFeedback,
   Pressable,
@@ -406,7 +407,7 @@ const ProductsTabScreen = ({navigation}) => {
     }).start();
   };
   return (
-    <View style={styles.productsTabContainer}>
+    <SafeAreaView style={styles.productsTabContainer}>
       {(isNewCollectionModalVisible || isThumbnailModalVisible) && (
         <Pressable
           onPress={() => {
@@ -472,9 +473,9 @@ const ProductsTabScreen = ({navigation}) => {
       <View
         style={{
           shadowColor: 'black',
-          shadowOffset: {width: 0, height: 5},
-          shadowOpacity: 1,
-          shadowRadius: 20,
+          shadowOffset: {width: 0, height: 2},
+          shadowOpacity: 0.1,
+          shadowRadius: 1,
           elevation: 10,
           backgroundColor: 'white',
         }}>
@@ -486,8 +487,8 @@ const ProductsTabScreen = ({navigation}) => {
             marginTop: '2%',
             shadowColor: '#000',
             shadowOffset: {width: 0, height: 0},
-            shadowOpacity: 0.5,
-            shadowRadius: 5,
+            shadowOpacity: 0.2,
+            shadowRadius: 3,
             elevation: 4,
             backgroundColor: 'white',
             flexDirection: 'row',
@@ -954,7 +955,7 @@ const ProductsTabScreen = ({navigation}) => {
           renderItem={memoizedCollection}
         />
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 

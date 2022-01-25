@@ -5,13 +5,14 @@ import {
   TouchableOpacity,
   Text,
   View,
+  SafeAreaView,
   Image,
 } from 'react-native';
 import AnimatedLottieView from 'lottie-react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 const CustomiseLandingPageScreen = ({navigation}) => {
   return (
-    <ScrollView contentContainerStyle={styles.customiseLandingPageContainer}>
+    <SafeAreaView style={styles.customiseLandingPageContainer}>
       <TouchableOpacity
         onPress={() => navigation.goBack()}
         style={{zIndex: 2, top: 10, position: 'absolute', left: 10}}>
@@ -23,7 +24,7 @@ const CustomiseLandingPageScreen = ({navigation}) => {
         loop
         autoPlay
       />
-    </ScrollView>
+    </SafeAreaView>
   );
 };
 

@@ -6,6 +6,7 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  SafeAreaView,
   View,
   ScrollView,
 } from 'react-native';
@@ -37,6 +38,7 @@ const RegisterAsCompanyScreen = ({navigation, route}) => {
     });
   };
   return (
+    <SafeAreaView style={{flex:1}}>
     <ScrollView contentContainerStyle={styles.registerAsCompanyContainer}>
       <View style={{alignItems: 'center'}}>
         <Image
@@ -194,6 +196,7 @@ const RegisterAsCompanyScreen = ({navigation, route}) => {
         </TouchableOpacity>
       </View>*/}
     </ScrollView>
+    </SafeAreaView>
   );
 };
 

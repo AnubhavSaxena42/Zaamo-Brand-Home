@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ScrollView,
   Image,
+  SafeAreaView,
   Text,
   View,
 } from 'react-native';
@@ -15,7 +16,8 @@ import AnimatedLottieView from 'lottie-react-native';
 const windowWidth = Dimensions.get('window').width;
 const StoreThemesScreen = ({navigation, route}) => {
   return (
-    <ScrollView contentContainerStyle={styles.storeThemesContainer}>
+    <SafeAreaView style={styles.storeThemesContainer}>
+    <ScrollView contentContainerStyle={{flex:1}}>
       <View style={{alignItems: 'center'}}>
         <Image
           source={require('../../assets/images/DashboardEllipse.png')}
@@ -111,6 +113,7 @@ const StoreThemesScreen = ({navigation, route}) => {
         </TouchableOpacity>
       </View>*/}
     </ScrollView>
+    </SafeAreaView>
   );
 };
 

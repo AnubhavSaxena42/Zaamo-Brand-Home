@@ -147,8 +147,8 @@ const styles = StyleSheet.create({
     marginVertical: '2%',
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 0},
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
+    shadowOpacity: 0.5,
+    shadowRadius: 1,
     elevation: 5,
   },
   imageStyle: {

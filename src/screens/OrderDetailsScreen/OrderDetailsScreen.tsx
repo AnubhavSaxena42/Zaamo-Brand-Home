@@ -3,8 +3,10 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
+  
   Dimensions,
   Text,
+  SafeAreaView,
   View,
   ScrollView,
 } from 'react-native';
@@ -61,7 +63,8 @@ const OrderDetailsScreen = ({navigation, route}) => {
   }, [updateFulfillmentResponse.loading]);
 
   return (
-    <ScrollView style={styles.orderDetailsContainer}>
+    <SafeAreaView style={styles.orderDetailsContainer}>
+    <ScrollView >
       <Text
         style={{
           zIndex: 2,
@@ -163,6 +166,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
         </TouchableOpacity>
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 };
 

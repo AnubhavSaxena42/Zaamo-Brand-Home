@@ -3,6 +3,7 @@ import {
   StyleSheet,
   ScrollView,
   Image,
+  SafeAreaView,
   Dimensions,
   Text,
   TouchableOpacity,
@@ -44,9 +45,10 @@ const SettingsScreen = ({navigation, route}) => {
       });
   };
   return (
+    <SafeAreaView style={styles.settingsContainer}>
     <ScrollView
       showsVerticalScrollIndicator={false}
-      style={styles.settingsContainer}>
+      >
       <View style={{alignItems: 'center'}}>
         <Image
           source={require('../../assets/images/DashboardEllipse.png')}
@@ -159,6 +161,7 @@ const SettingsScreen = ({navigation, route}) => {
         </TouchableOpacity>
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 };
 

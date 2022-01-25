@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Dimensions,
   ScrollView,
+  SafeAreaView,
   View,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -15,6 +16,7 @@ const windowWidth = Dimensions.get('window').width;
 const CouponInfoScreen = ({navigation, route}) => {
   console.log(route.params.coupon);
   return (
+    <SafeAreaView style={{flex:1}}>
     <ScrollView
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{
@@ -66,7 +68,7 @@ const CouponInfoScreen = ({navigation, route}) => {
           width: '90%',
           shadowColor: '#000',
           shadowOffset: {width: 0, height: 1},
-          shadowOpacity: 0.8,
+          shadowOpacity: 0.5,
           shadowRadius: 2,
           elevation: 5,
         }}>
@@ -101,7 +103,7 @@ const CouponInfoScreen = ({navigation, route}) => {
 
           shadowColor: '#000',
           shadowOffset: {width: 0, height: 1},
-          shadowOpacity: 0.8,
+          shadowOpacity: 0.5,
           shadowRadius: 2,
           elevation: 5,
         }}>
@@ -134,6 +136,7 @@ const CouponInfoScreen = ({navigation, route}) => {
         })}
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 };
 

@@ -9,6 +9,7 @@ import {
   Text,
   TextInput,
   View,
+  SafeAreaView,
   FlatList,
   Image,
   Modal,
@@ -355,6 +356,7 @@ const CreateProductScreen = ({navigation, route}) => {
     setVariations(variationsAfterDelete);
   };
   return (
+    <SafeAreaView>
     <ScrollView style={{backgroundColor: 'rgba(229, 229, 229, 0.2);'}}>
       {/*<GestureRecognizer
         config={{directionalOffsetThreshold: 30, velocityThreshold: 0.5}}
@@ -767,6 +769,7 @@ const CreateProductScreen = ({navigation, route}) => {
       </View>
       {/*</GestureRecognizer>*/}
     </ScrollView>
+    </SafeAreaView>
   );
 };
 

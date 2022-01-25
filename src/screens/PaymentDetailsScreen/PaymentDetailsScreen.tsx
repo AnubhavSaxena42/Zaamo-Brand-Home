@@ -9,6 +9,7 @@ import {
   View,
   Image,
   TouchableOpacity,
+  SafeAreaView,
   TextInput,
   Animated,
   Dimensions,
@@ -171,7 +172,7 @@ const PaymentDetailsScreen = ({navigation, route}) => {
     }).start();
   };
   return (
-    <View style={styles.paymentDetailsContainer}>
+    <SafeAreaView style={styles.paymentDetailsContainer}>
       <View style={{alignItems: 'center'}}>
         <Image
           source={require('../../assets/images/DashboardEllipse.png')}
@@ -214,8 +215,8 @@ const PaymentDetailsScreen = ({navigation, route}) => {
           position: 'relative',
           shadowColor: '#000',
           shadowOffset: {width: 0, height: 0},
-          shadowOpacity: 0.5,
-          shadowRadius: 5,
+          shadowOpacity: 0.4,
+          shadowRadius: 2,
           elevation: 3,
           backgroundColor: 'white',
         }}>
@@ -574,7 +575,7 @@ const PaymentDetailsScreen = ({navigation, route}) => {
           </View>
         </ScrollView>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 

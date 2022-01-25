@@ -7,6 +7,7 @@ import {
   Dimensions,
   Image,
   TextInput,
+  SafeAreaView,
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
@@ -41,6 +42,7 @@ const ZaamoSupportScreen = ({navigation, route}) => {
   }, [data]);
   console.log(data, error, loading);
   return (
+    <SafeAreaView style={{flex:1}}>
     <ScrollView contentContainerStyle={styles.zaamoSupportContainer}>
       <View style={{alignItems: 'center'}}>
         <Image
@@ -165,6 +167,7 @@ const ZaamoSupportScreen = ({navigation, route}) => {
         </TouchableOpacity>
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 };
 

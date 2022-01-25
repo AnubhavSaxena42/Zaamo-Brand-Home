@@ -8,13 +8,14 @@ import {
   Image,
   Dimensions,
   ScrollView,
+  SafeAreaView,
 } from 'react-native';
 import toastService from '../../services/toast-service';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 const windowWidth = Dimensions.get('window').width;
 const ReturnPolicyScreen = ({navigation, route}) => {
   return (
-    <View style={styles.returnPolicyContainer}>
+    <SafeAreaView style={styles.returnPolicyContainer}>
       <View style={{alignItems: 'center'}}>
         <Image
           source={require('../../assets/images/DashboardEllipse.png')}
@@ -108,7 +109,7 @@ const ReturnPolicyScreen = ({navigation, route}) => {
           <Text style={{color: 'white', fontWeight: 'bold'}}>Save</Text>
         </TouchableOpacity>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

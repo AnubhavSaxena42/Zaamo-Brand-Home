@@ -8,12 +8,14 @@ import {
   Image,
   TextInput,
   ScrollView,
+  SafeAreaView,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import toastService from '../../services/toast-service';
 const windowWidth = Dimensions.get('window').width;
 const ConnectMySocialScreen = ({navigation, route}) => {
   return (
+    <SafeAreaView style={{flex:1}}>
     <ScrollView contentContainerStyle={styles.connectMySocialContainer}>
       <View style={{alignItems: 'center'}}>
         <Image
@@ -110,6 +112,7 @@ const ConnectMySocialScreen = ({navigation, route}) => {
         </TouchableOpacity>
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 };
 

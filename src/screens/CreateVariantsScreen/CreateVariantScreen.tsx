@@ -4,6 +4,7 @@ import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   ScrollView,
+  SafeAreaView,
   Text,
   TextInput,
   View,
@@ -127,6 +128,7 @@ const CreateVariantScreen = ({navigation, route}) => {
     else dispatch(setLoaderStatus(false));
   }, [variantCreateResponse.loading]);
   return (
+    <SafeAreaView style={{flex:1}}>
     <ScrollView style={styles.variantContainer}>
       {/*<GestureRecognizer
         config={{directionalOffsetThreshold: 30, velocityThreshold: 0.5}}
@@ -158,6 +160,7 @@ const CreateVariantScreen = ({navigation, route}) => {
       </TouchableOpacity>
       {/*</GestureRecognizer>*/}
     </ScrollView>
+    </SafeAreaView>
   );
 };
 

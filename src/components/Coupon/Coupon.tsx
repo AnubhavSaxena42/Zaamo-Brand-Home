@@ -23,7 +23,7 @@ const Coupon = ({navigation, coupon}) => {
         marginVertical: '2%',
         shadowColor: '#000',
         shadowOffset: {width: 0, height: 0},
-        shadowOpacity: 0.8,
+        shadowOpacity: 0.2,
         shadowRadius: 2,
         elevation: 5,
       }}>

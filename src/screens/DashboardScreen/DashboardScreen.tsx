@@ -6,6 +6,7 @@ import {
   ScrollView,
   Dimensions,
   Text,
+  SafeAreaView,
   View,
   Alert,
   TouchableOpacity,
@@ -154,16 +155,17 @@ const DashboardScreen = ({navigation, route}) => {
       });
   };
   return (
-    <View style={styles.dashboardContainer}>
+    <SafeAreaView style={styles.dashboardContainer}>
       <View
         style={{
           flexDirection: 'row',
           alignItems: 'center',
+          zIndex: 2,
           justifyContent: 'center',
         }}>
         <Text
           style={{
-            zIndex: 2,
+            zIndex:2,
             paddingTop: '3%',
             color: 'white',
             fontSize: 22,
@@ -282,7 +284,7 @@ const DashboardScreen = ({navigation, route}) => {
           autoPlay
         />
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

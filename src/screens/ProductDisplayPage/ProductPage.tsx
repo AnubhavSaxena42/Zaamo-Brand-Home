@@ -6,6 +6,7 @@ import {
   View,
   Dimensions,
   Image,
+  SafeAreaView,
   TouchableOpacity,
   Animated,
   ImageBackground,
@@ -51,7 +52,7 @@ const ProductPage = ({navigation, route}) => {
   };
   return (
     <BottomSheetModalProvider>
-      <View style={styles.productPageContainer}>
+      <SafeAreaView style={styles.productPageContainer}>
         <View>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
@@ -63,8 +64,8 @@ const ProductPage = ({navigation, route}) => {
               width: 40,
               shadowColor: '#000',
               shadowOffset: {width: 0, height: 0},
-              shadowOpacity: 0.5,
-              shadowRadius: 5,
+              shadowOpacity: 0.2,
+              shadowRadius: 2,
               zIndex: 2,
               height: 40,
               borderRadius: 10,
@@ -249,7 +250,7 @@ const ProductPage = ({navigation, route}) => {
             </View>
           </BottomSheetScrollView>
         </BottomSheetModal>
-      </View>
+      </SafeAreaView>
     </BottomSheetModalProvider>
   );
 };

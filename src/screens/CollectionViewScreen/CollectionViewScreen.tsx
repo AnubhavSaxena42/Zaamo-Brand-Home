@@ -8,6 +8,7 @@ import {
   Text,
   Image,
   FlatList,
+  SafeAreaView,
   ActivityIndicator,
   View,
   TouchableOpacity,
@@ -143,7 +144,7 @@ const CollectionViewScreen = ({navigation, route}) => {
     />
   );
   return (
-    <View style={styles.collectionViewContainer}>
+    <SafeAreaView style={styles.collectionViewContainer}>
       <View
         style={{
           flexDirection: 'row',
@@ -285,7 +286,7 @@ const CollectionViewScreen = ({navigation, route}) => {
         }}>
         <Text style={{color: 'white'}}>Add Products</Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 

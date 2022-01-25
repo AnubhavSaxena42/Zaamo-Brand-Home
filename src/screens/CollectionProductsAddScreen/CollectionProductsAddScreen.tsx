@@ -4,6 +4,7 @@ import {
   Modal,
   Text,
   View,
+  SafeAreaView,
   FlatList,
   TouchableOpacity,
   TouchableNativeFeedback,
@@ -395,7 +396,7 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
     }
   };
   return (
-    <View style={styles.collectionProductsAddScreenContainer}>
+    <SafeAreaView style={styles.collectionProductsAddScreenContainer}>
       <Modal
         onRequestClose={() => setIsBrandSelectModalVisible(false)}
         visible={isBrandSelectModalVisible}
@@ -587,7 +588,7 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
         columnWrapperStyle={{justifyContent: 'space-around'}}
         renderItem={_renderProduct}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 

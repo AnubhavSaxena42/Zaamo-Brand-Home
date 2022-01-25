@@ -7,6 +7,7 @@ import {
   View,
   Dimensions,
   TouchableOpacity,
+  SafeAreaView,
   ScrollView,
 } from 'react-native';
 import toastService from '../../services/toast-service';
@@ -15,6 +16,7 @@ import AnimatedLottieView from 'lottie-react-native';
 const windowWidth = Dimensions.get('window').width;
 const BrandGuidelinesScreen = ({navigation, route}) => {
   return (
+    <SafeAreaView style={{flex:1}}>
     <ScrollView contentContainerStyle={styles.brandGuidelinesContainer}>
       <View style={{alignItems: 'center'}}>
         <Image
@@ -55,6 +57,7 @@ const BrandGuidelinesScreen = ({navigation, route}) => {
           autoPlay
         />
       </View>
+      {/* Dont delete the commented JSX below */}
       {/*<View
         style={{
           paddingHorizontal: '5%',
@@ -125,6 +128,7 @@ const BrandGuidelinesScreen = ({navigation, route}) => {
         </TouchableOpacity>
       </View>*/}
     </ScrollView>
+    </SafeAreaView>
   );
 };
 

@@ -56,7 +56,7 @@ const CollectionCard = ({
             right: 10,
             shadowColor: '#000',
             shadowOffset: {width: 0, height: 0},
-            shadowOpacity: 0.8,
+            shadowOpacity: 0.3,
             shadowRadius: 2,
             elevation: 5,
           }}>
@@ -127,7 +127,7 @@ const CollectionCard = ({
               borderRadius: 15,
               shadowColor: '#000',
               shadowOffset: {width: 0, height: 0},
-              shadowOpacity: 0.8,
+              shadowOpacity: 0.3,
               shadowRadius: 2,
               elevation: 5,
             }}>

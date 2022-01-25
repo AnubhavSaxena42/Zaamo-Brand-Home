@@ -9,6 +9,7 @@ import {
   Text,
   FlatList,
   View,
+  SafeAreaView,
   Animated,
 } from 'react-native';
 import Swiper from 'react-native-swiper';
@@ -308,7 +309,7 @@ const OrdersScreen = ({navigation}) => {
     else dispatch(setLoaderStatus(false));
   }, [loading]);
   return (
-    <View style={styles.ordersContainer}>
+    <SafeAreaView style={styles.ordersContainer}>
       <Text
         style={{
           zIndex: 2,
@@ -732,7 +733,7 @@ const OrdersScreen = ({navigation}) => {
           disableIntervalMomentum
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

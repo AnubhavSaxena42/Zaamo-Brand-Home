@@ -52,8 +52,7 @@ const OrdersScreen = ({navigation}) => {
       />
     );
   };
-
-  const _renderItem = ({item, index}) => {
+   const _renderItem = ({item, index}) => {
     return (
       <View>
         <FlatList
@@ -112,7 +111,9 @@ const OrdersScreen = ({navigation}) => {
     const containerRef = useRef();
     const scrollViewRef = useRef();
     const [measures, setMeasures] = useState([]);
-    React.useLayoutEffect(() => {
+
+    React.useEffect(() => {
+      dispatch(setLoaderStatus(true))
       console.log('Container Ref:', containerRef.current);
       let m = [];
       setTimeout(() => {
@@ -133,10 +134,17 @@ const OrdersScreen = ({navigation}) => {
             },
           );
         });
-        setTimeout(() => setMeasures(m), 0);
-      }, 0);
+        setTimeout(()=>{   
+          setMeasures(m)
+          dispatch(setLoaderStatus(false))
+        },1000)
+      }, 1000);
     }, []);
-
+    useEffect(()=>{
+      if(measures.length===0) dispatch(setLoaderStatus(true))
+      else dispatch(setLoaderStatus(false))
+    },[measures])
+    console.log('New Measures',measures)
     return (
       <View style={{paddingHorizontal: 10}}>
         <ScrollView
@@ -162,7 +170,7 @@ const OrdersScreen = ({navigation}) => {
                 scrollX={scrollX}
               />
             )}
-          </View>
+           </View>
         </ScrollView>
       </View>
     );
@@ -699,7 +707,7 @@ const OrdersScreen = ({navigation}) => {
         </View>
       </Swiper>*/}
       </View>
-      <View style={{flex: 1, backgroundColor: 'white'}}>
+      <View style={{flex: 1,marginTop:5, backgroundColor: 'white'}}>
         <View style={{paddingBottom: 10}}>
           <Tabs
             onItemPress={onItemPress}

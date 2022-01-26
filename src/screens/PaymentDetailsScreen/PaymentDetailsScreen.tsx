@@ -274,110 +274,45 @@ const PaymentDetailsScreen = ({navigation, route}) => {
             height: '100%',
             width: '100%',
           }}>
-          <Text style={{marginVertical: '5%', color: 'gray'}}>
+          <Text style={{marginVertical: '1%', color: 'gray'}}>
             Account Holder Name
           </Text>
           <TextInput
             value={accountHolderName}
             onChangeText={text => setAccountHolderName(text)}
-            style={{
-              width: '100%',
-              color: 'gray',
-              borderWidth: 1,
-              borderColor: 'rgba(0,0,0,0.3)',
-              borderRadius: 4,
-              paddingHorizontal: '5%',
-              backgroundColor: 'white',
-              shadowColor: '#000',
-              shadowOffset: {width: 0, height: 1},
-              shadowOpacity: 0.8,
-              shadowRadius: 2,
-              elevation: 5,
-            }}
+            style={styles.inputStyle}
             placeholder={'Enter Account Holder Name'}
           />
           {accountHolderNameError && <ErrorMessage />}
-          <Text style={{marginVertical: '5%', color: 'gray'}}>UPI ID</Text>
+          <Text style={{marginVertical: '1%', color: 'gray'}}>UPI ID</Text>
           <TextInput
             value={upiId}
             onChangeText={text => setUpiId(text)}
-            style={{
-              width: '100%',
-              borderWidth: 1,
-              color: 'gray',
-              borderColor: 'rgba(0,0,0,0.3)',
-              borderRadius: 4,
-              backgroundColor: 'white',
-              paddingHorizontal: '5%',
-              shadowColor: '#000',
-              shadowOffset: {width: 0, height: 1},
-              shadowOpacity: 0.8,
-              shadowRadius: 2,
-              elevation: 5,
-            }}
+            style={styles.inputStyle}
             placeholder={'Enter UPI ID'}
           />
           {upiIdError && <ErrorMessage />}
-          <Text style={{marginVertical: '5%', color: 'gray'}}>Address</Text>
+          <Text style={{marginVertical: '1%', color: 'gray'}}>Address</Text>
           <TextInput
             value={address}
             onChangeText={text => setAddress(text)}
-            style={{
-              width: '100%',
-              color: 'gray',
-              borderWidth: 1,
-              borderColor: 'rgba(0,0,0,0.3)',
-              borderRadius: 4,
-              backgroundColor: 'white',
-              paddingHorizontal: '5%',
-              shadowColor: '#000',
-              shadowOffset: {width: 0, height: 1},
-              shadowOpacity: 0.8,
-              shadowRadius: 2,
-              elevation: 5,
-            }}
+            style={styles.inputStyle}
             placeholder={'Enter your Address'}
           />
           {addressError && <ErrorMessage />}
-          <Text style={{marginVertical: '5%', color: 'gray'}}>Email</Text>
+          <Text style={{marginVertical: '1%', color: 'gray'}}>Email</Text>
           <TextInput
             value={email}
             onChangeText={text => setEmail(text)}
-            style={{
-              width: '100%',
-              borderWidth: 1,
-              color: 'gray',
-              borderColor: 'rgba(0,0,0,0.3)',
-              borderRadius: 4,
-              backgroundColor: 'white',
-              paddingHorizontal: '5%',
-              shadowColor: '#000',
-              shadowOffset: {width: 0, height: 1},
-              shadowOpacity: 0.8,
-              shadowRadius: 2,
-              elevation: 5,
-            }}
+            style={styles.inputStyle}
             placeholder={'Enter your Email'}
           />
           {emailError && <ErrorMessage />}
-          <Text style={{marginVertical: '5%', color: 'gray'}}>PAN Number</Text>
+          <Text style={{marginVertical: '1%', color: 'gray'}}>PAN Number</Text>
           <TextInput
             value={panNumber}
             onChangeText={text => setPanNumber(text)}
-            style={{
-              width: '100%',
-              borderWidth: 1,
-              color: 'gray',
-              borderColor: 'rgba(0,0,0,0.3)',
-              borderRadius: 4,
-              backgroundColor: 'white',
-              paddingHorizontal: '5%',
-              shadowColor: '#000',
-              shadowOffset: {width: 0, height: 1},
-              shadowOpacity: 0.8,
-              shadowRadius: 2,
-              elevation: 5,
-            }}
+            style={styles.inputStyle}
             placeholder={'Enter your PAN Number'}
           />
           {panNumberError && <ErrorMessage />}
@@ -404,158 +339,67 @@ const PaymentDetailsScreen = ({navigation, route}) => {
             height: '100%',
             width: '100%',
           }}>
-          <Text style={{marginVertical: '5%', color: 'gray'}}>
+          <Text style={{marginVertical: '1%', color: 'gray'}}>
             Account Holder Name
           </Text>
           <TextInput
             value={accountHolderName}
             onChangeText={text => setAccountHolderName(text)}
-            style={{
-              width: '100%',
-              color: 'gray',
-              borderWidth: 1,
-              borderColor: 'rgba(0,0,0,0.3)',
-              borderRadius: 4,
-              paddingHorizontal: '5%',
-              backgroundColor: 'white',
-              shadowColor: '#000',
-              shadowOffset: {width: 0, height: 1},
-              shadowOpacity: 0.8,
-              shadowRadius: 2,
-              elevation: 5,
-            }}
+            style={styles.inputStyle}
             placeholder={'Enter Account Holder Name'}
           />
           {accountHolderNameError && <ErrorMessage />}
-          <Text style={{marginVertical: '5%', color: 'gray'}}>
+          <Text style={{marginVertical: '1%', color: 'gray'}}>
             Bank Account Number
           </Text>
           <TextInput
             value={bankAccountNumber}
             onChangeText={text => setBankAccountNumber(text)}
-            style={{
-              width: '100%',
-              borderWidth: 1,
-              borderColor: 'rgba(0,0,0,0.3)',
-              color: 'gray',
-              borderRadius: 4,
-              backgroundColor: 'white',
-              paddingHorizontal: '5%',
-              shadowColor: '#000',
-              shadowOffset: {width: 0, height: 1},
-              shadowOpacity: 0.8,
-              shadowRadius: 2,
-              elevation: 5,
-            }}
+            style={styles.inputStyle}
             placeholder={'Enter Bank Account Number'}
           />
           {bankAccountNumberError && <ErrorMessage />}
-          <Text style={{color: 'gray', marginVertical: '5%'}}>
+          <Text style={{color: 'gray', marginVertical: '1%'}}>
             Confirm Account Number
           </Text>
           <TextInput
             value={confirmBankAccountNumber}
             onChangeText={text => setConfirmBankAccountNumber(text)}
-            style={{
-              width: '100%',
-              borderWidth: 1,
-              color: 'gray',
-              borderColor: 'rgba(0,0,0,0.3)',
-              borderRadius: 4,
-              backgroundColor: 'white',
-              paddingHorizontal: '5%',
-              shadowColor: '#000',
-              shadowOffset: {width: 0, height: 1},
-              shadowOpacity: 0.8,
-              shadowRadius: 2,
-              elevation: 5,
-            }}
+            style={styles.inputStyle}
             placeholder={'Re-Enter Bank Account Number'}
           />
           {confirmBankAccountNumberError && <ErrorMessage />}
-          <Text style={{color: 'gray', marginVertical: '5%'}}>
+          <Text style={{color: 'gray', marginVertical: '1%'}}>
             Bank IFSC Code
           </Text>
           <TextInput
             value={bankIfscCode}
             onChangeText={text => setBankIfscCode(text)}
-            style={{
-              width: '100%',
-              borderWidth: 1,
-              color: 'gray',
-              borderColor: 'rgba(0,0,0,0.3)',
-              borderRadius: 4,
-              backgroundColor: 'white',
-              paddingHorizontal: '5%',
-              shadowColor: '#000',
-              shadowOffset: {width: 0, height: 1},
-              shadowOpacity: 0.8,
-              shadowRadius: 2,
-              elevation: 5,
-            }}
+            style={styles.inputStyle}
             placeholder={'Enter Bank IFSC Code'}
           />
           {bankIfscCodeError && <ErrorMessage />}
-          <Text style={{color: 'gray', marginVertical: '5%'}}>Address</Text>
+          <Text style={{color: 'gray', marginVertical: '1%'}}>Address</Text>
           <TextInput
             value={address}
             onChangeText={text => setAddress(text)}
-            style={{
-              width: '100%',
-              borderWidth: 1,
-              color: 'gray',
-              borderColor: 'rgba(0,0,0,0.3)',
-              borderRadius: 4,
-              backgroundColor: 'white',
-              paddingHorizontal: '5%',
-              shadowColor: '#000',
-              shadowOffset: {width: 0, height: 1},
-              shadowOpacity: 0.8,
-              shadowRadius: 2,
-              elevation: 5,
-            }}
+            style={styles.inputStyle}
             placeholder={'Enter Address'}
           />
           {addressError && <ErrorMessage />}
-          <Text style={{color: 'gray', marginVertical: '5%'}}>Email</Text>
+          <Text style={{color: 'gray', marginVertical: '1%'}}>Email</Text>
           <TextInput
             value={email}
             onChangeText={text => setEmail(text)}
-            style={{
-              width: '100%',
-              borderWidth: 1,
-              color: 'gray',
-              borderColor: 'rgba(0,0,0,0.3)',
-              borderRadius: 4,
-              backgroundColor: 'white',
-              paddingHorizontal: '5%',
-              shadowColor: '#000',
-              shadowOffset: {width: 0, height: 1},
-              shadowOpacity: 0.8,
-              shadowRadius: 2,
-              elevation: 5,
-            }}
+            style={styles.inputStyle}
             placeholder={'Enter Your Email'}
           />
           {emailError && <ErrorMessage />}
-          <Text style={{color: 'gray', marginVertical: '5%'}}>PAN Number</Text>
+          <Text style={{color: 'gray', marginVertical: '1%'}}>PAN Number</Text>
           <TextInput
             value={panNumber}
             onChangeText={text => setPanNumber(text)}
-            style={{
-              width: '100%',
-              borderWidth: 1,
-              color: 'gray',
-              borderColor: 'rgba(0,0,0,0.3)',
-              borderRadius: 4,
-              backgroundColor: 'white',
-              paddingHorizontal: '5%',
-              shadowColor: '#000',
-              shadowOffset: {width: 0, height: 1},
-              shadowOpacity: 0.8,
-              shadowRadius: 2,
-              elevation: 5,
-            }}
+            style={styles.inputStyle}
             placeholder={'Enter Your PAN Number'}
           />
           {panNumberError && <ErrorMessage />}
@@ -596,6 +440,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  inputStyle:{
+    width: '100%',
+    color: 'black',
+    borderBottomWidth: 1,
+    borderColor: 'black',
+    paddingVertical: '3%',
+    marginBottom:15
+    },
   errorMessageContainer: {
     marginTop: '1%',
   },

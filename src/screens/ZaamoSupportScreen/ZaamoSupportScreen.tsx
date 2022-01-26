@@ -126,15 +126,7 @@ const ZaamoSupportScreen = ({navigation, route}) => {
         <TextInput
           value={email}
           onChangeText={text => setEmail(text)}
-          style={{
-            width: '100%',
-            borderWidth: 1,
-            borderColor: 'rgba(0,0,0,0.3)',
-            borderRadius: 4,
-            color: 'gray',
-            paddingHorizontal: '5%',
-            backgroundColor: 'white',
-          }}
+          style={styles.inputStyle}
           placeholder={'Enter Your Email'}
         />
         <Text
@@ -149,16 +141,8 @@ const ZaamoSupportScreen = ({navigation, route}) => {
         <TextInput
           value={message}
           onChangeText={text => setMessage(text)}
-          style={{
-            width: '100%',
-            borderWidth: 1,
-            color: 'gray',
-            borderColor: 'rgba(0,0,0,0.3)',
-            borderRadius: 4,
-            backgroundColor: 'white',
-            paddingHorizontal: '5%',
-          }}
-          numberOfLines={10}
+          style={styles.inputStyle}
+          multiline={true}
           textAlignVertical={'top'}
           placeholder={'Enter your Message'}
         />
@@ -187,4 +171,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  inputStyle:{
+    width: '100%',
+    color: 'black',
+    borderBottomWidth: 1,
+    borderColor: 'black',
+    paddingVertical: '3%',
+    marginBottom:15
+    },
 });

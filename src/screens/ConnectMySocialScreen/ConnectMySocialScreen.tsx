@@ -54,43 +54,17 @@ const ConnectMySocialScreen = ({navigation, route}) => {
           marginTop: '15%',
           width: '100%',
         }}>
-        <Text style={{fontSize: 18, color: 'black', fontWeight: '600'}}>
+        <Text style={{fontSize: 18,marginBottom:'5%', color: 'black', fontWeight: '600'}}>
           Connect your Social Handles
         </Text>
-        <Text style={{marginVertical: '5%', color: 'gray'}}>Instagram</Text>
+        <Text style={{marginVertical: '1%', color: 'gray'}}>Instagram</Text>
         <TextInput
-          style={{
-            width: '100%',
-            borderWidth: 1,
-            color: 'gray',
-            borderColor: 'rgba(0,0,0,0.3)',
-            borderRadius: 4,
-            paddingHorizontal: '5%',
-            backgroundColor: 'white',
-            shadowColor: '#000',
-            shadowOffset: {width: 0, height: 1},
-            shadowOpacity: 0.8,
-            shadowRadius: 2,
-            elevation: 5,
-          }}
+          style={styles.inputStyle}
           placeholder={'@yourinstahandle'}
         />
         <Text style={{color: 'gray', marginVertical: '5%'}}>Youtube</Text>
         <TextInput
-          style={{
-            color: 'gray',
-            width: '100%',
-            borderWidth: 1,
-            borderColor: 'rgba(0,0,0,0.3)',
-            borderRadius: 4,
-            backgroundColor: 'white',
-            paddingHorizontal: '5%',
-            shadowColor: '#000',
-            shadowOffset: {width: 0, height: 1},
-            shadowOpacity: 0.8,
-            shadowRadius: 2,
-            elevation: 5,
-          }}
+          style={styles.inputStyle}
           placeholder={'@yourythandle'}
         />
       </View>
@@ -138,4 +112,12 @@ const styles = StyleSheet.create({
     elevation: 5,
     justifyContent: 'center',
   },
+  inputStyle:{
+    width: '100%',
+    color: 'black',
+    borderBottomWidth: 1,
+    borderColor: 'black',
+    paddingVertical: '3%',
+    marginBottom:15
+    },
 });

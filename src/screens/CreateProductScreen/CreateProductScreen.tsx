@@ -496,7 +496,7 @@ const CreateProductScreen = ({navigation, route}) => {
                 setIsNameError(false);
               }}
               value={productName}
-              style={styles.input}
+              style={styles.inputStyle}
             />
             {isNameError && <ErrorMessage />}
           </View>
@@ -511,7 +511,7 @@ const CreateProductScreen = ({navigation, route}) => {
                 }}
                 value={price}
                 keyboardType="number-pad"
-                style={styles.priceInput}
+                style={styles.inputStyle}
               />
               {isPriceError && <ErrorMessage />}
             </View>
@@ -816,6 +816,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     marginTop: '3%',
     color: 'grey',
+    marginBottom:'2%'
   },
   imageContainer: {
     flexDirection: 'row',
@@ -850,6 +851,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginTop: '2%',
     height: 200,
+    paddingHorizontal:'3%',
     textAlignVertical: 'top',
     backgroundColor: 'white',
   },
@@ -922,4 +924,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: 'center',
   },
+  inputStyle:{
+    width: '100%',
+    color: 'black',
+    borderBottomWidth: 1,
+    borderColor: 'black',
+    paddingVertical: '3%',
+    marginBottom:15,
+    paddingHorizontal:'3%',
+    },
 });

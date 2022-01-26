@@ -8,6 +8,7 @@ import {
   TextInput,
   Text,
   FlatList,
+  SafeAreaView,
   Platform,
   View,
 } from 'react-native';
@@ -37,7 +38,7 @@ const webDropdownStyle = {
   },
   shadowRadius: 1,
   paddingVertical: 15,
-  shadowOpacity: 1.0,
+  shadowOpacity: 0.5,
   elevation: 2,
   zIndex: 200,
 };
@@ -52,10 +53,10 @@ const mobileDropdownStyle = {
   borderWidth: 1,
   shadowOffset: {
     width: 0,
-    height: 1,
+    height: 0,
   },
-  shadowRadius: 2,
-  shadowOpacity: 1.0,
+  shadowRadius: 1,
+  shadowOpacity: 0.5,
   elevation: 5,
   zIndex: 200,
 };
@@ -86,13 +87,11 @@ const webDropdownValuesTextStyle = {
 };
 const mobileDropdownTextStyle = {
   fontSize: 14,
-  fontFamily: 'Open-Sans',
   fontWeight: '300',
   color: 'rgba(0, 0, 0, 0.75)',
 };
 const webDropdownTextStyle = {
   fontSize: 16,
-  fontFamily: 'Open-Sans',
   fontWeight: '300',
   color: 'rgba(0, 0, 0, 0.75)',
 };
@@ -371,6 +370,7 @@ const CreateCouponScreen = ({navigation}) => {
   };
 
   return (
+    <SafeAreaView style={{flex:1}}>
     <ScrollView
       contentContainerStyle={{paddingBottom: '5%'}}
       style={styles.createCouponContainer}>
@@ -639,16 +639,7 @@ const CreateCouponScreen = ({navigation}) => {
           onChangeText={text => {
             setDiscountValue(parseInt(text));
           }}
-          style={{
-            width: '100%',
-            borderWidth: 1,
-            height: 40,
-            color: 'gray',
-            borderColor: 'rgba(0,0,0,0.3)',
-            borderRadius: 4,
-            backgroundColor: 'white',
-            paddingHorizontal: '5%',
-          }}
+          style={styles.inputStyle}
           placeholder={'Enter Discount Value'}
         />
         {discountValueFieldError && <ErrorMessage />}
@@ -666,16 +657,7 @@ const CreateCouponScreen = ({navigation}) => {
           onChangeText={text => {
             setUpperLimit(parseInt(text));
           }}
-          style={{
-            width: '100%',
-            borderWidth: 1,
-            height: 40,
-            color: 'gray',
-            borderColor: 'rgba(0,0,0,0.3)',
-            borderRadius: 4,
-            backgroundColor: 'white',
-            paddingHorizontal: '5%',
-          }}
+          style={styles.inputStyle}
           placeholder={'Select Upper Limit'}
         />
         <Text
@@ -702,16 +684,7 @@ const CreateCouponScreen = ({navigation}) => {
               keyboardType="number-pad"
               value={minValue}
               onChangeText={text => setMinValue(parseInt(text))}
-              style={{
-                width: '100%',
-                borderWidth: 1,
-                color: 'gray',
-                height: 40,
-                borderColor: 'rgba(0,0,0,0.3)',
-                borderRadius: 4,
-                backgroundColor: 'white',
-                paddingHorizontal: '5%',
-              }}
+              style={styles.inputStyle}
               placeholder={'Rs.599'}
             />
           </View>
@@ -729,16 +702,7 @@ const CreateCouponScreen = ({navigation}) => {
               value={minQuantity}
               keyboardType="number-pad"
               onChangeText={text => setMinQuantity(parseInt(text))}
-              style={{
-                width: '100%',
-                borderWidth: 1,
-                color: 'gray',
-                height: 40,
-                borderColor: 'rgba(0,0,0,0.3)',
-                borderRadius: 4,
-                backgroundColor: 'white',
-                paddingHorizontal: '5%',
-              }}
+              style={styles.inputStyle}
               placeholder={'4'}
             />
           </View>
@@ -900,13 +864,12 @@ const CreateCouponScreen = ({navigation}) => {
             borderRadius: 4,
             paddingHorizontal: '5%',
             backgroundColor: 'white',
-            height: 40,
+            height: 35,
             justifyContent: 'center',
             alignItems: 'center',
             marginTop: '5%',
             fontSize: 15,
             color: 'black',
-
             textAlign: 'center',
             textAlignVertical: 'center',
             fontWeight: '500',
@@ -1097,16 +1060,7 @@ const CreateCouponScreen = ({navigation}) => {
         <TextInput
           value={couponTitle}
           onChangeText={text => setCouponTitle(text)}
-          style={{
-            width: '100%',
-            borderWidth: 1,
-            color: 'gray',
-            height: 40,
-            borderColor: 'rgba(0,0,0,0.3)',
-            borderRadius: 4,
-            backgroundColor: 'white',
-            paddingHorizontal: '5%',
-          }}
+          style={styles.inputStyle}
           placeholder={'Enter Coupon Title'}
         />
         {couponTitleFieldError && <ErrorMessage />}
@@ -1122,17 +1076,7 @@ const CreateCouponScreen = ({navigation}) => {
         <TextInput
           value={couponName}
           onChangeText={text => setCouponName(text)}
-          style={{
-            width: '100%',
-            borderWidth: 1,
-            borderColor: 'rgba(0,0,0,0.3)',
-            borderRadius: 4,
-            color: 'gray',
-            height: 40,
-
-            backgroundColor: 'white',
-            paddingHorizontal: '5%',
-          }}
+          style={styles.inputStyle}
           placeholder={'Enter Coupon Name'}
         />
         {couponNameFieldError && <ErrorMessage />}
@@ -1148,16 +1092,8 @@ const CreateCouponScreen = ({navigation}) => {
         <TextInput
           value={couponDescription}
           onChangeText={text => setCouponDescription(text)}
-          style={{
-            width: '100%',
-            borderWidth: 1,
-            color: 'gray',
-            borderColor: 'rgba(0,0,0,0.3)',
-            borderRadius: 4,
-            backgroundColor: 'white',
-            paddingHorizontal: '5%',
-          }}
-          numberOfLines={8}
+          style={styles.inputStyle}
+          multiline={true}
           textAlignVertical="top"
           placeholder={'Enter Coupon Details'}
         />
@@ -1172,6 +1108,7 @@ const CreateCouponScreen = ({navigation}) => {
         )}
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -1199,4 +1136,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  inputStyle:{
+    width: '100%',
+    color: 'black',
+    borderBottomWidth: 1,
+    borderColor: 'black',
+    paddingVertical: '3%',
+    marginBottom:15
+    },
 });

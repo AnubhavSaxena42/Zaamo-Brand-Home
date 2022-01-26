@@ -32,6 +32,9 @@ const Coupon = ({navigation, coupon}) => {
           justifyContent: 'center',
           alignItems: 'center',
           width: '30%',
+          borderBottomWidth:0,
+          borderTopWidth:0,
+          borderLeftWidth:0,
           borderRightWidth: 3,
           borderRightColor: 'rgba(0,0,0,0.2)',
           borderStyle: 'dashed',
@@ -75,7 +78,7 @@ const Coupon = ({navigation, coupon}) => {
             alignItems: 'center',
             justifyContent: 'space-between',
           }}>
-          <Text style={{fontSize: 14, color: 'gray'}}>{coupon.name}</Text>
+          <Text numberOfLines={1} ellipsizeMode='tail' style={{fontSize: 14, color: 'gray',maxWidth:'50%'}}>{coupon.name}</Text>
           <Text style={{fontSize: 12, color: '#3eb988', fontWeight: '700'}}>
             Available
           </Text>
@@ -84,7 +87,6 @@ const Coupon = ({navigation, coupon}) => {
           style={{
             flexDirection: 'row',
             alignItems: 'center',
-
             justifyContent: 'space-between',
           }}>
           <View

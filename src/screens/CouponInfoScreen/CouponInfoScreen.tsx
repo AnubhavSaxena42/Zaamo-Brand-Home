@@ -17,10 +17,14 @@ const CouponInfoScreen = ({navigation, route}) => {
   console.log(route.params.coupon);
   return (
     <SafeAreaView style={{flex:1}}>
+    
     <ScrollView
+    
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{
-        paddingBottom: 100,
+        flexGrow:1,
+        paddingBottom:200,
+        
       }}>
       <Image
         source={require('../../assets/images/DashboardEllipse.png')}
@@ -40,6 +44,7 @@ const CouponInfoScreen = ({navigation, route}) => {
           alignItems: 'center',
           paddingLeft: '2%',
           justifyContent: 'center',
+          zIndex:2,
         }}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
@@ -75,9 +80,10 @@ const CouponInfoScreen = ({navigation, route}) => {
         <Text
           style={{
             textAlign: 'center',
-            color: 'black',
+            color: 'gray',
             marginVertical: '2%',
-            fontSize: 16,
+            fontFamily:'Roboto-Black',
+            fontSize: 14,
           }}>
           Description
         </Text>
@@ -100,7 +106,6 @@ const CouponInfoScreen = ({navigation, route}) => {
           paddingHorizontal: '5%',
           backgroundColor: 'white',
           width: '90%',
-
           shadowColor: '#000',
           shadowOffset: {width: 0, height: 1},
           shadowOpacity: 0.5,
@@ -136,6 +141,7 @@ const CouponInfoScreen = ({navigation, route}) => {
         })}
       </View>
     </ScrollView>
+    
     </SafeAreaView>
   );
 };

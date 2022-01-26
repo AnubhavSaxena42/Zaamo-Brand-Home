@@ -8,6 +8,7 @@ import {
   Image,
   Modal,
 } from 'react-native';
+import OTPInputView from '@twotalltotems/react-native-otp-input';
 import {useMutation} from '@apollo/client';
 import {VERIFY_OTP} from './mutations';
 import {useDispatch} from 'react-redux';
@@ -20,6 +21,7 @@ import {saveItemToStorage} from '../../services/storage-service';
 const VerifyOTPScreen = ({navigation, route}) => {
   const [otp, setOtp] = useState('');
   const [errorMessage, setErrorMessage] = useState(false);
+  console.log(otp)
   const dispatch = useDispatch();
   const [verifyOtp, {data, error, loading}] = useMutation(VERIFY_OTP, {
     variables: {
@@ -78,7 +80,7 @@ const VerifyOTPScreen = ({navigation, route}) => {
         Enter the OTP sent to{' '}
         <Text style={styles.otpText}>{route.params.mobileNumber}</Text>
       </Text>
-      <TextInput
+      {/*<TextInput
         value={otp}
         keyboardType="number-pad"
         onChangeText={text => {
@@ -87,7 +89,27 @@ const VerifyOTPScreen = ({navigation, route}) => {
         }}
         style={styles.numberInput}
       />
+      */}
 
+<OTPInputView
+    style={{width: '65%', height: 200}}
+    pinCount={4}
+     code={otp} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
+     onCodeChanged = {code => setOtp(code)}
+    keyboardType='number-pad'
+    autoFocusOnLoad
+    editable
+    codeInputFieldStyle={styles.borderStyleBase}
+    codeInputHighlightStyle={styles.borderStyleHighLighted}
+    onCodeFilled={code=>{console.log('Go go go');
+    
+      saveItemToStorage('Mobile Number', route.params.mobileNumber);
+      navigation.navigate('LoginSuccessScreen', {
+        mobileNumber: route.params.mobileNumber,
+      });
+  }}
+   
+/>
       <Text style={{...styles.infoText, marginBottom: '7%'}}>
         Didn't receive the OTP?{' '}
         <Text onPress={() => generateOtp()} style={styles.otpText}>
@@ -110,6 +132,7 @@ const VerifyOTPScreen = ({navigation, route}) => {
           }
           verifyOtp();*/
         }}
+        
         style={styles.button}>
         <Text style={{color: 'white', fontWeight: 'bold'}}>
           VERIFY & PROCEED
@@ -174,4 +197,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  borderStyleBase: {
+    width: 40,
+    height: 55,
+    backgroundColor:'white'    
+  },
+ 
+  borderStyleHighLighted: {
+    borderColor: "black",
+  },
+ 
+  underlineStyleBase: {
+    width: 30,
+    height: 45,
+    borderWidth: 0,
+    borderBottomWidth: 1,
+  },
+ 
+  underlineStyleHighLighted: {
+    borderColor: "#03DAC6",
+  },
+  
 });

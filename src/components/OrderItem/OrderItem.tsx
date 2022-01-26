@@ -9,7 +9,6 @@ import {
   View,
 } from 'react-native';
 import toastService from '../../services/toast-service';
-import Dropdown from '../Dropdown';
 
 const OrderItem = ({line, id, status, setData, fulfillment}) => {
   const [fulfillmentStatus, setFulfillmentStatus] = useState(status);

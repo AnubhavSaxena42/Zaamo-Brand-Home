@@ -1,7 +1,6 @@
 //@ts-nocheck
 import React, {useState, useRef, useEffect} from 'react';
 import {
-  StyleSheet,
   ScrollView,
   Image,
   Dimensions,
@@ -19,8 +18,9 @@ import {useQuery} from '@apollo/client';
 import {GET_ORDERS} from './queries';
 import {useSelector, useDispatch} from 'react-redux';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
+import {styles} from './styles';
+const {width, height} = Dimensions.get('screen');
 const OrdersScreen = ({navigation}) => {
-  const {width, height} = Dimensions.get('screen');
   const {data, error, loading} = useQuery(GET_ORDERS, {
     notifyOnNetworkStatusChange: true,
   });
@@ -33,7 +33,6 @@ const OrdersScreen = ({navigation}) => {
   const [brandReturnRequestedOrders, setBrandReturnRequestedOrders] = useState(
     [],
   );
-  const dispatch = useDispatch();
   const [brandReturnInitiatedOrders, setBrandReturnInitiatedOrders] = useState(
     [],
   );
@@ -41,6 +40,7 @@ const OrdersScreen = ({navigation}) => {
     [],
   );
   const [brandFulfilledOrders, setBrandFulfilledOrders] = useState([]);
+  const dispatch = useDispatch();
 
   const _renderSubItem = ({item}) => {
     return (
@@ -52,7 +52,8 @@ const OrdersScreen = ({navigation}) => {
       />
     );
   };
-   const _renderItem = ({item, index}) => {
+
+  const _renderItem = ({item, index}) => {
     return (
       <View>
         <FlatList
@@ -75,6 +76,7 @@ const OrdersScreen = ({navigation}) => {
       </TouchableOpacity>
     );
   });
+
   const scrollX = React.useRef(new Animated.Value(0)).current;
 
   const Indicator = ({measures, scrollX, scrollViewRef, data}) => {
@@ -113,7 +115,7 @@ const OrdersScreen = ({navigation}) => {
     const [measures, setMeasures] = useState([]);
 
     React.useEffect(() => {
-      dispatch(setLoaderStatus(true))
+      dispatch(setLoaderStatus(true));
       console.log('Container Ref:', containerRef.current);
       let m = [];
       setTimeout(() => {
@@ -134,17 +136,17 @@ const OrdersScreen = ({navigation}) => {
             },
           );
         });
-        setTimeout(()=>{   
-          setMeasures(m)
-          dispatch(setLoaderStatus(false))
-        },1000)
+        setTimeout(() => {
+          setMeasures(m);
+          dispatch(setLoaderStatus(false));
+        }, 1000);
       }, 1000);
     }, []);
-    useEffect(()=>{
-      if(measures.length===0) dispatch(setLoaderStatus(true))
-      else dispatch(setLoaderStatus(false))
-    },[measures])
-    console.log('New Measures',measures)
+    useEffect(() => {
+      if (measures.length === 0) dispatch(setLoaderStatus(true));
+      else dispatch(setLoaderStatus(false));
+    }, [measures]);
+
     return (
       <View style={{paddingHorizontal: 10}}>
         <ScrollView
@@ -170,7 +172,7 @@ const OrdersScreen = ({navigation}) => {
                 scrollX={scrollX}
               />
             )}
-           </View>
+          </View>
         </ScrollView>
       </View>
     );
@@ -318,397 +320,16 @@ const OrdersScreen = ({navigation}) => {
   }, [loading]);
   return (
     <SafeAreaView style={styles.ordersContainer}>
-      <Text
-        style={{
-          zIndex: 2,
-          color: 'white',
-          fontSize: 22,
-          textAlign: 'center',
-          marginTop: '3%',
-          fontFamily: 'Roboto-Bold',
-        }}>
-        Orders
-      </Text>
+      <Text style={styles.headingText}>Orders</Text>
       <Image
         source={require('../../assets/images/DashboardEllipse.png')}
-        style={{
-          height: 400,
-          width: width,
-          zIndex: 1,
-          position: 'absolute',
-          top: -250,
-        }}
+        style={styles.backgroundImageStyle}
       />
-      <View
-        style={{
-          zIndex: 2,
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: '100%',
-          marginTop: '5%',
-          marginBottom: '2%',
-        }}>
+      <View style={styles.ordersOverviewCardContainer}>
         <OrdersOverviewCard />
-        {/*<ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            paddingTop: '4%',
-            paddingHorizontal: '2%',
-          }}>
-          <Text
-            onPress={() => {
-              swiperRef.current.scrollTo(0);
-            }}
-            style={{
-              marginRight: 8,
-              textShadowColor: 'rgba(0,0,0,0.1)',
-              textShadowRadius: 2,
-              textShadowOffset: {width: 1, height: 1},
-              borderBottomWidth: selectedIndex === 0 ? 2 : 0,
-              paddingBottom: 10,
-              paddingBottom: 5,
-              borderColor: 'black',
-              paddingBottom: 5,
-              color: 'black',
-            }}>
-            All Orders
-          </Text>
-
-          <Text
-            onPress={() => {
-              swiperRef.current.scrollTo(1);
-            }}
-            style={{
-              marginRight: 8,
-              textShadowColor: 'rgba(0,0,0,0.1)',
-              textShadowRadius: 2,
-              textShadowOffset: {width: 1, height: 1},
-              borderBottomWidth: selectedIndex === 1 ? 2 : 0,
-              paddingBottom: 10,
-              paddingBottom: 5,
-              borderColor: 'black',
-              color: 'black',
-            }}>
-            Shipped
-          </Text>
-          <Text
-            onPress={() => {
-              swiperRef.current.scrollTo(2);
-            }}
-            style={{
-              marginRight: 8,
-              textShadowColor: 'rgba(0,0,0,0.1)',
-              textShadowRadius: 2,
-              textShadowOffset: {width: 1, height: 1},
-              borderBottomWidth: selectedIndex === 2 ? 2 : 0,
-              paddingBottom: 10,
-              paddingBottom: 5,
-              borderColor: 'black',
-              color: 'black',
-            }}>
-            In Process
-          </Text>
-          <Text
-            onPress={() => {
-              swiperRef.current.scrollTo(3);
-            }}
-            style={{
-              marginRight: 8,
-              textShadowColor: 'rgba(0,0,0,0.1)',
-              textShadowRadius: 2,
-              textShadowOffset: {width: 1, height: 1},
-              borderBottomWidth: selectedIndex === 3 ? 2 : 0,
-              paddingBottom: 10,
-              paddingBottom: 5,
-              borderColor: 'black',
-              color: 'black',
-            }}>
-            Delivered
-          </Text>
-          <Text
-            onPress={() => {
-              swiperRef.current.scrollTo(4);
-            }}
-            style={{
-              marginRight: 8,
-              textShadowColor: 'rgba(0,0,0,0.1)',
-              textShadowRadius: 2,
-              textShadowOffset: {width: 1, height: 1},
-              borderBottomWidth: selectedIndex === 4 ? 2 : 0,
-              paddingBottom: 10,
-              paddingBottom: 5,
-              borderColor: 'black',
-              color: 'black',
-            }}>
-            Cancelled
-          </Text>
-          <Text
-            onPress={() => {
-              swiperRef.current.scrollTo(5);
-            }}
-            style={{
-              marginRight: 8,
-              textShadowColor: 'rgba(0,0,0,0.1)',
-              textShadowRadius: 2,
-              textShadowOffset: {width: 1, height: 1},
-              borderBottomWidth: selectedIndex === 5 ? 2 : 0,
-              paddingBottom: 10,
-              paddingBottom: 5,
-              borderColor: 'black',
-              color: 'black',
-            }}>
-            Return Requested
-          </Text>
-          <Text
-            onPress={() => {
-              swiperRef.current.scrollTo(6);
-            }}
-            style={{
-              marginRight: 8,
-              textShadowColor: 'rgba(0,0,0,0.1)',
-              textShadowRadius: 2,
-              textShadowOffset: {width: 1, height: 1},
-              borderBottomWidth: selectedIndex === 6 ? 2 : 0,
-              paddingBottom: 10,
-              paddingBottom: 5,
-              borderColor: 'black',
-              color: 'black',
-            }}>
-            Return Initiated
-          </Text>
-          <Text
-            onPress={() => {
-              swiperRef.current.scrollTo(7);
-            }}
-            style={{
-              marginRight: 8,
-              textShadowColor: 'rgba(0,0,0,0.1)',
-              textShadowRadius: 2,
-              textShadowOffset: {width: 1, height: 1},
-              borderBottomWidth: selectedIndex === 7 ? 2 : 0,
-              paddingBottom: 10,
-              paddingBottom: 5,
-              borderColor: 'black',
-              color: 'black',
-            }}>
-            Return Completed
-          </Text>
-          <Text
-            onPress={() => {
-              swiperRef.current.scrollTo(8);
-            }}
-            style={{
-              marginRight: 8,
-              textShadowColor: 'rgba(0,0,0,0.1)',
-              textShadowRadius: 2,
-              textShadowOffset: {width: 1, height: 1},
-              borderBottomWidth: selectedIndex === 8 ? 2 : 0,
-              paddingBottom: 10,
-              paddingBottom: 5,
-              borderColor: 'black',
-              color: 'black',
-            }}>
-            Fulfilled
-          </Text>
-        </ScrollView>
       </View>
-      <Swiper
-        loop={false}
-        showsPagination={false}
-        ref={swiperRef}
-        onIndexChanged={index => {
-          console.log(index);
-          setSelectedIndex(index);
-        }}>
-        <View>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              zIndex: 2,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            {brandOrders.map(order => {
-              return (
-                <OrderCard
-                  key={order.node.id}
-                  navigation={navigation}
-                  order={order.node}
-                  status={order?.status}
-                />
-              );
-            })}
-          </ScrollView>
-        </View>
-        <View>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              zIndex: 2,
-
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            {brandShippedOrders.map(order => {
-              return (
-                <OrderCard
-                  key={order.node.id}
-                  navigation={navigation}
-                  order={order.node}
-                  status={order?.status}
-                />
-              );
-            })}
-          </ScrollView>
-        </View>
-        <View>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              zIndex: 2,
-
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            {brandInProcessOrders.map(order => {
-              return (
-                <OrderCard
-                  key={order.node.id}
-                  navigation={navigation}
-                  order={order.node}
-                  status={order?.status}
-                />
-              );
-            })}
-          </ScrollView>
-        </View>
-        <View>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              zIndex: 2,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            {brandDeliveredOrders.map(order => {
-              return (
-                <OrderCard
-                  key={order.node.id}
-                  navigation={navigation}
-                  order={order.node}
-                  status={order?.status}
-                />
-              );
-            })}
-          </ScrollView>
-        </View>
-        <View>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              zIndex: 2,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            {brandCancelledOrders.map(order => {
-              return (
-                <OrderCard
-                  key={order.node.id}
-                  navigation={navigation}
-                  order={order.node}
-                  status={order?.status}
-                />
-              );
-            })}
-          </ScrollView>
-        </View>
-        <View>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              zIndex: 2,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            {brandReturnRequestedOrders.map(order => {
-              return (
-                <OrderCard
-                  key={order.node.id}
-                  navigation={navigation}
-                  order={order.node}
-                  status={order?.status}
-                />
-              );
-            })}
-          </ScrollView>
-        </View>
-        <View>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              zIndex: 2,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            {brandReturnInitiatedOrders.map(order => {
-              return (
-                <OrderCard
-                  key={order.node.id}
-                  navigation={navigation}
-                  order={order.node}
-                  status={order?.status}
-                />
-              );
-            })}
-          </ScrollView>
-        </View>
-        <View>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              zIndex: 2,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            {brandReturnCompletedOrders.map(order => {
-              return (
-                <OrderCard
-                  key={order.node.id}
-                  navigation={navigation}
-                  order={order.node}
-                  status={order?.status}
-                />
-              );
-            })}
-          </ScrollView>
-        </View>
-        <View>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              zIndex: 2,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            {brandFulfilledOrders.map(order => {
-              return (
-                <OrderCard
-                  key={order.node.id}
-                  navigation={navigation}
-                  order={order.node}
-                  status={order?.status}
-                />
-              );
-            })}
-          </ScrollView>
-        </View>
-      </Swiper>*/}
-      </View>
-      <View style={{flex: 1,marginTop:5, backgroundColor: 'white'}}>
-        <View style={{paddingBottom: 10}}>
+      <View style={styles.ordersListContainer}>
+        <View style={styles.tabsContainer}>
           <Tabs
             onItemPress={onItemPress}
             scrollX={scrollX}
@@ -746,10 +367,3 @@ const OrdersScreen = ({navigation}) => {
 };
 
 export default OrdersScreen;
-
-const styles = StyleSheet.create({
-  ordersContainer: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-});

@@ -13,7 +13,7 @@ import PhoneSVG from './phone';
 import {useDispatch} from 'react-redux';
 import toastService from '../../services/toast-service';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
-//import {TextInput} from 'react-native-gesture-handler';
+import {styles} from './styles';
 const MobileOTPScreen = ({navigation, route}) => {
   const [mobileNumber, setMobileNumber] = useState('');
   const [errorMessage, setErrorMessage] = useState(false);
@@ -60,13 +60,16 @@ const MobileOTPScreen = ({navigation, route}) => {
           if (text.length > 10) return;
           const reg = new RegExp('[0-9]');
           if (reg.test(text)) setMobileNumber(text);
+          if (text.length === 0) setMobileNumber(text);
         }}
         style={styles.numberInput}
         keyboardType="number-pad"
         value={mobileNumber}
       />
       {errorMessage && (
-        <Text style={{marginBottom: '4%'}}>Enter a valid mobile Number</Text>
+        <Text style={styles.errorMessageStyle}>
+          Enter a valid mobile Number
+        </Text>
       )}
       <TouchableOpacity
         onPress={() => {
@@ -89,55 +92,3 @@ const MobileOTPScreen = ({navigation, route}) => {
 };
 
 export default MobileOTPScreen;
-
-const styles = StyleSheet.create({
-  mobileOTPContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  iconContainer: {
-    position: 'absolute',
-    top: '2%',
-    left: '5%',
-  },
-  headingText: {
-    fontFamily: 'Roboto-Bold',
-    color: 'black',
-    fontSize: 24,
-    marginBottom: '3%',
-    marginTop: '3%',
-  },
-  imageStyle: {
-    width: '50%',
-    marginBottom: '10%',
-    height: 200,
-  },
-  infoText: {
-    fontSize: 16,
-    color: 'gray',
-    paddingHorizontal: '10%',
-  },
-  otpText: {
-    fontSize: 16,
-    color: 'black',
-    fontWeight: 'bold',
-  },
-  numberInput: {
-    fontSize: 20,
-    color: 'black',
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(0,0,0,0.5)',
-    width: '60%',
-    marginBottom: '15%',
-    textAlign: 'center',
-  },
-  button: {
-    height: 60,
-    borderRadius: 10,
-    width: '90%',
-    backgroundColor: 'black',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

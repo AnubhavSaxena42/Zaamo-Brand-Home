@@ -18,10 +18,11 @@ import toastService from '../../services/toast-service';
 import {GENERATE_OTP} from '../MobileOTPScreen/mutations';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import {saveItemToStorage} from '../../services/storage-service';
+import {styles} from './styles';
 const VerifyOTPScreen = ({navigation, route}) => {
   const [otp, setOtp] = useState('');
   const [errorMessage, setErrorMessage] = useState(false);
-  console.log(otp)
+  console.log(otp);
   const dispatch = useDispatch();
   const [verifyOtp, {data, error, loading}] = useMutation(VERIFY_OTP, {
     variables: {
@@ -91,33 +92,33 @@ const VerifyOTPScreen = ({navigation, route}) => {
       />
       */}
 
-<OTPInputView
-    style={{width: '65%', height: 200}}
-    pinCount={4}
-     code={otp} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
-     onCodeChanged = {code => setOtp(code)}
-    keyboardType='number-pad'
-    autoFocusOnLoad
-    editable
-    codeInputFieldStyle={styles.borderStyleBase}
-    codeInputHighlightStyle={styles.borderStyleHighLighted}
-    onCodeFilled={code=>{console.log('Go go go');
-    
-      saveItemToStorage('Mobile Number', route.params.mobileNumber);
-      navigation.navigate('LoginSuccessScreen', {
-        mobileNumber: route.params.mobileNumber,
-      });
-  }}
-   
-/>
-      <Text style={{...styles.infoText, marginBottom: '7%'}}>
+      <OTPInputView
+        style={styles.otpInputContainer}
+        pinCount={4}
+        code={otp} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
+        onCodeChanged={code => setOtp(code)}
+        keyboardType="number-pad"
+        autoFocusOnLoad
+        editable
+        codeInputFieldStyle={styles.borderStyleBase}
+        codeInputHighlightStyle={styles.borderStyleHighLighted}
+        onCodeFilled={code => {
+          console.log('Go go go');
+
+          saveItemToStorage('Mobile Number', route.params.mobileNumber);
+          navigation.navigate('LoginSuccessScreen', {
+            mobileNumber: route.params.mobileNumber,
+          });
+        }}
+      />
+      <Text style={styles.infoText}>
         Didn't receive the OTP?{' '}
         <Text onPress={() => generateOtp()} style={styles.otpText}>
           RESEND OTP
         </Text>
       </Text>
       {errorMessage && (
-        <Text style={{marginBottom: '5%'}}>Please enter a valid OTP</Text>
+        <Text style={styles.errorMessageStyle}>Please enter a valid OTP</Text>
       )}
       <TouchableOpacity
         onPress={() => {
@@ -132,90 +133,11 @@ const VerifyOTPScreen = ({navigation, route}) => {
           }
           verifyOtp();*/
         }}
-        
         style={styles.button}>
-        <Text style={{color: 'white', fontWeight: 'bold'}}>
-          VERIFY & PROCEED
-        </Text>
+        <Text style={styles.buttonText}>VERIFY & PROCEED</Text>
       </TouchableOpacity>
-      <Modal visible={false}>
-        {/* Your number has been verified ???? and then navigate?*/}
-      </Modal>
     </View>
   );
 };
 
 export default VerifyOTPScreen;
-
-const styles = StyleSheet.create({
-  verifyOTPContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  iconContainer: {
-    position: 'absolute',
-    top: '2%',
-    left: '5%',
-  },
-  imageStyle: {
-    height: 200,
-    width: '50%',
-    marginBottom: '10%',
-  },
-  infoText: {
-    fontSize: 16,
-    color: 'gray',
-    paddingHorizontal: '10%',
-  },
-  otpText: {
-    fontSize: 16,
-    color: 'black',
-    fontWeight: 'bold',
-  },
-  headingText: {
-    fontFamily: 'Roboto-Bold',
-    color: 'black',
-    fontSize: 24,
-    marginBottom: '3%',
-    marginTop: '3%',
-  },
-  numberInput: {
-    fontSize: 20,
-    color: 'black',
-    borderBottomWidth: 1,
-    textAlign: 'center',
-    borderBottomColor: 'rgba(0,0,0,0.5)',
-    width: '60%',
-    marginBottom: '7%',
-  },
-  button: {
-    height: 60,
-    borderRadius: 5,
-    width: '90%',
-    backgroundColor: 'black',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  borderStyleBase: {
-    width: 40,
-    height: 55,
-    backgroundColor:'white'    
-  },
- 
-  borderStyleHighLighted: {
-    borderColor: "black",
-  },
- 
-  underlineStyleBase: {
-    width: 30,
-    height: 45,
-    borderWidth: 0,
-    borderBottomWidth: 1,
-  },
- 
-  underlineStyleHighLighted: {
-    borderColor: "#03DAC6",
-  },
-  
-});

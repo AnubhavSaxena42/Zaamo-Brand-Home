@@ -2,7 +2,6 @@ import {useMutation, useQuery} from '@apollo/client';
 import React, {useState, useEffect} from 'react';
 import {
   Modal,
-  StyleSheet,
   ScrollView,
   TouchableOpacity,
   TextInput,
@@ -23,6 +22,7 @@ import {GET_STORES, GET_BRANDS} from './queries';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import toastService from '../../services/toast-service';
 import {GET_COUPONS} from '../DashboardScreen/queries';
+import {styles} from './styles';
 const webDropdownStyle = {
   height: '30%',
   width: '15%',
@@ -370,125 +370,53 @@ const CreateCouponScreen = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView style={{flex:1}}>
-    <ScrollView
-      contentContainerStyle={{paddingBottom: '5%'}}
-      style={styles.createCouponContainer}>
-      <Header
-        tag={'Create Coupon'}
-        navigation={navigation}
-        back
-        fontSize={22}
-      />
-      {isBrandsModalVisible && (
-        <View
-          style={{
-            backgroundColor: 'rgba(0,0,0,0.5)',
-            position: 'absolute',
-            zIndex: 900,
-            top: 0,
-            left: 0,
-            bottom: 0,
-            right: 0,
-          }}
+    <SafeAreaView style={styles.createCouponScreenContainer}>
+      <ScrollView
+        contentContainerStyle={{paddingBottom: '5%'}}
+        style={styles.createCouponContainer}>
+        <Header
+          tag={'Create Coupon'}
+          navigation={navigation}
+          back
+          fontSize={22}
         />
-      )}
-      <Modal
-        visible={isBrandsModalVisible}
-        transparent={true}
-        onRequestClose={() => setIsBrandsModalVisible(false)}>
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <View
-            style={{
-              width: '100%',
-              height: '100%',
-              backgroundColor: 'white',
-              paddingHorizontal: '5%',
-            }}>
-            <Text
-              style={{
-                marginVertical: '5%',
-                textAlign: 'center',
-                fontSize: 20,
-                color: 'black',
-              }}>
-              Select Brands
+        <Modal
+          visible={isBrandsModalVisible}
+          transparent={true}
+          onRequestClose={() => setIsBrandsModalVisible(false)}>
+          <SafeAreaView style={styles.brandsModalContainer}>
+            <View style={styles.brandsModalContentContainer}>
+              <Text style={styles.brandsModalHeaderText}>Select Brands</Text>
+              <FlatList
+                data={brandItems}
+                keyExtractor={item => item.id}
+                renderItem={({item}) => (
+                  <ModalItem
+                    name={item.name}
+                    value={item.id}
+                    selectedItems={selectedBrands}
+                    setSelectedItems={setSelectedBrands}
+                  />
+                )}
+              />
+              <TouchableOpacity
+                onPress={() => setIsBrandsModalVisible(false)}
+                style={styles.brandsModalConfirmButton}>
+                <Text style={styles.brandsModalConfirmButtonText}>Confirm</Text>
+              </TouchableOpacity>
+            </View>
+          </SafeAreaView>
+        </Modal>
+        <Modal
+          visible={isStoresModalVisible}
+          onRequestClose={() => setIsStoresModalVisible(false)}
+          transparent={true}>
+          <SafeAreaView style={styles.storesModalContainer}>
+            <Text style={styles.storesModalHeaderText}>
+              Select Influencer Stores
             </Text>
-            {/*<ScrollView contentContainerStyle={{flex: 1}}>
-              {brandItems.map(brandItem => (
-                <ModalItem
-                  name={brandItem.name}
-                  value={brandItem.id}
-                  selectedItems={selectedBrands}
-                  setSelectedItems={setSelectedBrands}
-                />
-              ))}
-            </ScrollView>*/}
-            <FlatList
-              data={brandItems}
-              keyExtractor={item => item.id}
-              renderItem={({item}) => (
-                <ModalItem
-                  name={item.name}
-                  value={item.id}
-                  selectedItems={selectedBrands}
-                  setSelectedItems={setSelectedBrands}
-                />
-              )}
-            />
-            <TouchableOpacity
-              onPress={() => setIsBrandsModalVisible(false)}
-              style={{
-                alignSelf: 'center',
-                backgroundColor: 'black',
-                width: '30%',
-                marginVertical: '4%',
-                justifyContent: 'center',
-                alignItems: 'center',
-                paddingVertical: '2%',
-              }}>
-              <Text style={{color: 'white', fontSize: 16}}>Confirm</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-      <Modal
-        visible={isStoresModalVisible}
-        onRequestClose={() => setIsStoresModalVisible(false)}
-        transparent={true}>
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: 'white',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text
-            style={{
-              marginVertical: '5%',
-              textAlign: 'center',
-              fontSize: 20,
-              color: 'black',
-            }}>
-            Select Influencer Stores
-          </Text>
 
-          {/*influencerStoreItems.map(storeItem => (
-                <ModalItem
-                  name={storeItem.name}
-                  value={storeItem.id}
-                  selectedItems={selectedStores}
-                  setSelectedItems={setSelectedStores}
-                />
-              ))*/}
-
-          {
-            <View
-              style={{
-                flex: 1,
-                borderTopColor: 'rgba(0,0,0,0.1)',
-                borderTopWidth: 1,
-              }}>
+            <View style={styles.storesModalContentContainer}>
               <FlatList
                 data={influencerStoreItems}
                 renderItem={({item}) => (
@@ -502,528 +430,293 @@ const CreateCouponScreen = ({navigation}) => {
                 keyExtractor={item => item.id}
               />
             </View>
-          }
 
-          <TouchableOpacity
-            onPress={() => setIsStoresModalVisible(false)}
-            style={{
-              alignSelf: 'center',
-              backgroundColor: 'black',
-              width: '30%',
-              marginVertical: '4%',
-              justifyContent: 'center',
-              alignItems: 'center',
-              paddingVertical: '2%',
-            }}>
-            <Text style={{color: 'white', fontSize: 16}}>Confirm</Text>
-          </TouchableOpacity>
-        </View>
-      </Modal>
-      {/*<View
-        style={{
-          height: 65,
-          backgroundColor: 'white',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '100%',
-        }}>
-        <Text style={{fontSize: 22, color: 'black', fontWeight: '500'}}>
-          Create Coupon
-        </Text>
-      </View>*/}
-      <View style={{flex: 1, paddingHorizontal: '5%'}}>
-        <Text
-          style={{
-            textAlign: 'center',
-            fontSize: 18,
-            color: 'black',
-            marginTop: '4%',
-          }}>
-          Coupon Details
-        </Text>
-        <Text
-          style={{
-            marginVertical: '5%',
-            fontSize: 15,
-            color: 'black',
-            fontWeight: '500',
-          }}>
-          Select Coupon Type*
-        </Text>
-        <Dropdown
-          tag="Select Coupon Type"
-          items={couponTypeItems}
-          selectedValue={couponType}
-          iconColor="black"
-          down
-          setSelectedValue={setCouponType}
-          dropDownContainerStyle={{...mobileDropdownStyle, zIndex: 600}}
-          dropDownValuesTextStyle={
-            Platform.OS === 'web'
-              ? webDropdownValuesTextStyle
-              : mobileDropdownValuesTextStyle
-          }
-          dropDownTextStyle={
-            Platform.OS === 'web'
-              ? webDropdownTextStyle
-              : mobileDropdownTextStyle
-          }
-          dropDownValuesContainerStyle={
-            Platform.OS === 'web'
-              ? webDropdownValuesContainerStyle
-              : mobileDropdownValuesContainerStyle
-          }
-        />
-        {couponType !== '' && (
-          <View style={{flexDirection: 'row', marginTop: '5%'}}>
-            <Entypo name="check" size={15} color={'black'} />
-            <Text style={{color: 'black', marginLeft: '3%'}}>
-              Coupon Type Selected
-            </Text>
-          </View>
-        )}
-        {couponTypeFieldError && <ErrorMessage />}
-        <Text
-          style={{
-            marginVertical: '5%',
-            fontSize: 15,
-            color: 'black',
-            fontWeight: '500',
-          }}>
-          Select Discount Type*
-        </Text>
-        <Dropdown
-          tag="Select Discount Type"
-          items={discountTypeItems}
-          selectedValue={discountType}
-          iconColor="black"
-          down
-          setSelectedValue={setDiscountType}
-          dropDownContainerStyle={
-            Platform.OS === 'web' ? webDropdownStyle : mobileDropdownStyle
-          }
-          dropDownValuesTextStyle={
-            Platform.OS === 'web'
-              ? webDropdownValuesTextStyle
-              : mobileDropdownValuesTextStyle
-          }
-          dropDownTextStyle={
-            Platform.OS === 'web'
-              ? webDropdownTextStyle
-              : mobileDropdownTextStyle
-          }
-          dropDownValuesContainerStyle={
-            Platform.OS === 'web'
-              ? webDropdownValuesContainerStyle
-              : mobileDropdownValuesContainerStyle
-          }
-        />
-        {discountType !== '' && (
-          <View style={{flexDirection: 'row', marginTop: '5%'}}>
-            <Entypo name="check" size={15} color={'black'} />
-            <Text style={{marginLeft: '3%'}}>Discount Type Selected</Text>
-          </View>
-        )}
-        {discountTypeFieldError && <ErrorMessage />}
-        <Text
-          style={{
-            marginVertical: '5%',
-            fontSize: 15,
-            color: 'black',
-            fontWeight: '500',
-          }}>
-          Discount Value*
-        </Text>
-        <TextInput
-          value={discountValue}
-          onChangeText={text => {
-            setDiscountValue(parseInt(text));
-          }}
-          style={styles.inputStyle}
-          placeholder={'Enter Discount Value'}
-        />
-        {discountValueFieldError && <ErrorMessage />}
-        <Text
-          style={{
-            marginVertical: '5%',
-            fontSize: 15,
-            color: 'black',
-            fontWeight: '500',
-          }}>
-          Upper Limit
-        </Text>
-        <TextInput
-          value={upperLimit}
-          onChangeText={text => {
-            setUpperLimit(parseInt(text));
-          }}
-          style={styles.inputStyle}
-          placeholder={'Select Upper Limit'}
-        />
-        <Text
-          style={{
-            marginTop: '5%',
-            fontSize: 15,
-            color: 'black',
-            fontWeight: '500',
-          }}>
-          Minimum Order
-        </Text>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <View style={{width: '45%'}}>
-            <Text
-              style={{
-                marginVertical: '5%',
-                fontSize: 14,
-                color: 'black',
-                fontWeight: '500',
-              }}>
-              Value
-            </Text>
-            <TextInput
-              keyboardType="number-pad"
-              value={minValue}
-              onChangeText={text => setMinValue(parseInt(text))}
-              style={styles.inputStyle}
-              placeholder={'Rs.599'}
-            />
-          </View>
-          <View style={{width: '45%'}}>
-            <Text
-              style={{
-                marginVertical: '5%',
-                fontSize: 14,
-                color: 'black',
-                fontWeight: '500',
-              }}>
-              Quantity
-            </Text>
-            <TextInput
-              value={minQuantity}
-              keyboardType="number-pad"
-              onChangeText={text => setMinQuantity(parseInt(text))}
-              style={styles.inputStyle}
-              placeholder={'4'}
-            />
-          </View>
-        </View>
-        {couponType === 'SPECIFIC_PRODUCT' && (
-          <View style={{flex: 1}}>
-            <Text
-              style={{
-                marginTop: '5%',
-                fontSize: 15,
-                color: 'black',
-                fontWeight: '500',
-              }}>
-              Select Brands*
-            </Text>
-            <View
-              style={{
-                marginVertical: '5%',
-                width: '100%',
-                height: 40,
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                borderWidth: 1,
-                borderColor: 'rgba(0,0,0,0.3)',
-                borderRadius: 4,
-                paddingHorizontal: '3%',
-                backgroundColor: 'white',
-              }}>
-              <Text style={{color: 'gray'}}>Select Brands*</Text>
-              <TouchableOpacity
-                onPress={() => setIsBrandsModalVisible(true)}
-                style={{
-                  height: '80%',
-                  width: '25%',
-                  borderRadius: 4,
-                  backgroundColor: 'black',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <Text style={{color: 'white', fontSize: 12}}>Pick Brands</Text>
-              </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setIsStoresModalVisible(false)}
+              style={styles.storesModalConfirmButton}>
+              <Text style={styles.storesModalConfirmButtonText}>Confirm</Text>
+            </TouchableOpacity>
+          </SafeAreaView>
+        </Modal>
+        <View style={styles.createCouponContentContainer}>
+          <Text style={styles.couponDetailsHeaderText}>Coupon Details</Text>
+          <Text style={styles.createCouponLabelText}>Select Coupon Type*</Text>
+          <Dropdown
+            tag="Select Coupon Type"
+            items={couponTypeItems}
+            selectedValue={couponType}
+            iconColor="black"
+            down
+            setSelectedValue={setCouponType}
+            dropDownContainerStyle={{...mobileDropdownStyle, zIndex: 600}}
+            dropDownValuesTextStyle={
+              Platform.OS === 'web'
+                ? webDropdownValuesTextStyle
+                : mobileDropdownValuesTextStyle
+            }
+            dropDownTextStyle={
+              Platform.OS === 'web'
+                ? webDropdownTextStyle
+                : mobileDropdownTextStyle
+            }
+            dropDownValuesContainerStyle={
+              Platform.OS === 'web'
+                ? webDropdownValuesContainerStyle
+                : mobileDropdownValuesContainerStyle
+            }
+          />
+          {couponType !== '' && (
+            <View style={styles.selectedConfirmedContainer}>
+              <Entypo name="check" size={15} color={'black'} />
+              <Text style={styles.selectedConfirmedText}>
+                Coupon Type Selected
+              </Text>
             </View>
-            {selectedBrands.length !== 0 && (
-              <View style={{flexDirection: 'row'}}>
-                <Entypo name="check" size={15} color={'black'} />
-                <Text style={{marginLeft: '3%'}}>Brands Selected</Text>
-              </View>
-            )}
-            {selectedBrandsFieldError && <ErrorMessage />}
+          )}
+          {couponTypeFieldError && <ErrorMessage />}
+          <Text style={styles.createCouponLabelText}>
+            Select Discount Type*
+          </Text>
+          <Dropdown
+            tag="Select Discount Type"
+            items={discountTypeItems}
+            selectedValue={discountType}
+            iconColor="black"
+            down
+            setSelectedValue={setDiscountType}
+            dropDownContainerStyle={
+              Platform.OS === 'web' ? webDropdownStyle : mobileDropdownStyle
+            }
+            dropDownValuesTextStyle={
+              Platform.OS === 'web'
+                ? webDropdownValuesTextStyle
+                : mobileDropdownValuesTextStyle
+            }
+            dropDownTextStyle={
+              Platform.OS === 'web'
+                ? webDropdownTextStyle
+                : mobileDropdownTextStyle
+            }
+            dropDownValuesContainerStyle={
+              Platform.OS === 'web'
+                ? webDropdownValuesContainerStyle
+                : mobileDropdownValuesContainerStyle
+            }
+          />
+          {discountType !== '' && (
+            <View style={styles.selectedConfirmedContainer}>
+              <Entypo name="check" size={15} color={'black'} />
+              <Text style={styles.selectedConfirmedText}>
+                Discount Type Selected
+              </Text>
+            </View>
+          )}
+          {discountTypeFieldError && <ErrorMessage />}
+          <Text style={styles.createCouponLabelText}>Discount Value*</Text>
+          <TextInput
+            value={discountValue}
+            onChangeText={text => {
+              setDiscountValue(parseInt(text));
+            }}
+            style={styles.inputStyle}
+            placeholder={'Enter Discount Value'}
+          />
+          {discountValueFieldError && <ErrorMessage />}
+          <Text style={styles.createCouponLabelText}>Upper Limit</Text>
+          <TextInput
+            value={upperLimit}
+            onChangeText={text => {
+              setUpperLimit(parseInt(text));
+            }}
+            style={styles.inputStyle}
+            placeholder={'Select Upper Limit'}
+          />
+          <Text style={styles.createCouponLabelText}>Minimum Order</Text>
+          <View style={styles.minimumOrderContainer}>
+            <View style={styles.minimumOrderSectionContainer}>
+              <Text style={styles.createCouponLabelText}>Value</Text>
+              <TextInput
+                keyboardType="number-pad"
+                value={minValue}
+                onChangeText={text => setMinValue(parseInt(text))}
+                style={styles.inputStyle}
+                placeholder={'Rs.599'}
+              />
+            </View>
+            <View style={styles.minimumOrderSectionContainer}>
+              <Text style={styles.createCouponLabelText}>Quantity</Text>
+              <TextInput
+                value={minQuantity}
+                keyboardType="number-pad"
+                onChangeText={text => setMinQuantity(parseInt(text))}
+                style={styles.inputStyle}
+                placeholder={'4'}
+              />
+            </View>
           </View>
-        )}
+          {couponType === 'SPECIFIC_PRODUCT' && (
+            <View style={styles.selectBrandsContainer}>
+              <Text style={styles.createCouponLabelText}>Select Brands*</Text>
+              <View style={styles.selectBrandsBox}>
+                <Text style={styles.selectBrandsText}>Select Brands*</Text>
+                <TouchableOpacity
+                  onPress={() => setIsBrandsModalVisible(true)}
+                  style={styles.selectBrandsButton}>
+                  <Text style={styles.selectBrandsButtonText}>Pick Brands</Text>
+                </TouchableOpacity>
+              </View>
+              {selectedBrands.length !== 0 && (
+                <View style={styles.selectedConfirmedContainer}>
+                  <Entypo name="check" size={15} color={'black'} />
+                  <Text style={styles.selectBrandsText}>Brands Selected</Text>
+                </View>
+              )}
+              {selectedBrandsFieldError && <ErrorMessage />}
+            </View>
+          )}
 
-        {couponType === 'SPECIFIC_PRODUCT' && (
-          <View style={{flex: 1}}>
-            <Text
-              style={{
-                marginTop: '5%',
-                fontSize: 15,
-                color: 'black',
-                fontWeight: '500',
-              }}>
-              Select Products*
-            </Text>
-            <View
-              style={{
-                marginVertical: '5%',
-                width: '100%',
-                height: 40,
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                borderWidth: 1,
-                borderColor: 'rgba(0,0,0,0.3)',
-                borderRadius: 4,
-                paddingHorizontal: '3%',
-                backgroundColor: 'white',
-              }}>
-              <Text style={{color: 'gray'}}>Select Products*</Text>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate('CollectionProductsAddScreen', {
-                    setProducts: setSelectedProducts,
-                    products: selectedProducts,
-                    fromVoucherCreate: true,
-                    brands: selectedBrandsItems,
-                  });
-                }}
-                style={{
-                  height: '80%',
-                  width: '25%',
-                  borderRadius: 4,
-                  backgroundColor: 'black',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <Text style={{color: 'white', fontSize: 12}}>
-                  Pick Products
+          {couponType === 'SPECIFIC_PRODUCT' && (
+            <View style={styles.selectProductsContainer}>
+              <Text style={styles.createCouponLabelText}>Select Products*</Text>
+              <View style={styles.selectProductsBox}>
+                <Text style={styles.selectProductsText}>Select Products*</Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate('CollectionProductsAddScreen', {
+                      setProducts: setSelectedProducts,
+                      products: selectedProducts,
+                      fromVoucherCreate: true,
+                      brands: selectedBrandsItems,
+                    });
+                  }}
+                  style={styles.selectProductsButton}>
+                  <Text style={styles.selectProductsButtonText}>
+                    Pick Products
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              {selectedProducts.length !== 0 && (
+                <View style={styles.selectedConfirmedContainer}>
+                  <Entypo name="check" size={15} color={'black'} />
+                  <Text style={styles.selectedConfirmedText}>
+                    Products Selected
+                  </Text>
+                </View>
+              )}
+              {selectedBrandsFieldError && <ErrorMessage />}
+            </View>
+          )}
+          <Text style={styles.createCouponLabelText}>Select Owner*</Text>
+          <Dropdown
+            tag="Select Owner"
+            items={ownerItems}
+            selectedValue={owner}
+            iconColor="black"
+            down
+            setSelectedValue={setOwner}
+            dropDownContainerStyle={
+              Platform.OS === 'web' ? webDropdownStyle : mobileDropdownStyle
+            }
+            dropDownValuesTextStyle={
+              Platform.OS === 'web'
+                ? webDropdownValuesTextStyle
+                : mobileDropdownValuesTextStyle
+            }
+            dropDownTextStyle={
+              Platform.OS === 'web'
+                ? webDropdownTextStyle
+                : mobileDropdownTextStyle
+            }
+            dropDownValuesContainerStyle={
+              Platform.OS === 'web'
+                ? webDropdownValuesContainerStyle
+                : mobileDropdownValuesContainerStyle
+            }
+          />
+          {owner !== '' && (
+            <View style={styles.selectedConfirmedContainer}>
+              <Entypo name="check" size={15} color={'black'} />
+              <Text style={styles.selectedConfirmedText}>Owner Selected</Text>
+            </View>
+          )}
+          {ownerFieldError && <ErrorMessage />}
+          <Text
+            onPress={() => setSelectDateToggle(!selectDateToggle)}
+            style={styles.selectDatesContainer}>
+            Select Dates
+            <Entypo name="arrow-down" size={15} color={'black'} />
+          </Text>
+          {selectDateToggle && (
+            <View style={styles.selectDatesSectionContainer}>
+              <View style={styles.selectDatesSubsectionContainer}>
+                <Text
+                  onPress={() => setStartDateOpen(true)}
+                  style={styles.selectDatesSubsectionText}>
+                  Select Start Date
                 </Text>
-              </TouchableOpacity>
-            </View>
-            {selectedProducts.length !== 0 && (
-              <View style={{flexDirection: 'row'}}>
-                <Entypo name="check" size={15} color={'black'} />
-                <Text style={{marginLeft: '3%'}}>Products Selected</Text>
+                <Text style={styles.selectedDateSubsectionText}>
+                  {startDate.toISOString().substring(0, 10)}
+                </Text>
+                <DatePicker
+                  onConfirm={date => {
+                    setStartDateOpen(false);
+                    setStartDate(date);
+                  }}
+                  onCancel={() => {
+                    setStartDateOpen(false);
+                  }}
+                  date={startDate}
+                  modal
+                  open={startDateOpen}
+                />
               </View>
-            )}
-
-            {selectedBrandsFieldError && <ErrorMessage />}
-          </View>
-        )}
-        <Text
-          style={{
-            marginVertical: '5%',
-            fontSize: 15,
-            color: 'black',
-            fontWeight: '500',
-          }}>
-          Select Owner*
-        </Text>
-        <Dropdown
-          tag="Select Owner"
-          items={ownerItems}
-          selectedValue={owner}
-          iconColor="black"
-          down
-          setSelectedValue={setOwner}
-          dropDownContainerStyle={
-            Platform.OS === 'web' ? webDropdownStyle : mobileDropdownStyle
-          }
-          dropDownValuesTextStyle={
-            Platform.OS === 'web'
-              ? webDropdownValuesTextStyle
-              : mobileDropdownValuesTextStyle
-          }
-          dropDownTextStyle={
-            Platform.OS === 'web'
-              ? webDropdownTextStyle
-              : mobileDropdownTextStyle
-          }
-          dropDownValuesContainerStyle={
-            Platform.OS === 'web'
-              ? webDropdownValuesContainerStyle
-              : mobileDropdownValuesContainerStyle
-          }
-        />
-        {owner !== '' && (
-          <View style={{flexDirection: 'row', marginTop: '5%'}}>
-            <Entypo name="check" size={15} color={'black'} />
-            <Text style={{marginLeft: '3%'}}>Owner Selected</Text>
-          </View>
-        )}
-        {ownerFieldError && <ErrorMessage />}
-        <Text
-          onPress={() => setSelectDateToggle(!selectDateToggle)}
-          style={{
-            borderWidth: 1,
-            borderColor: 'rgba(0,0,0,0.3)',
-            borderRadius: 4,
-            paddingHorizontal: '5%',
-            backgroundColor: 'white',
-            height: 35,
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginTop: '5%',
-            fontSize: 15,
-            color: 'black',
-            textAlign: 'center',
-            textAlignVertical: 'center',
-            fontWeight: '500',
-          }}>
-          Select Dates
-          <Entypo name="arrow-down" size={15} color={'black'} />
-        </Text>
-        {selectDateToggle && (
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <View style={{width: '45%'}}>
-              <Text
-                onPress={() => setStartDateOpen(true)}
-                style={{
-                  borderWidth: 1,
-                  borderColor: 'rgba(0,0,0,0.3)',
-                  borderRadius: 4,
-                  backgroundColor: 'white',
-                  paddingHorizontal: '5%',
-                  marginVertical: '5%',
-                  fontSize: 14,
-                  color: 'black',
-                  textAlign: 'center',
-                  fontWeight: '500',
-                }}>
-                Select Start Date
-              </Text>
-              <Text
-                style={{
-                  width: '100%',
-                  borderWidth: 1,
-                  borderColor: 'rgba(0,0,0,0.3)',
-                  borderRadius: 4,
-                  color: 'gray',
-                  textAlign: 'center',
-                  backgroundColor: 'white',
-                  paddingHorizontal: '5%',
-                }}>
-                {startDate.toISOString().substring(0, 10)}
-              </Text>
-              <DatePicker
-                onConfirm={date => {
-                  setStartDateOpen(false);
-                  setStartDate(date);
-                }}
-                onCancel={() => {
-                  setStartDateOpen(false);
-                }}
-                date={startDate}
-                modal
-                open={startDateOpen}
-              />
+              <View style={styles.selectDatesSubsectionContainer}>
+                <Text
+                  onPress={() => setEndDateOpen(true)}
+                  style={styles.selectDatesSubsectionText}>
+                  Select End Date
+                </Text>
+                <Text style={styles.selectedDateSubsectionText}>
+                  {endDate.toISOString().substring(0, 10)}
+                </Text>
+                <DatePicker
+                  onConfirm={date => {
+                    setEndDateOpen(false);
+                    setEndDate(date);
+                  }}
+                  onCancel={() => {
+                    setEndDateOpen(false);
+                  }}
+                  date={endDate}
+                  modal
+                  open={endDateOpen}
+                />
+              </View>
             </View>
-            <View style={{width: '45%'}}>
-              <Text
-                onPress={() => setEndDateOpen(true)}
-                style={{
-                  borderWidth: 1,
-                  borderColor: 'rgba(0,0,0,0.3)',
-                  borderRadius: 4,
-                  backgroundColor: 'white',
-                  paddingHorizontal: '5%',
-                  marginVertical: '5%',
-                  fontSize: 14,
-                  textAlign: 'center',
-                  color: 'black',
-                  fontWeight: '500',
-                }}>
-                Select End Date
-              </Text>
-              <Text
-                style={{
-                  width: '100%',
-                  borderWidth: 1,
-                  borderColor: 'rgba(0,0,0,0.3)',
-                  borderRadius: 4,
-                  color: 'gray',
-                  textAlign: 'center',
-                  backgroundColor: 'white',
-                  paddingHorizontal: '5%',
-                }}>
-                {endDate.toISOString().substring(0, 10)}
-              </Text>
-              <DatePicker
-                onConfirm={date => {
-                  setEndDateOpen(false);
-                  setEndDate(date);
-                }}
-                onCancel={() => {
-                  setEndDateOpen(false);
-                }}
-                date={endDate}
-                modal
-                open={endDateOpen}
-              />
-            </View>
-          </View>
-        )}
-        {/* CheckBox */}
-        <Text
-          style={{
-            marginTop: '5%',
-            fontSize: 15,
-            color: 'black',
-            fontWeight: '500',
-          }}>
-          Select Influencer Stores*
-        </Text>
-        <View
-          style={{
-            marginTop: '5%',
-            width: '100%',
-            height: 40,
-            justifyContent: 'space-between',
-            borderWidth: 1,
-            borderColor: 'rgba(0,0,0,0.3)',
-            borderRadius: 4,
-            alignItems: 'center',
-            backgroundColor: 'white',
-            paddingHorizontal: '3%',
-            flexDirection: 'row',
-          }}>
-          <Text>Select Influencer Stores*</Text>
-          <TouchableOpacity
-            onPress={() => setIsStoresModalVisible(true)}
-            style={{
-              height: '80%',
-              width: '25%',
-              borderRadius: 4,
-              backgroundColor: 'black',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Text style={{color: 'white', fontSize: 12}}>Pick Stores</Text>
-          </TouchableOpacity>
-        </View>
-        {selectedStores.length !== 0 && (
-          <View style={{flexDirection: 'row', marginVertical: '5%'}}>
-            <Entypo name="check" size={15} color={'black'} />
-            <Text style={{marginBottom: '5%', marginLeft: '3%'}}>
-              Stores Selected
+          )}
+          {/* CheckBox */}
+          <Text style={styles.createCouponLabelText}>
+            Select Influencer Stores*
+          </Text>
+          <View style={styles.selectStoresBox}>
+            <Text style={styles.selectStoresText}>
+              Select Influencer Stores*
             </Text>
+            <TouchableOpacity
+              onPress={() => setIsStoresModalVisible(true)}
+              style={styles.selectStoresButton}>
+              <Text style={styles.selectStoresButtonText}>Pick Stores</Text>
+            </TouchableOpacity>
           </View>
-        )}
-        {selectedStoresFieldError && <ErrorMessage />}
-        <Text
-          style={{
-            textAlign: 'center',
-            fontSize: 18,
-            color: 'black',
-            marginTop: '10%',
-          }}>
-          Coupon Naming
-        </Text>
-        {/*<Text
+          {selectedStores.length !== 0 && (
+            <View style={styles.selectedConfirmedContainer}>
+              <Entypo name="check" size={15} color={'black'} />
+              <Text style={styles.selectedConfirmedText}>Stores Selected</Text>
+            </View>
+          )}
+          {selectedStoresFieldError && <ErrorMessage />}
+          <Text style={styles.couponNamingHeaderText}>Coupon Naming</Text>
+          {/*<Text
           style={{
             marginVertical: '5%',
             fontSize: 15,
@@ -1047,101 +740,45 @@ const CreateCouponScreen = ({navigation}) => {
           }}
           placeholder={'Enter Coupon Short Name'}
         />*/}
-        {couponCodeFieldError && <ErrorMessage />}
-        <Text
-          style={{
-            marginVertical: '5%',
-            fontSize: 15,
-            color: 'black',
-            fontWeight: '500',
-          }}>
-          Coupon Title*
-        </Text>
-        <TextInput
-          value={couponTitle}
-          onChangeText={text => setCouponTitle(text)}
-          style={styles.inputStyle}
-          placeholder={'Enter Coupon Title'}
-        />
-        {couponTitleFieldError && <ErrorMessage />}
-        <Text
-          style={{
-            marginVertical: '5%',
-            fontSize: 15,
-            color: 'black',
-            fontWeight: '500',
-          }}>
-          Coupon Name*
-        </Text>
-        <TextInput
-          value={couponName}
-          onChangeText={text => setCouponName(text)}
-          style={styles.inputStyle}
-          placeholder={'Enter Coupon Name'}
-        />
-        {couponNameFieldError && <ErrorMessage />}
-        <Text
-          style={{
-            marginVertical: '5%',
-            fontSize: 15,
-            color: 'black',
-            fontWeight: '500',
-          }}>
-          Coupon Details*
-        </Text>
-        <TextInput
-          value={couponDescription}
-          onChangeText={text => setCouponDescription(text)}
-          style={styles.inputStyle}
-          multiline={true}
-          textAlignVertical="top"
-          placeholder={'Enter Coupon Details'}
-        />
-        {couponDescriptionFieldError && <ErrorMessage />}
-        <TouchableOpacity onPress={onCreatePress} style={styles.button}>
-          <Text style={{color: 'white', fontWeight: 'bold'}}>Create</Text>
-        </TouchableOpacity>
-        {(voucherResponse.error || fieldError) && (
-          <Text style={{textAlign: 'center', marginTop: '1%'}}>
-            Select the required fields
-          </Text>
-        )}
-      </View>
-    </ScrollView>
+          {couponCodeFieldError && <ErrorMessage />}
+          <Text style={styles.createCouponLabelText}>Coupon Title*</Text>
+          <TextInput
+            value={couponTitle}
+            onChangeText={text => setCouponTitle(text)}
+            style={styles.inputStyle}
+            placeholder={'Enter Coupon Title'}
+          />
+          {couponTitleFieldError && <ErrorMessage />}
+          <Text style={styles.createCouponLabelText}>Coupon Name*</Text>
+          <TextInput
+            value={couponName}
+            onChangeText={text => setCouponName(text)}
+            style={styles.inputStyle}
+            placeholder={'Enter Coupon Name'}
+          />
+          {couponNameFieldError && <ErrorMessage />}
+          <Text style={styles.createCouponLabelText}>Coupon Details*</Text>
+          <TextInput
+            value={couponDescription}
+            onChangeText={text => setCouponDescription(text)}
+            style={styles.inputStyle}
+            multiline={true}
+            textAlignVertical="top"
+            placeholder={'Enter Coupon Details'}
+          />
+          {couponDescriptionFieldError && <ErrorMessage />}
+          <TouchableOpacity onPress={onCreatePress} style={styles.button}>
+            <Text style={{color: 'white', fontWeight: 'bold'}}>Create</Text>
+          </TouchableOpacity>
+          {(voucherResponse.error || fieldError) && (
+            <Text style={{textAlign: 'center', marginTop: '1%'}}>
+              Select the required fields
+            </Text>
+          )}
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
 
 export default CreateCouponScreen;
-
-const styles = StyleSheet.create({
-  createCouponContainer: {
-    flex: 1,
-    paddingBottom: '15%',
-  },
-  errorMessageContainer: {
-    marginTop: '1%',
-  },
-  errorMessageText: {
-    fontSize: 12,
-    color: 'red',
-  },
-  button: {
-    height: 40,
-    borderRadius: 5,
-    width: '30%',
-    alignSelf: 'center',
-    marginVertical: '5%',
-    backgroundColor: 'black',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  inputStyle:{
-    width: '100%',
-    color: 'black',
-    borderBottomWidth: 1,
-    borderColor: 'black',
-    paddingVertical: '3%',
-    marginBottom:15
-    },
-});

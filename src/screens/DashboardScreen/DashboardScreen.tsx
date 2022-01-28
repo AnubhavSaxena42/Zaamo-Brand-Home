@@ -1,17 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {
-  StyleSheet,
   Image,
-  Platform,
   ScrollView,
   Dimensions,
   Text,
   SafeAreaView,
   View,
-  Alert,
-  TouchableOpacity,
 } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import {client} from '../../App';
 import MetricCard from '../../components/MetricCard/MetricCard';
 import UpdateCard from '../../components/UpdateCard/UpdateCard';
@@ -33,9 +28,9 @@ import {setAuthorisedBrands} from '../../redux/reducers/userReducer';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import toastService from '../../services/toast-service';
 import AnimatedLottieView from 'lottie-react-native';
-//For web it has to be a scrollview , implement fab properly
+import {styles} from './styles';
+
 const DashboardScreen = ({navigation, route}) => {
-  const windowWidth = Dimensions.get('window').width;
   const mobileNumber = useSelector(state => state.user.mobileNumber);
   const dispatch = useDispatch();
   const storeName = useSelector(state => state.store.storeInfo);
@@ -47,14 +42,17 @@ const DashboardScreen = ({navigation, route}) => {
       endCursor: '',
     },
   });
+
   useEffect(() => {
     if (storeResponse.loading) dispatch(setLoaderStatus(true));
     else dispatch(setLoaderStatus(false));
   }, [storeResponse.loading]);
+
   useEffect(() => {
     if (brandResponse.loading) dispatch(setLoaderStatus(true));
     else dispatch(setLoaderStatus(false));
   }, [brandResponse.loading]);
+
   useEffect(() => {
     if (storeResponse.data) {
       dispatch(
@@ -79,6 +77,7 @@ const DashboardScreen = ({navigation, route}) => {
       dispatch(setStoreCollections(storeCollections));
     }
   }, [storeResponse.data]);
+
   useEffect(() => {
     if (brandResponse.data) {
       console.log('Look here:', brandResponse.data);
@@ -132,84 +131,17 @@ const DashboardScreen = ({navigation, route}) => {
       dispatch(setStoreVouchers(newCoupons));
     }
   }, [couponResponse.data]);
-  const logout = () => {
-    dispatch(setLoaderStatus(true));
-    deleteAllItemsFromStorage()
-      .then(() => {
-        toastService.showToast('Logged out successfully', true);
-        client.cache
-          .reset()
-          .then(() => {
-            console.log('apollo success');
-            navigation.replace('AuthStack');
-            dispatch(setLoaderStatus(false));
-          })
-          .catch(() => {
-            console.log('fail client');
-            dispatch(setLoaderStatus(false));
-          });
-      })
-      .catch(() => {
-        toastService.showToast('Log out Fail', true);
-        dispatch(setLoaderStatus(false));
-      });
-  };
+
   return (
     <SafeAreaView style={styles.dashboardContainer}>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          zIndex: 2,
-          justifyContent: 'center',
-        }}>
-        <Text
-          style={{
-            zIndex:2,
-            paddingTop: '3%',
-            color: 'white',
-            fontSize: 22,
-            fontFamily: 'Roboto-Bold',
-          }}>
-          Overview
-        </Text>
-        {/*<TouchableOpacity
-          style={{
-            zIndex: 2,
-            paddingRight: '5%',
-            paddingTop: '5%',
-          }}
-          onPress={logout}>
-          <Text
-            style={{
-              color: 'white',
-              fontSize: 12,
-              fontFamily: 'Roboto-Bold',
-            }}>
-            Logout
-          </Text>
-        </TouchableOpacity>*/}
+      <View style={styles.headingContainer}>
+        <Text style={styles.headingText}>Overview</Text>
       </View>
-      {
-        <Image
-          source={require('../../assets/images/DashboardEllipse.png')}
-          style={{
-            height: 350,
-            width: windowWidth,
-            zIndex: 1,
-            position: 'absolute',
-            top: -100,
-          }}
-        />
-      }
-      <View
-        style={{
-          zIndex: 2,
-          width: '100%',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          marginTop: '4%',
-        }}>
+      <Image
+        source={require('../../assets/images/DashboardEllipse.png')}
+        style={styles.backgroundImageStyle}
+      />
+      <View style={styles.metricsTopContainer}>
         <MetricCard
           metric={{type: 'Total Orders', value: '-'}}
           color="lightpink"
@@ -219,13 +151,7 @@ const DashboardScreen = ({navigation, route}) => {
           color="darkseagreen"
         />
       </View>
-      <View
-        style={{
-          width: '100%',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          zIndex: 2,
-        }}>
+      <View style={styles.metricsBottomContainer}>
         <MetricCard
           metric={{type: 'Store Visits', value: '-'}}
           color="palegoldenrod"
@@ -235,6 +161,7 @@ const DashboardScreen = ({navigation, route}) => {
           color="lightblue"
         />
       </View>
+      {/* Insta World Button (Do Not Remove) */}
       {/*<TouchableOpacity
         onPress={() => {
           navigation.navigate('InstaWorldScreen');
@@ -253,25 +180,11 @@ const DashboardScreen = ({navigation, route}) => {
         }}>
         <Ionicons name="logo-instagram" size={30} color="white" />
       </TouchableOpacity>*/}
-      <Text
-        style={{
-          color: 'black',
-          fontSize: 14,
-          paddingLeft: '3%',
-          fontFamily: 'Roboto-Bold',
-          marginBottom: '2%',
-          marginTop: '2%',
-        }}>
-        Recent Updates
-      </Text>
+      <Text style={styles.updateHeadingText}>Recent Updates</Text>
       <ScrollView
-        contentContainerStyle={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          paddingBottom: '10%',
-        }}
+        contentContainerStyle={styles.scrollViewContentContainerStyle}
         showsVerticalScrollIndicator={false}>
+        {/* Updates will be rendered with the update cards below here */}
         {/*<UpdateCard />
         <UpdateCard />
         <UpdateCard />
@@ -289,16 +202,3 @@ const DashboardScreen = ({navigation, route}) => {
 };
 
 export default DashboardScreen;
-
-const styles = StyleSheet.create({
-  dashboardContainer: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-  comingSoonStyle: {
-    height: 150,
-  },
-  metricsContainer: {
-    width: '100%',
-  },
-});

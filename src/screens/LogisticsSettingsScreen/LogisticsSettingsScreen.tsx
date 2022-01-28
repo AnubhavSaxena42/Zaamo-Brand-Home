@@ -2,7 +2,6 @@ import React from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
-  TextInput,
   Text,
   Image,
   Dimensions,
@@ -13,51 +12,35 @@ import {
 import toastService from '../../services/toast-service';
 import AnimatedLottieView from 'lottie-react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-const windowWidth = Dimensions.get('window').width;
+import {styles} from './styles';
+
 const LogisticsSettingsScreen = ({navigation, route}) => {
   return (
-    <SafeAreaView style={{flex:1}}>
-    <ScrollView contentContainerStyle={styles.logisticsSettingsContainer}>
-      <View style={{alignItems: 'center'}}>
-        <Image
-          source={require('../../assets/images/DashboardEllipse.png')}
-          style={{
-            height: 400,
-            width: windowWidth,
-            zIndex: 1,
-            position: 'absolute',
-            top: -300,
-          }}
-        />
+    <SafeAreaView style={styles.logisticsSettingsContainer}>
+      <ScrollView contentContainerStyle={styles.logisticsSettingsContainer}>
+        <View style={styles.headerContainer}>
+          <Image
+            source={require('../../assets/images/DashboardEllipse.png')}
+            style={styles.backgroundImage}
+          />
 
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={{zIndex: 2, marginTop: '6%', position: 'absolute', left: 10}}>
-          <Ionicons name="arrow-back-sharp" color={'white'} size={35} />
-        </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.backButton}>
+            <Ionicons name="arrow-back-sharp" color={'white'} size={35} />
+          </TouchableOpacity>
 
-        <Text
-          style={{
-            color: 'white',
-            zIndex: 2,
-            marginTop: '7%',
-            fontSize: 22,
-            paddingHorizontal: '10%',
-            textAlign: 'center',
-            fontFamily: 'Roboto-Bold',
-          }}>
-          Logistics Settings
-        </Text>
-      </View>
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <AnimatedLottieView
-          source={require('../../assets/animations/coming-soon.json')}
-          style={{height: 160}}
-          loop
-          autoPlay
-        />
-      </View>
-      {/*<View
+          <Text style={styles.headerText}>Logistics Settings</Text>
+        </View>
+        <View style={styles.animationContainer}>
+          <AnimatedLottieView
+            source={require('../../assets/animations/coming-soon.json')}
+            style={styles.animation}
+            loop
+            autoPlay
+          />
+        </View>
+        {/*<View
         style={{
           paddingHorizontal: '5%',
           height: '90%',
@@ -124,27 +107,9 @@ const LogisticsSettingsScreen = ({navigation, route}) => {
           <Text style={{color: 'white', fontWeight: 'bold'}}>Save</Text>
         </TouchableOpacity>
       </View>*/}
-    </ScrollView>
+      </ScrollView>
     </SafeAreaView>
   );
 };
 
 export default LogisticsSettingsScreen;
-
-const styles = StyleSheet.create({
-  logisticsSettingsContainer: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-  button: {
-    marginBottom: '10%',
-    height: 35,
-    borderRadius: 10,
-    marginTop: '10%',
-    width: '25%',
-    alignSelf: 'center',
-    backgroundColor: 'black',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

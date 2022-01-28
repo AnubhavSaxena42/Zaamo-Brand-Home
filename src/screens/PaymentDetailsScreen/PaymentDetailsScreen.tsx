@@ -3,7 +3,6 @@ import {useMutation} from '@apollo/client';
 import {BANK_ACCOUNT_CREATE, BRAND_UPI_ID_CREATE} from './mutations';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {
-  StyleSheet,
   ScrollView,
   Text,
   View,
@@ -12,12 +11,12 @@ import {
   SafeAreaView,
   TextInput,
   Animated,
-  Dimensions,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import toastService from '../../services/toast-service';
-const windowWidth = Dimensions.get('window').width;
+import {styles} from './styles';
+
 const PaymentDetailsScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
   const [isViewing, setIsViewing] = useState(1);
@@ -173,53 +172,20 @@ const PaymentDetailsScreen = ({navigation, route}) => {
   };
   return (
     <SafeAreaView style={styles.paymentDetailsContainer}>
-      <View style={{alignItems: 'center'}}>
+      <View style={styles.paymentDetailsSwitchTabContainer}>
         <Image
           source={require('../../assets/images/DashboardEllipse.png')}
-          style={{
-            height: 400,
-            width: windowWidth,
-            zIndex: 1,
-            position: 'absolute',
-            top: -300,
-          }}
+          style={styles.backgroundImage}
         />
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          style={{zIndex: 2, marginTop: '6%', position: 'absolute', left: 10}}>
+          style={styles.backButton}>
           <Ionicons name="arrow-back-sharp" color={'white'} size={35} />
         </TouchableOpacity>
 
-        <Text
-          style={{
-            color: 'white',
-            zIndex: 2,
-            marginTop: '7%',
-            fontSize: 22,
-            paddingHorizontal: '10%',
-            textAlign: 'center',
-            fontFamily: 'Roboto-Bold',
-          }}>
-          Payment Details
-        </Text>
+        <Text style={styles.paymentDetailsHeaderText}>Payment Details</Text>
       </View>
-      <View
-        style={{
-          width: '90%',
-          height: 40,
-          borderRadius: 5,
-          marginTop: '15%',
-          flexDirection: 'row',
-          alignSelf: 'center',
-          marginBottom: '3%',
-          position: 'relative',
-          shadowColor: '#000',
-          shadowOffset: {width: 0, height: 0},
-          shadowOpacity: 0.4,
-          shadowRadius: 2,
-          elevation: 3,
-          backgroundColor: 'white',
-        }}>
+      <View style={styles.paymentDetailsSwitchTab}>
         <Animated.View
           style={{
             position: 'absolute',
@@ -238,13 +204,7 @@ const PaymentDetailsScreen = ({navigation, route}) => {
             handleSlide(xTabOne);
           }}
           onLayout={event => setXTabOne(event.nativeEvent.layout.x)}
-          style={{
-            width: '50%',
-            height: '100%',
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: 5,
-          }}>
+          style={styles.paymentDetailsUPITab}>
           <Text style={{color: isViewing === 1 ? 'white' : 'black'}}>
             UPI ID
           </Text>
@@ -255,26 +215,15 @@ const PaymentDetailsScreen = ({navigation, route}) => {
             handleSlide(xTabTwo);
           }}
           onLayout={event => setXTabTwo(event.nativeEvent.layout.x)}
-          style={{
-            width: '50%',
-            height: '100%',
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: 5,
-          }}>
+          style={styles.paymentDetailsBankDetailsTab}>
           <Text style={{color: isViewing === 2 ? 'white' : 'black'}}>
             Bank Details
           </Text>
         </TouchableOpacity>
       </View>
       {isViewing === 1 && (
-        <ScrollView
-          style={{
-            paddingHorizontal: '5%',
-            height: '100%',
-            width: '100%',
-          }}>
-          <Text style={{marginVertical: '1%', color: 'gray'}}>
+        <ScrollView style={styles.paymentDetailsUPIFormContainer}>
+          <Text style={styles.paymentDetailsLabelText}>
             Account Holder Name
           </Text>
           <TextInput
@@ -284,7 +233,7 @@ const PaymentDetailsScreen = ({navigation, route}) => {
             placeholder={'Enter Account Holder Name'}
           />
           {accountHolderNameError && <ErrorMessage />}
-          <Text style={{marginVertical: '1%', color: 'gray'}}>UPI ID</Text>
+          <Text style={styles.paymentDetailsLabelText}>UPI ID</Text>
           <TextInput
             value={upiId}
             onChangeText={text => setUpiId(text)}
@@ -292,7 +241,7 @@ const PaymentDetailsScreen = ({navigation, route}) => {
             placeholder={'Enter UPI ID'}
           />
           {upiIdError && <ErrorMessage />}
-          <Text style={{marginVertical: '1%', color: 'gray'}}>Address</Text>
+          <Text style={styles.paymentDetailsLabelText}>Address</Text>
           <TextInput
             value={address}
             onChangeText={text => setAddress(text)}
@@ -300,7 +249,7 @@ const PaymentDetailsScreen = ({navigation, route}) => {
             placeholder={'Enter your Address'}
           />
           {addressError && <ErrorMessage />}
-          <Text style={{marginVertical: '1%', color: 'gray'}}>Email</Text>
+          <Text style={styles.paymentDetailsLabelText}>Email</Text>
           <TextInput
             value={email}
             onChangeText={text => setEmail(text)}
@@ -308,7 +257,7 @@ const PaymentDetailsScreen = ({navigation, route}) => {
             placeholder={'Enter your Email'}
           />
           {emailError && <ErrorMessage />}
-          <Text style={{marginVertical: '1%', color: 'gray'}}>PAN Number</Text>
+          <Text style={styles.paymentDetailsLabelText}>PAN Number</Text>
           <TextInput
             value={panNumber}
             onChangeText={text => setPanNumber(text)}
@@ -316,18 +265,13 @@ const PaymentDetailsScreen = ({navigation, route}) => {
             placeholder={'Enter your PAN Number'}
           />
           {panNumberError && <ErrorMessage />}
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: '100%',
-            }}>
+          <View style={styles.buttonContainer}>
             <TouchableOpacity
               onPress={() => {
                 onUpiCreate();
               }}
               style={styles.button}>
-              <Text style={{color: 'white', fontWeight: 'bold'}}>Save</Text>
+              <Text style={styles.buttonText}>Save</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -339,7 +283,7 @@ const PaymentDetailsScreen = ({navigation, route}) => {
             height: '100%',
             width: '100%',
           }}>
-          <Text style={{marginVertical: '1%', color: 'gray'}}>
+          <Text style={styles.paymentDetailsLabelText}>
             Account Holder Name
           </Text>
           <TextInput
@@ -349,7 +293,7 @@ const PaymentDetailsScreen = ({navigation, route}) => {
             placeholder={'Enter Account Holder Name'}
           />
           {accountHolderNameError && <ErrorMessage />}
-          <Text style={{marginVertical: '1%', color: 'gray'}}>
+          <Text style={styles.paymentDetailsLabelText}>
             Bank Account Number
           </Text>
           <TextInput
@@ -403,18 +347,13 @@ const PaymentDetailsScreen = ({navigation, route}) => {
             placeholder={'Enter Your PAN Number'}
           />
           {panNumberError && <ErrorMessage />}
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: '100%',
-            }}>
+          <View style={styles.buttonContainer}>
             <TouchableOpacity
               onPress={() => {
                 onBankCreate();
               }}
               style={styles.button}>
-              <Text style={{color: 'white', fontWeight: 'bold'}}>Save</Text>
+              <Text style={styles.buttonText}>Save</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -424,35 +363,3 @@ const PaymentDetailsScreen = ({navigation, route}) => {
 };
 
 export default PaymentDetailsScreen;
-
-const styles = StyleSheet.create({
-  paymentDetailsContainer: {
-    flex: 1,
-  },
-  button: {
-    marginBottom: '10%',
-    height: 35,
-    borderRadius: 10,
-    marginTop: '10%',
-    width: '25%',
-    alignSelf: 'center',
-    backgroundColor: 'black',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  inputStyle:{
-    width: '100%',
-    color: 'black',
-    borderBottomWidth: 1,
-    borderColor: 'black',
-    paddingVertical: '3%',
-    marginBottom:15
-    },
-  errorMessageContainer: {
-    marginTop: '1%',
-  },
-  errorMessageText: {
-    fontSize: 12,
-    color: 'red',
-  },
-});

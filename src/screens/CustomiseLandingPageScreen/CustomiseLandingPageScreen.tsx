@@ -10,12 +10,13 @@ import {
 } from 'react-native';
 import AnimatedLottieView from 'lottie-react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {styles} from './styles';
 const CustomiseLandingPageScreen = ({navigation}) => {
   return (
     <SafeAreaView style={styles.customiseLandingPageContainer}>
       <TouchableOpacity
         onPress={() => navigation.goBack()}
-        style={{zIndex: 2, top: 40, position: 'absolute', left: 10}}>
+        style={styles.backButton}>
         <Ionicons name="arrow-back-sharp" color={'black'} size={35} />
       </TouchableOpacity>
       <AnimatedLottieView
@@ -29,15 +30,3 @@ const CustomiseLandingPageScreen = ({navigation}) => {
 };
 
 export default CustomiseLandingPageScreen;
-
-const styles = StyleSheet.create({
-  customiseLandingPageContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
-  },
-  comingSoonStyle: {
-    height: 160,
-  },
-});

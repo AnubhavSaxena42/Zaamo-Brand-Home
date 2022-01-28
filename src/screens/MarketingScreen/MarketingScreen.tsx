@@ -1,22 +1,12 @@
 import React, {useState, useMemo, useEffect} from 'react';
-import {
-  StyleSheet,
-  FlatList,
-  ActivityIndicator,
-  ScrollView,
-  SafeAreaView,
-  Text,
-  View,
-  Image,
-} from 'react-native';
+import {FlatList, SafeAreaView, Text, View, Image} from 'react-native';
 import {BarIndicator} from 'react-native-indicators';
 import {tailwind} from '../../core/tailwind';
-
 import Coupon from '../../components/Coupon/Coupon';
 import Header from '../../components/Header';
-import {useSelector, useDispatch} from 'react-redux';
 import {useQuery, NetworkStatus} from '@apollo/client';
 import {GET_COUPONS} from '../DashboardScreen/queries';
+import {styles} from './styles';
 const MarketingScreen = ({navigation}) => {
   const couponResponse = useQuery(GET_COUPONS, {
     variables: {
@@ -59,7 +49,6 @@ const MarketingScreen = ({navigation}) => {
   const memoizedVoucher = useMemo(() => _renderItem, [vouchers]);
 
   return (
-    
     <SafeAreaView style={styles.marketingContainer}>
       <Header
         tag={'Marketing'}
@@ -67,9 +56,6 @@ const MarketingScreen = ({navigation}) => {
         icon={true}
         onPress={() => navigation.navigate('CreateCouponScreen')}
       />
-      {/*{vouchers.map(coupon => (
-        <Coupon key={coupon.id} navigation={navigation} coupon={coupon} />
-      ))}*/}
       <FlatList
         data={vouchers}
         onEndReached={handleOnEndReached}
@@ -133,10 +119,3 @@ const MarketingScreen = ({navigation}) => {
 };
 
 export default MarketingScreen;
-
-const styles = StyleSheet.create({
-  marketingContainer: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-});

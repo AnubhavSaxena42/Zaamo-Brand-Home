@@ -15,7 +15,7 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AnimatedLottieView from 'lottie-react-native';
 import toastService from '../../services/toast-service';
-const windowWidth = Dimensions.get('window').width;
+import {styles} from './styles';
 const RegisterAsCompanyScreen = ({navigation, route}) => {
   const onPANUpload = () => {
     launchImageLibrary({}, res => {
@@ -38,46 +38,30 @@ const RegisterAsCompanyScreen = ({navigation, route}) => {
     });
   };
   return (
-    <SafeAreaView style={{flex:1}}>
-    <ScrollView contentContainerStyle={styles.registerAsCompanyContainer}>
-      <View style={{alignItems: 'center'}}>
-        <Image
-          source={require('../../assets/images/DashboardEllipse.png')}
-          style={{
-            height: 400,
-            width: windowWidth,
-            zIndex: 1,
-            position: 'absolute',
-            top: -300,
-          }}
-        />
-        <Text
-          style={{
-            color: 'white',
-            zIndex: 2,
-            marginTop: '7%',
-            fontSize: 22,
-            paddingHorizontal: '10%',
-            textAlign: 'center',
-            fontFamily: 'Roboto-Bold',
-          }}>
-          Register as a Company
-        </Text>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={{zIndex: 2, marginTop: '6%', position: 'absolute', left: 10}}>
-          <Ionicons name="arrow-back-sharp" color={'white'} size={35} />
-        </TouchableOpacity>
-      </View>
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <AnimatedLottieView
-          source={require('../../assets/animations/coming-soon.json')}
-          style={{height: 160}}
-          loop
-          autoPlay
-        />
-      </View>
-      {/*<View
+    <SafeAreaView style={styles.registerAsCompanyContainer}>
+      <ScrollView contentContainerStyle={styles.registerAsCompanyContainer}>
+        <View style={styles.registerAsCompanyHeaderContainer}>
+          <Image
+            source={require('../../assets/images/DashboardEllipse.png')}
+            style={styles.backgroundImage}
+          />
+          <Text style={styles.headerText}>Register as a Company</Text>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.backButton}>
+            <Ionicons name="arrow-back-sharp" color={'white'} size={35} />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.animationContainer}>
+          <AnimatedLottieView
+            source={require('../../assets/animations/coming-soon.json')}
+            style={styles.animation}
+            loop
+            autoPlay
+          />
+        </View>
+        {/* DO NOT DELETE JSX BELOW */}
+        {/*<View
         style={{
           paddingHorizontal: '5%',
           height: '90%',
@@ -195,27 +179,9 @@ const RegisterAsCompanyScreen = ({navigation, route}) => {
           <Text style={{color: 'white', fontWeight: 'bold'}}>Save</Text>
         </TouchableOpacity>
       </View>*/}
-    </ScrollView>
+      </ScrollView>
     </SafeAreaView>
   );
 };
 
 export default RegisterAsCompanyScreen;
-
-const styles = StyleSheet.create({
-  registerAsCompanyContainer: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-  button: {
-    marginBottom: '10%',
-    height: 35,
-    borderRadius: 10,
-    marginTop: '10%',
-    width: '25%',
-    alignSelf: 'center',
-    backgroundColor: 'black',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

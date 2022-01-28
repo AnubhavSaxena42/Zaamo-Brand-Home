@@ -5,11 +5,10 @@ import {
   Animated,
   Image,
   Dimensions,
-  TextInput,
-  FlatList,
   Pressable,
   View,
 } from 'react-native';
+import {styles} from './styles';
 const {width, height} = Dimensions.get('screen');
 const DATA = [
   {
@@ -118,7 +117,7 @@ const Square = ({scrollX}) => {
 const BrandHomeOnboardingScreen = ({navigation}) => {
   const scrollX = React.useRef(new Animated.Value(0)).current;
   return (
-    <View style={{flex: 1, alignItems: 'center'}}>
+    <View style={styles.BrandHomeOnboardingScreenContainer}>
       <Backdrop scrollX={scrollX} />
       <Square scrollX={scrollX} />
       <Animated.FlatList
@@ -135,37 +134,13 @@ const BrandHomeOnboardingScreen = ({navigation}) => {
         showsHorizontalScrollIndicator={false}
         renderItem={({item}) => {
           return (
-            <View style={{width, alignItems: 'center', padding: 20}}>
-              <View
-                style={{flex: 0.7, justifyContent: 'center', marginBottom: 10}}>
-                <Image
-                  source={item.image}
-                  style={{
-                    width: width / 3,
-                    height: height / 3,
-                    resizeMode: 'contain',
-                  }}
-                />
+            <View style={styles.carouselItem}>
+              <View style={styles.imageContainer}>
+                <Image source={item.image} style={styles.imageStyle} />
               </View>
-              <View style={{flex: 0.3}}>
-                <Text
-                  style={{
-                    fontWeight: '800',
-                    fontSize: 24,
-                    marginBottom: 10,
-                    color: 'white',
-                    textAlign: 'center',
-                  }}>
-                  {item.title}
-                </Text>
-                <Text
-                  style={{
-                    fontWeight: '300',
-                    color: 'white',
-                    textAlign: 'center',
-                  }}>
-                  {item.description}
-                </Text>
+              <View style={styles.textContainer}>
+                <Text style={styles.titleText}>{item.title}</Text>
+                <Text style={styles.descriptionText}>{item.description}</Text>
               </View>
             </View>
           );
@@ -174,23 +149,11 @@ const BrandHomeOnboardingScreen = ({navigation}) => {
       <Indicator scrollX={scrollX} />
       <Pressable
         onPress={() => navigation.navigate('MobileOTPScreen')}
-        style={{
-          height: 40,
-          width: '25%',
-          borderRadius: 10,
-          backgroundColor: 'white',
-          position: 'absolute',
-          bottom: 100,
-          justifyContent: 'center',
-          alignItems: 'center',
-          elevation: 3,
-        }}>
-        <Text style={{color: 'black', fontSize: 16}}>Continue</Text>
+        style={styles.continueButton}>
+        <Text style={styles.continueButtonText}>Continue</Text>
       </Pressable>
     </View>
   );
 };
-
-const styles = StyleSheet.create({});
 
 export default BrandHomeOnboardingScreen;

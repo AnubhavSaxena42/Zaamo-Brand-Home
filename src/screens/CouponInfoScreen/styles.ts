@@ -1,0 +1,102 @@
+import {StyleSheet, Dimensions} from 'react-native';
+const {width, height} = Dimensions.get('screen');
+
+export const styles = StyleSheet.create({
+  couponInfoContainer: {
+    flex: 1,
+  },
+  couponInfoScrollViewContainer: {
+    flexGrow: 1,
+    paddingBottom: 200,
+  },
+  backgroundImageStyle: {
+    height: 400,
+    width: width,
+    zIndex: 1,
+    position: 'absolute',
+    top: -80,
+  },
+  couponInfoHeaderContainer: {
+    flexDirection: 'row',
+    marginTop: '5%',
+    marginBottom: '8%',
+    alignItems: 'center',
+    paddingLeft: '2%',
+    justifyContent: 'center',
+    zIndex: 2,
+  },
+  backButton: {
+    zIndex: 2,
+    position: 'absolute',
+    left: 10,
+  },
+  couponInfoHeaderText: {
+    color: 'white',
+    zIndex: 2,
+    fontFamily: 'Roboto-Bold',
+    fontSize: 22,
+    paddingHorizontal: '5%',
+  },
+  couponDescriptionContainer: {
+    paddingVertical: '4%',
+    borderRadius: 10,
+    alignSelf: 'center',
+    marginTop: '4%',
+    backgroundColor: 'white',
+    width: '90%',
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
+    elevation: 5,
+  },
+  couponDescriptionHeaderText: {
+    textAlign: 'center',
+    color: 'gray',
+    marginVertical: '2%',
+    fontFamily: 'Roboto-Black',
+    fontSize: 14,
+  },
+  couponDescriptionText: {
+    textAlign: 'center',
+    color: 'black',
+    marginVertical: '1%',
+    fontSize: 14,
+  },
+  couponApplicableProductsContainer: {
+    paddingVertical: '4%',
+    borderRadius: 10,
+    alignSelf: 'center',
+    marginTop: '4%',
+    paddingHorizontal: '5%',
+    backgroundColor: 'white',
+    width: '90%',
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
+    elevation: 5,
+  },
+  couponApplicableProductsHeaderText: {
+    fontFamily: 'Roboto-Black',
+    color: 'gray',
+    fontSize: 14,
+  },
+  applicableProductContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: '2%',
+  },
+  applicableProductImage: {
+    height: 50,
+    width: 50,
+    borderRadius: 5,
+    marginRight: '4%',
+    overflow: 'hidden',
+  },
+  applicableProductName: {
+    flex: 1,
+    color: 'black',
+  },
+});

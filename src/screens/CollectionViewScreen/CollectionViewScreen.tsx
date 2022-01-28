@@ -171,47 +171,6 @@ const CollectionViewScreen = ({navigation, route}) => {
           {collection.name}
         </Text>
       </View>
-      {/*<Image
-        style={styles.imageStyle}
-        source={
-          collection.imageUrl !== ''
-            ? {uri: collection.imageUrl}
-            : require('../../assets/images/smugcat.jpg')
-        }
-      />*/}
-      {/*<ScrollView
-        contentContainerStyle={{
-          width: '100%',
-          flexDirection: 'row',
-          justifyContent: 'space-around',
-          flexWrap: 'wrap',
-          paddingBottom: 40,
-        }}>
-        {selectedCollection &&
-          selectedCollection.products?.map(({node}) => {
-            const product = {
-              brandName: node.brand.brandName,
-              id: node.id,
-              name: node.name,
-              images: node.images,
-              thumbnail: node.thumbnail
-                ? node.thumbnail.url
-                : 'https://media-exp1.licdn.com/dms/image/C4E0BAQGymyKm7OE3wg/company-logo_200_200/0/1636442519943?e=2159024400&v=beta&t=19hHu3puobGsregS0-31D-KiANWe3NqrKZESktzQC30',
-              price: node.pricing.priceRange
-                ? node.pricing.priceRange.start.net.amount
-                : 0,
-            };
-            return (
-              <ProductCard
-                navigation={navigation}
-                key={product.id}
-                inCollectionView={true}
-                product={product}
-                setProductIdToRemove={setProductIdToRemove}
-              />
-            );
-          })}
-      </ScrollView>*/}
       <FlatList
         data={collectionProducts}
         onEndReached={handleOnEndReached}

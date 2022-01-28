@@ -1,0 +1,106 @@
+import {StyleSheet, Dimensions} from 'react-native';
+const {width, height} = Dimensions.get('screen');
+export const styles = StyleSheet.create({
+  paymentDetailsContainer: {
+    flex: 1,
+  },
+  paymentDetailsSwitchTabContainer: {
+    alignItems: 'center',
+  },
+  backgroundImage: {
+    height: 400,
+    width: width,
+    zIndex: 1,
+    position: 'absolute',
+    top: -300,
+  },
+  backButton: {
+    zIndex: 2,
+    marginTop: '6%',
+    position: 'absolute',
+    left: 10,
+  },
+  paymentDetailsHeaderText: {
+    color: 'white',
+    zIndex: 2,
+    marginTop: '7%',
+    fontSize: 22,
+    paddingHorizontal: '10%',
+    textAlign: 'center',
+    fontFamily: 'Roboto-Bold',
+  },
+  paymentDetailsSwitchTab: {
+    width: '90%',
+    height: 40,
+    borderRadius: 5,
+    marginTop: '15%',
+    flexDirection: 'row',
+    alignSelf: 'center',
+    marginBottom: '3%',
+    position: 'relative',
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 0},
+    shadowOpacity: 0.4,
+    shadowRadius: 2,
+    elevation: 3,
+    backgroundColor: 'white',
+  },
+  paymentDetailsUPITab: {
+    width: '50%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+  },
+  paymentDetailsBankDetailsTab: {
+    width: '50%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+  },
+  paymentDetailsUPIFormContainer: {
+    paddingHorizontal: '5%',
+    height: '100%',
+    width: '100%',
+  },
+  paymentDetailsLabelText: {
+    marginVertical: '1%',
+    color: 'gray',
+  },
+  buttonContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
+  button: {
+    marginBottom: '10%',
+    height: 35,
+    borderRadius: 10,
+    marginTop: '10%',
+    width: '25%',
+    alignSelf: 'center',
+    backgroundColor: 'black',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  inputStyle: {
+    width: '100%',
+    color: 'black',
+    borderBottomWidth: 1,
+    borderColor: 'black',
+    paddingVertical: '3%',
+    marginBottom: 15,
+  },
+  errorMessageContainer: {
+    marginTop: '1%',
+  },
+  errorMessageText: {
+    fontSize: 12,
+    color: 'red',
+  },
+});

@@ -18,6 +18,7 @@ import CongratulationsSVG from './Congratulations';
 import toastService from '../../services/toast-service';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import {request, PERMISSIONS, openSettings} from 'react-native-permissions';
+import {styles} from './styles';
 const LoginSuccessScreen = ({navigation, route}) => {
   console.log('Route mobile number:', route.params.mobileNumber);
   const [createToken, {data, loading, error}] = useMutation(TOKEN_CREATE, {
@@ -161,41 +162,6 @@ const LoginSuccessScreen = ({navigation, route}) => {
     setTimeout(createToken, 2000);
   }, []);
   useEffect(() => {
-    /*if (data && data.tokenCreate.user.isActive) {
-      console.log('in token create');
-      dispatch(setUser(data.tokenCreate.user));
-      dispatch(setToken(data.tokenCreate.token));
-      saveItemToStorage('User', JSON.stringify(data.tokenCreate.user));
-      authService
-        .getStoreId(data.tokenCreate.user.userId)
-        .then(store => {
-          console.log(store);
-          saveItemToStorage('Store-ID', store.store_id.toString());
-        })
-        .catch(err => console.log(err));
-      saveItemToStorage('Token', data.tokenCreate.token)
-        .then(res => console.log('Token Stored:', res))
-        .catch(err => console.log('Error storing token:', err));
-      navigation.navigate('StoreStack');
-    } else {
-      if (data && data.tokenCreate) {
-        console.log('in register');
-        dispatch(setUser(data.tokenCreate.user));
-        dispatch(setToken(data.tokenCreate.token));
-        saveItemToStorage('User', JSON.stringify(data.tokenCreate.user));
-        authService
-          .getStoreId(data.tokenCreate.user.userId)
-          .then(store => {
-            console.log(store);
-            saveItemToStorage('Store-ID', store.store_id.toString());
-          })
-          .catch(err => console.log(err));
-        saveItemToStorage('Token', data.tokenCreate.token)
-          .then(res => console.log('Token Stored:', res))
-          .catch(err => console.log('Error storing token:', err));
-        userRegister();
-      }
-    }*/
     handleLogin();
   }, [data]);
   useEffect(() => {
@@ -215,53 +181,14 @@ const LoginSuccessScreen = ({navigation, route}) => {
         style={styles.congratulations}
         loop={false}
       />
-      <Text
-        style={{
-          fontSize: 24,
-          marginBottom: '2%',
-          color: 'black',
-          fontWeight: '600',
-          fontFamily: 'Roboto-Bold',
-        }}>
-        Congratulations
-      </Text>
-      <Text
-        style={{fontSize: 14, marginBottom: '20%', color: 'rgba(0,0,0,0.5)'}}>
-        You have succesfully signed in
-      </Text>
-      <Text style={{fontSize: 16, color: 'rgba(0,0,0,0.5)'}}>
+      <Text style={styles.congratulationsText}>Congratulations</Text>
+      <Text style={styles.signInText}>You have succesfully signed in</Text>
+      <Text style={styles.signInBottomText}>
         The Zaamo team will reach out to you shortly to
       </Text>
-      <Text style={{fontSize: 16, color: 'rgba(0,0,0,0.5)'}}>
-        activate your account
-      </Text>
+      <Text style={styles.signInBottomText}>activate your account</Text>
     </View>
   );
 };
 
 export default LoginSuccessScreen;
-
-const styles = StyleSheet.create({
-  loginSuccessContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  imageStyle: {
-    width: '50%',
-    height: 200,
-    marginBottom: '10%',
-  },
-  button: {
-    marginTop: '10%',
-    height: '8%',
-    borderRadius: 10,
-    width: '80%',
-    backgroundColor: 'black',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  congratulations: {
-    height: 200,
-  },
-});

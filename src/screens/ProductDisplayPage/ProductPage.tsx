@@ -1,37 +1,32 @@
 import React, {useState, useMemo, useRef, useCallback, useEffect} from 'react';
 import {
-  StyleSheet,
   Text,
-  ScrollView,
   View,
   Dimensions,
   Image,
   SafeAreaView,
   TouchableOpacity,
   Animated,
-  ImageBackground,
-  FlatList,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import BottomSheet, {
+import {
   BottomSheetModalProvider,
   BottomSheetModal,
   BottomSheetScrollView,
 } from '@gorhom/bottom-sheet';
+import {styles} from './styles';
+const {width, height} = Dimensions.get('window');
+const imageW = width * 0.9;
+const imageH = imageW * 1.2;
 const ProductPage = ({navigation, route}) => {
   const {product} = route.params;
   console.log('Product:', product);
-  const {width, height} = Dimensions.get('window');
   const [activeIndex, setActiveIndex] = useState(0);
-  // ref
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-
-  // variables
   const snapPoints = useMemo(() => ['12%', '75%'], []);
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
-  // callbacks
   useEffect(() => {
     handlePresentModalPress();
   }, [bottomSheetModalRef.current]);
@@ -41,8 +36,6 @@ const ProductPage = ({navigation, route}) => {
     if (index === 0) return height;
     else return height * index;
   });
-  const imageW = width * 0.9;
-  const imageH = imageW * 1.2;
   const scrollY = React.useRef(new Animated.Value(0)).current;
   const handleScroll = event => {
     const positionY = event.nativeEvent.contentOffset.y;
@@ -56,33 +49,12 @@ const ProductPage = ({navigation, route}) => {
         <View>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
-            style={{
-              position: 'absolute',
-              backgroundColor: 'white',
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: 40,
-              shadowColor: '#000',
-              shadowOffset: {width: 0, height: 0},
-              shadowOpacity: 0.2,
-              shadowRadius: 2,
-              zIndex: 2,
-              height: 40,
-              borderRadius: 10,
-              left: 10,
-              top: 10,
-            }}>
+            style={styles.backButton}>
             <Ionicons name="arrow-back-sharp" color={'black'} size={30} />
           </TouchableOpacity>
 
           {data.length !== 1 && (
-            <View
-              style={{
-                position: 'absolute',
-                right: '3%',
-                top: '35%',
-                zIndex: 2,
-              }}>
+            <View style={styles.paginationDotsContainer}>
               {data.map((item, index) => {
                 return (
                   <View
@@ -142,20 +114,10 @@ const ProductPage = ({navigation, route}) => {
             keyExtractor={(item, index) => index.toString()}
             renderItem={({item, index}) => {
               return (
-                <View
-                  style={{
-                    height: height,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
+                <View style={styles.carouselItemContainer}>
                   <Image
                     source={{uri: item}}
-                    style={{
-                      marginBottom: '25%',
-                      width: width,
-                      height: imageH,
-                      resizeMode: 'cover',
-                    }}
+                    style={styles.carouselImageStyle}
                   />
                 </View>
               );
@@ -165,86 +127,33 @@ const ProductPage = ({navigation, route}) => {
         <BottomSheetModal
           ref={bottomSheetModalRef}
           index={0}
-          style={{zIndex: 5, elevation: 5}}
           snapPoints={snapPoints}
           enablePanDownToClose={false}
-          handleStyle={{backgroundColor: 'white', borderRadius: 100, zIndex: 5}}
+          handleStyle={styles.bottomSheetHandleStyle}
           onChange={handleSheetChanges}>
           <BottomSheetScrollView style={styles.contentContainer}>
             <View style={styles.productOverview}>
-              <View style={{maxWidth: '75%'}}>
-                <Text
-                  style={{
-                    fontSize: 20,
-                    letterSpacing: 1,
-                    maxWidth: '100%',
-                    fontWeight: '400',
-                    color: 'black',
-                  }}>
-                  {product.brandName}
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 14,
-                    maxWidth: '100%',
-                    fontWeight: '400',
-                    color: 'black',
-                  }}>
-                  {product.name}
-                </Text>
+              <View style={styles.bottomSheetHeadingContainer}>
+                <Text style={styles.brandNameText}>{product.brandName}</Text>
+                <Text style={styles.productNameText}>{product.name}</Text>
               </View>
               <View>
-                <Text
-                  style={{
-                    fontSize: 20,
-                    fontWeight: 'bold',
-                    color: 'black',
-                  }}>
-                  ₹{product.price}
-                </Text>
+                <Text style={styles.productPriceText}>₹{product.price}</Text>
               </View>
             </View>
-            <View style={{paddingHorizontal: '3%', marginTop: '2%'}}>
-              <Text style={{color: 'black', fontSize: 16}}>
-                Sizes Available
-              </Text>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  marginVertical: '2%',
-                  width: '100%',
-                  flexWrap: 'wrap',
-                }}>
+            <View style={styles.productDetailsContainer}>
+              <Text style={styles.productDetailsLabel}>Sizes Available</Text>
+              <View style={styles.variantsContainer}>
                 {product.variants?.map(variant => (
-                  <View
-                    style={{
-                      marginRight: '5%',
-                      marginBottom: '2%',
-                      backgroundColor: 'white',
-                      borderWidth: 1,
-                      borderRadius: 5,
-                      shadowColor: '#000',
-                      shadowOffset: {width: 0, height: 0},
-                      shadowOpacity: 0.2,
-                      shadowRadius: 1,
-                      elevation: 1,
-                      borderColor: 'rgba(0,0,0,0.3)',
-                      paddingVertical: '1%',
-                      maxWidth: 100,
-                      paddingHorizontal: '2%',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <Text style={{color: 'black', fontSize: 14}}>
-                      {variant.name}
-                    </Text>
+                  <View style={styles.variantBox}>
+                    <Text style={styles.variantNameText}>{variant.name}</Text>
                   </View>
                 ))}
               </View>
-              <Text style={{color: 'black', fontSize: 16}}>
+              <Text style={styles.productDetailsLabel}>
                 Product Description
               </Text>
-              <Text style={{color: 'gray', fontSize: 14}}>
+              <Text style={styles.productDescriptionText}>
                 {product.description}
               </Text>
             </View>
@@ -256,49 +165,3 @@ const ProductPage = ({navigation, route}) => {
 };
 
 export default ProductPage;
-
-const styles = StyleSheet.create({
-  productPageContainer: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-  productOverview: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: '3%',
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    borderColor: 'rgba(0,0,0,0.1)',
-    paddingBottom: '5%',
-  },
-  contentContainer: {
-    flex: 1,
-    zIndex: 2,
-    elevation: 1,
-    backgroundColor: 'white',
-  },
-  wrapper: {},
-  slide1: {
-    flex: 1,
-    alignSelf: 'center',
-    width: '80%',
-    height: 300,
-  },
-  slide2: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#97CAE5',
-  },
-  slide3: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#92BBD9',
-  },
-  text: {
-    color: '#fff',
-    fontSize: 30,
-    fontWeight: 'bold',
-  },
-});

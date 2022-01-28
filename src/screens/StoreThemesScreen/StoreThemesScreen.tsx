@@ -13,51 +13,34 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import ThemeSelector from '../../components/ThemeSelector/ThemeSelector';
 import toastService from '../../services/toast-service';
 import AnimatedLottieView from 'lottie-react-native';
+import {styles} from './styles';
 const windowWidth = Dimensions.get('window').width;
 const StoreThemesScreen = ({navigation, route}) => {
   return (
     <SafeAreaView style={styles.storeThemesContainer}>
-    <ScrollView contentContainerStyle={{flex:1}}>
-      <View style={{alignItems: 'center'}}>
-        <Image
-          source={require('../../assets/images/DashboardEllipse.png')}
-          style={{
-            height: 400,
-            width: windowWidth,
-            zIndex: 1,
-            position: 'absolute',
-            top: -300,
-          }}
-        />
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={{zIndex: 2, marginTop: '6%', position: 'absolute', left: 10}}>
-          <Ionicons name="arrow-back-sharp" color={'white'} size={35} />
-        </TouchableOpacity>
-        <Text
-          style={{
-            color: 'white',
-            zIndex: 2,
-            marginTop: '7%',
-            fontSize: 22,
-            paddingHorizontal: '10%',
-            textAlign: 'center',
-            fontWeight: '500',
-            fontFamily: 'Roboto-Bold',
-          }}>
-          Store Themes
-        </Text>
-      </View>
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <AnimatedLottieView
-          source={require('../../assets/animations/coming-soon.json')}
-          style={{height: 160}}
-          loop
-          autoPlay
-        />
-      </View>
+      <ScrollView contentContainerStyle={styles.storeThemesScrollViewContainer}>
+        <View style={{alignItems: 'center'}}>
+          <Image
+            source={require('../../assets/images/DashboardEllipse.png')}
+            style={styles.backgroundImageStyle}
+          />
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.backButton}>
+            <Ionicons name="arrow-back-sharp" color={'white'} size={35} />
+          </TouchableOpacity>
+          <Text style={styles.storeThemesHeaderText}>Store Themes</Text>
+        </View>
+        <View style={styles.animationContainer}>
+          <AnimatedLottieView
+            source={require('../../assets/animations/coming-soon.json')}
+            style={styles.animation}
+            loop
+            autoPlay
+          />
+        </View>
 
-      {/*<View
+        {/*<View
         style={{
           marginTop: '15%',
           paddingHorizontal: '2%',
@@ -112,46 +95,9 @@ const StoreThemesScreen = ({navigation, route}) => {
           <Text style={{color: 'white', fontWeight: 'bold'}}>Save</Text>
         </TouchableOpacity>
       </View>*/}
-    </ScrollView>
+      </ScrollView>
     </SafeAreaView>
   );
 };
 
 export default StoreThemesScreen;
-
-const styles = StyleSheet.create({
-  storeThemesContainer: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-  button: {
-    marginBottom: '10%',
-    height: 35,
-    borderRadius: 10,
-    marginTop: '10%',
-    width: '25%',
-    alignSelf: 'center',
-    backgroundColor: 'black',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  fontStyleText: {
-    marginTop: '1%',
-    padding: '1%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center',
-    fontSize: 14,
-    color: 'gray',
-
-    borderWidth: 1,
-    borderRadius: 4,
-    backgroundColor: 'white',
-    borderColor: 'rgba(0,0,0,0.2)',
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 1},
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    elevation: 5,
-  },
-});

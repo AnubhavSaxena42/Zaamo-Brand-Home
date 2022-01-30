@@ -1,0 +1,93 @@
+import {StyleSheet} from 'react-native';
+
+export const styles = StyleSheet.create({
+  couponContainer: {
+    width: '99%',
+    alignSelf: 'center',
+    backgroundColor: 'white',
+    height: 130,
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginVertical: '2%',
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 0},
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 5,
+  },
+  couponDiscountValueContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '30%',
+    borderBottomWidth: 0,
+    borderTopWidth: 0,
+    borderLeftWidth: 0,
+    borderRightWidth: 3,
+    borderRightColor: 'rgba(0,0,0,0.2)',
+    borderStyle: 'dashed',
+  },
+  couponDiscountValue: {
+    height: 80,
+    width: 80,
+    borderRadius: 40,
+    backgroundColor: 'black',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  couponDiscountValueText: {
+    paddingHorizontal: '15%',
+    color: 'white',
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  offText: {
+    textAlign: 'center',
+    color: 'white',
+    fontSize: 14,
+  },
+  couponInfoContainer: {
+    width: '60%',
+    height: '60%',
+    marginLeft: '5%',
+    justifyContent: 'space-around',
+  },
+  rowContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  couponNameText: {
+    fontSize: 14,
+    color: 'gray',
+    maxWidth: '50%',
+  },
+  couponValidityText: {
+    fontSize: 12,
+    color: '#3eb988',
+    fontWeight: '700',
+  },
+  couponCodeContainer: {
+    backgroundColor: '#ffeee8',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+    width: '65%',
+    paddingHorizontal: '2%',
+    height: 35,
+    borderRadius: 5,
+  },
+  couponCodeText: {
+    color: 'black',
+  },
+  viewButton: {
+    width: 70,
+    height: 25,
+    borderRadius: 5,
+    backgroundColor: 'black',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  couponEndDateText: {
+    color: 'gray',
+  },
+});

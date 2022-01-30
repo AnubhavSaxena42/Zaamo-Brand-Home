@@ -5,58 +5,33 @@ import {
   Dimensions,
   Text,
   View,
+  SafeAreaView,
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
 import InstaNotification from '../../components/InstaNotification/InstaNotification';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-const windowWidth = Dimensions.get('window').width;
+import {styles} from './styles';
 const InstaWorldScreen = ({navigation}) => {
   return (
-    <View style={styles.instaWorldContainer}>
-      <View style={{alignItems: 'center'}}>
+    <SafeAreaView style={styles.instaWorldContainer}>
+      <View style={styles.headerContainer}>
         <Image
           source={require('../../assets/images/DashboardEllipse.png')}
-          style={{
-            height: 400,
-            width: windowWidth,
-            zIndex: 1,
-            position: 'absolute',
-            top: -275,
-          }}
+          style={styles.backgroundImage}
         />
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          style={{zIndex: 2, position: 'absolute', left: 10, top: '15%'}}>
+          style={styles.backButton}>
           <Ionicons name="arrow-back-sharp" color={'white'} size={35} />
         </TouchableOpacity>
-        <Text
-          style={{
-            color: 'white',
-            zIndex: 2,
-            marginTop: '5%',
-            fontSize: 22,
-            paddingHorizontal: '10%',
-            textAlign: 'center',
-            fontFamily: 'Roboto-Bold',
-          }}>
-          Insta World
-        </Text>
-        <Text
-          style={{
-            color: 'white',
-            zIndex: 2,
-            marginTop: '2%',
-            fontSize: 16,
-            paddingHorizontal: '10%',
-            textAlign: 'center',
-            fontFamily: 'Roboto-Regular',
-          }}>
+        <Text style={styles.headerText}>Insta World</Text>
+        <Text style={styles.headerSubText}>
           Send your customers your customised price without letting your
           competitors know
         </Text>
       </View>
-      <ScrollView contentContainerStyle={{marginTop: '5%', paddingBottom: 15}}>
+      <ScrollView contentContainerStyle={styles.notificationsContainer}>
         <InstaNotification />
         <InstaNotification />
         <InstaNotification />
@@ -65,16 +40,8 @@ const InstaWorldScreen = ({navigation}) => {
         <InstaNotification />
         <InstaNotification />
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
 export default InstaWorldScreen;
-
-const styles = StyleSheet.create({
-  instaWorldContainer: {
-    height: '100%',
-    width: '100%',
-    backgroundColor: 'white',
-  },
-});

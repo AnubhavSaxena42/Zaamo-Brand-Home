@@ -13,6 +13,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import toastService from '../../services/toast-service';
 import {useDispatch, useSelector} from 'react-redux';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
+import {styles} from './styles';
 const ProductCard = ({
   product,
   navigation,
@@ -49,14 +50,8 @@ const ProductCard = ({
           style={styles.iconContainer}>
           <Entypo name="link" color={'rgba(0,0,0,0.6)'} size={15} />
         </TouchableOpacity>
-        <View
-          style={{
-            position: 'absolute',
-            width: '100%',
-            paddingHorizontal: '5%',
-            bottom: 10,
-          }}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <View style={styles.productInfoContainer}>
+          <View style={styles.row}>
             <Text
               numberOfLines={1}
               ellipsizeMode="tail"
@@ -65,7 +60,7 @@ const ProductCard = ({
             </Text>
             <Text style={styles.rowOneText}>₹{product.price}</Text>
           </View>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <View style={styles.row}>
             <Text
               numberOfLines={1}
               ellipsizeMode="tail"
@@ -85,21 +80,8 @@ const ProductCard = ({
         </View>
       </ImageBackground>
       {!inCollectionView && (
-        <View
-          style={{
-            flexDirection: 'row',
-            width: '100%',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            paddingHorizontal: '7%',
-            paddingVertical: '4%',
-          }}>
-          <Text
-            style={{
-              color: 'black',
-              fontSize: 12,
-              fontFamily: 'Roboto-Regular',
-            }}>
+        <View style={styles.inventoryInfoContainer}>
+          <Text style={styles.inventoryText}>
             Inventory:{' '}
             <Text
               style={{color: 'black', fontSize: 14, fontFamily: 'Roboto-Bold'}}>
@@ -112,57 +94,26 @@ const ProductCard = ({
               console.log('Product:', JSON.stringify(product));
               toastService.showToast('Feature in Development', true);
             }}
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: 'black',
-              paddingHorizontal: '4%',
-              paddingVertical: '2%',
-              borderRadius: 10,
-            }}>
-            <View style={{...styles.editIcon}}>
+            style={styles.editButton}>
+            <View style={styles.editIcon}>
               <Ionicons name="pencil" size={6} color={'black'} />
             </View>
-            <Text
-              style={{
-                color: 'white',
-                fontSize: 12,
-                fontFamily: 'Roboto-Regular',
-              }}>
-              Edit
-            </Text>
+            <Text style={styles.editButtonText}>Edit</Text>
           </TouchableOpacity>
         </View>
       )}
       {inCollectionView && (
-        <View
-          style={{
-            flexDirection: 'row',
-            width: '100%',
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingHorizontal: '5%',
-            paddingVertical: '4%',
-          }}>
+        <View style={styles.removeButtonContainer}>
           <TouchableOpacity
             activeOpacity={0}
             onPress={() => {
               setProductIdToRemove(product.id);
             }}
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: 'black',
-              paddingHorizontal: '5%',
-              paddingVertical: '2%',
-              borderRadius: 10,
-            }}>
+            style={styles.removeButton}>
             <View style={styles.editIcon}>
               <Entypo name="minus" size={5} color={'black'} />
             </View>
-            <Text style={{color: 'white'}}>Remove</Text>
+            <Text style={styles.removeButtonText}>Remove</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -171,62 +122,3 @@ const ProductCard = ({
 };
 
 export default ProductCard;
-
-const styles = StyleSheet.create({
-  productCardContainer: {
-    width: '48%',
-    borderWidth: 1,
-    borderColor: 'rgba(0,0,0,0.2)',
-    borderRadius: 15,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 1},
-    shadowOpacity: 0.5,
-    shadowRadius: 0.5,
-    elevation: 3,
-    backgroundColor: 'white',
-    marginVertical: '2%',
-  },
-  editIcon: {
-    height: 14,
-    width: 14,
-    borderRadius: 7,
-    marginRight: '3%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
-  },
-  rowOneText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    fontFamily: 'Roboto-Bold',
-    color: 'white',
-    textShadowColor: 'rgba(0,0,0,0.5)',
-    textShadowRadius: 0.3,
-    textShadowOffset: {width: 1, height: 1},
-  },
-  rowTwoText: {
-    fontSize: 12,
-    fontFamily: 'Roboto-Bold',
-    color: 'white',
-    textShadowColor: 'rgba(0,0,0,0.5)',
-    textShadowRadius: 0.3,
-    textShadowOffset: {width: 1, height: 1},
-  },
-  iconContainer: {
-    height: 30,
-    width: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 15,
-    backgroundColor: 'rgba(0,0,0,0.1)',
-    position: 'absolute',
-    top: 10,
-    right: 10,
-  },
-  imageStyle: {
-    height: 270,
-    width: '100%',
-    borderRadius: 15,
-    overflow: 'hidden',
-  },
-});

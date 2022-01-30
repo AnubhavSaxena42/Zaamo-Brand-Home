@@ -10,6 +10,7 @@ import {
   setToken,
   setUser,
 } from '../../redux/reducers/userReducer';
+import {styles} from './styles';
 const SplashScreen = ({navigation}) => {
   const dispatch = useDispatch();
 
@@ -77,15 +78,9 @@ const SplashScreen = ({navigation}) => {
   }, []);
 
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: 'black',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
+    <View style={styles.splashScreenContainer}>
       <Image
-        style={{height: 150, width: 150}}
+        style={styles.splashScreenImage}
         source={require('../../assets/images/zaamo.jpg')}
       />
     </View>
@@ -93,5 +88,3 @@ const SplashScreen = ({navigation}) => {
 };
 
 export default SplashScreen;
-
-const styles = StyleSheet.create({});

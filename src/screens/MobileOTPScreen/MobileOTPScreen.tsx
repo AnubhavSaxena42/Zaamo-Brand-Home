@@ -77,11 +77,11 @@ const MobileOTPScreen = ({navigation, route}) => {
             setErrorMessage(true);
             return;
           } else {
-            //console.log('in else block');
-            //navigation.navigate('VerifyOTPScreen', {
-            //  mobileNumber: mobileNumber,
-            //});
-            generateOtp();
+            console.log('in else block');
+            navigation.navigate('VerifyOTPScreen', {
+              mobileNumber: mobileNumber,
+            });
+            //generateOtp();
           }
         }}
         style={styles.button}>

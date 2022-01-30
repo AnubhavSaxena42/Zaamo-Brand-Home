@@ -11,6 +11,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import toastService from '../../services/toast-service';
 import {useSelector} from 'react-redux';
+import {styles} from './styles';
 const CollectionCard = ({
   collection,
   editModalOpen,
@@ -44,65 +45,16 @@ const CollectionCard = ({
             setNewCollectionName(collection.name);
             setThumbnailUri(collection.imageUrl);
           }}
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: 'white',
-            paddingHorizontal: '3%',
-            borderRadius: 10,
-            position: 'absolute',
-            top: 10,
-            right: 10,
-            shadowColor: '#000',
-            shadowOffset: {width: 0, height: 0},
-            shadowOpacity: 0.3,
-            shadowRadius: 2,
-            elevation: 5,
-          }}>
-          <View
-            style={{
-              ...styles.editIcon,
-              backgroundColor: 'rgba(0,0,0,0)',
-              paddingHorizontal: '1%',
-              paddingVertical: '4%',
-            }}>
+          style={styles.editButton}>
+          <View style={styles.iconStyle}>
             <Ionicons name="pencil" size={15} color={'black'} />
           </View>
           <Text style={{color: 'black'}}>Edit</Text>
         </TouchableOpacity>
-        <View
-          style={{
-            width: '100%',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            flexDirection: 'row',
-            position: 'absolute',
-            bottom: 10,
-            paddingHorizontal: '4%',
-          }}>
+        <View style={styles.collectionInfoContainer}>
           <View>
-            <Text
-              style={{
-                fontSize: 22,
-                color: 'white',
-                fontWeight: '500',
-                textShadowColor: 'rgba(0,0,0,0.3)',
-                textShadowRadius: 1,
-                textShadowOffset: {width: 1, height: 1.2},
-                fontFamily: 'Roboto-Bold',
-              }}>
-              {collection.name}
-            </Text>
-            <Text
-              style={{
-                fontSize: 14,
-                color: 'white',
-                textShadowColor: 'rgba(0,0,0,0.3)',
-                textShadowRadius: 0.1,
-                textShadowOffset: {width: 1, height: 1},
-                fontFamily: 'Roboto-Bold',
-              }}>
+            <Text style={styles.collectionNameText}>{collection.name}</Text>
+            <Text style={styles.productsCountText}>
               {collection.totalCount && collection.totalCount.toString()}{' '}
               Products
             </Text>
@@ -117,25 +69,11 @@ const CollectionCard = ({
                 true,
               );
             }}
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: 'black',
-              paddingHorizontal: '3%',
-              paddingVertical: '2%',
-              borderRadius: 15,
-              shadowColor: '#000',
-              shadowOffset: {width: 0, height: 0},
-              shadowOpacity: 0.3,
-              shadowRadius: 2,
-              elevation: 5,
-            }}>
-            <View
-              style={{...styles.editIcon, backgroundColor: 'rgba(0,0,0,0)'}}>
+            style={styles.copyLinkButton}>
+            <View style={styles.iconStyle}>
               <Ionicons name="link" size={15} color={'white'} />
             </View>
-            <Text style={{color: 'white'}}>Copy Link</Text>
+            <Text style={styles.copyLinkText}>Copy Link</Text>
           </TouchableOpacity>
         </View>
       </ImageBackground>
@@ -144,23 +82,3 @@ const CollectionCard = ({
 };
 
 export default CollectionCard;
-
-const styles = StyleSheet.create({
-  collectionCardContainer: {
-    width: '100%',
-    marginVertical: '2%',
-  },
-  editIcon: {
-    height: 22,
-    width: 22,
-    borderRadius: 11,
-    marginRight: '3%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
-  },
-  imageStyle: {
-    width: '100%',
-    height: 400,
-  },
-});

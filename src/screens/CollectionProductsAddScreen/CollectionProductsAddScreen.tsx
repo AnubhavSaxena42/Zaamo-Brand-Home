@@ -23,6 +23,7 @@ import toastService from '../../services/toast-service';
 import {GET_PRODUCTS_BY_BRAND} from './queries';
 import {GET_AUTHORISED_BRANDS, GET_STORE} from '../DashboardScreen/queries';
 import {GET_COLLECTION_BY_ID} from '../CollectionViewScreen/queries';
+import {styles} from './styles';
 const CollectionProductsAddScreen = ({navigation, route, collection}) => {
   const productsStore = useSelector(state => state.store.products);
   const collections = useSelector(state => state.store.collections);
@@ -401,33 +402,9 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
         onRequestClose={() => setIsBrandSelectModalVisible(false)}
         visible={isBrandSelectModalVisible}
         transparent={true}>
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <View
-            style={{
-              width: '100%',
-              height: '100%',
-              backgroundColor: 'white',
-              paddingHorizontal: '5%',
-            }}>
-            <Text
-              style={{
-                marginVertical: '5%',
-                textAlign: 'center',
-                fontSize: 20,
-                color: 'black',
-              }}>
-              Select Brand
-            </Text>
-            {/*<ScrollView contentContainerStyle={{flex: 1}}>
-              {brandItems.map(brandItem => (
-                <ModalItem
-                  name={brandItem.name}
-                  value={brandItem.id}
-                  selectedItems={selectedBrands}
-                  setSelectedItems={setSelectedBrands}
-                />
-              ))}
-            </ScrollView>*/}
+        <View style={styles.brandSelectModalContainer}>
+          <View style={styles.brandSelectModalSubContainer}>
+            <Text style={styles.selectBrandHeaderText}>Select Brand</Text>
             <FlatList
               data={route.params.brands}
               keyExtractor={item => item.id}
@@ -444,108 +421,40 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
               onPress={() => {
                 setIsBrandSelectModalVisible(false);
               }}
-              style={{
-                alignSelf: 'center',
-                backgroundColor: 'black',
-                width: '30%',
-                marginVertical: '4%',
-                justifyContent: 'center',
-                alignItems: 'center',
-                paddingVertical: '2%',
-              }}>
-              <Text style={{color: 'white', fontSize: 16}}>Confirm</Text>
+              style={styles.selectBrandModalConfirmButton}>
+              <Text style={styles.selectBrandModalConfirmButtonText}>
+                Confirm
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
       </Modal>
-      <View
-        style={{
-          width: '100%',
-          height: 60,
-          flexDirection: 'row',
-          backgroundColor: 'black',
-          borderBottomWidth: 1,
-          borderBottomColor: 'rgba(0,0,0,0.2)',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          paddingHorizontal: '2%',
-        }}>
+      <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <View>
             <Ionicons name="arrow-back-sharp" color={'white'} size={35} />
           </View>
         </TouchableOpacity>
         <View>
-          <Text
-            style={{
-              fontSize: 20,
-              fontFamily: 'Roboto-Bold',
-              color: 'white',
-            }}>
-            Products
-          </Text>
+          <Text style={styles.headerText}>Products</Text>
         </View>
         <TouchableNativeFeedback
           onPress={onPressComplete}
-          style={{
-            backgroundColor: 'black',
-            paddingHorizontal: '5%',
-            paddingVertical: '5%',
-          }}>
-          <Text
-            style={{
-              color: 'white',
-            }}>
+          style={styles.confirmButton}>
+          <Text style={styles.confirmButtonText}>
             {route.params.fromVoucherCreate ? 'Add Products' : 'Confirm'}
           </Text>
         </TouchableNativeFeedback>
       </View>
       {route.params.fromVoucherCreate && (
-        <View
-          style={{
-            width: '100%',
-            height: 60,
-            backgroundColor: 'white',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
+        <View style={styles.selectBrandButtonContainer}>
           <TouchableOpacity
             onPress={() => setIsBrandSelectModalVisible(true)}
-            style={{
-              borderColor: 'rgba(0,0,0,1)',
-              borderWidth: 1,
-              height: 40,
-              width: 300,
-              borderRadius: 10,
-              justifyContent: 'center',
-              alignItems: 'center',
-              shadowOffset: {
-                width: 0,
-                height: 1,
-              },
-              shadowRadius: 2,
-              shadowOpacity: 1.0,
-            }}>
-            <Text style={{color: 'black'}}>Select Brand</Text>
+            style={styles.selectBrandButton}>
+            <Text style={styles.selectBrandButtonText}>Select Brand</Text>
           </TouchableOpacity>
         </View>
       )}
-      {/*<ScrollView
-        contentContainerStyle={{
-          width: '100%',
-          flexDirection: 'row',
-          justifyContent: 'space-around',
-          flexWrap: 'wrap',
-        }}>
-        {products.map(product => (
-          <AddProductCard
-            key={product.id}
-            selectedProducts={selectedProducts}
-            setSelectedProducts={setSelectedProducts}
-            product={product}
-          />
-        ))}
-      </ScrollView>*/}
       <FlatList
         data={products}
         onEndReached={handleOnEndReached}
@@ -593,10 +502,3 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
 };
 
 export default CollectionProductsAddScreen;
-
-const styles = StyleSheet.create({
-  collectionProductsAddScreenContainer: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-});

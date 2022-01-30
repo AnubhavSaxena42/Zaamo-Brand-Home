@@ -6,6 +6,7 @@ import {
   Text,
   SafeAreaView,
   View,
+  TouchableOpacity,
 } from 'react-native';
 import {client} from '../../App';
 import MetricCard from '../../components/MetricCard/MetricCard';
@@ -14,6 +15,7 @@ import {
   deleteAllItemsFromStorage,
   getItemFromStorage,
 } from '../../services/storage-service';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useSelector, useDispatch} from 'react-redux';
 import {useQuery} from '@apollo/client';
 import {GET_AUTHORISED_BRANDS, GET_COUPONS, GET_STORE} from './queries';
@@ -162,40 +164,31 @@ const DashboardScreen = ({navigation, route}) => {
         />
       </View>
       {/* Insta World Button (Do Not Remove) */}
-      {/*<TouchableOpacity
-        onPress={() => {
-          navigation.navigate('InstaWorldScreen');
-        }}
-        style={{
-          backgroundColor: 'black',
-          position: 'absolute',
-          bottom: 50,
-          right: 20,
-          height: 60,
-          width: 60,
-          justifyContent: 'center',
-          alignItems: 'center',
-          borderRadius: 30,
-          zIndex: 3,
-        }}>
-        <Ionicons name="logo-instagram" size={30} color="white" />
-      </TouchableOpacity>*/}
+      {
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('InstaWorldScreen');
+          }}
+          style={styles.instaWorldButton}>
+          <Ionicons name="logo-instagram" size={30} color="white" />
+        </TouchableOpacity>
+      }
       <Text style={styles.updateHeadingText}>Recent Updates</Text>
       <ScrollView
         contentContainerStyle={styles.scrollViewContentContainerStyle}
         showsVerticalScrollIndicator={false}>
         {/* Updates will be rendered with the update cards below here */}
-        {/*<UpdateCard />
         <UpdateCard />
         <UpdateCard />
         <UpdateCard />
-        <UpdateCard />*/}
-        <AnimatedLottieView
+        <UpdateCard />
+        <UpdateCard />
+        {/*<AnimatedLottieView
           source={require('../../assets/animations/coming-soon.json')}
           style={styles.comingSoonStyle}
           loop
           autoPlay
-        />
+        />*/}
       </ScrollView>
     </SafeAreaView>
   );

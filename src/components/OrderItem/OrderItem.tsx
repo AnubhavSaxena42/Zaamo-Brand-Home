@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   FlatList,
+  SafeAreaView,
   Modal,
   TouchableOpacity,
   Image,
@@ -9,7 +10,7 @@ import {
   View,
 } from 'react-native';
 import toastService from '../../services/toast-service';
-
+import {styles} from './styles';
 const OrderItem = ({line, id, status, setData, fulfillment}) => {
   const [fulfillmentStatus, setFulfillmentStatus] = useState(status);
   const [wasInitiallyCancelled, setWasInitiallyCancelled] = useState(false);
@@ -110,33 +111,11 @@ const OrderItem = ({line, id, status, setData, fulfillment}) => {
         visible={isFulfillmentModalOpen}
         onRequestClose={() => setIsFulfillmentModalOpen(false)}
         transparent={true}>
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <View
-            style={{
-              width: '100%',
-              height: '100%',
-              backgroundColor: 'white',
-              paddingHorizontal: '5%',
-            }}>
-            <Text
-              style={{
-                marginVertical: '5%',
-                textAlign: 'center',
-                fontSize: 20,
-                color: 'black',
-              }}>
+        <SafeAreaView style={styles.fulfillmentModalContainer}>
+          <View style={styles.fulfillmentModalSubContainer}>
+            <Text style={styles.fulfillmentModalHeaderText}>
               Select FulFillment Status
             </Text>
-            {/*<ScrollView contentContainerStyle={{flex: 1}}>
-              {brandItems.map(brandItem => (
-                <ModalItem
-                  name={brandItem.name}
-                  value={brandItem.id}
-                  selectedItems={selectedBrands}
-                  setSelectedItems={setSelectedBrands}
-                />
-              ))}
-            </ScrollView>*/}
             <FlatList
               data={fulfillmentDataItems}
               keyExtractor={item => item.id}
@@ -165,41 +144,23 @@ const OrderItem = ({line, id, status, setData, fulfillment}) => {
                 setData(newData);
                 setIsFulfillmentModalOpen(false);
               }}
-              style={{
-                alignSelf: 'center',
-                backgroundColor: 'black',
-                width: '30%',
-                marginVertical: '4%',
-                justifyContent: 'center',
-                alignItems: 'center',
-                paddingVertical: '2%',
-              }}>
-              <Text style={{color: 'white', fontSize: 16}}>Confirm</Text>
+              style={styles.fulfillmentModalConfirmButton}>
+              <Text style={styles.fulfillmentModalConfirmButtonText}>
+                Confirm
+              </Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </SafeAreaView>
       </Modal>
       <Image source={{uri: line.thumbnail.url}} style={styles.imageStyle} />
       <View style={styles.orderInfo}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginBottom: '2%',
-          }}>
-          <Text style={{fontSize: 14, color: 'black', width: '80%'}}>
-            {line.productName}
-          </Text>
-          <Text
-            style={{
-              fontSize: 14,
-              color: 'black',
-              fontWeight: 'bold',
-              fontFamily: 'Roboto-Bold',
-            }}>
+        <View style={styles.namePriceInfoContainer}>
+          <Text style={styles.productNameText}>{line.productName}</Text>
+          <Text style={styles.productPriceText}>
             Rs {line.totalPrice.net.amount}
           </Text>
         </View>
+        {/* Variant Info ??? */}
         {/*<View style={{flexDirection: 'row', marginBottom: '2%'}}>
           <Text
             style={{
@@ -223,23 +184,10 @@ const OrderItem = ({line, id, status, setData, fulfillment}) => {
             L
           </Text>
         </View>*/}
-        <View style={{position: 'absolute', bottom: '20%', marginLeft: '3%'}}>
-          <Text style={{fontSize: 14, color: 'black', fontWeight: 'bold'}}>
-            Order Status
-          </Text>
-          <View
-            style={{
-              width: 250,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems:'center',
-              borderWidth: 1,
-              borderColor: 'rgba(0,0,0,0.1)',
-              borderRadius: 5,
-              paddingHorizontal: '2%',
-              paddingVertical: '2%',
-            }}>
-            <Text style={{textAlignVertical: 'center', color: 'gray'}}>
+        <View style={styles.statusContainer}>
+          <Text style={styles.statusHeaderText}>Order Status</Text>
+          <View style={styles.statusChangerContainer}>
+            <Text style={styles.statusText}>
               {fulfillmentStatus
                 ? getFulfillmentStatusDisplay()
                 : 'Update Fulfillment status'}
@@ -253,15 +201,8 @@ const OrderItem = ({line, id, status, setData, fulfillment}) => {
                   );
                 else setIsFulfillmentModalOpen(true);
               }}
-              style={{
-                height: '100%',
-                width: 70,
-                backgroundColor: 'black',
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: 5,
-              }}>
-              <Text style={{color: 'white'}}>Change</Text>
+              style={styles.statusChangeButton}>
+              <Text style={styles.statusChangeButtonText}>Change</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -271,22 +212,3 @@ const OrderItem = ({line, id, status, setData, fulfillment}) => {
 };
 
 export default OrderItem;
-
-const styles = StyleSheet.create({
-  orderItemContainer: {
-    flexDirection: 'row',
-    width: '100%',
-    backgroundColor: 'white',
-    marginVertical: '2%',
-  },
-  imageStyle: {
-    height: 150,
-    width: '30%',
-    borderRadius: 10,
-  },
-  orderInfo: {
-    flex: 1,
-    paddingHorizontal: '2%',
-    paddingVertical: '2%',
-  },
-});

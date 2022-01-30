@@ -7,7 +7,7 @@ import {
   Pressable,
   View,
 } from 'react-native';
-
+import {styles} from './styles';
 const OrderCard = ({navigation, status, isDetails, order}) => {
   const getTheme = status => {
     if (status) {
@@ -58,19 +58,12 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
         <Text
           numberOfLines={1}
           ellipsizeMode="tail"
-          style={{fontSize: 14, color: 'black', fontWeight: '400'}}>
+          style={styles.orderNumberUserText}>
           {order ? `#${order.number}` : '#'}{' '}
           {order?.user ? order.user.firstName : 'Anchal'}{' '}
           {order?.user ? order.user.lastName : 'Sharma'}
         </Text>
-        <Text
-          style={{
-            fontSize: 12,
-            color: 'rgba(0,0,0,0.5)',
-            fontFamily: 'Roboto-Regular',
-          }}>
-          {order ? order.created : ''}
-        </Text>
+        <Text style={styles.orderDateText}>{order ? order.created : ''}</Text>
         <View
           style={{
             flexDirection: 'row',
@@ -94,18 +87,7 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
             }}>
             {status ? status : 'NO STATUS'}
           </Text>
-          <Text
-            style={{
-              fontSize: 12,
-              color: 'darkslateblue',
-              backgroundColor: 'whitesmoke',
-              borderRadius: 5,
-              textShadowColor: 'rgba(0,0,0,0.1)',
-              textShadowRadius: 2,
-              textShadowOffset: {width: 1, height: 1},
-              textAlignVertical: 'center',
-              fontFamily: 'Roboto-Regular',
-            }}>
+          <Text style={styles.pinCodeText}>
             {!isDetails &&
               (order?.user
                 ? `${order.user.defaultBillingAddress.postalCode}`
@@ -117,13 +99,13 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
         <Text
           numberOfLines={1}
           ellipsizeMode="tail"
-          style={{fontSize: 14, color: 'black', fontWeight: '400'}}>
+          style={styles.totalPriceText}>
           ₹{order ? order.total?.net.amount : '???'}
         </Text>
         <Text
           numberOfLines={1}
           ellipsizeMode="tail"
-          style={{fontSize: 10, color: 'rgba(0,0,0,0.5)'}}>
+          style={styles.noOfItemsText}>
           {order ? order.lines?.length : '1'}{' '}
           {order?.lines?.length > 1 ? 'items' : 'item'}
         </Text>
@@ -133,39 +115,3 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
 };
 
 export default OrderCard;
-
-const styles = StyleSheet.create({
-  orderCardContainer: {
-    flexDirection: 'row',
-    width: '95%',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    borderRightColor: 'pink',
-    borderRadius: 10,
-    borderRightWidth: 10,
-    backgroundColor: 'white',
-    marginVertical: '2%',
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 0},
-    shadowOpacity: 0.5,
-    shadowRadius: 1,
-    elevation: 5,
-  },
-  imageStyle: {
-    height: '100%',
-    width: '35%',
-    borderRadius: 10,
-  },
-  orderInfo: {
-    paddingTop: '3%',
-    height: '100%',
-    paddingLeft: '2%',
-    flex: 2,
-  },
-  priceInfo: {
-    height: '100%',
-    flex: 1,
-    paddingTop: '3%',
-    paddingRight: '2%',
-  },
-});

@@ -23,6 +23,7 @@ import toastService from '../../services/toast-service';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import {GET_STORE} from '../DashboardScreen/queries';
 import {GET_COLLECTION_BY_ID} from './queries';
+import {styles} from './styles';
 const CollectionViewScreen = ({navigation, route}) => {
   const {collection} = route.params;
   const [selectedCollection, setSelectedCollection] = useState();
@@ -145,31 +146,13 @@ const CollectionViewScreen = ({navigation, route}) => {
   );
   return (
     <SafeAreaView style={styles.collectionViewContainer}>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          width: '100%',
-          height: 60,
-          justifyContent: 'center',
-          backgroundColor: 'black',
-          borderBottomWidth: 1,
-          borderBottomColor: 'rgba(0,0,0,0.2)',
-        }}>
+      <View style={styles.collectionViewHeader}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          style={{zIndex: 2, position: 'absolute', left: 10}}>
+          style={styles.backButton}>
           <Ionicons name="arrow-back-sharp" color={'white'} size={35} />
         </TouchableOpacity>
-        <Text
-          style={{
-            alignSelf: 'center',
-            fontSize: 24,
-            color: 'white',
-            fontFamily: 'Roboto-Bold',
-          }}>
-          {collection.name}
-        </Text>
+        <Text style={styles.headerText}>{collection.name}</Text>
       </View>
       <FlatList
         data={collectionProducts}
@@ -233,31 +216,11 @@ const CollectionViewScreen = ({navigation, route}) => {
             setSelectedCollection: setSelectedCollection,
           });
         }}
-        style={{
-          alignSelf: 'center',
-          width: '80%',
-          backgroundColor: 'black',
-          borderRadius: 10,
-          height: 40,
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginVertical: '2%',
-        }}>
-        <Text style={{color: 'white'}}>Add Products</Text>
+        style={styles.addProductsButton}>
+        <Text style={styles.addProductsButtonText}>Add Products</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
 };
 
 export default CollectionViewScreen;
-
-const styles = StyleSheet.create({
-  collectionViewContainer: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-  imageStyle: {
-    width: '100%',
-    height: 150,
-  },
-});

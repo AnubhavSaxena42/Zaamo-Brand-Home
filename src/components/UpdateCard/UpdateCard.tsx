@@ -1,17 +1,12 @@
 import React from 'react';
 import {StyleSheet, Text, Image, View} from 'react-native';
-
+import {styles} from './styles';
 const UpdateCard = () => {
   return (
     <View style={styles.updateCardContainer}>
       <Image
         source={require('../../assets/images/smugcat.jpg')}
-        style={{
-          alignSelf: 'flex-start',
-          height: 70,
-          width: 70,
-          borderRadius: 35,
-        }}
+        style={styles.avatarImage}
       />
       <View style={styles.notificationContainer}>
         <Text style={styles.notificationText}>
@@ -25,31 +20,3 @@ const UpdateCard = () => {
 };
 
 export default UpdateCard;
-
-const styles = StyleSheet.create({
-  updateCardContainer: {
-    width: '100%',
-    paddingHorizontal: '3%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(0,0,0,0.2)',
-    paddingTop: '3%',
-    paddingBottom: '3%',
-  },
-  notificationContainer: {
-    flex: 1,
-    paddingLeft: '5%',
-  },
-  notificationText: {
-    marginBottom: '2%',
-    fontSize: 15,
-    fontFamily: 'Roboto-Regular',
-    color: 'black',
-  },
-  notificationTime: {
-    fontSize: 15,
-    fontFamily: 'Roboto-Regular',
-    color: 'rgba(0,0,0,0.5)',
-  },
-});

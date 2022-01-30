@@ -104,13 +104,17 @@ const VerifyOTPScreen = ({navigation, route}) => {
         codeInputHighlightStyle={styles.borderStyleHighLighted}
         onCodeFilled={code => {
           console.log('Go go go');
-          setOtp(code);
+          saveItemToStorage('Mobile Number', route.params.mobileNumber);
+          navigation.navigate('LoginSuccessScreen', {
+            mobileNumber: route.params.mobileNumber,
+          });
+          /*setOtp(code);
           verifyOtp({
             variables: {
               mobileNo: '91' + route.params.mobileNumber,
               otp: parseInt(code),
             },
-          });
+          });*/
         }}
       />
       <Text style={styles.infoText}>

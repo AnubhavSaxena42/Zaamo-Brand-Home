@@ -53,6 +53,18 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     paddingBottom: '10%',
   },
+  instaWorldButton: {
+    backgroundColor: 'black',
+    position: 'absolute',
+    bottom: 50,
+    right: 20,
+    height: 60,
+    width: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 30,
+    zIndex: 3,
+  },
   comingSoonStyle: {
     height: 150,
   },

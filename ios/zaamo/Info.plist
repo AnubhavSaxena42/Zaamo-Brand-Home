@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+	<key>CodePushDeploymentKey</key>
+	<string>59pgS73SmeaaZD9PoHrf0EbBuknV_Rk00EcLf</string>
 	<key>CFBundleDisplayName</key>
 	<string>zaamo</string>
 	<key>CFBundleExecutable</key>

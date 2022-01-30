@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">zaamo</string>
+    <string moduleConfig="true" name="CodePushDeploymentKey">HG-5GikxtmrV3A8J5mAqHE7WgUXdrOZMsfrBX</string>
 </resources>

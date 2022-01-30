@@ -21,6 +21,7 @@ import {createUploadLink} from 'apollo-upload-client';
 import {useSelector} from 'react-redux';
 import {setContext} from '@apollo/client/link/context';
 import {getItemFromStorage} from './services/storage-service';
+import codePush from 'react-native-code-push';
 // Initialize Apollo Client
 
 const uploadLink = createUploadLink({
@@ -147,6 +148,6 @@ const App = () => {
   );
 };
 
-export default App;
+let codePushOptions = {checkFrequency: codePush.CheckFrequency.ON_APP_START};
 
-const styles = StyleSheet.create({});
+export default codePush(codePushOptions)(App);

@@ -10,6 +10,7 @@ import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
 import {MainStackNavigator} from './navigation/MainNavigator';
 import {relayStylePagination} from '@apollo/client/utilities';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import SplashScreen from 'react-native-splash-screen';
 import Loader from './components/Loader/Loader';
 import {
   ApolloClient,
@@ -128,6 +129,10 @@ export const client = new ApolloClient({
 });
 
 const App = () => {
+  React.useEffect(() => {
+    SplashScreen.hide();
+  });
+
   const Spinner = () => {
     const loaderStatus = useSelector(state => state.appVariables.loaderStatus);
     return <Loader visible={loaderStatus} textContent={'Please wait...'} />;

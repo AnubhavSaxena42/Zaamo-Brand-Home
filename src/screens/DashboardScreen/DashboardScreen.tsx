@@ -164,7 +164,7 @@ const DashboardScreen = ({navigation, route}) => {
         />
       </View>
       {/* Insta World Button (Do Not Remove) */}
-      {
+      {/*
         <TouchableOpacity
           onPress={() => {
             navigation.navigate('InstaWorldScreen');
@@ -172,23 +172,23 @@ const DashboardScreen = ({navigation, route}) => {
           style={styles.instaWorldButton}>
           <Ionicons name="logo-instagram" size={30} color="white" />
         </TouchableOpacity>
-      }
+        */}
       <Text style={styles.updateHeadingText}>Recent Updates</Text>
       <ScrollView
         contentContainerStyle={styles.scrollViewContentContainerStyle}
         showsVerticalScrollIndicator={false}>
         {/* Updates will be rendered with the update cards below here */}
+        {/*<UpdateCard />
         <UpdateCard />
         <UpdateCard />
         <UpdateCard />
-        <UpdateCard />
-        <UpdateCard />
-        {/*<AnimatedLottieView
+        <UpdateCard />*/}
+        <AnimatedLottieView
           source={require('../../assets/animations/coming-soon.json')}
           style={styles.comingSoonStyle}
           loop
           autoPlay
-        />*/}
+        />
       </ScrollView>
     </SafeAreaView>
   );

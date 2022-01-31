@@ -91,7 +91,6 @@ const VerifyOTPScreen = ({navigation, route}) => {
         style={styles.numberInput}
       />
       */}
-
       <OTPInputView
         style={styles.otpInputContainer}
         pinCount={4}

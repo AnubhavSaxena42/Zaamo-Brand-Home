@@ -52,7 +52,7 @@ const MobileOTPScreen = ({navigation, route}) => {
       </Text>
       <Text
         style={{...styles.infoText, marginBottom: '10%', textAlign: 'center'}}>
-        On your Mobile Number
+        on your Mobile Number
       </Text>
       <Text style={styles.infoText}>Enter Mobile Number</Text>
       <TextInput

@@ -92,7 +92,10 @@ const ProductCard = ({
             activeOpacity={0}
             onPress={() => {
               console.log('Product:', JSON.stringify(product));
-              toastService.showToast('Feature in Development', true);
+              navigation.navigate('CreateVariantScreen', {
+                editVariants: product.variants,
+                editInventory: true,
+              });
             }}
             style={styles.editButton}>
             <View style={styles.editIcon}>

@@ -6,9 +6,10 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Linking,
 } from 'react-native';
 import SettingOption from '../../components/SettingOption/SettingOption';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import {
   deleteAllItemsFromStorage,
@@ -20,6 +21,7 @@ import {styles} from './styles';
 
 const SettingsScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
+  const storeUrl = useSelector(state => state.store.storeInfo.storeUrl);
   const logout = () => {
     dispatch(setLoaderStatus(true));
     deleteAllItemsFromStorage()
@@ -116,6 +118,14 @@ const SettingsScreen = ({navigation, route}) => {
               onPress={() => navigation.navigate('BrandGuidelinesScreen')}
               setting={'Brand Guidelines'}
               imageUrl={require('../../assets/icons/brandguidelines.png')}
+            />
+            <SettingOption
+              onPress={() => {
+                console.log('Open the store bro');
+                Linking.openURL(storeUrl);
+              }}
+              setting={'View My Store'}
+              imageUrl={require('../../assets/icons/mystore.png')}
             />
           </View>
           <TouchableOpacity onPress={logout} style={styles.logoutButton}>

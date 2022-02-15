@@ -48,17 +48,20 @@ export const styles = StyleSheet.create({
     paddingHorizontal: '2%',
   },
   headerText: {
-    fontSize: 20,
+    fontSize: 22,
     fontFamily: 'Roboto-Bold',
     color: 'white',
   },
   confirmButton: {
-    backgroundColor: 'black',
+    backgroundColor: 'white',
     paddingHorizontal: '5%',
-    paddingVertical: '5%',
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
   },
   confirmButtonText: {
-    color: 'white',
+    color: 'black',
   },
   selectBrandButtonContainer: {
     width: '100%',

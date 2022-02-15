@@ -412,3 +412,15 @@ export const CREATE_SUPPORT_QUERY = gql`
     }
   }
 `;
+
+export const BULK_UPDATE_VARIANT_INVENTORY = gql`
+  mutation variantInventoryUpdate($input: [VariantInventoryUpdateInput]!) {
+    variantInventoryUpdate(input: $input) {
+      success
+      errors {
+        field
+        message
+      }
+    }
+  }
+`;

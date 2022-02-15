@@ -7,7 +7,7 @@ import {
   SafeAreaView,
   FlatList,
   TouchableOpacity,
-  TouchableNativeFeedback,
+  Pressable,
 } from 'react-native';
 import {BarIndicator} from 'react-native-indicators';
 import {tailwind} from '../../core/tailwind';
@@ -441,13 +441,11 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
         <View>
           <Text style={styles.headerText}>Products</Text>
         </View>
-        <TouchableNativeFeedback
-          onPress={onPressComplete}
-          style={styles.confirmButton}>
+        <Pressable onPress={onPressComplete} style={styles.confirmButton}>
           <Text style={styles.confirmButtonText}>
             {route.params.fromVoucherCreate ? 'Add Products' : 'Confirm'}
           </Text>
-        </TouchableNativeFeedback>
+        </Pressable>
       </View>
       {route.params.fromVoucherCreate && (
         <View style={styles.selectBrandButtonContainer}>

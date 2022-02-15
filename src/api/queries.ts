@@ -285,6 +285,17 @@ export const GET_AUTHORISED_BRANDS = gql`
               slug
               variants {
                 id
+                price {
+                  amount
+                  currency
+                }
+                costPrice {
+                  amount
+                  currency
+                }
+                stocks {
+                  quantity
+                }
                 name
               }
               images {

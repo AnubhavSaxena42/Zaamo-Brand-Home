@@ -189,6 +189,7 @@ const OrdersScreen = ({navigation}) => {
         ({node}) => node.lines.length !== 0,
       );
       let newOrders = orders.map(order => {
+        console.log('OrderLine', order.fulfillments);
         return {
           ...order,
           status: '',
@@ -209,7 +210,7 @@ const OrdersScreen = ({navigation}) => {
         {id: 'DELIVERED', name: 'Delivered', value: 3},
         {id: 'CANCELED', name: 'Cancelled', value: 4},
         {id: 'RETURN_REQUESTED', name: 'Return Requested', value: 5},
-        {id: 'RETURN_INITIATED', name: 'Return Initiated', Value: 6},
+        {id: 'RETURN_INITIATED', name: 'Return Initiated', value: 6},
         {id: 'RETURN_COMPLETED', name: 'Return Completed', value: 7},
         {id: 'FULFILLED', name: 'Fulfilled', value: 8},
       ];
@@ -264,6 +265,7 @@ const OrdersScreen = ({navigation}) => {
       };
       newOrders.forEach(value => {
         let order = value.node;
+
         if (order.fulfillments && order.fulfillments.length !== 0) {
           console.log(order);
           console.log(order.fulfillments[0].status);
@@ -275,7 +277,7 @@ const OrdersScreen = ({navigation}) => {
             if (minStatusValue > currentStatusValue)
               minStatusValue = currentStatusValue;
           }
-
+          console.log('Min Status Value:', minStatusValue);
           const fulfillmentOverallStatus = findStatusName(minStatusValue);
 
           sortByStatus(fulfillmentOverallStatus, value);

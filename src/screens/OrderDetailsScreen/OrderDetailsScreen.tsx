@@ -31,6 +31,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
       };
     }),
   );
+
   const dispatch = useDispatch();
   const [updateFulfillment, updateFulfillmentResponse] = useMutation(
     UPDATE_FULFILLMENT,
@@ -94,7 +95,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
                   setData={setFullfillmentData}
                   fulfillment={fulfillmentData}
                   status={fulfillment.status}
-                  line={fulfillment.lines[0].orderLine}
+                  line={fulfillment?.lines[0]?.orderLine}
                 />
               );
             })}

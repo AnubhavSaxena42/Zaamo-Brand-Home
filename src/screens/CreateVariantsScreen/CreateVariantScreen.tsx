@@ -16,10 +16,19 @@ import Header from '../../components/Header';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import toastService from '../../services/toast-service';
 import {GET_AUTHORISED_BRANDS} from '../../api/queries';
-import {CREATE_VARIANTS} from '../../api/mutations';
-const VariantRow = ({variant}) => {
-  const [stock, setStock] = useState('');
-  const [price, setPrice] = useState('');
+import {
+  CREATE_VARIANTS,
+  BULK_UPDATE_VARIANT_INVENTORY,
+} from '../../api/mutations';
+const VariantRow = ({variant, edit}) => {
+  const [stock, setStock] = useState(
+    edit ? variant.stocks[0].quantity.toString() : '',
+  );
+  const [price, setPrice] = useState(
+    edit ? variant.price.amount.toString() : '',
+  );
+  console.log('Edit Variant:', variant);
+
   return (
     <View style={styles.variantRowContainer}>
       <View style={styles.variantNameContainer}>
@@ -30,7 +39,8 @@ const VariantRow = ({variant}) => {
           value={stock}
           onChangeText={text => {
             setStock(text);
-            variant.stock = text;
+            if (edit) variant.stocks[0].quantity = parseInt(text);
+            else variant.stock = text;
           }}
           keyboardType={'number-pad'}
           placeholder="Enter Stock here"
@@ -42,7 +52,8 @@ const VariantRow = ({variant}) => {
           value={price}
           onChangeText={text => {
             setPrice(text);
-            variant.price = text;
+            if (edit) variant.price.amount = parseInt(text);
+            else variant.price = text;
           }}
           keyboardType={'number-pad'}
           placeholder="Enter Price here"
@@ -62,13 +73,44 @@ const ErrorMessage = ({message}) => {
   );
 };
 const CreateVariantScreen = ({navigation, route}) => {
-  const {variations, productID} = route.params;
+  const {variations, editInventory, editVariants, productID} = route.params;
   console.log('Variations:', variations);
   const [variants, setVariants] = useState();
   console.log('product ID:', productID);
   console.log('Variants:', JSON.stringify(variants));
   const dispatch = useDispatch();
   const [error, setError] = useState(false);
+  const [bulkUpdateVariants, variantsUpdateResponse] = useMutation(
+    BULK_UPDATE_VARIANT_INVENTORY,
+    {
+      variables: {
+        input: [],
+      },
+      refetchQueries: [GET_AUTHORISED_BRANDS],
+    },
+  );
+  useEffect(() => {
+    if (variantsUpdateResponse.data) {
+      console.log(variantsUpdateResponse.data);
+      if (variantsUpdateResponse.data.variantInventoryUpdate?.success) {
+        toastService.showToast(
+          'Variants have been successfully updated!',
+          true,
+        );
+        navigation.goBack();
+      } else {
+        toastService.showToast(
+          'Failed to update Variants,please try again later!',
+          true,
+        );
+        navigation.goBack();
+      }
+    }
+  }, [variantsUpdateResponse.data]);
+  useEffect(() => {
+    if (variantsUpdateResponse.loading) dispatch(setLoaderStatus(true));
+    else dispatch(setLoaderStatus(false));
+  }, [variantsUpdateResponse.loading]);
   const [productVariantBulkCreate, variantCreateResponse] = useMutation(
     CREATE_VARIANTS,
     {
@@ -82,6 +124,22 @@ const CreateVariantScreen = ({navigation, route}) => {
   );
   const warehouseId = useSelector(state => state.store.warehouse);
   console.log(variations);
+  console.log('EditVariants:', editVariants);
+  const onVariantsUpdate = () => {
+    console.log('Edit Variants:', editVariants);
+    const updateVariantInput = editVariants.map(variant => {
+      return {
+        variantId: variant.id,
+        stock: variant.stocks[0].quantity,
+        sellingPrice: variant.price.amount,
+      };
+    });
+    bulkUpdateVariants({
+      variables: {
+        input: updateVariantInput,
+      },
+    });
+  };
   const onVariantsCreate = () => {
     let flag = 0;
     const newVariants = variations.map(variant => {
@@ -123,6 +181,7 @@ const CreateVariantScreen = ({navigation, route}) => {
       }
     }
   }, [variantCreateResponse.data]);
+
   useEffect(() => {
     if (variantCreateResponse.loading) dispatch(setLoaderStatus(true));
     else dispatch(setLoaderStatus(false));
@@ -133,7 +192,7 @@ const CreateVariantScreen = ({navigation, route}) => {
         {/*<GestureRecognizer
         config={{directionalOffsetThreshold: 30, velocityThreshold: 0.5}}
         onSwipeRight={() => navigation.goBack()}>*/}
-        <Header />
+        <Header back={editInventory} navigation={navigation} />
         <View style={styles.variantHeaderContainer}>
           <View style={styles.variantNameHeader}>
             <Text style={styles.headerText}>Variants</Text>
@@ -146,12 +205,18 @@ const CreateVariantScreen = ({navigation, route}) => {
           </View>
         </View>
         <View>
-          {variations.map(variation => (
-            <VariantRow variant={variation} />
-          ))}
+          {!editInventory &&
+            variations.map(variation => (
+              <VariantRow variant={variation} edit={false} />
+            ))}
+          {editInventory &&
+            editVariants.map(variant => (
+              <VariantRow variant={variant} edit={true} />
+            ))}
         </View>
         {error && <ErrorMessage message="Please fill all the information" />}
-        <TouchableOpacity onPress={onVariantsCreate}>
+        <TouchableOpacity
+          onPress={editInventory ? onVariantsUpdate : onVariantsCreate}>
           <View style={styles.confirmButtonContainer}>
             <View style={styles.confirmButton}>
               <Text style={styles.confirmButtonText}>Confirm</Text>

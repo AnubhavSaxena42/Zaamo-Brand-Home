@@ -12,12 +12,7 @@ import {relayStylePagination} from '@apollo/client/utilities';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import SplashScreen from 'react-native-splash-screen';
 import Loader from './components/Loader/Loader';
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  createHttpLink,
-} from '@apollo/client';
+import {ApolloClient, InMemoryCache, ApolloProvider} from '@apollo/client';
 import {createUploadLink} from 'apollo-upload-client';
 import {useSelector} from 'react-redux';
 import {setContext} from '@apollo/client/link/context';

@@ -4,8 +4,10 @@ import {
   Text,
   View,
   TouchableOpacity,
+  Pressable,
   TextInput,
   Image,
+  Keyboard,
   Modal,
 } from 'react-native';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
@@ -74,7 +76,9 @@ const VerifyOTPScreen = ({navigation, route}) => {
     }
   }, [loading]);
   return (
-    <View style={styles.verifyOTPContainer}>
+    <Pressable
+      onPress={() => Keyboard.dismiss()}
+      style={styles.verifyOTPContainer}>
       <PhoneSVG />
       <Text style={styles.headingText}>OTP Verification</Text>
       <Text style={styles.infoText}>
@@ -107,13 +111,13 @@ const VerifyOTPScreen = ({navigation, route}) => {
           navigation.navigate('LoginSuccessScreen', {
             mobileNumber: route.params.mobileNumber,
           });
-          /*setOtp(code);
-          verifyOtp({
-            variables: {
-              mobileNo: '91' + route.params.mobileNumber,
-              otp: parseInt(code),
-            },
-          });*/
+          //setOtp(code);
+          //verifyOtp({
+          //  variables: {
+          //    mobileNo: '91' + route.params.mobileNumber,
+          //    otp: parseInt(code),
+          //  },
+          //});
         }}
       />
       <Text style={styles.infoText}>
@@ -141,7 +145,7 @@ const VerifyOTPScreen = ({navigation, route}) => {
         style={styles.button}>
         <Text style={styles.buttonText}>VERIFY & PROCEED</Text>
       </TouchableOpacity>
-    </View>
+    </Pressable>
   );
 };
 

@@ -13,8 +13,47 @@ import {
 import {styles} from './styles';
 const SplashScreen = ({navigation}) => {
   const dispatch = useDispatch();
+  //So messy refactor it !!
+  /* Fetch the token,user,mobileNumber,firstTimeUser
+    if we have the token user and mobileNumber redirect to StoreStack
+    if we dont have token or user {
+      if we have mobileNumber,redirect to LoginSuccessScreen
+      if we dont have mobileNumber{
+        if we have FirstTimeUser, redirect to mobileOTPScreen
+        if we dont have FirstTimeUser, redirect to Carousel
+      }
+    }
+  */
+
+  const initApp = async () => {
+    const token = await getItemFromStorage('Token');
+    const user = await getItemFromStorage('User');
+    const mobileNumber = await getItemFromStorage('Mobile Number');
+    const isFirstTimeUser = await getItemFromStorage('First Time User');
+    if (token && user && mobileNumber) {
+      dispatch(setToken(token));
+      dispatch(setUser(JSON.parse(user)));
+      dispatch(setMobileNumber(mobileNumber));
+      navigation.replace('StoreStack');
+    } else {
+      if (mobileNumber) {
+        dispatch(setMobileNumber(mobileNumber));
+        navigation.replace('LoginSuccessScreen', {
+          mobileNumber: mobileNumber,
+        });
+      } else {
+        if (!isFirstTimeUser) {
+          await saveItemToStorage('First Time User', 'false');
+          navigation.replace('BrandHomeOnboardingScreen');
+        } else {
+          navigation.replace('MobileOTPScreen');
+        }
+      }
+    }
+  };
 
   useEffect(() => {
+    /*  GARBAGE KEEP IT HERE UNTIL TESTING JUST IN CASE 
     getItemFromStorage('Token')
       .then(token => {
         if (token && token !== '') {
@@ -59,6 +98,7 @@ const SplashScreen = ({navigation}) => {
         }
       })
       .catch(err => {
+        //We will never reach here
         console.log('in else block');
         getItemFromStorage('Mobile Number')
           .then(mobileNumber => {
@@ -75,6 +115,8 @@ const SplashScreen = ({navigation}) => {
             navigation.replace('MobileOTPScreen');
           });
       });
+      */
+    initApp();
   }, []);
 
   return (

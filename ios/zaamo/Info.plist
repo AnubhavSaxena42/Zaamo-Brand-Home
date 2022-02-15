@@ -4,8 +4,6 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
-	<key>CodePushDeploymentKey</key>
-	<string>59pgS73SmeaaZD9PoHrf0EbBuknV_Rk00EcLf</string>
 	<key>CFBundleDisplayName</key>
 	<string>zaamo</string>
 	<key>CFBundleExecutable</key>
@@ -19,11 +17,13 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>CodePushDeploymentKey</key>
+	<string>59pgS73SmeaaZD9PoHrf0EbBuknV_Rk00EcLf</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>

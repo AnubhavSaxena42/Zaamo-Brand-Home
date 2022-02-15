@@ -4,6 +4,8 @@ import {
   TextInput,
   Text,
   Image,
+  Keyboard,
+  Pressable,
   View,
   TouchableOpacity,
 } from 'react-native';
@@ -43,7 +45,9 @@ const MobileOTPScreen = ({navigation, route}) => {
     }
   }, [loading]);
   return (
-    <View style={styles.mobileOTPContainer}>
+    <Pressable
+      onPress={() => Keyboard.dismiss()}
+      style={styles.mobileOTPContainer}>
       <PhoneSVG />
       <Text style={styles.headingText}>OTP Verification</Text>
       <Text style={styles.infoText}>
@@ -87,7 +91,7 @@ const MobileOTPScreen = ({navigation, route}) => {
         style={styles.button}>
         <Text style={{color: 'white', fontWeight: 'bold'}}>GET OTP</Text>
       </TouchableOpacity>
-    </View>
+    </Pressable>
   );
 };
 

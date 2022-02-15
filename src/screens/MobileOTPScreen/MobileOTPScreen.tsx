@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {useMutation} from '@apollo/client';
-import {GENERATE_OTP} from './mutations';
+import {GENERATE_OTP} from '../../api/mutations';
 import PhoneSVG from './phone';
 import {useDispatch} from 'react-redux';
 import toastService from '../../services/toast-service';

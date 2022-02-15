@@ -16,13 +16,13 @@ import {
 import ProductCard from '../../components/ProductCard/ProductCard';
 import {BarIndicator} from 'react-native-indicators';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {REMOVE_PRODUCT_COLLECTION} from './mutations';
+import {REMOVE_PRODUCT_COLLECTION} from '../../api/mutations';
 import {useDispatch, useSelector} from 'react-redux';
 import {setStoreCollections} from '../../redux/reducers/storeReducer';
 import toastService from '../../services/toast-service';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
-import {GET_STORE} from '../DashboardScreen/queries';
-import {GET_COLLECTION_BY_ID} from './queries';
+import {GET_STORE} from '../../api/queries';
+import {GET_COLLECTION_BY_ID} from '../../api/queries';
 import {styles} from './styles';
 const CollectionViewScreen = ({navigation, route}) => {
   const {collection} = route.params;

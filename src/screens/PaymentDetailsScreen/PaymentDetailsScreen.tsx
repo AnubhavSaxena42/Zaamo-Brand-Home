@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useMutation} from '@apollo/client';
-import {BANK_ACCOUNT_CREATE, BRAND_UPI_ID_CREATE} from './mutations';
+import {BANK_ACCOUNT_CREATE, BRAND_UPI_ID_CREATE} from '../../api/mutations';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {
   ScrollView,

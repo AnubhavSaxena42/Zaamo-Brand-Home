@@ -11,17 +11,15 @@ import {
   Platform,
   View,
 } from 'react-native';
-import Checkbox from '../../components/Checkbox';
 import DatePicker from 'react-native-date-picker';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Dropdown from '../../components/Dropdown';
 import Header from '../../components/Header';
-import {CREATE_VOUCHER} from './mutations';
+import {CREATE_VOUCHER} from '../../api/mutations';
 import {useDispatch, useSelector} from 'react-redux';
-import {GET_STORES, GET_BRANDS} from './queries';
+import {GET_STORES, GET_BRANDS, GET_COUPONS} from '../../api/queries';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import toastService from '../../services/toast-service';
-import {GET_COUPONS} from '../DashboardScreen/queries';
 import {styles} from './styles';
 const webDropdownStyle = {
   height: '30%',

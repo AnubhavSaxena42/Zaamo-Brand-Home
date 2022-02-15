@@ -15,8 +15,8 @@ import {useSelector, useDispatch} from 'react-redux';
 import Header from '../../components/Header';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import toastService from '../../services/toast-service';
-import {GET_AUTHORISED_BRANDS} from '../DashboardScreen/queries';
-import {CREATE_VARIANTS} from './mutations';
+import {GET_AUTHORISED_BRANDS} from '../../api/queries';
+import {CREATE_VARIANTS} from '../../api/mutations';
 const VariantRow = ({variant}) => {
   const [stock, setStock] = useState('');
   const [price, setPrice] = useState('');
@@ -128,38 +128,38 @@ const CreateVariantScreen = ({navigation, route}) => {
     else dispatch(setLoaderStatus(false));
   }, [variantCreateResponse.loading]);
   return (
-    <SafeAreaView style={{flex:1}}>
-    <ScrollView style={styles.variantContainer}>
-      {/*<GestureRecognizer
+    <SafeAreaView style={{flex: 1}}>
+      <ScrollView style={styles.variantContainer}>
+        {/*<GestureRecognizer
         config={{directionalOffsetThreshold: 30, velocityThreshold: 0.5}}
         onSwipeRight={() => navigation.goBack()}>*/}
-      <Header />
-      <View style={styles.variantHeaderContainer}>
-        <View style={styles.variantNameHeader}>
-          <Text style={styles.headerText}>Variants</Text>
-        </View>
-        <View style={styles.variantStockHeader}>
-          <Text style={styles.headerText}>Stock</Text>
-        </View>
-        <View style={styles.variantPriceHeader}>
-          <Text style={styles.headerText}>Price</Text>
-        </View>
-      </View>
-      <View>
-        {variations.map(variation => (
-          <VariantRow variant={variation} />
-        ))}
-      </View>
-      {error && <ErrorMessage message="Please fill all the information" />}
-      <TouchableOpacity onPress={onVariantsCreate}>
-        <View style={styles.confirmButtonContainer}>
-          <View style={styles.confirmButton}>
-            <Text style={styles.confirmButtonText}>Confirm</Text>
+        <Header />
+        <View style={styles.variantHeaderContainer}>
+          <View style={styles.variantNameHeader}>
+            <Text style={styles.headerText}>Variants</Text>
+          </View>
+          <View style={styles.variantStockHeader}>
+            <Text style={styles.headerText}>Stock</Text>
+          </View>
+          <View style={styles.variantPriceHeader}>
+            <Text style={styles.headerText}>Price</Text>
           </View>
         </View>
-      </TouchableOpacity>
-      {/*</GestureRecognizer>*/}
-    </ScrollView>
+        <View>
+          {variations.map(variation => (
+            <VariantRow variant={variation} />
+          ))}
+        </View>
+        {error && <ErrorMessage message="Please fill all the information" />}
+        <TouchableOpacity onPress={onVariantsCreate}>
+          <View style={styles.confirmButtonContainer}>
+            <View style={styles.confirmButton}>
+              <Text style={styles.confirmButtonText}>Confirm</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+        {/*</GestureRecognizer>*/}
+      </ScrollView>
     </SafeAreaView>
   );
 };

@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {StyleSheet, Platform, Alert, Text, View} from 'react-native';
 import AnimatedLottieView from 'lottie-react-native';
 import {useMutation, useLazyQuery} from '@apollo/client';
-import {TOKEN_CREATE, USER_REGISTER} from './mutations';
+import {TOKEN_CREATE, USER_REGISTER} from '../../api/mutations';
 import {useDispatch} from 'react-redux';
 import authService from '../../services/auth-service';
 import {
@@ -18,7 +18,7 @@ import toastService from '../../services/toast-service';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import {request, PERMISSIONS, openSettings} from 'react-native-permissions';
 import {styles} from './styles';
-import {GET_USER_ACTIVE} from './queries';
+import {GET_USER_ACTIVE} from '../../api/queries';
 const LoginSuccessScreen = ({navigation, route}) => {
   const [createToken, {data, loading, error}] = useMutation(TOKEN_CREATE, {
     variables: {

@@ -14,10 +14,10 @@ import OrderItem from '../../components/OrderItem/OrderItem';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 import {useMutation} from '@apollo/client';
-import {UPDATE_FULFILLMENT} from './mutations';
+import {UPDATE_FULFILLMENT} from '../../api/mutations';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import toastService from '../../services/toast-service';
-import {GET_ORDERS} from '../OrdersScreen/queries';
+import {GET_ORDERS} from '../../api/queries';
 import {styles} from './styles';
 
 const OrderDetailsScreen = ({navigation, route}) => {

@@ -16,13 +16,16 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import AddProductCard from '../../components/AddProductCard/AddProductCard';
 import {useDispatch, useSelector} from 'react-redux';
 import {useMutation, NetworkStatus, useQuery} from '@apollo/client';
-import {ADD_PRODUCTS_COLLECTION, COLLECTION_CREATE} from './mutations';
+import {ADD_PRODUCTS_COLLECTION, COLLECTION_CREATE} from '../../api/mutations';
 import {setStoreCollections} from '../../redux/reducers/storeReducer';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import toastService from '../../services/toast-service';
-import {GET_PRODUCTS_BY_BRAND} from './queries';
-import {GET_AUTHORISED_BRANDS, GET_STORE} from '../DashboardScreen/queries';
-import {GET_COLLECTION_BY_ID} from '../CollectionViewScreen/queries';
+import {
+  GET_COLLECTION_BY_ID,
+  GET_PRODUCTS_BY_BRAND,
+  GET_AUTHORISED_BRANDS,
+  GET_STORE,
+} from '../../api/queries';
 import {styles} from './styles';
 const CollectionProductsAddScreen = ({navigation, route, collection}) => {
   const productsStore = useSelector(state => state.store.products);

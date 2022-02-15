@@ -19,15 +19,18 @@ import Header from '../../components/Header';
 import Checkbox from '../../components/Checkbox';
 import TaggedComponent from '../../components/TaggedComponent';
 import {useMutation, useQuery} from '@apollo/client';
-import {GET_PRODUCT_TYPES, GET_SIZE_VALUES} from './queries';
-import {CREATE_PRODUCT, CREATE_PRODUCT_IMAGE} from './mutations';
-import {setStoreProducts} from '../../redux/reducers/storeReducer';
+import {
+  GET_PRODUCT_TYPES,
+  GET_AUTHORISED_BRANDS,
+  GET_COLOR_VALUES,
+  GET_SIZE_VALUES,
+} from '../../api/queries';
+import {CREATE_PRODUCT, CREATE_PRODUCT_IMAGE} from '../../api/mutations';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import toastService from '../../services/toast-service';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import {GET_COLOR_VALUES} from '../ProductsTabScreen/queries';
 import {ReactNativeFile} from 'apollo-upload-client';
-import {GET_AUTHORISED_BRANDS} from '../DashboardScreen/queries';
+
 //import GestureRecognizer from 'react-native-swipe-gestures';
 import {styles} from './styles';
 const ErrorMessage = ({message}) => {

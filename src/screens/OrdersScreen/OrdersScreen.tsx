@@ -15,7 +15,7 @@ import Swiper from 'react-native-swiper';
 import OrderCard from '../../components/OrderCard/OrderCard';
 import OrdersOverviewCard from '../../components/OrdersOverviewCard/OrdersOverviewCard';
 import {useQuery} from '@apollo/client';
-import {GET_ORDERS} from './queries';
+import {GET_ORDERS} from '../../api/queries';
 import {useSelector, useDispatch} from 'react-redux';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import {styles} from './styles';

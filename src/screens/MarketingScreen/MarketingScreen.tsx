@@ -5,7 +5,7 @@ import {tailwind} from '../../core/tailwind';
 import Coupon from '../../components/Coupon/Coupon';
 import Header from '../../components/Header';
 import {useQuery, NetworkStatus} from '@apollo/client';
-import {GET_COUPONS} from '../DashboardScreen/queries';
+import {GET_COUPONS} from '../../api/queries';
 import {styles} from './styles';
 const MarketingScreen = ({navigation}) => {
   const couponResponse = useQuery(GET_COUPONS, {

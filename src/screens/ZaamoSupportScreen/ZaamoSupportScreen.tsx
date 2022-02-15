@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {useSelector} from 'react-redux';
 import toastService from '../../services/toast-service';
-import {CREATE_SUPPORT_QUERY} from './mutations';
+import {CREATE_SUPPORT_QUERY} from '../../api/mutations';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {styles} from './styles';
 

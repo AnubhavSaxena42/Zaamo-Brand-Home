@@ -18,7 +18,7 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useSelector, useDispatch} from 'react-redux';
 import {useQuery} from '@apollo/client';
-import {GET_AUTHORISED_BRANDS, GET_COUPONS, GET_STORE} from './queries';
+import {GET_AUTHORISED_BRANDS, GET_COUPONS, GET_STORE} from '../../api/queries';
 import {
   setStoreInfo,
   setStoreCollections,

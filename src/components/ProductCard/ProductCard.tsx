@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   ImageBackground,
   StyleSheet,
@@ -22,7 +22,14 @@ const ProductCard = ({
 }) => {
   const storeUrl = useSelector(state => state.store.storeInfo.storeUrl);
   const dispatch = useDispatch();
-
+  const [inventory, setInventory] = useState('0');
+  React.useEffect(() => {
+    let inventoryVal = 0;
+    product.variants.forEach(variant => {
+      inventoryVal += variant.stocks[0].quantity;
+    });
+    setInventory(inventoryVal.toString());
+  }, [product]);
   return (
     <Pressable
       onPress={() => {
@@ -85,7 +92,7 @@ const ProductCard = ({
             Inventory:{' '}
             <Text
               style={{color: 'black', fontSize: 14, fontFamily: 'Roboto-Bold'}}>
-              4
+              {inventory}
             </Text>
           </Text>
           <TouchableOpacity

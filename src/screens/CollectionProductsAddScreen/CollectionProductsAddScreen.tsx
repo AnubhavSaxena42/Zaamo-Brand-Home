@@ -108,7 +108,7 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
                 };
               },
             );
-
+          console.log('New Store Product:', newStoreProducts);
           if (route.params.collection) {
             const filteredProducts = newStoreProducts.filter(product => {
               const productIncluded = product.collections.some(collection => {

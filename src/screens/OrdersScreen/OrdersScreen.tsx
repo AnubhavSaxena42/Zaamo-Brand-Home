@@ -16,8 +16,9 @@ import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import OrderCard from '../../components/OrderCard/OrderCard';
 import OrdersOverviewCard from '../../components/OrdersOverviewCard/OrdersOverviewCard';
 import {useQuery} from '@apollo/client';
-import {GET_ORDERS} from '../../api/queries';
+import {GET_ORDERS,GET_STORE} from '../../api/queries';
 import {useSelector, useDispatch} from 'react-redux';
+import { setStoreInfo,setStoreCollections } from '../../redux/reducers/storeReducer';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import {styles} from './styles';
 const {width, height} = Dimensions.get('screen');
@@ -28,6 +29,37 @@ const OrdersScreen = ({navigation}) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [listData, setListData] = useState([]);
   const dispatch = useDispatch();
+  const storeResponse = useQuery(GET_STORE);
+  useEffect(() => {
+    if (storeResponse.loading) dispatch(setLoaderStatus(true));
+    else dispatch(setLoaderStatus(false));
+  }, [storeResponse.loading]);
+
+  useEffect(() => {
+    if (storeResponse.data) {
+      dispatch(
+        setStoreInfo({
+          id: storeResponse.data.store.id,
+          storeName: storeResponse.data.store.storeName,
+          storeType: storeResponse.data.store.storeType,
+          storeUrl: storeResponse.data.store.storeUrl,
+        }),
+      );
+      const storeCollections = storeResponse.data.store.collections.edges.map(
+        ({node}) => {
+          return {
+            id: node.id,
+            products: node.products ? node.products.edges : [],
+            imageUrl: node.imageUrl ? node.imageUrl : '',
+            name: node.name ? node.name : '',
+            slug: node?.slug,
+          };
+        },
+      );
+      dispatch(setStoreCollections(storeCollections));
+    }
+  }, [storeResponse.data]);
+
   const ref = React.useRef();
   const _renderSubItem = ({item}) => {
     return (

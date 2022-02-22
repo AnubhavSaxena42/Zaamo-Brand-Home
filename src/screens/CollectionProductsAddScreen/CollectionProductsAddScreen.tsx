@@ -19,6 +19,7 @@ import {useMutation, NetworkStatus, useQuery} from '@apollo/client';
 import {ADD_PRODUCTS_COLLECTION, COLLECTION_CREATE} from '../../api/mutations';
 import {setStoreCollections} from '../../redux/reducers/storeReducer';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
+import {getItemFromStorage} from '../../services/storage-service';
 import toastService from '../../services/toast-service';
 import {
   GET_COLLECTION_BY_ID,
@@ -53,6 +54,7 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
       refetchQueries: [GET_STORE, GET_COLLECTION_BY_ID],
     },
   );
+
   const brandResponse = useQuery(GET_PRODUCTS_BY_BRAND, {
     variables: {
       brands: [brand],
@@ -60,16 +62,18 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
     },
     notifyOnNetworkStatusChange: true,
   });
+  const storeID = useSelector(state => state.store.storeInfo.id);
+  console.log('Store ID:::', storeID);
   const storeProductsResponse = useQuery(GET_AUTHORISED_BRANDS, {
     variables: {
       mobileNo: '91' + mobileNumber,
       endCursor: '',
+      stores: [storeID],
     },
     notifyOnNetworkStatusChange: true,
   });
 
   useEffect(() => {
-    console.log('running');
     if (!route.params.fromVoucherCreate) {
       if (storeProductsResponse.data) {
         if (
@@ -77,8 +81,6 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
           storeProductsResponse.data.userByMobile.authorisedBrands[0] &&
           storeProductsResponse.data.userByMobile.authorisedBrands[0].products
         ) {
-          console.log('Here');
-          console.log(storeProductsResponse.data);
           const {hasNextPage, endCursor} =
             storeProductsResponse.data.userByMobile.authorisedBrands[0].products
               .pageInfo;
@@ -86,6 +88,7 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
             hasNextPage,
             endCursor,
           });
+
           const newStoreProducts =
             storeProductsResponse.data.userByMobile.authorisedBrands[0].products.edges.map(
               ({node}) => {
@@ -95,6 +98,7 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
                   name: node.name,
                   url: node.url,
                   images: node.images,
+                  collections: node.collections,
                   thumbnail: node.thumbnail
                     ? node.thumbnail.url
                     : 'https://media-exp1.licdn.com/dms/image/C4E0BAQGymyKm7OE3wg/company-logo_200_200/0/1636442519943?e=2159024400&v=beta&t=19hHu3puobGsregS0-31D-KiANWe3NqrKZESktzQC30',
@@ -104,28 +108,33 @@ const CollectionProductsAddScreen = ({navigation, route, collection}) => {
                 };
               },
             );
-          console.log('New Store Products:', newStoreProducts.length);
-          /*if (route.params.collection) {
-          console.log('in collection case');
-          const excludeIds = route.params.collection.products.map(
-            ({node}) => node.id,
-          );
-          console.log('Ids to exclude:', excludeIds);
-          let newProducts = newStoreProducts.filter(product => {
-            const productIncluded = excludeIds.some(id => id === product.id);
-            return !productIncluded;
-          });
-          newProducts = [
-            ...newProducts,
-            ...products.filter(product => {
-              const productIncluded = excludeIds.some(id => id === product.id);
+
+          if (route.params.collection) {
+            const filteredProducts = newStoreProducts.filter(product => {
+              const productIncluded = product.collections.some(collection => {
+                return collection.id === route.params.collection.id;
+              });
               return !productIncluded;
-            }),
-          ];
-          console.log('filtered Products:', newProducts);
-          setProducts(newProducts);
-        }*/
-          setProducts(newStoreProducts);
+            });
+            setProducts(filteredProducts);
+            /*let newProducts = newStoreProducts.filter(product => {
+              const productIncluded = excludeIds.some(id => id === product.id);
+              if (productIncluded)
+                console.log('Product Excluded:', product.name);
+              return !productIncluded;
+            });
+            newProducts = [
+              ...newProducts,
+              ...products.filter(product => {
+                const productIncluded = excludeIds.some(
+                  id => id === product.id,
+                );
+                return !productIncluded;
+              }),
+            ];
+
+            setProducts(newProducts);*/
+          } else setProducts(newStoreProducts);
         }
       }
     }

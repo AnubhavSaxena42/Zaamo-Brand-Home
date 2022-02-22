@@ -119,14 +119,14 @@ const SettingsScreen = ({navigation, route}) => {
               setting={'Brand Guidelines'}
               imageUrl={require('../../assets/icons/brandguidelines.png')}
             />
-            <SettingOption
+            {/*<SettingOption
               onPress={() => {
                 console.log('Open the store bro');
                 Linking.openURL(storeUrl);
               }}
               setting={'View My Store'}
               imageUrl={require('../../assets/icons/mystore.png')}
-            />
+            />*/}
           </View>
           <TouchableOpacity onPress={logout} style={styles.logoutButton}>
             <Text style={styles.logoutButtonText}>Logout</Text>

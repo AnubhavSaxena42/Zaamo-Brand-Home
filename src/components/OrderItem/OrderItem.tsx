@@ -8,27 +8,67 @@ import {
   Image,
   Text,
   View,
+  TextInput,
 } from 'react-native';
 import toastService from '../../services/toast-service';
 import {styles} from './styles';
 const OrderItem = ({line, id, status, setData, fulfillment}) => {
   const [fulfillmentStatus, setFulfillmentStatus] = useState(status);
+  const [shippingId, setShippingId] = useState('');
+  const [shippingProvider, setShippingProvider] = useState('');
   const [wasInitiallyCancelled, setWasInitiallyCancelled] = useState(false);
   useEffect(() => {
     if (status === 'CANCELED') setWasInitiallyCancelled(true);
+    setShippingId(fulfillment?.shippingFulfillment?.shippingId);
+    setShippingProvider(fulfillment?.shippingFulfillment?.shippingProvider);
   }, []);
-  const fulfillmentDataItems = [
-    {id: 'IN_PROCESS', name: 'In Process'},
-    {id: 'SHIPPED', name: 'Shipped'},
-    {id: 'DELIVERED', name: 'Delivered'},
-    {id: 'CANCELED', name: 'Canceled'},
-    {id: 'RETURN_REQUESTED', name: 'Return Requested'},
-    {id: 'RETURN_INITIATED', name: 'Return Initiated'},
-    {id: 'RETURN_COMPLETED', name: 'Return Completed'},
-    {id: 'FULFILLED', name: 'Fulfilled'},
-  ];
+  const getAvailableFulfillmentOptions = () => {
+    let flag = false;
+    let availableFulfillmentOptions = [];
+    const fulfillmentDataItems = [
+      {id: 'RECEIVED', name: 'Received'},
+      {id: 'IN_PROCESS', name: 'In Process'},
+      {id: 'SHIPPED', name: 'Shipped'},
+      {id: 'DELIVERED', name: 'Delivered'},
+      {id: 'CANCELED', name: 'Canceled'},
+      {id: 'RETURN_REQUESTED', name: 'Return Requested'},
+      {id: 'RETURN_INITIATED', name: 'Return Initiated'},
+      {id: 'RETURN_COMPLETED', name: 'Return Completed'},
+      {id: 'FULFILLED', name: 'Fulfilled'},
+    ];
+    for (let i = 0; i < fulfillmentDataItems.length; i++) {
+      if (fulfillmentDataItems[i].id === status) flag = true;
+      if (flag === true)
+        availableFulfillmentOptions.push(fulfillmentDataItems[i]);
+    }
+    return availableFulfillmentOptions;
+  };
+  const setNewFulfillmentData = () => {
+    const newData = fulfillment.map(item => {
+      if (item.id === id) {
+        if (fulfillmentStatus === 'SHIPPED') {
+          return {
+            id: item.id,
+            status: fulfillmentStatus,
+            shippingId: shippingId,
+            shippingProvider: shippingProvider,
+          };
+        } else {
+          return {
+            id: item.id,
+            status: fulfillmentStatus,
+          };
+        }
+      } else {
+        return item;
+      }
+    });
+
+    setData(newData);
+  };
   const getFulfillmentStatusDisplay = () => {
-    if (fulfillmentStatus === 'IN_PROCESS') return 'In Process';
+    if (fulfillmentStatus === 'RECEIVED') return 'Received';
+    else if (fulfillmentStatus === 'IN_PROCESS') return 'In Process';
     else if (fulfillmentStatus === 'SHIPPED') return 'Shipped';
     else if (fulfillmentStatus === 'DELIVERED') return 'Delivered';
     else if (fulfillmentStatus === 'CANCELED') return 'Cancelled';
@@ -104,7 +144,9 @@ const OrderItem = ({line, id, status, setData, fulfillment}) => {
       </TouchableOpacity>
     );
   };
-
+  useEffect(() => {
+    setNewFulfillmentData();
+  }, [shippingId, shippingProvider]);
   return (
     <View style={styles.orderItemContainer}>
       <Modal
@@ -117,7 +159,7 @@ const OrderItem = ({line, id, status, setData, fulfillment}) => {
               Select FulFillment Status
             </Text>
             <FlatList
-              data={fulfillmentDataItems}
+              data={getAvailableFulfillmentOptions()}
               keyExtractor={item => item.id}
               renderItem={({item}) => (
                 <ModalItem
@@ -130,18 +172,7 @@ const OrderItem = ({line, id, status, setData, fulfillment}) => {
             />
             <TouchableOpacity
               onPress={() => {
-                const newData = fulfillment.map(item => {
-                  if (item.id === id) {
-                    return {
-                      id: item.id,
-                      status: fulfillmentStatus,
-                    };
-                  } else {
-                    return item;
-                  }
-                });
-
-                setData(newData);
+                setNewFulfillmentData();
                 setIsFulfillmentModalOpen(false);
               }}
               style={styles.fulfillmentModalConfirmButton}>
@@ -152,12 +183,12 @@ const OrderItem = ({line, id, status, setData, fulfillment}) => {
           </View>
         </SafeAreaView>
       </Modal>
-      <Image source={{uri: line.thumbnail.url}} style={styles.imageStyle} />
+      <Image source={{uri: line?.thumbnail.url}} style={styles.imageStyle} />
       <View style={styles.orderInfo}>
         <View style={styles.namePriceInfoContainer}>
-          <Text style={styles.productNameText}>{line.productName}</Text>
+          <Text style={styles.productNameText}>{line?.productName}</Text>
           <Text style={styles.productPriceText}>
-            Rs {line.totalPrice.net.amount}
+            Rs {line?.totalPrice.net.amount}
           </Text>
         </View>
         {/* Variant Info ??? */}
@@ -206,6 +237,32 @@ const OrderItem = ({line, id, status, setData, fulfillment}) => {
             </TouchableOpacity>
           </View>
         </View>
+        {fulfillmentStatus === 'SHIPPED' ? (
+          <View style={styles.shippingInputContainer}>
+            <View>
+              <Text style={styles.shippingInput}>Shipping ID:</Text>
+              <TextInput
+                value={shippingId}
+                keyboardType="number-pad"
+                onChangeText={text => {
+                  setShippingId(text);
+                }}
+                style={styles.inputStyle}
+                placeholder={''}
+              />
+            </View>
+            <View>
+              <Text style={styles.shippingInput}>Shipping Provider:</Text>
+              <TextInput
+                value={shippingProvider}
+                keyboardType="number-pad"
+                onChangeText={text => setShippingProvider(text)}
+                style={styles.inputStyle}
+                placeholder={''}
+              />
+            </View>
+          </View>
+        ) : null}
       </View>
     </View>
   );

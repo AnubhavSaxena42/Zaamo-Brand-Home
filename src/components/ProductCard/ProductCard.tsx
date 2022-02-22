@@ -24,11 +24,13 @@ const ProductCard = ({
   const dispatch = useDispatch();
   const [inventory, setInventory] = useState('0');
   React.useEffect(() => {
-    let inventoryVal = 0;
-    product.variants.forEach(variant => {
-      inventoryVal += variant.stocks[0].quantity;
-    });
-    setInventory(inventoryVal.toString());
+    if (!inCollectionView) {
+      let inventoryVal = 0;
+      product.variants.forEach(variant => {
+        inventoryVal += variant.stocks[0].quantity;
+      });
+      setInventory(inventoryVal.toString());
+    }
   }, [product]);
   return (
     <Pressable
@@ -92,7 +94,9 @@ const ProductCard = ({
             Inventory:{' '}
             <Text
               style={{color: 'black', fontSize: 14, fontFamily: 'Roboto-Bold'}}>
-              {inventory}
+              {product.variants[0]
+                ? product.variants[0]?.stocks[0].quantity
+                : '0'}
             </Text>
           </Text>
           <TouchableOpacity

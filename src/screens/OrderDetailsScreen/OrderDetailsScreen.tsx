@@ -23,8 +23,17 @@ import {styles} from './styles';
 const OrderDetailsScreen = ({navigation, route}) => {
   const order = route.params?.order ? route.params.order : {};
   const warehouseId = useSelector(state => state.store.warehouse);
+  console.log('Details:', {fulfillments: order.fulfillments});
   const [fulfillmentData, setFullfillmentData] = useState(
     order.fulfillments?.map(fulfillment => {
+      if (fulfillment.shippingFulfillment) {
+        return {
+          id: fulfillment?.id,
+          status: fulfillment?.status,
+          shippingId: fulfillment?.shippingFulfillment?.shippingId,
+          shippingProvider: fulfillment?.shippingFulfillment?.shippingProvider,
+        };
+      }
       return {
         id: fulfillment?.id,
         status: fulfillment?.status,
@@ -40,7 +49,10 @@ const OrderDetailsScreen = ({navigation, route}) => {
         id: fulfillmentData[0]?.id,
         fulfillmentStatus: fulfillmentData[0]?.status,
         warehouseId: warehouseId,
+        shippingId: null,
+        shippingProvider: null,
       },
+      refetchQueries: [GET_ORDERS],
     },
   );
   console.log('lookey', fulfillmentData);
@@ -129,15 +141,53 @@ const OrderDetailsScreen = ({navigation, route}) => {
           </View>
           <TouchableOpacity
             onPress={() => {
+              let flag = false;
               fulfillmentData.forEach(fulfillment => {
-                updateFulfillment({
-                  variables: {
-                    id: fulfillment.id,
-                    fulfillmentStatus: fulfillment.status,
-                    warehouseId: warehouseId,
-                  },
-                  refetchQueries: [GET_ORDERS],
-                });
+                if (fulfillment.status === 'SHIPPED') {
+                  if (
+                    !fulfillment.shippingId ||
+                    fulfillment.shippingId === '' ||
+                    !fulfillment.shippingProvider ||
+                    fulfillment.shippingProvider === ''
+                  ) {
+                    toastService.showToast(
+                      'Please fill out the shipping Details ',
+                      true,
+                    );
+                    flag = true;
+                  }
+                }
+              });
+              if (flag) return;
+              fulfillmentData.forEach(fulfillment => {
+                if (fulfillment.status === 'SHIPPED') {
+                  console.log('Running Shipped Fulfillment For::', fulfillment);
+                  updateFulfillment({
+                    variables: {
+                      id: fulfillment.id,
+                      fulfillmentStatus: fulfillment.status,
+                      warehouseId: warehouseId,
+                      shippingId: fulfillment.shippingId,
+                      shippingProvider: fulfillment.shippingProvider,
+                    },
+                    refetchQueries: [GET_ORDERS],
+                  });
+                } else {
+                  console.log(
+                    'Running other case fulfillment for::',
+                    fulfillment,
+                  );
+                  updateFulfillment({
+                    variables: {
+                      id: fulfillment.id,
+                      fulfillmentStatus: fulfillment.status,
+                      warehouseId: warehouseId,
+                      shippingId: null,
+                      shippingProvider: null,
+                    },
+                    refetchQueries: [GET_ORDERS],
+                  });
+                }
               });
             }}
             style={styles.button}>

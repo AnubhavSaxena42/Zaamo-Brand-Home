@@ -1,5 +1,4 @@
 import {gql} from '@apollo/client';
-
 export const GET_PRODUCTS_BY_BRAND = gql`
   query ($brands: [ID], $endCursor: String!) {
     products(first: 20, after: $endCursor, filter: {brands: $brands}) {
@@ -55,7 +54,7 @@ export const GET_COLLECTION_BY_ID = gql`
       name
       slug
       imageUrl
-      products(first: 10, after: $endCursor) {
+      products(first: 20, after: $endCursor) {
         pageInfo {
           hasNextPage
           endCursor
@@ -267,7 +266,7 @@ export const GET_STORE = gql`
 `;
 
 export const GET_AUTHORISED_BRANDS = gql`
-  query ($mobileNo: String!, $endCursor: String!) {
+  query ($mobileNo: String!, $endCursor: String!, $stores: [ID]) {
     userByMobile(mobileNo: $mobileNo) {
       authorisedBrands {
         id
@@ -282,6 +281,10 @@ export const GET_AUTHORISED_BRANDS = gql`
             node {
               id
               name
+              collections(stores: $stores) {
+                id
+                name
+              }
               slug
               variants {
                 id
@@ -475,6 +478,10 @@ export const GET_ORDERS = gql`
           fulfillments {
             id
             status
+            shippingFulfillment {
+              shippingId
+              shippingProvider
+            }
             fulfillmentOrder
             lines {
               id

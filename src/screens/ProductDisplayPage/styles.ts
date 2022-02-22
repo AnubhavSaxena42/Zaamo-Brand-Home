@@ -1,5 +1,5 @@
 import {StyleSheet, Dimensions} from 'react-native';
-const {width, height} = Dimensions.get('screen');
+const {width, height} = Dimensions.get('window');
 const imageW = width * 0.9;
 const imageH = imageW * 1.2;
 

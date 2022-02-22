@@ -145,8 +145,15 @@ const ProductPage = ({navigation, route}) => {
               <Text style={styles.productDetailsLabel}>Sizes Available</Text>
               <View style={styles.variantsContainer}>
                 {product.variants?.map(variant => (
-                  <View style={styles.variantBox}>
-                    <Text style={styles.variantNameText}>{variant.name}</Text>
+                  <View>
+                    <View style={styles.variantBox}>
+                      <Text style={styles.variantNameText}>{variant.name}</Text>
+                    </View>
+                    <View style={styles.variantBox}>
+                      <Text style={styles.variantNameText}>
+                        {variant.stocks[0].quantity}
+                      </Text>
+                    </View>
                   </View>
                 ))}
               </View>

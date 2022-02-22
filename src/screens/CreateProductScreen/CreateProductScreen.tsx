@@ -51,6 +51,7 @@ const CreateProductScreen = ({navigation, route}) => {
   const [isPriceError, setisPriceError] = useState(false);
   const [isStockError, setIsStockError] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [viewableItems, setViewableItems] = useState(5);
   const [isDescriptionError, setIsDescriptionError] = useState(false);
   const [productType, setProductType] = useState('UHJvZHVjdFR5cGU6NjU=');
   const [isColorModalVisible, setIsColorModalVisible] = useState(false);
@@ -104,9 +105,10 @@ const CreateProductScreen = ({navigation, route}) => {
       setSizeAttributeValues(newSizeAttributeValues);*/
       const newSizeAttributeValues = sizeResponse.data.attribute.values.map(
         value => {
+          console.log('Size attribute value is this:', value);
           return {
             name: value.name,
-            id: value.name,
+            id: value.id,
             isSelected: false,
           };
         },
@@ -344,7 +346,7 @@ const CreateProductScreen = ({navigation, route}) => {
             name: colorItem.name + ',' + sizeAttributeValues[i].name,
             attributes: [
               {id: colorAttributeId, values: [colorItem.name]},
-              {id: sizeAttributeId, values: [sizeAttributeValues[i].id]},
+              {id: sizeAttributeId, values: [sizeAttributeValues[i].name]},
             ],
           });
         }
@@ -357,6 +359,7 @@ const CreateProductScreen = ({navigation, route}) => {
     const variationsAfterDelete = variations.filter(
       variation => variation.name !== variationName,
     );
+    console.log('Variation to delete:', variationName);
     setVariations(variationsAfterDelete);
   };
   return (
@@ -617,7 +620,7 @@ const CreateProductScreen = ({navigation, route}) => {
               </View>
             </View>
             <View style={styles.sizeValuesContainer}>
-              {sizeAttributeValues.map(value => {
+              {sizeAttributeValues.slice(0, viewableItems).map(value => {
                 return (
                   <Checkbox
                     key={value}
@@ -628,7 +631,18 @@ const CreateProductScreen = ({navigation, route}) => {
                 );
               })}
             </View>
-
+            <View style={{alignSelf: 'center', marginVertical: 10}}>
+              <Text
+                onPress={() => {
+                  const newViewableItems = viewableItems + 5;
+                  setViewableItems(newViewableItems);
+                }}
+                style={{
+                  color: 'blue',
+                }}>
+                View More
+              </Text>
+            </View>
             <TouchableOpacity onPress={onVariationCreate}>
               <View
                 style={{

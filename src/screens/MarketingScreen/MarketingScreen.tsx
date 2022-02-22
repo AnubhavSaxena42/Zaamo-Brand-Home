@@ -7,6 +7,7 @@ import Header from '../../components/Header';
 import {useQuery, NetworkStatus} from '@apollo/client';
 import {GET_COUPONS} from '../../api/queries';
 import {styles} from './styles';
+import toastService from '../../services/toast-service';
 const MarketingScreen = ({navigation}) => {
   const couponResponse = useQuery(GET_COUPONS, {
     variables: {
@@ -54,7 +55,10 @@ const MarketingScreen = ({navigation}) => {
         tag={'Marketing'}
         fontSize={22}
         icon={true}
-        onPress={() => navigation.navigate('CreateCouponScreen')}
+        onPress={() => {
+          toastService.showToast('In development', true);
+          //navigation.navigate('CreateCouponScreen')
+        }}
       />
       <FlatList
         data={vouchers}

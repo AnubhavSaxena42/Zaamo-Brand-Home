@@ -12,6 +12,7 @@ import {
   Animated,
 } from 'react-native';
 import Swiper from 'react-native-swiper';
+import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import OrderCard from '../../components/OrderCard/OrderCard';
 import OrdersOverviewCard from '../../components/OrdersOverviewCard/OrdersOverviewCard';
 import {useQuery} from '@apollo/client';
@@ -24,38 +25,27 @@ const OrdersScreen = ({navigation}) => {
   const {data, error, loading} = useQuery(GET_ORDERS, {
     notifyOnNetworkStatusChange: true,
   });
-  const [brandOrders, setBrandOrders] = useState([]);
+  const [activeIndex, setActiveIndex] = useState(0);
   const [listData, setListData] = useState([]);
-  const [brandShippedOrders, setBrandShippedOrders] = useState([]);
-  const [brandInProcessOrders, setBrandInProcessOrders] = useState([]);
-  const [brandDeliveredOrders, setBrandDeliveredOrders] = useState([]);
-  const [brandCancelledOrders, setBrandCancelledOrders] = useState([]);
-  const [brandReturnRequestedOrders, setBrandReturnRequestedOrders] = useState(
-    [],
-  );
-  const [brandReturnInitiatedOrders, setBrandReturnInitiatedOrders] = useState(
-    [],
-  );
-  const [brandReturnCompletedOrders, setBrandReturnCompletedOrders] = useState(
-    [],
-  );
-  const [brandFulfilledOrders, setBrandFulfilledOrders] = useState([]);
   const dispatch = useDispatch();
-
+  const ref = React.useRef();
   const _renderSubItem = ({item}) => {
     return (
-      <OrderCard
-        key={item.node.id}
-        navigation={navigation}
-        order={item.node}
-        status={item?.status}
-      />
+      <View>
+        <OrderCard
+          key={item.node.id}
+          navigation={navigation}
+          order={item.node}
+          status={item?.status}
+        />
+      </View>
     );
   };
 
   const _renderItem = ({item, index}) => {
+    console.log('WHAT WERE GETTING OVER HERE IS:', item);
     return (
-      <View>
+      <View style={{alignItems: 'center', width}}>
         <FlatList
           data={item}
           showsVerticalScrollIndicator={false}
@@ -66,11 +56,20 @@ const OrdersScreen = ({navigation}) => {
       </View>
     );
   };
-
-  const Tab = React.forwardRef(({item, onItemPress}, ref) => {
+  const onTapTab = index => {
+    ref?.current?.scrollToIndex({index,true})
+  };
+  const Tab = React.forwardRef(({item, index}, ref) => {
     return (
-      <TouchableOpacity onPress={onItemPress}>
-        <View ref={ref} style={{marginRight: 10, marginBottom: 5}}>
+      <TouchableOpacity onPress={() => onTapTab(index)}>
+        <View
+          ref={ref}
+          style={{
+            marginRight: 10,
+            marginBottom: 5,
+            borderBottomWidth: index === activeIndex ? 1 : 0,
+            borderBottomColor: 'black',
+          }}>
           <Text style={{color: 'black'}}>{item.text}</Text>
         </View>
       </TouchableOpacity>
@@ -114,7 +113,7 @@ const OrdersScreen = ({navigation}) => {
     const scrollViewRef = useRef();
     const [measures, setMeasures] = useState([]);
 
-    React.useEffect(() => {
+    /*React.useEffect(() => {
       dispatch(setLoaderStatus(true));
       console.log('Container Ref:', containerRef.current);
       let m = [];
@@ -146,7 +145,7 @@ const OrdersScreen = ({navigation}) => {
       if (measures.length === 0) dispatch(setLoaderStatus(true));
       else dispatch(setLoaderStatus(false));
     }, [measures]);
-
+    */
     return (
       <View style={{paddingHorizontal: 10}}>
         <ScrollView
@@ -161,33 +160,30 @@ const OrdersScreen = ({navigation}) => {
                   onItemPress={() => onItemPress(index)}
                   item={item}
                   ref={item.ref}
+                  index={index}
                 />
               );
             })}
-            {measures.length > 0 && (
-              <Indicator
+            {
+              measures.length > 0 && null /*<Indicator
                 data={data}
                 scrollViewRef={scrollViewRef}
                 measures={measures}
                 scrollX={scrollX}
-              />
-            )}
+              />*/
+            }
           </View>
         </ScrollView>
       </View>
     );
   };
-  const onItemPress = React.useCallback(itemIndex => {
-    ref?.current.scrollToOffset({
-      offset: itemIndex * width,
-    });
-  });
-  const ref = React.useRef();
+ 
   useEffect(() => {
     if (data) {
       const orders = data.orders.edges.filter(
         ({node}) => node.lines.length !== 0,
       );
+      console.log('Called Again, whats going wrong?');
       let newOrders = orders.map(order => {
         console.log('OrderLine', order.fulfillments);
         return {
@@ -196,6 +192,7 @@ const OrdersScreen = ({navigation}) => {
         };
       });
       let allOrders = [],
+        receivedOrders = [],
         inProcessOrders = [],
         shippedOrders = [],
         deliveredOrders = [],
@@ -205,6 +202,7 @@ const OrdersScreen = ({navigation}) => {
         returnCompletedOrders = [],
         fulfilledOrders = [];
       const fulfillmentSortItems = [
+        {id: 'RECEIVED', name: 'Received', value: 0},
         {id: 'IN_PROCESS', name: 'In Process', value: 1},
         {id: 'SHIPPED', name: 'Shipped', value: 2},
         {id: 'DELIVERED', name: 'Delivered', value: 3},
@@ -229,7 +227,11 @@ const OrdersScreen = ({navigation}) => {
         }
       };
       const sortByStatus = (status, order) => {
-        if (status === 'In Process') {
+        if (status === 'Received') {
+          order.status = status;
+          receivedOrders.push(order);
+          allOrders.push(order);
+        } else if (status === 'In Process') {
           order.status = status;
           inProcessOrders.push(order);
           allOrders.push(order);
@@ -265,7 +267,6 @@ const OrdersScreen = ({navigation}) => {
       };
       newOrders.forEach(value => {
         let order = value.node;
-
         if (order.fulfillments && order.fulfillments.length !== 0) {
           console.log(order);
           console.log(order.fulfillments[0].status);
@@ -279,21 +280,24 @@ const OrdersScreen = ({navigation}) => {
           }
           console.log('Min Status Value:', minStatusValue);
           const fulfillmentOverallStatus = findStatusName(minStatusValue);
-
           sortByStatus(fulfillmentOverallStatus, value);
         }
       });
-      setBrandOrders(allOrders);
-      setBrandInProcessOrders(inProcessOrders);
-      setBrandShippedOrders(shippedOrders);
-      setBrandDeliveredOrders(deliveredOrders);
-      setBrandCancelledOrders(cancelledOrders);
-      setBrandReturnRequestedOrders(returnRequestedOrders);
-      setBrandReturnInitiatedOrders(returnInitiatedOrders);
-      setBrandReturnCompletedOrders(returnCompletedOrders);
-      setBrandFulfilledOrders(fulfilledOrders);
+      console.log('ORDERS::', {
+        allOrders,
+        receivedOrders,
+        shippedOrders,
+        inProcessOrders,
+        deliveredOrders,
+        cancelledOrders,
+        returnRequestedOrders,
+        returnInitiatedOrders,
+        returnCompletedOrders,
+        fulfilledOrders,
+      });
       setListData([
         allOrders,
+        receivedOrders,
         shippedOrders,
         inProcessOrders,
         deliveredOrders,
@@ -305,17 +309,12 @@ const OrdersScreen = ({navigation}) => {
       ]);
     }
   }, [data]);
-  console.log('Brand Orders:', brandOrders);
-  console.log('In process Orders:', brandInProcessOrders);
-  console.log('Shipped Orders', brandShippedOrders);
-  console.log('Delivered Orders', brandDeliveredOrders);
-  console.log('Cancelled Orders', brandCancelledOrders);
-  console.log('Return Requested Orders', brandReturnRequestedOrders);
-  console.log('Return Initiated Orders', brandReturnInitiatedOrders);
-  console.log('Return Completed Orders', brandReturnCompletedOrders);
-  console.log('Fulfilled Orders', brandFulfilledOrders);
-  console.log('Cancelled orders:', brandCancelledOrders);
-
+  console.log('LIST DATA:::', {listData});
+  const updateIndicator = index => {
+    const currentIndex = index;
+    console.log('currentIndexNow:', currentIndex);
+    setActiveIndex(currentIndex);
+  };
   useEffect(() => {
     if (loading) dispatch(setLoaderStatus(true));
     else dispatch(setLoaderStatus(false));
@@ -333,10 +332,9 @@ const OrdersScreen = ({navigation}) => {
       <View style={styles.ordersListContainer}>
         <View style={styles.tabsContainer}>
           <Tabs
-            onItemPress={onItemPress}
-            scrollX={scrollX}
             data={[
               {text: 'All Orders', ref: React.createRef()},
+              {text: 'Received', ref: React.createRef()},
               {text: 'Shipped', ref: React.createRef()},
               {text: 'In Process', ref: React.createRef()},
               {text: 'Delivered', ref: React.createRef()},
@@ -348,8 +346,8 @@ const OrdersScreen = ({navigation}) => {
             ]}
           />
         </View>
-        <Animated.FlatList
-          ref={ref}
+        {/*<Animated.FlatList
+          //ref={ref}
           data={listData}
           contentContainerStyle={{backgroundColor: 'white'}}
           onScroll={Animated.event(
@@ -362,6 +360,14 @@ const OrdersScreen = ({navigation}) => {
           renderItem={_renderItem}
           pagingEnabled
           disableIntervalMomentum
+        />*/}
+
+        <SwiperFlatList
+          ref={ref}
+          index={0}
+          data={listData}
+          renderItem={_renderItem}
+          onChangeIndex={({index}) => updateIndicator(index)}
         />
       </View>
     </SafeAreaView>

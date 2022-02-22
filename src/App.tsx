@@ -3,9 +3,6 @@ import {StyleSheet, Text, View} from 'react-native';
 import {Provider} from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
 import {store} from './redux/store/store';
-import TaggingPanelStack from './navigation/MainNavigator';
-import {HomeTabNavigator} from './navigation/MainNavigator';
-import {AuthorizationStack} from './navigation/MainNavigator';
 import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
 import {MainStackNavigator} from './navigation/MainNavigator';
 import {relayStylePagination} from '@apollo/client/utilities';
@@ -79,6 +76,7 @@ const authLink = setContext(async (_, {headers}) => {
   // get the authentication token from local storage if it exists
   const token = await getItemFromStorage('Token');
   const storeId = await getItemFromStorage('Store-ID');
+  console.log('XSTOREID:::', storeId);
   // return the headers to the context so httpLink can read them
   return {
     headers: {

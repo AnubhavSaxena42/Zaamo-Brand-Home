@@ -10,6 +10,7 @@ import {
   SafeAreaView,
   Pressable,
 } from 'react-native';
+import {Post} from '../../services/api.service';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import axios from 'axios';
@@ -27,9 +28,9 @@ import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import {setStoreCollections} from '../../redux/reducers/storeReducer';
 import {UPDATE_COLLECTION} from '../../api/mutations';
 import toastService from '../../services/toast-service';
-import {WEBSERVER_BASE_URL} from '../../core/constants';
+import {ENGINE_URL, WEBSERVER_BASE_URL} from '../../core/constants';
 import {styles} from './styles';
-
+import {readFile} from 'react-native-fs';
 const ProductsTabScreen = ({navigation}) => {
   const [isViewing, setIsViewing] = useState(1);
   const [isCollectionEdit, setIsCollectionEdit] = useState(false);
@@ -37,7 +38,7 @@ const ProductsTabScreen = ({navigation}) => {
   const [isNewCollectionModalVisible, setIsNewCollectionModalVisible] =
     useState(false);
   const [newCollectionName, setNewCollectionName] = useState('');
-  const [file, setFile] = useState();
+  const [file, setFile] = useState(null);
   const [thumbnailUri, setThumbnailUri] = useState('');
   const [products, setProducts] = useState([]);
   const [collections, setCollections] = useState([]);
@@ -66,6 +67,7 @@ const ProductsTabScreen = ({navigation}) => {
   });
   useEffect(() => {
     if (storeResponse.data) {
+      console.log('Collections', storeResponse);
       setCollectionsPageInfo(storeResponse.data.store.collections.pageInfo);
       const storeCollections = storeResponse.data.store.collections.edges.map(
         ({node}) => {
@@ -92,60 +94,14 @@ const ProductsTabScreen = ({navigation}) => {
         quality: 0.2,
       },
       result => {
-        console.log('Real response', result);
-        console.log(result);
         if (result.didCancel) {
           dispatch(setLoaderStatus(false));
           return;
+        } else {
+          setFile(result.assets[0]);
+          const fileToUpload = result.assets[0];
+          uploadFile(fileToUpload);
         }
-        var formData = new FormData();
-        formData.append('file', {
-          type: 'image/jpeg',
-          name: result.assets[0].fileName,
-          uri: result.assets[0].uri,
-        });
-        setFile(result.assets[0]);
-        console.log(formData);
-        /*axios({
-          method: 'post',
-          url: 'https://betacontent.zaamo.co/engine/upload',
-          data: formData,
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            'Service-Token': '2900ba48-85f6-4929-b19d-0c0da14dbc14',
-          },
-        })
-          .then(function (response) {
-            setThumbnailUri(response.data.url);
-            setIsThumbnailModalVisible(false);
-            setIsNewCollectionModalVisible(true);
-            console.log(response);
-            dispatch(setLoaderStatus(false));
-          })
-          .catch(function (response) {
-            //handle error
-            console.log(response);
-            dispatch(setLoaderStatus(false));
-          });
-        */
-        axios
-          .get(`${WEBSERVER_BASE_URL}/presigned/url/toupload/`, {
-            headers: {
-              'Service-Token': '2900ba48-85f6-4929-b19d-0c0da14dbc14',
-            },
-          })
-          .then(res => {
-            console.log(res.data);
-            setThumbnailUri(res.data?.streaming_url);
-            setIsThumbnailModalVisible(false);
-            setIsNewCollectionModalVisible(true);
-            dispatch(setLoaderStatus(false));
-          })
-          .catch(e => {
-            console.log(e);
-            setIsThumbnailError(true);
-            dispatch(setLoaderStatus(false));
-          });
       },
     );
   };
@@ -278,6 +234,74 @@ const ProductsTabScreen = ({navigation}) => {
     if (collectionUpdateResponse.loading) dispatch(setLoaderStatus(true));
     else dispatch(setLoaderStatus(false));
   }, [collectionUpdateResponse.loading]);
+  const uploadFile = async fileToUpload => {
+    dispatch(setLoaderStatus(true));
+    const extension = fileToUpload.type.split('/')[1];
+
+    const [streamUrl, url, fileKey] = await axios
+      .get(`${WEBSERVER_BASE_URL}/presigned/url/toupload/`, {
+        headers: {
+          'Service-Token': '2900ba48-85f6-4929-b19d-0c0da14dbc14',
+        },
+        params: {extension: extension},
+      })
+      .then(response => {
+        return [
+          response.data?.streaming_url,
+          response.data?.url,
+          response.data?.file_key,
+        ];
+        /*setThumbnailUri(res.data?.streaming_url);
+          setIsThumbnailModalVisible(false);
+          setIsNewCollectionModalVisible(true);
+          dispatch(setLoaderStatus(false));*/
+      })
+      .catch(e => {
+        return [null, null, null];
+        /*setIsThumbnailError(true);
+          dispatch(setLoaderStatus(false));*/
+      });
+    const xhr = new XMLHttpRequest();
+    xhr.open('PUT', url);
+    xhr.setRequestHeader('Content-Type', fileToUpload.type);
+    xhr.send({
+      uri: fileToUpload.uri,
+      type: fileToUpload.type,
+      name: fileToUpload.fileName,
+    });
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          console.log('Image successfully uploaded to S3');
+          console.log({url, streamUrl});
+          setThumbnailUri(streamUrl);
+          setIsThumbnailModalVisible(false);
+          setIsNewCollectionModalVisible(true);
+          dispatch(setLoaderStatus(false));
+          Post(
+            ENGINE_URL,
+            {
+              data: [
+                {
+                  file_key: fileKey,
+                },
+              ],
+            },
+            {
+              headers: {
+                'Content-Type': 'application/json',
+                'Service-Token': '2900ba48-85f6-4929-b19d-0c0da14dbc14',
+              },
+            },
+          )
+            .then(res => console.log('COmpress Res:::', res))
+            .catch(err => console.log('COMPRESS ERR:::', err));
+        } else {
+          console.log('Error while sending the image to S3');
+        }
+      }
+    };
+  };
   const onSelectGallery = async () => {
     const result = await launchImageLibrary({}, async res => {
       dispatch(setLoaderStatus(true));
@@ -288,78 +312,13 @@ const ProductsTabScreen = ({navigation}) => {
       }
 
       setFile(res.assets[0]);
-      const fileToUpload = {
-        type: 'image/jpeg',
-        name: res.assets[0].fileName,
-        uri: res.assets[0].uri,
-      };
-      /*galleryFormData.append('file', {
-        type: 'image/jpeg',
-        name: res.assets[0].fileName,
-        uri: res.assets[0].uri,
-      });
-      console.log(galleryFormData);*/
-      /*axios({
-        method: 'post',
-        url: 'https://betacontent.zaamo.co/engine/upload',
-        data: galleryFormData,
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'Service-Token': '2900ba48-85f6-4929-b19d-0c0da14dbc14',
-        },
-      })
-        .then(function (response) {
-          setThumbnailUri(response.data.url);
-          setIsThumbnailModalVisible(false);
-          setIsNewCollectionModalVisible(true);
-          console.log(response);
-          dispatch(setLoaderStatus(false));
-        })
-        .catch(function (response) {
-          //handle error
-          console.log(response);
-          dispatch(setLoaderStatus(false));
-        });*/
-      const [streamUrl, url, fileKey] = await axios
-        .get(`${WEBSERVER_BASE_URL}/presigned/url/toupload/`, {
-          headers: {
-            'Service-Token': '2900ba48-85f6-4929-b19d-0c0da14dbc14',
-          },
-        })
-        .then(response => {
-          console.log(response.data);
-          return [
-            response.data?.streaming_url,
-            response.data?.url,
-            response.data?.file_key,
-          ];
-          /*setThumbnailUri(res.data?.streaming_url);
-          setIsThumbnailModalVisible(false);
-          setIsNewCollectionModalVisible(true);
-          dispatch(setLoaderStatus(false));*/
-        })
-        .catch(e => {
-          return [null, null, null];
-          /*setIsThumbnailError(true);
-          dispatch(setLoaderStatus(false));*/
-        });
-      await axios
-        .put(url, fileToUpload, {})
-        .then(res => {
-          console.log('image url Success: ', res);
-          setThumbnailUri(streamUrl);
-          setIsThumbnailModalVisible(false);
-          setIsNewCollectionModalVisible(true);
-          dispatch(setLoaderStatus(false));
-        })
-        .catch(err => {
-          console.log('err:', err);
-          setIsThumbnailError(true);
-          dispatch(setLoaderStatus(false));
-          console.log('Handle error');
-        });
+      const fileToUpload = res.assets[0];
+      await uploadFile(fileToUpload);
+      console.log('Picked File:', fileToUpload);
     });
+    dispatch(setLoaderStatus(false));
   };
+
   const handleOnEndReached = () => {
     console.log('Next Page:', productsPageInfo.hasNextPage);
 
@@ -664,7 +623,7 @@ const ProductsTabScreen = ({navigation}) => {
         <FlatList
           data={collections}
           onEndReached={handleOnEndCollectionsReached}
-          onEndReachedThreshold={0.5}
+          onEndReachedThreshold={2}
           onRefresh={storeResponse.refetch}
           refreshing={refreshingCollections}
           numColumns={1}

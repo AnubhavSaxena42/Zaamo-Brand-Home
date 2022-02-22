@@ -56,6 +56,7 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     color: 'black',
     width: '80%',
+    maxWidth: 150,
   },
   productPriceText: {
     fontSize: 14,
@@ -65,7 +66,7 @@ export const styles = StyleSheet.create({
   },
   statusContainer: {
     position: 'absolute',
-    bottom: '20%',
+    bottom: '0%',
     marginLeft: '3%',
   },
   statusHeaderText: {
@@ -98,5 +99,22 @@ export const styles = StyleSheet.create({
   },
   statusChangeButtonText: {
     color: 'white',
+  },
+  inputStyle: {
+    width: '80%',
+    color: 'black',
+    borderBottomWidth: 1,
+    borderColor: 'black',
+    paddingVertical: '3%',
+    marginBottom: 15,
+  },
+  shippingInputContainer: {
+    flexDirection: 'row',
+    width: '80%',
+    justifyContent: 'space-between',
+  },
+  shippingInput: {
+    fontSize: 10,
+    color: 'black',
   },
 });

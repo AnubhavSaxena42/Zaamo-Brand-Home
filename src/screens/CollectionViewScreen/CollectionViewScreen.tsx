@@ -213,6 +213,7 @@ const CollectionViewScreen = ({navigation, route}) => {
         onPress={() => {
           navigation.navigate('CollectionProductsAddScreen', {
             collection: collection,
+            collectionProducts: collectionProducts,
             setSelectedCollection: setSelectedCollection,
           });
         }}

@@ -11,7 +11,8 @@ import {styles} from './styles';
 const OrderCard = ({navigation, status, isDetails, order}) => {
   const getTheme = status => {
     if (status) {
-      if (status === 'In Process') return '#f8cece';
+      if (status === 'Received') return 'purple';
+      else if (status === 'In Process') return '#f8cece';
       else if (status === 'Shipped') return '#eee6a1';
       else if (status === 'Delivered') return '#ddfcb6';
       else if (status === 'Cancelled') return '#b5cbed';
@@ -23,7 +24,8 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
   };
   const getTextTheme = status => {
     if (status) {
-      if (status === 'In Process') return '#ef3b3b';
+      if (status === 'Received') return 'Green';
+      else if (status === 'In Process') return '#ef3b3b';
       else if (status === 'Shipped') return '#d29f4b';
       else if (status === 'Delivered') return '#4c8305';
       else if (status === 'Cancelled') return '#3b5998';
@@ -50,8 +52,9 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
       }}>
       {!isDetails && (
         <Image
-          source={require('../../assets/images/smugcat.jpg')}
+          source={require('../../assets/images/user.png')}
           style={styles.imageStyle}
+          resizeMode="contain"
         />
       )}
       <View style={styles.orderInfo}>

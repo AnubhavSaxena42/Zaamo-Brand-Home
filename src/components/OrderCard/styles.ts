@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
     elevation: 5,
   },
   imageStyle: {
-    height: '100%',
+    height: '95%',
     width: '35%',
     borderRadius: 10,
   },

@@ -15,32 +15,63 @@ import Swiper from 'react-native-swiper';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import OrderCard from '../../components/OrderCard/OrderCard';
 import OrdersOverviewCard from '../../components/OrdersOverviewCard/OrdersOverviewCard';
-import {useQuery} from '@apollo/client';
-import {GET_ORDERS,GET_STORE,GET_AUTHORISED_BRANDS} from '../../api/queries';
+import {useQuery, NetworkStatus} from '@apollo/client';
+import {GET_ORDERS, GET_STORE, GET_AUTHORISED_BRANDS} from '../../api/queries';
 import {useSelector, useDispatch} from 'react-redux';
-import { setAuthorisedBrands } from '../../redux/reducers/userReducer';
-import { setStoreInfo,setStoreCollections,setStoreProducts,setWarehouse } from '../../redux/reducers/storeReducer';
+import {setAuthorisedBrands} from '../../redux/reducers/userReducer';
+import {
+  setStoreInfo,
+  setStoreCollections,
+  setStoreProducts,
+  setWarehouse,
+} from '../../redux/reducers/storeReducer';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import {styles} from './styles';
-import {BarIndicator} from 'react-native-indicators'
+import TabBar from 'react-native-underline-tabbar';
+import tailwind from 'tailwind-rn';
+
+import {BarIndicator} from 'react-native-indicators';
+var ScrollableTabView = require('react-native-scrollable-tab-view-forked');
 const {width, height} = Dimensions.get('screen');
 const OrdersScreen = ({navigation}) => {
-  const {data, error, loading} = useQuery(GET_ORDERS, {
+  const {data, error, fetchMore, refetch, networkStatus, loading} = useQuery(
+    GET_ORDERS,
+    {
+      notifyOnNetworkStatusChange: true,
+      variables: {
+        endCursor: '',
+      },
+    },
+  );
+  const [ordersPageInfo, setOrdersPageInfo] = useState({
+    hasNextPage: true,
+    endCursor: '',
+    startCursor: '',
+  });
+  const [allOrders, setAllOrders] = useState([]);
+  const [receivedOrders, setReceivedOrders] = useState([]);
+  const [inProcessOrders, setInProcessOrders] = useState([]);
+  const [shippedOrders, setShippedOrders] = useState([]);
+  const [deliveredOrders, setDeliveredOrders] = useState([]);
+  const [cancelledOrders, setCancelledOrders] = useState([]);
+  const [returnRequestedOrders, setReturnRequestedOrders] = useState([]);
+  const [returnInitiatedOrders, setReturnInitiatedOrders] = useState([]);
+  const [returnCompletedOrders, setReturnCompletedOrders] = useState([]);
+  const [fulfilledOrders, setFulfilledOrders] = useState([]);
+
+  const [onEndReachedMomentum, setOnEndReachedMomentum] = useState(false);
+  const dispatch = useDispatch();
+  const storeResponse = useQuery(GET_STORE, {
     notifyOnNetworkStatusChange: true,
   });
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [listData, setListData] = useState([]);
-  const dispatch = useDispatch();
-  const storeResponse = useQuery(GET_STORE,{
-    notifyOnNetworkStatusChange:true
-  });
+  const refreshing = networkStatus === NetworkStatus.refetch;
   const mobileNumber = useSelector(state => state.user.mobileNumber);
   const brandResponse = useQuery(GET_AUTHORISED_BRANDS, {
     variables: {
       mobileNo: '91' + mobileNumber,
       endCursor: '',
     },
-    notifyOnNetworkStatusChange:true,
+    notifyOnNetworkStatusChange: true,
   });
   useEffect(() => {
     if (brandResponse.data) {
@@ -84,15 +115,6 @@ const OrdersScreen = ({navigation}) => {
       }
     }
   }, [brandResponse.data]);
-  
-  useEffect(() => {
-    if (brandResponse.loading) dispatch(setLoaderStatus(true));
-    else dispatch(setLoaderStatus(false));
-  }, [brandResponse.loading]);
-  useEffect(() => {
-    if (storeResponse.loading) dispatch(setLoaderStatus(true));
-    else dispatch(setLoaderStatus(false));
-  }, [storeResponse.loading]);
 
   useEffect(() => {
     if (storeResponse.data) {
@@ -119,158 +141,21 @@ const OrdersScreen = ({navigation}) => {
     }
   }, [storeResponse.data]);
 
-  const ref = React.useRef();
   const _renderSubItem = ({item}) => {
     return (
-      <View>
-        <OrderCard
-          key={item.node.id}
-          navigation={navigation}
-          order={item.node}
-          status={item?.status}
-        />
-      </View>
-    );
-  };
-
-  const _renderItem = ({item, index}) => {
-    console.log('WHAT WERE GETTING OVER HERE IS:', item);
-    return (
-      <View style={{alignItems: 'center', width}}>
-        <FlatList
-          data={item}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{width, alignItems: 'center'}}
-          keyExtractor={index => index.toString()}
-          renderItem={_renderSubItem}
-        />
-      </View>
-    );
-  };
-  const onTapTab = index => {
-    ref?.current?.scrollToIndex({index,true})
-  };
-  const Tab = React.forwardRef(({item, index}, ref) => {
-    return (
-      <TouchableOpacity onPress={() => onTapTab(index)}>
-        <View
-          ref={ref}
-          style={{
-            marginRight: 10,
-            marginBottom: 5,
-            borderBottomWidth: index === activeIndex ? 1 : 0,
-            borderBottomColor: 'black',
-          }}>
-          <Text style={{color: 'black'}}>{item.text}</Text>
-        </View>
-      </TouchableOpacity>
-    );
-  });
-
-  const scrollX = React.useRef(new Animated.Value(0)).current;
-
-  const Indicator = ({measures, scrollX, scrollViewRef, data}) => {
-    const indicatorRef = useRef();
-    const inputRange = data.map((_, i) => i * width);
-    const indicatorWidth = scrollX.interpolate({
-      inputRange,
-      outputRange: measures.map(measure => measure.width),
-    });
-    const translateX = scrollX.interpolate({
-      inputRange,
-      outputRange: measures.map(measure => measure.x),
-    });
-    return (
-      <Animated.View
-        ref={indicatorRef}
-        style={{
-          position: 'absolute',
-          transform: [
-            {
-              translateX,
-            },
-          ],
-          bottom: 0,
-          height: 2.5,
-          width: indicatorWidth,
-          backgroundColor: 'black',
-        }}
+      <OrderCard
+        key={item.node.id}
+        navigation={navigation}
+        order={item.node}
+        status={item?.status}
       />
     );
   };
-  const Tabs = ({data, onItemPress, scrollX}) => {
-    const containerRef = useRef();
-    const scrollViewRef = useRef();
-    const [measures, setMeasures] = useState([]);
 
-    /*React.useEffect(() => {
-      dispatch(setLoaderStatus(true));
-      console.log('Container Ref:', containerRef.current);
-      let m = [];
-      setTimeout(() => {
-        data.forEach(item => {
-          item?.ref?.current?.measureLayout(
-            containerRef.current,
-            (x, y, width, height) => {
-              console.log(x, y, width, height);
-              m.push({
-                x,
-                y,
-                width,
-                height,
-              });
-            },
-            error => {
-              console.log('Error:', error);
-            },
-          );
-        });
-        setTimeout(() => {
-          setMeasures(m);
-          dispatch(setLoaderStatus(false));
-        }, 1000);
-      }, 1000);
-    }, []);
-    useEffect(() => {
-      if (measures.length === 0) dispatch(setLoaderStatus(true));
-      else dispatch(setLoaderStatus(false));
-    }, [measures]);
-    */
-    return (
-      <View style={{paddingHorizontal: 10}}>
-        <ScrollView
-          ref={scrollViewRef}
-          showsHorizontalScrollIndicator={false}
-          horizontal>
-          <View ref={containerRef} style={{flexDirection: 'row'}}>
-            {data.map((item, index) => {
-              return (
-                <Tab
-                  key={item.text}
-                  onItemPress={() => onItemPress(index)}
-                  item={item}
-                  ref={item.ref}
-                  index={index}
-                />
-              );
-            })}
-            {
-              measures.length > 0 && null /*<Indicator
-                data={data}
-                scrollViewRef={scrollViewRef}
-                measures={measures}
-                scrollX={scrollX}
-              />*/
-            }
-          </View>
-        </ScrollView>
-      </View>
-    );
-  };
- 
   useEffect(() => {
     if (data) {
-      dispatch(setLoaderStatus(true))
+      console.log('NEW DATA IS HERE');
+      setOrdersPageInfo(data.orders.pageInfo);
       const orders = data.orders.edges.filter(
         ({node}) => node.lines.length !== 0,
       );
@@ -358,7 +243,7 @@ const OrdersScreen = ({navigation}) => {
       };
       newOrders.forEach(value => {
         let order = value.node;
-       /* if (order.fulfillments && order.fulfillments.length !== 0) {
+        /* if (order.fulfillments && order.fulfillments.length !== 0) {
           console.log(order);
           console.log(order.fulfillments[0].status);
           let minStatusValue = findStatusValue(order.fulfillments[0].status);
@@ -373,18 +258,20 @@ const OrdersScreen = ({navigation}) => {
             const fulfillmentOverallStatus = findStatusName(minStatusValue);
             sortByStatus(fulfillmentOverallStatus, value);
           }*/
-          if(order.lines && order.lines.length!==0){
-            let minStatusValue = findStatusValue(order.lines[0].fulfilment.status)
-            for (let i = 0; i < order.lines.length; i++) {
-              let currentStatusValue = findStatusValue(
-                order.lines[i].fulfilment.status,
-                );
-                if (minStatusValue > currentStatusValue)
-                minStatusValue = currentStatusValue;
-              }
-              console.log('Min Status Value:', minStatusValue);
-              const fulfillmentOverallStatus = findStatusName(minStatusValue);
-              sortByStatus(fulfillmentOverallStatus, value);
+        if (order.lines && order.lines.length !== 0) {
+          let minStatusValue = findStatusValue(
+            order.lines[0]?.fulfilment?.status,
+          );
+          for (let i = 0; i < order.lines.length; i++) {
+            let currentStatusValue = findStatusValue(
+              order.lines[i]?.fulfilment?.status,
+            );
+            if (minStatusValue > currentStatusValue)
+              minStatusValue = currentStatusValue;
+          }
+          console.log('Min Status Value:', minStatusValue);
+          const fulfillmentOverallStatus = findStatusName(minStatusValue);
+          sortByStatus(fulfillmentOverallStatus, value);
         }
       });
       console.log('ORDERS::', {
@@ -399,31 +286,102 @@ const OrdersScreen = ({navigation}) => {
         returnCompletedOrders,
         fulfilledOrders,
       });
-      setListData([
-        allOrders,
-        receivedOrders,
-        shippedOrders,
-        inProcessOrders,
-        deliveredOrders,
-        cancelledOrders,
-        returnRequestedOrders,
-        returnInitiatedOrders,
-        returnCompletedOrders,
-        fulfilledOrders,
-      ]);
+      setAllOrders(allOrders);
+      setReceivedOrders(receivedOrders);
+      setShippedOrders(shippedOrders);
+      setInProcessOrders(inProcessOrders);
+      setDeliveredOrders(deliveredOrders);
+      setCancelledOrders(cancelledOrders);
+      setReturnRequestedOrders(returnRequestedOrders);
+      setReturnInitiatedOrders(returnInitiatedOrders);
+      setReturnCompletedOrders(returnCompletedOrders);
+      setFulfilledOrders(fulfilledOrders);
     }
-    setTimeout(()=>{dispatch(setLoaderStatus(false))},4000)
   }, [data]);
-  console.log('LIST DATA:::', {listData});
-  const updateIndicator = index => {
-    const currentIndex = index;
-    console.log('currentIndexNow:', currentIndex);
-    setActiveIndex(currentIndex);
+
+  const handleOnEndReached = () => {
+    console.log(ordersPageInfo.hasNextPage);
+    if (ordersPageInfo.hasNextPage) {
+      console.log(ordersPageInfo.endCursor);
+      console.log('here');
+      fetchMore({
+        variables: {
+          endCursor: ordersPageInfo.endCursor,
+        },
+      });
+    }
   };
-  useEffect(() => {
-    if (loading) dispatch(setLoaderStatus(true));
-    else dispatch(setLoaderStatus(false));
-  }, [loading]);
+  const Page = ({label, data}) => (
+    <View style={styles.container}>
+      <FlatList
+        data={data}
+        onEndReached={() => {
+          if (data === allOrders) setOnEndReachedMomentum(true);
+          //handleOnEndReached
+        }}
+        onMomentumScrollEnd={() => {
+          if (data === allOrders) {
+            onEndReachedMomentum && handleOnEndReached();
+            setOnEndReachedMomentum(false);
+          }
+        }}
+        onEndReachedThreshold={0.5}
+        renderItem={_renderSubItem}
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingBottom: '15%',
+          justifyContent: data.length === 0 ? 'center' : 'flex-start',
+        }}
+        onRefresh={refetch}
+        refreshing={refreshing}
+        showsVerticalScrollIndicator={false}
+        ListFooterComponent={
+          !refreshing && loading
+            ? () => {
+                return (
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <BarIndicator size={30} count={5} color="black" />
+                  </View>
+                );
+              }
+            : null
+        }
+        ListEmptyComponent={
+          !refreshing && !loading
+            ? () => (
+                <View
+                  style={[
+                    tailwind(
+                      'bg-white mt-1 mx-10   rounded border border-gray-400 flex-row items-center justify-center',
+                    ),
+                    {},
+                  ]}>
+                  <Image
+                    style={{
+                      width: 60,
+                      height: 55,
+                    }}
+                    source={require('../../assets/images/orderlist.png')}
+                  />
+                  <Text
+                    style={tailwind(
+                      'text-sm font-semibold text-center px-6 py-5 text-gray-600 ',
+                    )}>
+                    No Orders
+                  </Text>
+                </View>
+              )
+            : null
+        }
+      />
+    </View>
+  );
+
   return (
     <SafeAreaView style={styles.ordersContainer}>
       <Text style={styles.headingText}>Orders </Text>
@@ -434,7 +392,64 @@ const OrdersScreen = ({navigation}) => {
       <View style={styles.ordersOverviewCardContainer}>
         <OrdersOverviewCard />
       </View>
-      <View style={styles.ordersListContainer}>
+      <View style={[styles.container]}>
+        <ScrollableTabView
+          tabBarActiveTextColor="black"
+          scrollWithoutAnimation
+          renderTabBar={() => <TabBar underlineColor="black" />}>
+          <Page
+            tabLabel={{label: 'All orders'}}
+            label="All Orders"
+            data={allOrders}
+          />
+          <Page
+            tabLabel={{label: 'Received '}}
+            label="Received "
+            data={receivedOrders}
+          />
+          <Page
+            tabLabel={{label: 'In Process'}}
+            label="In Process"
+            data={inProcessOrders}
+          />
+          <Page
+            tabLabel={{label: 'Shipped'}}
+            label="Shipped"
+            data={shippedOrders}
+          />
+          <Page
+            tabLabel={{label: 'Delivered'}}
+            label="Delivered"
+            data={deliveredOrders}
+          />
+          <Page
+            tabLabel={{label: 'Cancelled'}}
+            label="Cancelled"
+            data={cancelledOrders}
+          />
+          <Page
+            tabLabel={{label: 'Return Requested'}}
+            label="Return Requested"
+            data={returnRequestedOrders}
+          />
+          <Page
+            tabLabel={{label: 'Return Initiated'}}
+            label="Return Initiated"
+            data={returnInitiatedOrders}
+          />
+          <Page
+            tabLabel={{label: 'Return Completed'}}
+            label="Return Completed"
+            data={returnCompletedOrders}
+          />
+          <Page
+            tabLabel={{label: 'Fulfilled'}}
+            label="Fulfilled"
+            data={fulfilledOrders}
+          />
+        </ScrollableTabView>
+      </View>
+      {/*<View style={styles.ordersListContainer}>
         <View style={styles.tabsContainer}>
           <Tabs
             data={[
@@ -451,7 +466,7 @@ const OrdersScreen = ({navigation}) => {
             ]}
           />
         </View>
-        {/*<Animated.FlatList
+        <Animated.FlatList
           //ref={ref}
           data={listData}
           contentContainerStyle={{backgroundColor: 'white'}}
@@ -465,7 +480,7 @@ const OrdersScreen = ({navigation}) => {
           renderItem={_renderItem}
           pagingEnabled
           disableIntervalMomentum
-        />*/}
+        />
 
         <SwiperFlatList
           ref={ref}
@@ -474,7 +489,7 @@ const OrdersScreen = ({navigation}) => {
           renderItem={_renderItem}
           onChangeIndex={({index}) => updateIndicator(index)}
         />
-      </View>
+      </View>*/}
     </SafeAreaView>
   );
 };

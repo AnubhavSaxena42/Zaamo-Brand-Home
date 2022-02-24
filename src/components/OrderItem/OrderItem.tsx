@@ -16,6 +16,7 @@ const OrderItem = ({line, id, status, setData, fulfillment}) => {
   const [fulfillmentStatus, setFulfillmentStatus] = useState(status);
   const [shippingId, setShippingId] = useState('');
   const [shippingProvider, setShippingProvider] = useState('');
+  console.log('Fulfillment::', {line, id, status, setData, fulfillment});
   const [wasInitiallyCancelled, setWasInitiallyCancelled] = useState(false);
   useEffect(() => {
     if (status === 'CANCELED') setWasInitiallyCancelled(true);
@@ -215,28 +216,30 @@ const OrderItem = ({line, id, status, setData, fulfillment}) => {
             L
           </Text>
         </View>*/}
-        <View style={styles.statusContainer}>
-          <Text style={styles.statusHeaderText}>Order Status</Text>
-          <View style={styles.statusChangerContainer}>
-            <Text style={styles.statusText}>
-              {fulfillmentStatus
-                ? getFulfillmentStatusDisplay()
-                : 'Update Fulfillment status'}
-            </Text>
-            <TouchableOpacity
-              onPress={() => {
-                if (wasInitiallyCancelled)
-                  toastService.showToast(
-                    'Cancelled Order Status can not be updated!',
-                    true,
-                  );
-                else setIsFulfillmentModalOpen(true);
-              }}
-              style={styles.statusChangeButton}>
-              <Text style={styles.statusChangeButtonText}>Change</Text>
-            </TouchableOpacity>
+        {id !== undefined && (
+          <View style={styles.statusContainer}>
+            <Text style={styles.statusHeaderText}>Order Status</Text>
+            <View style={styles.statusChangerContainer}>
+              <Text style={styles.statusText}>
+                {fulfillmentStatus
+                  ? getFulfillmentStatusDisplay()
+                  : 'Update Fulfillment status'}
+              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  if (wasInitiallyCancelled)
+                    toastService.showToast(
+                      'Cancelled Order Status can not be updated!',
+                      true,
+                    );
+                  else setIsFulfillmentModalOpen(true);
+                }}
+                style={styles.statusChangeButton}>
+                <Text style={styles.statusChangeButtonText}>Change</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        )}
         {fulfillmentStatus === 'SHIPPED' ? (
           <View style={styles.shippingInputContainer}>
             <View>

@@ -120,11 +120,11 @@ const OrderDetailsScreen = ({navigation, route}) => {
             {order.lines.map(line => {
               return (
                 <OrderItem
-                  key={line.id}
-                  id={line.fulfilment.id}
+                  key={line?.id}
+                  id={line?.fulfilment?.id}
                   setData={setFullfillmentData}
                   fulfillment={fulfillmentData}
-                  status={line.fulfilment?.status}
+                  status={line?.fulfilment?.status}
                   line={line}
                 />
               );

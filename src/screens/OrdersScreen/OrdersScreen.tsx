@@ -29,42 +29,27 @@ import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import {styles} from './styles';
 import TabBar from 'react-native-underline-tabbar';
 import tailwind from 'tailwind-rn';
-
+import {
+  setAllOrders,
+  setReceivedOrders,
+  setInProcessOrders,
+  setDeliveredOrders,
+  setCancelledOrders,
+  setShippedOrders,
+  setFulfilledOrders,
+  setReturnCompletedOrders,
+  setReturnInitiatedOrders,
+  setReturnRequestedOrders,
+} from '../../redux/reducers/ordersReducer';
 import {BarIndicator} from 'react-native-indicators';
 var ScrollableTabView = require('react-native-scrollable-tab-view-forked');
 const {width, height} = Dimensions.get('screen');
 const OrdersScreen = ({navigation}) => {
-  const {data, error, fetchMore, refetch, networkStatus, loading} = useQuery(
-    GET_ORDERS,
-    {
-      notifyOnNetworkStatusChange: true,
-      variables: {
-        endCursor: '',
-      },
-    },
-  );
-  const [ordersPageInfo, setOrdersPageInfo] = useState({
-    hasNextPage: true,
-    endCursor: '',
-    startCursor: '',
-  });
-  const [allOrders, setAllOrders] = useState([]);
-  const [receivedOrders, setReceivedOrders] = useState([]);
-  const [inProcessOrders, setInProcessOrders] = useState([]);
-  const [shippedOrders, setShippedOrders] = useState([]);
-  const [deliveredOrders, setDeliveredOrders] = useState([]);
-  const [cancelledOrders, setCancelledOrders] = useState([]);
-  const [returnRequestedOrders, setReturnRequestedOrders] = useState([]);
-  const [returnInitiatedOrders, setReturnInitiatedOrders] = useState([]);
-  const [returnCompletedOrders, setReturnCompletedOrders] = useState([]);
-  const [fulfilledOrders, setFulfilledOrders] = useState([]);
-
-  const [onEndReachedMomentum, setOnEndReachedMomentum] = useState(false);
   const dispatch = useDispatch();
   const storeResponse = useQuery(GET_STORE, {
     notifyOnNetworkStatusChange: true,
   });
-  const refreshing = networkStatus === NetworkStatus.refetch;
+
   const mobileNumber = useSelector(state => state.user.mobileNumber);
   const brandResponse = useQuery(GET_AUTHORISED_BRANDS, {
     variables: {
@@ -152,236 +137,276 @@ const OrdersScreen = ({navigation}) => {
     );
   };
 
-  useEffect(() => {
-    if (data) {
-      console.log('NEW DATA IS HERE');
-      setOrdersPageInfo(data.orders.pageInfo);
-      const orders = data.orders.edges.filter(
-        ({node}) => node.lines.length !== 0,
-      );
-      console.log('Called Again, whats going wrong?');
-      let newOrders = orders.map(order => {
-        console.log('OrderLine', order.fulfillments);
-        return {
-          ...order,
-          status: '',
+  const OrderCategoryTab = ({label}) => {
+    const [onEndReachedMomentum, setOnEndReachedMomentum] = useState(false);
+    const {data, error, fetchMore, refetch, networkStatus, loading} = useQuery(
+      GET_ORDERS,
+      {
+        notifyOnNetworkStatusChange: true,
+        variables: {
+          endCursor: '',
+        },
+      },
+    );
+    const [ordersPageInfo, setOrdersPageInfo] = useState({
+      hasNextPage: true,
+      endCursor: '',
+      startCursor: '',
+    });
+    const refreshing = networkStatus === NetworkStatus.refetch;
+    useEffect(() => {
+      if (data) {
+        console.log('NEW DATA IS HERE');
+        setOrdersPageInfo(data.orders.pageInfo);
+        const orders = data.orders.edges.filter(
+          ({node}) => node.lines.length !== 0,
+        );
+        console.log('Called Again, whats going wrong?');
+        let newOrders = orders.map(order => {
+          console.log('OrderLine', order.fulfillments);
+          return {
+            ...order,
+            status: '',
+          };
+        });
+        let allOrders = [],
+          receivedOrders = [],
+          inProcessOrders = [],
+          shippedOrders = [],
+          deliveredOrders = [],
+          cancelledOrders = [],
+          returnRequestedOrders = [],
+          returnInitiatedOrders = [],
+          returnCompletedOrders = [],
+          fulfilledOrders = [];
+        const fulfillmentSortItems = [
+          {id: 'RECEIVED', name: 'Received', value: 0},
+          {id: 'IN_PROCESS', name: 'In Process', value: 1},
+          {id: 'SHIPPED', name: 'Shipped', value: 2},
+          {id: 'DELIVERED', name: 'Delivered', value: 3},
+          {id: 'CANCELED', name: 'Cancelled', value: 4},
+          {id: 'RETURN_REQUESTED', name: 'Return Requested', value: 5},
+          {id: 'RETURN_INITIATED', name: 'Return Initiated', value: 6},
+          {id: 'RETURN_COMPLETED', name: 'Return Completed', value: 7},
+          {id: 'FULFILLED', name: 'Fulfilled', value: 8},
+        ];
+        const findStatusValue = id => {
+          for (let i = 0; i < fulfillmentSortItems.length; i++) {
+            if (id === fulfillmentSortItems[i].id) {
+              return fulfillmentSortItems[i].value;
+            }
+          }
         };
-      });
-      let allOrders = [],
-        receivedOrders = [],
-        inProcessOrders = [],
-        shippedOrders = [],
-        deliveredOrders = [],
-        cancelledOrders = [],
-        returnRequestedOrders = [],
-        returnInitiatedOrders = [],
-        returnCompletedOrders = [],
-        fulfilledOrders = [];
-      const fulfillmentSortItems = [
-        {id: 'RECEIVED', name: 'Received', value: 0},
-        {id: 'IN_PROCESS', name: 'In Process', value: 1},
-        {id: 'SHIPPED', name: 'Shipped', value: 2},
-        {id: 'DELIVERED', name: 'Delivered', value: 3},
-        {id: 'CANCELED', name: 'Cancelled', value: 4},
-        {id: 'RETURN_REQUESTED', name: 'Return Requested', value: 5},
-        {id: 'RETURN_INITIATED', name: 'Return Initiated', value: 6},
-        {id: 'RETURN_COMPLETED', name: 'Return Completed', value: 7},
-        {id: 'FULFILLED', name: 'Fulfilled', value: 8},
-      ];
-      const findStatusValue = id => {
-        for (let i = 0; i < fulfillmentSortItems.length; i++) {
-          if (id === fulfillmentSortItems[i].id) {
-            return fulfillmentSortItems[i].value;
+        const findStatusName = value => {
+          for (let i = 0; i < fulfillmentSortItems.length; i++) {
+            if (value === fulfillmentSortItems[i].value) {
+              return fulfillmentSortItems[i].name;
+            }
           }
-        }
-      };
-      const findStatusName = value => {
-        for (let i = 0; i < fulfillmentSortItems.length; i++) {
-          if (value === fulfillmentSortItems[i].value) {
-            return fulfillmentSortItems[i].name;
+        };
+        const sortByStatus = (status, order) => {
+          if (status === 'Received') {
+            order.status = status;
+            receivedOrders.push(order);
+            allOrders.push(order);
+          } else if (status === 'In Process') {
+            order.status = status;
+            inProcessOrders.push(order);
+            allOrders.push(order);
+          } else if (status === 'Shipped') {
+            order.status = status;
+            shippedOrders.push(order);
+            allOrders.push(order);
+          } else if (status === 'Delivered') {
+            order.status = status;
+            deliveredOrders.push(order);
+            allOrders.push(order);
+          } else if (status === 'Cancelled') {
+            order.status = status;
+            cancelledOrders.push(order);
+            allOrders.push(order);
+          } else if (status === 'Return Requested') {
+            order.status = status;
+            returnRequestedOrders.push(order);
+            allOrders.push(order);
+          } else if (status === 'Return Initiated') {
+            order.status = status;
+            returnInitiatedOrders.push(order);
+            allOrders.push(order);
+          } else if (status === 'Return Completed') {
+            order.status = status;
+            returnCompletedOrders.push(order);
+            allOrders.push(order);
+          } else {
+            order.status = status;
+            allOrders.push(order);
+            fulfilledOrders.push(order);
           }
-        }
-      };
-      const sortByStatus = (status, order) => {
-        if (status === 'Received') {
-          order.status = status;
-          receivedOrders.push(order);
-          allOrders.push(order);
-        } else if (status === 'In Process') {
-          order.status = status;
-          inProcessOrders.push(order);
-          allOrders.push(order);
-        } else if (status === 'Shipped') {
-          order.status = status;
-          shippedOrders.push(order);
-          allOrders.push(order);
-        } else if (status === 'Delivered') {
-          order.status = status;
-          deliveredOrders.push(order);
-          allOrders.push(order);
-        } else if (status === 'Cancelled') {
-          order.status = status;
-          cancelledOrders.push(order);
-          allOrders.push(order);
-        } else if (status === 'Return Requested') {
-          order.status = status;
-          returnRequestedOrders.push(order);
-          allOrders.push(order);
-        } else if (status === 'Return Initiated') {
-          order.status = status;
-          returnInitiatedOrders.push(order);
-          allOrders.push(order);
-        } else if (status === 'Return Completed') {
-          order.status = status;
-          returnCompletedOrders.push(order);
-          allOrders.push(order);
-        } else {
-          order.status = status;
-          allOrders.push(order);
-          fulfilledOrders.push(order);
-        }
-      };
-      newOrders.forEach(value => {
-        let order = value.node;
-        /* if (order.fulfillments && order.fulfillments.length !== 0) {
-          console.log(order);
-          console.log(order.fulfillments[0].status);
-          let minStatusValue = findStatusValue(order.fulfillments[0].status);
-          for (let i = 0; i < order.fulfillments.length; i++) {
-            let currentStatusValue = findStatusValue(
-              order.fulfillments[i].status,
+        };
+        newOrders.forEach(value => {
+          let order = value.node;
+          /* if (order.fulfillments && order.fulfillments.length !== 0) {
+            console.log(order);
+            console.log(order.fulfillments[0].status);
+            let minStatusValue = findStatusValue(order.fulfillments[0].status);
+            for (let i = 0; i < order.fulfillments.length; i++) {
+              let currentStatusValue = findStatusValue(
+                order.fulfillments[i].status,
+                );
+                if (minStatusValue > currentStatusValue)
+                minStatusValue = currentStatusValue;
+              }
+              console.log('Min Status Value:', minStatusValue);
+              const fulfillmentOverallStatus = findStatusName(minStatusValue);
+              sortByStatus(fulfillmentOverallStatus, value);
+            }*/
+          if (order.lines && order.lines.length !== 0) {
+            let minStatusValue = findStatusValue(
+              order.lines[0]?.fulfilment?.status,
+            );
+            for (let i = 0; i < order.lines.length; i++) {
+              let currentStatusValue = findStatusValue(
+                order.lines[i]?.fulfilment?.status,
               );
               if (minStatusValue > currentStatusValue)
-              minStatusValue = currentStatusValue;
+                minStatusValue = currentStatusValue;
             }
             console.log('Min Status Value:', minStatusValue);
             const fulfillmentOverallStatus = findStatusName(minStatusValue);
             sortByStatus(fulfillmentOverallStatus, value);
-          }*/
-        if (order.lines && order.lines.length !== 0) {
-          let minStatusValue = findStatusValue(
-            order.lines[0]?.fulfilment?.status,
-          );
-          for (let i = 0; i < order.lines.length; i++) {
-            let currentStatusValue = findStatusValue(
-              order.lines[i]?.fulfilment?.status,
-            );
-            if (minStatusValue > currentStatusValue)
-              minStatusValue = currentStatusValue;
           }
-          console.log('Min Status Value:', minStatusValue);
-          const fulfillmentOverallStatus = findStatusName(minStatusValue);
-          sortByStatus(fulfillmentOverallStatus, value);
-        }
-      });
-      console.log('ORDERS::', {
-        allOrders,
-        receivedOrders,
-        shippedOrders,
-        inProcessOrders,
-        deliveredOrders,
-        cancelledOrders,
-        returnRequestedOrders,
-        returnInitiatedOrders,
-        returnCompletedOrders,
-        fulfilledOrders,
-      });
-      setAllOrders(allOrders);
-      setReceivedOrders(receivedOrders);
-      setShippedOrders(shippedOrders);
-      setInProcessOrders(inProcessOrders);
-      setDeliveredOrders(deliveredOrders);
-      setCancelledOrders(cancelledOrders);
-      setReturnRequestedOrders(returnRequestedOrders);
-      setReturnInitiatedOrders(returnInitiatedOrders);
-      setReturnCompletedOrders(returnCompletedOrders);
-      setFulfilledOrders(fulfilledOrders);
-    }
-  }, [data]);
+        });
+        console.log('ORDERS::', {
+          allOrders,
+          receivedOrders,
+          shippedOrders,
+          inProcessOrders,
+          deliveredOrders,
+          cancelledOrders,
+          returnRequestedOrders,
+          returnInitiatedOrders,
+          returnCompletedOrders,
+          fulfilledOrders,
+        });
+        dispatch(setAllOrders(allOrders));
+        dispatch(setReceivedOrders(receivedOrders));
+        dispatch(setShippedOrders(shippedOrders));
+        dispatch(setInProcessOrders(inProcessOrders));
+        dispatch(setDeliveredOrders(deliveredOrders));
+        dispatch(setCancelledOrders(cancelledOrders));
+        dispatch(setReturnRequestedOrders(returnRequestedOrders));
+        dispatch(setReturnInitiatedOrders(returnInitiatedOrders));
+        dispatch(setReturnCompletedOrders(returnCompletedOrders));
+        dispatch(setFulfilledOrders(fulfilledOrders));
+      }
+    }, [data]);
 
-  const handleOnEndReached = () => {
-    console.log(ordersPageInfo.hasNextPage);
-    if (ordersPageInfo.hasNextPage) {
-      console.log(ordersPageInfo.endCursor);
-      console.log('here');
-      fetchMore({
-        variables: {
-          endCursor: ordersPageInfo.endCursor,
-        },
-      });
-    }
-  };
-  const Page = ({label, data}) => (
-    <View style={styles.container}>
-      <FlatList
-        data={data}
-        onEndReached={() => {
-          if (data === allOrders) setOnEndReachedMomentum(true);
-          //handleOnEndReached
-        }}
-        onMomentumScrollEnd={() => {
-          if (data === allOrders) {
-            onEndReachedMomentum && handleOnEndReached();
-            setOnEndReachedMomentum(false);
+    const handleOnEndReached = () => {
+      console.log(ordersPageInfo.hasNextPage);
+      if (ordersPageInfo.hasNextPage) {
+        console.log(ordersPageInfo.endCursor);
+        console.log('here');
+        fetchMore({
+          variables: {
+            endCursor: ordersPageInfo.endCursor,
+          },
+        });
+      }
+    };
+    let category;
+    if (label === 'All Orders')
+      category = useSelector(state => state.orders.allOrders);
+    else if (label === 'Received')
+      category = useSelector(state => state.orders.receivedOrders);
+    else if (label === 'In Process')
+      category = useSelector(state => state.orders.inProcessOrders);
+    else if (label === 'Shipped')
+      category = useSelector(state => state.orders.shippedOrders);
+    else if (label === 'Delivered')
+      category = useSelector(state => state.orders.deliveredOrders);
+    else if (label === 'Cancelled')
+      category = useSelector(state => state.orders.cancelledOrders);
+    else if (label === 'Return Requested')
+      category = useSelector(state => state.orders.returnRequestedOrders);
+    else if (label === 'Return Initiated')
+      category = useSelector(state => state.orders.returnInitiatedOrders);
+    else if (label === 'Return Completed')
+      category = useSelector(state => state.orders.returnCompletedOrders);
+    else category = useSelector(state => state.orders.fulfilledOrders);
+
+    return (
+      <View style={styles.container}>
+        <FlatList
+          bounces={false}
+          data={category}
+          onEndReached={() => {
+            setOnEndReachedMomentum(true);
+            handleOnEndReached;
+          }}
+          maintainVisibleContentPosition={true}
+          onMomentumScrollEnd={() => {
+            if (true) {
+              onEndReachedMomentum && handleOnEndReached();
+              setOnEndReachedMomentum(false);
+            }
+          }}
+          onEndReachedThreshold={0.5}
+          renderItem={_renderSubItem}
+          contentContainerStyle={{
+            flexGrow: 1,
+            paddingBottom: '15%',
+            justifyContent: category.length === 0 ? 'center' : 'flex-start',
+          }}
+          onRefresh={refetch}
+          refreshing={refreshing}
+          showsVerticalScrollIndicator={false}
+          ListFooterComponent={
+            !refreshing && loading
+              ? () => {
+                  return (
+                    <View
+                      style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
+                      <BarIndicator size={30} count={5} color="black" />
+                    </View>
+                  );
+                }
+              : null
           }
-        }}
-        onEndReachedThreshold={0.5}
-        renderItem={_renderSubItem}
-        contentContainerStyle={{
-          flexGrow: 1,
-          paddingBottom: '15%',
-          justifyContent: data.length === 0 ? 'center' : 'flex-start',
-        }}
-        onRefresh={refetch}
-        refreshing={refreshing}
-        showsVerticalScrollIndicator={false}
-        ListFooterComponent={
-          !refreshing && loading
-            ? () => {
-                return (
+          ListEmptyComponent={
+            !refreshing && !loading
+              ? () => (
                   <View
-                    style={{
-                      flex: 1,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <BarIndicator size={30} count={5} color="black" />
+                    style={[
+                      tailwind(
+                        'bg-white mt-1 mx-10   rounded border border-gray-400 flex-row items-center justify-center',
+                      ),
+                      {},
+                    ]}>
+                    <Image
+                      style={{
+                        width: 60,
+                        height: 55,
+                      }}
+                      source={require('../../assets/images/orderlist.png')}
+                    />
+                    <Text
+                      style={tailwind(
+                        'text-sm font-semibold text-center px-6 py-5 text-gray-600 ',
+                      )}>
+                      No Orders
+                    </Text>
                   </View>
-                );
-              }
-            : null
-        }
-        ListEmptyComponent={
-          !refreshing && !loading
-            ? () => (
-                <View
-                  style={[
-                    tailwind(
-                      'bg-white mt-1 mx-10   rounded border border-gray-400 flex-row items-center justify-center',
-                    ),
-                    {},
-                  ]}>
-                  <Image
-                    style={{
-                      width: 60,
-                      height: 55,
-                    }}
-                    source={require('../../assets/images/orderlist.png')}
-                  />
-                  <Text
-                    style={tailwind(
-                      'text-sm font-semibold text-center px-6 py-5 text-gray-600 ',
-                    )}>
-                    No Orders
-                  </Text>
-                </View>
-              )
-            : null
-        }
-      />
-    </View>
-  );
-
+                )
+              : null
+          }
+        />
+      </View>
+    );
+  };
   return (
     <SafeAreaView style={styles.ordersContainer}>
       <Text style={styles.headingText}>Orders </Text>
@@ -392,61 +417,43 @@ const OrdersScreen = ({navigation}) => {
       <View style={styles.ordersOverviewCardContainer}>
         <OrdersOverviewCard />
       </View>
+
       <View style={[styles.container]}>
         <ScrollableTabView
+          contentProps={{
+            pagingEnabled: true,
+            horizontal: true,
+            directionalLockEnabled: true,
+            bounces: false,
+          }}
           tabBarActiveTextColor="black"
           scrollWithoutAnimation
           renderTabBar={() => <TabBar underlineColor="black" />}>
-          <Page
+          <OrderCategoryTab
             tabLabel={{label: 'All orders'}}
             label="All Orders"
-            data={allOrders}
           />
-          <Page
-            tabLabel={{label: 'Received '}}
-            label="Received "
-            data={receivedOrders}
-          />
-          <Page
+          <OrderCategoryTab tabLabel={{label: 'Received '}} label="Received" />
+          <OrderCategoryTab
             tabLabel={{label: 'In Process'}}
             label="In Process"
-            data={inProcessOrders}
           />
-          <Page
-            tabLabel={{label: 'Shipped'}}
-            label="Shipped"
-            data={shippedOrders}
-          />
-          <Page
-            tabLabel={{label: 'Delivered'}}
-            label="Delivered"
-            data={deliveredOrders}
-          />
-          <Page
-            tabLabel={{label: 'Cancelled'}}
-            label="Cancelled"
-            data={cancelledOrders}
-          />
-          <Page
+          <OrderCategoryTab tabLabel={{label: 'Shipped'}} label="Shipped" />
+          <OrderCategoryTab tabLabel={{label: 'Delivered'}} label="Delivered" />
+          <OrderCategoryTab tabLabel={{label: 'Cancelled'}} label="Cancelled" />
+          <OrderCategoryTab
             tabLabel={{label: 'Return Requested'}}
             label="Return Requested"
-            data={returnRequestedOrders}
           />
-          <Page
+          <OrderCategoryTab
             tabLabel={{label: 'Return Initiated'}}
             label="Return Initiated"
-            data={returnInitiatedOrders}
           />
-          <Page
+          <OrderCategoryTab
             tabLabel={{label: 'Return Completed'}}
             label="Return Completed"
-            data={returnCompletedOrders}
           />
-          <Page
-            tabLabel={{label: 'Fulfilled'}}
-            label="Fulfilled"
-            data={fulfilledOrders}
-          />
+          <OrderCategoryTab tabLabel={{label: 'Fulfilled'}} label="Fulfilled" />
         </ScrollableTabView>
       </View>
       {/*<View style={styles.ordersListContainer}>

@@ -4,6 +4,7 @@ import productsReducer from '../reducers/productsReducer';
 import storeReducer from '../reducers/storeReducer';
 import userReducer from '../reducers/userReducer';
 import appVariablesReducer from '../reducers/appVariablesReducer';
+import ordersReducer from '../reducers/ordersReducer';
 //need to implement caching properly
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     user: userReducer,
     store: storeReducer,
     appVariables: appVariablesReducer,
+    orders: ordersReducer,
   },
 });
 

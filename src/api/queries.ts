@@ -427,7 +427,7 @@ export const GET_USER_ACTIVE = gql`
 
 export const GET_ORDERS = gql`
   query ($endCursor: String!) {
-    orders(first: 10, after: $endCursor) {
+    orders(first: 100, after: $endCursor) {
       edges {
         node {
           id

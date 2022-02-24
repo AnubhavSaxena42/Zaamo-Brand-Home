@@ -1,5 +1,5 @@
 // @ts-nocheck
-import {useMutation} from '@apollo/client';
+import {useMutation, useLazyQuery, useQuery} from '@apollo/client';
 import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
@@ -15,7 +15,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import Header from '../../components/Header';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import toastService from '../../services/toast-service';
-import {GET_AUTHORISED_BRANDS} from '../../api/queries';
+import {GET_AUTHORISED_BRANDS, GET_PRODUCT} from '../../api/queries';
 import {
   CREATE_VARIANTS,
   BULK_UPDATE_VARIANT_INVENTORY,
@@ -73,20 +73,70 @@ const ErrorMessage = ({message}) => {
   );
 };
 const CreateVariantScreen = ({navigation, route}) => {
-  const {variations, editInventory, editVariants, productID} = route.params;
+  const {
+    variations,
+    editInventory,
+    editVariants,
+    products,
+    setProducts,
+    productID,
+    product,
+  } = route.params;
+  const [newProduct, setNewProduct] = useState(false);
   console.log('Variations:', variations);
   const [variants, setVariants] = useState();
-  console.log('product ID:', productID);
+  const storeID = useSelector(state => state.store.storeInfo.id);
+  console.log('product ID:', product.id);
+  console.log(storeID);
   console.log('Variants:', JSON.stringify(variants));
   const dispatch = useDispatch();
   const [error, setError] = useState(false);
+  const [getProduct, productResponse] = useLazyQuery(GET_PRODUCT, {
+    variables: {
+      productId: product.id,
+      stores: [storeID],
+    },
+  });
+  useEffect(() => {
+    if (productResponse.data) {
+      const newProducts = products.map(item => {
+        if (item.id === productResponse.data.product.id) {
+          console.log('New Product::::', productResponse.data.product);
+          const node = productResponse.data.product;
+          return {
+            brandName: node.brand.brandName,
+            id: node.id,
+            name: node.name,
+            url: node.url,
+            slug: node.slug,
+            description: JSON.parse(node?.descriptionJson)?.description_text,
+            images: node.images,
+            variants: node.variants,
+            thumbnail: node.thumbnail
+              ? node.thumbnail.url
+              : 'https://media-exp1.licdn.com/dms/image/C4E0BAQGymyKm7OE3wg/company-logo_200_200/0/1636442519943?e=2159024400&v=beta&t=19hHu3puobGsregS0-31D-KiANWe3NqrKZESktzQC30',
+            price: node.pricing.priceRange
+              ? node.pricing.priceRange.start.net.amount
+              : 0,
+            priceUndiscounted:
+              node.pricing.priceRangeUndiscounted?.start?.net?.amount,
+          };
+        } else return item;
+      });
+      setProducts(newProducts);
+      if (!newProduct) {
+        setNewProduct(true);
+        navigation.goBack();
+      }
+    }
+  }, [productResponse.data]);
   const [bulkUpdateVariants, variantsUpdateResponse] = useMutation(
     BULK_UPDATE_VARIANT_INVENTORY,
     {
       variables: {
         input: [],
       },
-      refetchQueries: [GET_AUTHORISED_BRANDS],
+      refetchQueries: [],
     },
   );
   useEffect(() => {
@@ -97,7 +147,12 @@ const CreateVariantScreen = ({navigation, route}) => {
           'Variants have been successfully updated!',
           true,
         );
-        navigation.goBack();
+        getProduct({
+          variables: {
+            productId: product.id,
+            stores: [storeID],
+          },
+        });
       } else {
         toastService.showToast(
           'Failed to update Variants,please try again later!',
@@ -124,9 +179,48 @@ const CreateVariantScreen = ({navigation, route}) => {
   );
   const warehouseId = useSelector(state => state.store.warehouse);
   console.log(variations);
-  console.log('EditVariants:', editVariants);
+  console.log({
+    editVariants,
+    products,
+    productID,
+    setProducts,
+    product,
+  });
   const onVariantsUpdate = () => {
     console.log('Edit Variants:', editVariants);
+    /*const newProducts = products.map(item => {
+      if (item.id === product.id) {
+        console.log('New Product:', {
+          ...item,
+          variants: editVariants,
+        });
+        return {
+          ...item,
+          variants: editVariants,
+        };
+      } else return item;
+    });
+    setProducts(newProducts);*/
+    let flag = false;
+    let error = '';
+    editVariants.forEach(variant => {
+      if (!variant.stocks[0].quantity || variant.stocks[0].quantity === '') {
+        error = 'Stock Values can not be empty!';
+        flag++;
+      }
+      if (!variant.price.amount || variant.price.amount === '') {
+        error = 'Price Values can not be empty!';
+        flag++;
+      }
+      if (variant.stocks[0].quantity > 50) {
+        flag++;
+        error = 'Stock Values can not exceed the limit of 50';
+      }
+    });
+    if (flag) {
+      toastService.showToast(error, true);
+      return;
+    }
     const updateVariantInput = editVariants.map(variant => {
       return {
         variantId: variant.id,

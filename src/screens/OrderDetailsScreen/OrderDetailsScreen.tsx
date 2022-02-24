@@ -22,25 +22,30 @@ import {styles} from './styles';
 
 const OrderDetailsScreen = ({navigation, route}) => {
   const order = route.params?.order ? route.params.order : {};
+  console.log('ORDER:::', order);
   const warehouseId = useSelector(state => state.store.warehouse);
   console.log('Details:', {fulfillments: order.fulfillments});
   const [fulfillmentData, setFullfillmentData] = useState(
-    order.fulfillments?.map(fulfillment => {
-      if (fulfillment.shippingFulfillment) {
+    order.lines.map(line => {
+      if (line?.fulfilment?.shippingFulfillment) {
         return {
-          id: fulfillment?.id,
-          status: fulfillment?.status,
-          shippingId: fulfillment?.shippingFulfillment?.shippingId,
-          shippingProvider: fulfillment?.shippingFulfillment?.shippingProvider,
+          id: line?.fulfilment?.id,
+          status: line?.fulfilment?.status,
+          shippingId: line?.fulfilment?.shippingFulfillment?.shippingId,
+          shippingProvider:
+            line?.fulfilment?.shippingFulfillment?.shippingProvider,
         };
       }
       return {
-        id: fulfillment?.id,
-        status: fulfillment?.status,
+        id: line?.fulfilment?.id,
+        status: line?.fulfilment?.status,
       };
     }),
   );
 
+  const checkFulfillment = console.log('Check Fulfillment::', checkFulfillment);
+
+  console.log('Fulfillment Data::', fulfillmentData);
   const dispatch = useDispatch();
   const [updateFulfillment, updateFulfillmentResponse] = useMutation(
     UPDATE_FULFILLMENT,
@@ -99,15 +104,28 @@ const OrderDetailsScreen = ({navigation, route}) => {
         <View style={styles.orderItemsListContainer}>
           <View style={styles.orderDetailsSection}>
             <Text style={styles.headerText}>Order Details</Text>
-            {order.fulfillments.map(fulfillment => {
+            {/*order.fulfillments.map(fulfillment => {
+              if (fulfillment.lines.length !== 0)
+                return (
+                  <OrderItem
+                    key={fulfillment.id}
+                    id={fulfillment.id}
+                    setData={setFullfillmentData}
+                    fulfillment={fulfillmentData}
+                    status={fulfillment.status}
+                    line={fulfillment?.lines[0]?.orderLine}
+                  />
+                );
+            })*/}
+            {order.lines.map(line => {
               return (
                 <OrderItem
-                  key={fulfillment.id}
-                  id={fulfillment.id}
+                  key={line.id}
+                  id={line.fulfilment.id}
                   setData={setFullfillmentData}
                   fulfillment={fulfillmentData}
-                  status={fulfillment.status}
-                  line={fulfillment?.lines[0]?.orderLine}
+                  status={line.fulfilment?.status}
+                  line={line}
                 />
               );
             })}
@@ -127,13 +145,13 @@ const OrderDetailsScreen = ({navigation, route}) => {
             <View style={styles.shippingDetailsSubSection}>
               <Text style={styles.headerText}>Shipping Details</Text>
               <Text style={styles.detailText}>
-                {order.user
-                  ? order.user.defaultBillingAddress?.streetAddress1
-                  : ''}
-                {order.user
-                  ? order.user.defaultBillingAddress?.streetAddress2
-                  : ''}
-                {order.user ? order.user.defaultBillingAddress?.postalCode : ''}
+                {order.user ? order.shippingAddress.streetAddress1 : ''}
+                {order.user ? order.shippinAddress?.streetAddress2 : ''}
+              </Text>
+              <Text style={styles.detailText}>
+                {order.shippingAddress?.city},
+                {order.shippingAddress?.countryArea},
+                {order.user ? order.shippingAddress?.postalCode : ''}
               </Text>
               <Text style={styles.detailText}>{order.user?.mobileNo}</Text>
               <Text style={styles.detailText}>{order.user?.email}</Text>

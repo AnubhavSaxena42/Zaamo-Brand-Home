@@ -3,6 +3,7 @@ import {StyleSheet} from 'react-native';
 export const styles = StyleSheet.create({
   orderCardContainer: {
     flexDirection: 'row',
+    height: 500,
     width: '95%',
     justifyContent: 'space-around',
     alignItems: 'center',
@@ -18,7 +19,7 @@ export const styles = StyleSheet.create({
     elevation: 5,
   },
   imageStyle: {
-    height: '95%',
+    height: '100%',
     width: '35%',
     borderRadius: 10,
   },

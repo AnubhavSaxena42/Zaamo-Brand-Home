@@ -16,11 +16,13 @@ import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import OrderCard from '../../components/OrderCard/OrderCard';
 import OrdersOverviewCard from '../../components/OrdersOverviewCard/OrdersOverviewCard';
 import {useQuery} from '@apollo/client';
-import {GET_ORDERS,GET_STORE} from '../../api/queries';
+import {GET_ORDERS,GET_STORE,GET_AUTHORISED_BRANDS} from '../../api/queries';
 import {useSelector, useDispatch} from 'react-redux';
-import { setStoreInfo,setStoreCollections } from '../../redux/reducers/storeReducer';
+import { setAuthorisedBrands } from '../../redux/reducers/userReducer';
+import { setStoreInfo,setStoreCollections,setStoreProducts,setWarehouse } from '../../redux/reducers/storeReducer';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import {styles} from './styles';
+import {BarIndicator} from 'react-native-indicators'
 const {width, height} = Dimensions.get('screen');
 const OrdersScreen = ({navigation}) => {
   const {data, error, loading} = useQuery(GET_ORDERS, {
@@ -29,7 +31,64 @@ const OrdersScreen = ({navigation}) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [listData, setListData] = useState([]);
   const dispatch = useDispatch();
-  const storeResponse = useQuery(GET_STORE);
+  const storeResponse = useQuery(GET_STORE,{
+    notifyOnNetworkStatusChange:true
+  });
+  const mobileNumber = useSelector(state => state.user.mobileNumber);
+  const brandResponse = useQuery(GET_AUTHORISED_BRANDS, {
+    variables: {
+      mobileNo: '91' + mobileNumber,
+      endCursor: '',
+    },
+    notifyOnNetworkStatusChange:true,
+  });
+  useEffect(() => {
+    if (brandResponse.data) {
+      console.log('Look here:', brandResponse.data);
+      if (
+        brandResponse.data.userByMobile &&
+        brandResponse.data.userByMobile.authorisedBrands[0] &&
+        brandResponse.data.userByMobile.authorisedBrands[0].products
+      ) {
+        const newStoreProducts =
+          brandResponse.data.userByMobile.authorisedBrands[0].products.edges.map(
+            ({node}) => {
+              return {
+                brandName: node.brand.brandName,
+                id: node.id,
+                name: node.name,
+                url: node.url,
+                thumbnail: node.thumbnail
+                  ? node.thumbnail.url
+                  : 'https://media-exp1.licdn.com/dms/image/C4E0BAQGymyKm7OE3wg/company-logo_200_200/0/1636442519943?e=2159024400&v=beta&t=19hHu3puobGsregS0-31D-KiANWe3NqrKZESktzQC30',
+                price: node.pricing.priceRange
+                  ? node.pricing.priceRange.start.net.amount
+                  : 0,
+              };
+            },
+          );
+        dispatch(setStoreProducts(newStoreProducts));
+
+        const warehouseId =
+          brandResponse.data.userByMobile.authorisedBrands[0].warehouse;
+        dispatch(setWarehouse(warehouseId));
+
+        const authorisedBrands =
+          brandResponse.data.userByMobile.authorisedBrands.map(brand => {
+            return {
+              name: brand.brandName,
+              id: brand.id,
+            };
+          });
+        dispatch(setAuthorisedBrands(authorisedBrands));
+      }
+    }
+  }, [brandResponse.data]);
+  
+  useEffect(() => {
+    if (brandResponse.loading) dispatch(setLoaderStatus(true));
+    else dispatch(setLoaderStatus(false));
+  }, [brandResponse.loading]);
   useEffect(() => {
     if (storeResponse.loading) dispatch(setLoaderStatus(true));
     else dispatch(setLoaderStatus(false));
@@ -139,7 +198,6 @@ const OrdersScreen = ({navigation}) => {
       />
     );
   };
-
   const Tabs = ({data, onItemPress, scrollX}) => {
     const containerRef = useRef();
     const scrollViewRef = useRef();
@@ -212,6 +270,7 @@ const OrdersScreen = ({navigation}) => {
  
   useEffect(() => {
     if (data) {
+      dispatch(setLoaderStatus(true))
       const orders = data.orders.edges.filter(
         ({node}) => node.lines.length !== 0,
       );
@@ -299,20 +358,33 @@ const OrdersScreen = ({navigation}) => {
       };
       newOrders.forEach(value => {
         let order = value.node;
-        if (order.fulfillments && order.fulfillments.length !== 0) {
+       /* if (order.fulfillments && order.fulfillments.length !== 0) {
           console.log(order);
           console.log(order.fulfillments[0].status);
           let minStatusValue = findStatusValue(order.fulfillments[0].status);
           for (let i = 0; i < order.fulfillments.length; i++) {
             let currentStatusValue = findStatusValue(
               order.fulfillments[i].status,
-            );
-            if (minStatusValue > currentStatusValue)
+              );
+              if (minStatusValue > currentStatusValue)
               minStatusValue = currentStatusValue;
-          }
-          console.log('Min Status Value:', minStatusValue);
-          const fulfillmentOverallStatus = findStatusName(minStatusValue);
-          sortByStatus(fulfillmentOverallStatus, value);
+            }
+            console.log('Min Status Value:', minStatusValue);
+            const fulfillmentOverallStatus = findStatusName(minStatusValue);
+            sortByStatus(fulfillmentOverallStatus, value);
+          }*/
+          if(order.lines && order.lines.length!==0){
+            let minStatusValue = findStatusValue(order.lines[0].fulfilment.status)
+            for (let i = 0; i < order.lines.length; i++) {
+              let currentStatusValue = findStatusValue(
+                order.lines[i].fulfilment.status,
+                );
+                if (minStatusValue > currentStatusValue)
+                minStatusValue = currentStatusValue;
+              }
+              console.log('Min Status Value:', minStatusValue);
+              const fulfillmentOverallStatus = findStatusName(minStatusValue);
+              sortByStatus(fulfillmentOverallStatus, value);
         }
       });
       console.log('ORDERS::', {
@@ -340,6 +412,7 @@ const OrdersScreen = ({navigation}) => {
         fulfilledOrders,
       ]);
     }
+    setTimeout(()=>{dispatch(setLoaderStatus(false))},4000)
   }, [data]);
   console.log('LIST DATA:::', {listData});
   const updateIndicator = index => {
@@ -353,7 +426,7 @@ const OrdersScreen = ({navigation}) => {
   }, [loading]);
   return (
     <SafeAreaView style={styles.ordersContainer}>
-      <Text style={styles.headingText}>Orders</Text>
+      <Text style={styles.headingText}>Orders </Text>
       <Image
         source={require('../../assets/images/DashboardEllipse.png')}
         style={styles.backgroundImageStyle}

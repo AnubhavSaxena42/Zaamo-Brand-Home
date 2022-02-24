@@ -10,11 +10,11 @@ const OrdersOverviewCard = () => {
       </View>
       <View style={styles.metricContainer}>
         <Text style={styles.value}>-</Text>
-        <Text style={styles.key}>New Orders</Text>
+        <Text style={styles.key}>Received</Text>
       </View>
       <View style={styles.metricContainer}>
         <Text style={styles.value}>-</Text>
-        <Text style={styles.key}>Pending</Text>
+        <Text style={styles.key}>In Process</Text>
       </View>
       <View style={styles.metricContainer}>
         <Text style={styles.value}>-</Text>

@@ -204,7 +204,7 @@ export const HomeTabNavigator = () => {
           paddingBottom: Platform.OS === 'ios' ? 20 : 10,
         },
         style: {
-          height: Platform.OS === 'ios' ? 105 : '8%',
+          height: Platform.OS === 'ios' ? '10%' : '8%',
           paddingVertical: 8,
         },
       }}>
@@ -335,7 +335,7 @@ const TaggingPanelStack = () => {
         name="createProduct"
         component={CreateProductScreen}
       />
-      <TaggingStack.Screen name="variants" component={VariantScreen} />
+      <TaggingStack.Screen name="variants" component={CreateVariantScreen} />
     </TaggingStack.Navigator>
   );
 };

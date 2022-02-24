@@ -441,6 +441,15 @@ export const GET_ORDERS = gql`
               currency
             }
           }
+          shippingAddress {
+            firstName
+            lastName
+            streetAddress1
+            streetAddress2
+            city
+            countryArea
+            postalCode
+          }
           number
           user {
             userId
@@ -460,6 +469,15 @@ export const GET_ORDERS = gql`
           created
           lines {
             id
+            fulfilment {
+              id
+              status
+              shippingFulfillment {
+                shippingId
+                shippingProvider
+              }
+              fulfillmentOrder
+            }
             productSku
             productName
             thumbnail {
@@ -530,6 +548,72 @@ export const GET_COLOR_VALUES = gql`
           }
         }
       }
+    }
+  }
+`;
+
+export const GET_PRODUCT = gql`
+  query ($stores: [ID]!, $productId: ID!) {
+    product(id: $productId) {
+      id
+      name
+      collections(stores: $stores) {
+        id
+        name
+      }
+      slug
+      variants {
+        id
+        price {
+          amount
+          currency
+        }
+        costPrice {
+          amount
+          currency
+        }
+        stocks {
+          quantity
+        }
+        name
+      }
+      images {
+        url(size: 1080)
+      }
+      url
+      descriptionJson
+      brand {
+        brandName
+      }
+      thumbnail(size: 480) {
+        url
+        alt
+      }
+      pricing {
+        priceRangeUndiscounted {
+          start {
+            net {
+              amount
+            }
+          }
+        }
+        discount {
+          gross {
+            amount
+          }
+        }
+        priceRange {
+          start {
+            net {
+              amount
+            }
+          }
+        }
+      }
+      productType {
+        name
+      }
+      name
     }
   }
 `;

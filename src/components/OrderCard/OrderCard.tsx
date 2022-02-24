@@ -52,7 +52,7 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
       }}>
       {!isDetails && (
         <Image
-          source={require('../../assets/images/user.png')}
+          source={{uri: order.lines[0]?.thumbnail?.url}}
           style={styles.imageStyle}
           resizeMode="contain"
         />
@@ -63,8 +63,8 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
           ellipsizeMode="tail"
           style={styles.orderNumberUserText}>
           {order ? `#${order.number}` : '#'}{' '}
-          {order?.user ? order.user.firstName : 'Anchal'}{' '}
-          {order?.user ? order.user.lastName : 'Sharma'}
+          {order?.user ? order.shippingAddress?.firstName : ''}{' '}
+          {order?.user ? order.shippingAddress?.lastName : ''}
         </Text>
         <Text style={styles.orderDateText}>{order ? order.created : ''}</Text>
         <View

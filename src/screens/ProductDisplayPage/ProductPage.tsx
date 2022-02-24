@@ -14,18 +14,29 @@ import {
   BottomSheetModal,
   BottomSheetScrollView,
 } from '@gorhom/bottom-sheet';
+import {WebView} from 'react-native-webview';
+import HTMLView from 'react-native-htmlview';
 import {styles} from './styles';
+
 const {width, height} = Dimensions.get('window');
 const imageW = width * 0.9;
 const imageH = imageW * 1.2;
 const ProductPage = ({navigation, route}) => {
   const {product} = route.params;
   console.log('Product:', product);
+  const [initial, setInitial] = useState(false);
+  const [webView, setWebView] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['12%', '75%'], []);
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
+  }, []);
+  useEffect(() => {
+    if (!webView) navigation.goBack();
+  }, [webView]);
+  useEffect(() => {
+    setTimeout(() => setInitial(true), 1000);
   }, []);
   useEffect(() => {
     handlePresentModalPress();
@@ -43,12 +54,16 @@ const ProductPage = ({navigation, route}) => {
     const current = Math.floor(Math.abs(positionY) / totalHeight);
     setActiveIndex(current);
   };
+
   return (
     <BottomSheetModalProvider>
       <SafeAreaView style={styles.productPageContainer}>
         <View>
           <TouchableOpacity
-            onPress={() => navigation.goBack()}
+            onPress={() => {
+              setWebView(false);
+              //navigation.goBack()
+            }}
             style={styles.backButton}>
             <Ionicons name="arrow-back-sharp" color={'black'} size={30} />
           </TouchableOpacity>
@@ -149,7 +164,7 @@ const ProductPage = ({navigation, route}) => {
                     <View style={styles.variantBox}>
                       <Text style={styles.variantNameText}>{variant.name}</Text>
                     </View>
-                    <View style={styles.variantBox}>
+                    <View style={{...styles.variantBox, borderWidth: 0}}>
                       <Text style={styles.variantNameText}>
                         {variant.stocks[0].quantity}
                       </Text>
@@ -160,9 +175,11 @@ const ProductPage = ({navigation, route}) => {
               <Text style={styles.productDetailsLabel}>
                 Product Description
               </Text>
-              <Text style={styles.productDescriptionText}>
+              {/*<Text style={styles.productDescriptionText}>
                 {product.description}
-              </Text>
+              </Text>*/}
+              {initial && webView && null}
+              <HTMLView value={product.description} />
             </View>
           </BottomSheetScrollView>
         </BottomSheetModal>

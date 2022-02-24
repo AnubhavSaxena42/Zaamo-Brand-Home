@@ -58,6 +58,7 @@ const ProductsTabScreen = ({navigation}) => {
   const [translateX, setTranslateX] = useState(new Animated.Value(0));
   const mobileNumber = useSelector(state => state.user.mobileNumber);
   const newCollections = useSelector(state => state.store.collections);
+  const [onEndReachedMomentum, setOnEndReachedMomentum] = useState(false);
   const dispatch = useDispatch();
   const storeResponse = useQuery(GET_STORE, {
     variables: {
@@ -171,7 +172,12 @@ const ProductsTabScreen = ({navigation}) => {
     );
   };
   const _renderProduct = ({item}) => (
-    <ProductCard navigation={navigation} product={item} />
+    <ProductCard
+      navigation={navigation}
+      products={products}
+      setProducts={setProducts}
+      product={item}
+    />
   );
   const _renderCollection = ({item}) => (
     <CollectionCard
@@ -571,7 +577,14 @@ const ProductsTabScreen = ({navigation}) => {
       {isViewing === 1 && (
         <FlatList
           data={products}
-          onEndReached={handleOnEndReached}
+          onEndReached={() => {
+            setOnEndReachedMomentum(true);
+            //handleOnEndReached
+          }}
+          onMomentumScrollEnd={() => {
+            onEndReachedMomentum && handleOnEndReached();
+            setOnEndReachedMomentum(false);
+          }}
           onEndReachedThreshold={0.5}
           onRefresh={brandResponse.refetch}
           refreshing={refreshing}

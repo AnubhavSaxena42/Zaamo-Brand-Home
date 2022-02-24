@@ -26,14 +26,13 @@ const SettingsScreen = ({navigation, route}) => {
     dispatch(setLoaderStatus(true));
     deleteAllItemsFromStorage()
       .then(() => {
-        toastService.showToast('Logged out successfully', true);
         saveItemToStorage('First Time User', 'false');
         client.cache
           .reset()
           .then(() => {
             console.log('apollo success');
-            navigation.replace('AuthStack');
             dispatch(setLoaderStatus(false));
+            setTimeout(() => navigation.replace('AuthStack'), 0);
           })
           .catch(() => {
             console.log('fail client');

@@ -14,24 +14,18 @@ import toastService from '../../services/toast-service';
 import {useDispatch, useSelector} from 'react-redux';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import {styles} from './styles';
+
 const ProductCard = ({
   product,
+  products,
+  setProducts,
   navigation,
   inCollectionView,
   setProductIdToRemove,
 }) => {
   const storeUrl = useSelector(state => state.store.storeInfo.storeUrl);
   const dispatch = useDispatch();
-  const [inventory, setInventory] = useState('0');
-  React.useEffect(() => {
-    if (!inCollectionView) {
-      let inventoryVal = 0;
-      product.variants.forEach(variant => {
-        inventoryVal += variant.stocks[0].quantity;
-      });
-      setInventory(inventoryVal.toString());
-    }
-  }, [product]);
+
   return (
     <Pressable
       onPress={() => {
@@ -90,14 +84,19 @@ const ProductCard = ({
       </ImageBackground>
       {!inCollectionView && (
         <View style={styles.inventoryInfoContainer}>
-          <Text style={styles.inventoryText}>
-            Inventory:{' '}
-            <Text
-              style={{color: 'black', fontSize: 14, fontFamily: 'Roboto-Bold'}}>
-              {product.variants[0]
-                ? product.variants[0]?.stocks[0].quantity
-                : '0'}
-            </Text>
+          <Text
+            numberOfLines={1}
+            ellipsizeMode="tail"
+            style={styles.inventoryText}>
+            {product.variants.map(variant => (
+              <Text>
+                {variant.name}:
+                <Text
+                  style={{fontSize: 12, color: 'black', fontWeight: 'bold'}}>
+                  {variant?.stocks[0]?.quantity}
+                </Text>{' '}
+              </Text>
+            ))}
           </Text>
           <TouchableOpacity
             activeOpacity={0}
@@ -105,6 +104,9 @@ const ProductCard = ({
               console.log('Product:', JSON.stringify(product));
               navigation.navigate('CreateVariantScreen', {
                 editVariants: product.variants,
+                products: products,
+                setProducts,
+                product,
                 editInventory: true,
               });
             }}

@@ -79,6 +79,7 @@ export const styles = StyleSheet.create({
     color: 'black',
     fontSize: 12,
     fontFamily: 'Roboto-Regular',
+    maxWidth: '60%',
   },
   editButton: {
     flexDirection: 'row',

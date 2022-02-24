@@ -20,48 +20,16 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
-
-	<key>NSAppleMusicUsageDescription</key>
-  <string></string>
-  <key>NSBluetoothAlwaysUsageDescription</key>
-  <string></string>
-  <key>NSBluetoothPeripheralUsageDescription</key>
-  <string></string>
-  <key>NSCalendarsUsageDescription</key>
-  <string></string>
+<key>NSAppleMusicUsageDescription</key>
+<string>This permission is not needed by the app, but it is required by an underlying API. If you see this dialog, contact us.</string>
   <key>NSCameraUsageDescription</key>
-  <string></string>
-  <key>NSContactsUsageDescription</key>
-  <string></string>
-  <key>NSFaceIDUsageDescription</key>
-  <string></string>
-  <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-  <string></string>
-  <key>NSLocationAlwaysUsageDescription</key>
-  <string></string>
-  <key>NSLocationTemporaryUsageDescriptionDictionary</key>
-  <dict>
-    <key>YOUR-PURPOSE-KEY</key>
-    <string></string>
-  </dict>
-  <key>NSLocationWhenInUseUsageDescription</key>
-  <string></string>
+  <string>Products/Collections Images</string>
   <key>NSMicrophoneUsageDescription</key>
-  <string></string>
-  <key>NSMotionUsageDescription</key>
-  <string></string>
+  <string>Video Upload Audio</string>
   <key>NSPhotoLibraryUsageDescription</key>
-  <string></string>
+  <string>Products/Collections Images</string>
   <key>NSPhotoLibraryAddUsageDescription</key>
-  <string></string>
-  <key>NSRemindersUsageDescription</key>
-  <string></string>
-  <key>NSSpeechRecognitionUsageDescription</key>
-  <string></string>
-  <key>NSSiriUsageDescription</key>
-  <string></string>
-  <key>NSUserTrackingUsageDescription</key>
-  <string></string>
-
+  <string>Products/Collections Images</string>
+ 
 </dict>
 </plist>

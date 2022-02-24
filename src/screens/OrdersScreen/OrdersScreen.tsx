@@ -343,7 +343,6 @@ const OrdersScreen = ({navigation}) => {
             setOnEndReachedMomentum(true);
             handleOnEndReached;
           }}
-          maintainVisibleContentPosition={true}
           onMomentumScrollEnd={() => {
             if (true) {
               onEndReachedMomentum && handleOnEndReached();
@@ -420,12 +419,6 @@ const OrdersScreen = ({navigation}) => {
 
       <View style={[styles.container]}>
         <ScrollableTabView
-          contentProps={{
-            pagingEnabled: true,
-            horizontal: true,
-            directionalLockEnabled: true,
-            bounces: false,
-          }}
           tabBarActiveTextColor="black"
           scrollWithoutAnimation
           renderTabBar={() => <TabBar underlineColor="black" />}>

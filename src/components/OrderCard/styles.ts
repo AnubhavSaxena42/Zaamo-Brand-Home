@@ -1,10 +1,10 @@
-import {StyleSheet} from 'react-native';
-
+import {StyleSheet, Dimensions} from 'react-native';
+const {width, height} = Dimensions.get('window');
 export const styles = StyleSheet.create({
   orderCardContainer: {
     flexDirection: 'row',
     height: 500,
-    width: '95%',
+    width: (95 * width) / 100,
     justifyContent: 'space-around',
     alignItems: 'center',
     borderRightColor: 'pink',

@@ -204,7 +204,8 @@ export const HomeTabNavigator = () => {
           paddingBottom: Platform.OS === 'ios' ? 20 : 10,
         },
         style: {
-          height: Platform.OS === 'ios' ? '10%' : '8%',
+          height: Platform.OS === 'ios' ? '12%' : '8%',
+          maxHeight: 110,
           paddingVertical: 8,
         },
       }}>

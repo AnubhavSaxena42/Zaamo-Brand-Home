@@ -1,7 +1,6 @@
 //@ts-nocheck
 import React, {useState, useRef, useEffect} from 'react';
 import {
-  ScrollView,
   Image,
   Dimensions,
   TouchableOpacity,
@@ -10,9 +9,8 @@ import {
   View,
   SafeAreaView,
   Animated,
+  RefreshControl,
 } from 'react-native';
-import Swiper from 'react-native-swiper';
-import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import OrderCard from '../../components/OrderCard/OrderCard';
 import OrdersOverviewCard from '../../components/OrdersOverviewCard/OrdersOverviewCard';
 import {useQuery, NetworkStatus} from '@apollo/client';
@@ -84,11 +82,9 @@ const OrdersScreen = ({navigation}) => {
             },
           );
         dispatch(setStoreProducts(newStoreProducts));
-
         const warehouseId =
           brandResponse.data.userByMobile.authorisedBrands[0].warehouse;
         dispatch(setWarehouse(warehouseId));
-
         const authorisedBrands =
           brandResponse.data.userByMobile.authorisedBrands.map(brand => {
             return {
@@ -156,14 +152,11 @@ const OrdersScreen = ({navigation}) => {
     const refreshing = networkStatus === NetworkStatus.refetch;
     useEffect(() => {
       if (data) {
-        console.log('NEW DATA IS HERE');
         setOrdersPageInfo(data.orders.pageInfo);
         const orders = data.orders.edges.filter(
           ({node}) => node.lines.length !== 0,
         );
-        console.log('Called Again, whats going wrong?');
         let newOrders = orders.map(order => {
-          console.log('OrderLine', order.fulfillments);
           return {
             ...order,
             status: '',
@@ -245,7 +238,7 @@ const OrdersScreen = ({navigation}) => {
         };
         newOrders.forEach(value => {
           let order = value.node;
-          /* if (order.fulfillments && order.fulfillments.length !== 0) {
+          /*if (order.fulfillments && order.fulfillments.length !== 0) {
             console.log(order);
             console.log(order.fulfillments[0].status);
             let minStatusValue = findStatusValue(order.fulfillments[0].status);
@@ -305,7 +298,6 @@ const OrdersScreen = ({navigation}) => {
       console.log(ordersPageInfo.hasNextPage);
       if (ordersPageInfo.hasNextPage) {
         console.log(ordersPageInfo.endCursor);
-        console.log('here');
         fetchMore({
           variables: {
             endCursor: ordersPageInfo.endCursor,
@@ -335,7 +327,7 @@ const OrdersScreen = ({navigation}) => {
     else category = useSelector(state => state.orders.fulfilledOrders);
 
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <FlatList
           bounces={false}
           data={category}
@@ -403,7 +395,7 @@ const OrdersScreen = ({navigation}) => {
               : null
           }
         />
-      </View>
+      </SafeAreaView>
     );
   };
   return (
@@ -417,7 +409,7 @@ const OrdersScreen = ({navigation}) => {
         <OrdersOverviewCard />
       </View>
 
-      <View style={[styles.container]}>
+      <SafeAreaView style={[styles.container]}>
         <ScrollableTabView
           tabBarActiveTextColor="black"
           scrollWithoutAnimation
@@ -448,7 +440,7 @@ const OrdersScreen = ({navigation}) => {
           />
           <OrderCategoryTab tabLabel={{label: 'Fulfilled'}} label="Fulfilled" />
         </ScrollableTabView>
-      </View>
+      </SafeAreaView>
       {/*<View style={styles.ordersListContainer}>
         <View style={styles.tabsContainer}>
           <Tabs

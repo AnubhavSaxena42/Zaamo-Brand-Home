@@ -13,17 +13,7 @@ export const styles = StyleSheet.create({
     width: width,
     backgroundColor: 'white',
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: 'black',
-    marginBottom: 5,
-    fontSize: 28,
-  },
+
   headingText: {
     zIndex: 2,
     color: 'white',

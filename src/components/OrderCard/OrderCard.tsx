@@ -24,7 +24,7 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
   };
   const getTextTheme = status => {
     if (status) {
-      if (status === 'Received') return 'Green';
+      if (status === 'Received') return 'green';
       else if (status === 'In Process') return '#ef3b3b';
       else if (status === 'Shipped') return '#d29f4b';
       else if (status === 'Delivered') return '#4c8305';

@@ -4,7 +4,7 @@ export const styles = StyleSheet.create({
   orderCardContainer: {
     flexDirection: 'row',
     height: 500,
-    width: '95%',
+    width: width - 10,
     justifyContent: 'space-around',
     alignItems: 'center',
     borderRightColor: 'pink',

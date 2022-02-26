@@ -136,7 +136,7 @@ const OrdersScreen = ({navigation}) => {
     );
   };
 
-  const OrderCategoryTab = ({label}) => {
+  const OrderCategoryTab = ({label, data2}) => {
     const [onEndReachedMomentum, setOnEndReachedMomentum] = useState(false);
     const {data, error, fetchMore, refetch, networkStatus, loading} = useQuery(
       GET_ORDERS,
@@ -328,7 +328,7 @@ const OrdersScreen = ({navigation}) => {
       category = useSelector(state => state.orders.returnCompletedOrders);
     else category = useSelector(state => state.orders.fulfilledOrders);
 
-    return (
+    /*return (
       <View style={{flexGrow: 1}}>
         <Pressable
           onPress={() =>
@@ -421,6 +421,83 @@ const OrdersScreen = ({navigation}) => {
           }
         />
       </View>
+    );*/
+    const onDoRefresh = () => {
+      refetch({
+        endCursor: '',
+      });
+    };
+    console.log('ReFFlat::', ref?.current);
+    useEffect(() => {}, [category]);
+    const ref = useRef(null);
+    return (
+      <FlatList
+        ref={ref}
+        data={category}
+        contentContainerStyle={{
+          flexGrow: 1,
+          width: '100%',
+          paddingBottom: '80%',
+          justifyContent: category.length === 0 ? 'center' : 'flex-start',
+        }}
+        onEndReached={() => {
+          setOnEndReachedMomentum(true);
+          handleOnEndReached;
+        }}
+        onMomentumScrollEnd={() => {
+          if (true) {
+            onEndReachedMomentum && handleOnEndReached();
+            setOnEndReachedMomentum(false);
+          }
+        }}
+        onEndReachedThreshold={0.5}
+        refreshing={refreshing}
+        onRefresh={onDoRefresh}
+        renderItem={_renderSubItem}
+        ListFooterComponent={
+          !refreshing && loading
+            ? () => {
+                return (
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <BarIndicator size={30} count={5} color="black" />
+                  </View>
+                );
+              }
+            : null
+        }
+        ListEmptyComponent={
+          !refreshing && !loading
+            ? () => (
+                <View
+                  style={[
+                    tailwind(
+                      'bg-white mt-1 mx-10   rounded border border-gray-400 flex-row items-center justify-center',
+                    ),
+                    {},
+                  ]}>
+                  <Image
+                    style={{
+                      width: 60,
+                      height: 55,
+                    }}
+                    source={require('../../assets/images/orderlist.png')}
+                  />
+                  <Text
+                    style={tailwind(
+                      'text-sm font-semibold text-center px-6 py-5 text-gray-600 ',
+                    )}>
+                    No Orders
+                  </Text>
+                </View>
+              )
+            : null
+        }
+      />
     );
   };
   return (
@@ -434,7 +511,7 @@ const OrdersScreen = ({navigation}) => {
         <OrdersOverviewCard />
       </View>
 
-      <SafeAreaView style={[styles.container]}>
+      <SafeAreaView style={[styles.container, {flexGrow: 1}]}>
         <ScrollableTabView
           tabBarActiveTextColor="black"
           scrollWithoutAnimation
@@ -442,28 +519,53 @@ const OrdersScreen = ({navigation}) => {
           <OrderCategoryTab
             tabLabel={{label: 'All orders'}}
             label="All Orders"
+            data2={[1, 2, 3, 4]}
           />
-          <OrderCategoryTab tabLabel={{label: 'Received '}} label="Received" />
+          <OrderCategoryTab
+            data2={[1, 2, 3, 4]}
+            tabLabel={{label: 'Received '}}
+            label="Received"
+          />
           <OrderCategoryTab
             tabLabel={{label: 'In Process'}}
             label="In Process"
+            data2={[1, 2, 3, 4]}
           />
-          <OrderCategoryTab tabLabel={{label: 'Shipped'}} label="Shipped" />
-          <OrderCategoryTab tabLabel={{label: 'Delivered'}} label="Delivered" />
-          <OrderCategoryTab tabLabel={{label: 'Cancelled'}} label="Cancelled" />
+          <OrderCategoryTab
+            data2={[1, 2, 3, 4]}
+            tabLabel={{label: 'Shipped'}}
+            label="Shipped"
+          />
+          <OrderCategoryTab
+            tabLabel={{label: 'Delivered'}}
+            data2={[1, 2, 3, 4]}
+            label="Delivered"
+          />
+          <OrderCategoryTab
+            tabLabel={{label: 'Cancelled'}}
+            label="Cancelled"
+            data2={[1, 2, 3, 4]}
+          />
           <OrderCategoryTab
             tabLabel={{label: 'Return Requested'}}
             label="Return Requested"
+            data2={[1, 2, 3, 4]}
           />
           <OrderCategoryTab
+            data2={[1, 2, 3, 4]}
             tabLabel={{label: 'Return Initiated'}}
             label="Return Initiated"
           />
           <OrderCategoryTab
+            data2={[1, 2, 3, 4]}
             tabLabel={{label: 'Return Completed'}}
             label="Return Completed"
           />
-          <OrderCategoryTab tabLabel={{label: 'Fulfilled'}} label="Fulfilled" />
+          <OrderCategoryTab
+            data2={[1, 2, 3, 4]}
+            tabLabel={{label: 'Fulfilled'}}
+            label="Fulfilled"
+          />
         </ScrollableTabView>
       </SafeAreaView>
       {/*<View style={styles.ordersListContainer}>

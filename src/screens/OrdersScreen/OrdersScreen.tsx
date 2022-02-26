@@ -5,12 +5,15 @@ import {
   Dimensions,
   TouchableOpacity,
   Text,
-  FlatList,
   View,
   SafeAreaView,
   Animated,
   RefreshControl,
+  ScrollView,
+  FlatList,
+  Pressable,
 } from 'react-native';
+
 import OrderCard from '../../components/OrderCard/OrderCard';
 import OrdersOverviewCard from '../../components/OrdersOverviewCard/OrdersOverviewCard';
 import {useQuery, NetworkStatus} from '@apollo/client';
@@ -293,7 +296,6 @@ const OrdersScreen = ({navigation}) => {
         dispatch(setFulfilledOrders(fulfilledOrders));
       }
     }, [data]);
-
     const handleOnEndReached = () => {
       console.log(ordersPageInfo.hasNextPage);
       if (ordersPageInfo.hasNextPage) {
@@ -327,10 +329,35 @@ const OrdersScreen = ({navigation}) => {
     else category = useSelector(state => state.orders.fulfilledOrders);
 
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={{flexGrow: 1}}>
+        <Pressable
+          onPress={() =>
+            refetch({
+              endCursor: '',
+            })
+          }
+          style={{
+            height: 30,
+            alignSelf: 'center',
+            width: 100,
+            borderRadius: 10,
+            marginVertical: 4,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'black',
+          }}>
+          <Text style={{color: 'white', fontSize: 12}}>Refresh Orders</Text>
+        </Pressable>
         <FlatList
+          refreshing={refreshing}
           bounces={false}
+          onRefresh={() => {
+            refetch({
+              endCursor: '',
+            });
+          }}
           data={category}
+          showsVerticalScrollIndicator={true}
           onEndReached={() => {
             setOnEndReachedMomentum(true);
             handleOnEndReached;
@@ -346,11 +373,9 @@ const OrdersScreen = ({navigation}) => {
           contentContainerStyle={{
             flexGrow: 1,
             paddingBottom: '15%',
+            width: '100%',
             justifyContent: category.length === 0 ? 'center' : 'flex-start',
           }}
-          onRefresh={refetch}
-          refreshing={refreshing}
-          showsVerticalScrollIndicator={false}
           ListFooterComponent={
             !refreshing && loading
               ? () => {
@@ -395,7 +420,7 @@ const OrdersScreen = ({navigation}) => {
               : null
           }
         />
-      </SafeAreaView>
+      </View>
     );
   };
   return (

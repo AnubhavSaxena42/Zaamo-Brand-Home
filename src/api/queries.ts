@@ -617,3 +617,113 @@ export const GET_PRODUCT = gql`
     }
   }
 `;
+
+export const GET_BRAND_ORDERS = gql`
+  query ($brands: [ID], $endCursor: String) {
+    masterDashboard(filter: {brands: $brands}, first: 10, after: $endCursor) {
+      pageInfo {
+        startCursor
+        endCursor
+        hasNextPage
+      }
+      edges {
+        node {
+          id
+          shippingAddress {
+            firstName
+            lastName
+            streetAddress1
+            streetAddress2
+            city
+            countryArea
+            postalCode
+          }
+
+          user {
+            userId
+            firstName
+            email
+            mobileNo
+            lastName
+            avatar {
+              url
+            }
+            defaultBillingAddress {
+              streetAddress1
+              streetAddress2
+              postalCode
+            }
+          }
+          created
+          lines {
+            id
+            fulfilment {
+              id
+              status
+              shippingFulfillment {
+                shippingId
+                shippingProvider
+              }
+              fulfillmentOrder
+            }
+            productSku
+            productName
+            thumbnail {
+              url
+            }
+            quantity
+            totalPrice {
+              net {
+                amount
+              }
+              gross {
+                amount
+              }
+            }
+          }
+          fulfillments {
+            id
+            status
+            shippingFulfillment {
+              shippingId
+              shippingProvider
+            }
+            fulfillmentOrder
+            lines {
+              id
+              quantity
+              orderLine {
+                id
+                productSku
+                productName
+                thumbnail {
+                  url
+                }
+                quantity
+                totalPrice {
+                  net {
+                    amount
+                  }
+                  gross {
+                    amount
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_KEY_METRICS = gql`
+  query ($brands: [ID]!) {
+    masterDashboardKpi(brandIds: $brands) {
+      receivedOrderCount
+      shippedOrderCount
+      deliveredOrderCount
+      productsSold
+    }
+  }
+`;

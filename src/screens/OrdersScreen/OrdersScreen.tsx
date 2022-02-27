@@ -16,8 +16,13 @@ import {
 
 import OrderCard from '../../components/OrderCard/OrderCard';
 import OrdersOverviewCard from '../../components/OrdersOverviewCard/OrdersOverviewCard';
-import {useQuery, NetworkStatus} from '@apollo/client';
-import {GET_ORDERS, GET_STORE, GET_AUTHORISED_BRANDS} from '../../api/queries';
+import {useQuery, NetworkStatus, useLazyQuery} from '@apollo/client';
+import {
+  GET_ORDERS,
+  GET_STORE,
+  GET_AUTHORISED_BRANDS,
+  GET_BRAND_ORDERS,
+} from '../../api/queries';
 import {useSelector, useDispatch} from 'react-redux';
 import {setAuthorisedBrands} from '../../redux/reducers/userReducer';
 import {
@@ -44,13 +49,23 @@ import {
 } from '../../redux/reducers/ordersReducer';
 import {BarIndicator} from 'react-native-indicators';
 var ScrollableTabView = require('react-native-scrollable-tab-view-forked');
+
 const {width, height} = Dimensions.get('screen');
 const OrdersScreen = ({navigation}) => {
   const dispatch = useDispatch();
+
   const storeResponse = useQuery(GET_STORE, {
+    variables: {
+      collectionEndCursor: '',
+    },
     notifyOnNetworkStatusChange: true,
   });
 
+  /* useEffect(() => {
+    if (brandOrdersResponse.data) {
+      console.log('BrandOrders:::', brandOrdersResponse.data);
+    }
+  }, [brandOrdersResponse.data]);*/
   const mobileNumber = useSelector(state => state.user.mobileNumber);
   const brandResponse = useQuery(GET_AUTHORISED_BRANDS, {
     variables: {
@@ -102,6 +117,7 @@ const OrdersScreen = ({navigation}) => {
 
   useEffect(() => {
     if (storeResponse.data) {
+      console.log('RESPONSE::::', storeResponse.data);
       dispatch(
         setStoreInfo({
           id: storeResponse.data.store.id,
@@ -138,7 +154,7 @@ const OrdersScreen = ({navigation}) => {
 
   const OrderCategoryTab = ({label, data2}) => {
     const [onEndReachedMomentum, setOnEndReachedMomentum] = useState(false);
-    const {data, error, fetchMore, refetch, networkStatus, loading} = useQuery(
+    /*const {data, error, fetchMore, refetch, networkStatus, loading} = useQuery(
       GET_ORDERS,
       {
         notifyOnNetworkStatusChange: true,
@@ -146,7 +162,20 @@ const OrdersScreen = ({navigation}) => {
           endCursor: '',
         },
       },
+  );*/
+    const brandID = useSelector(state => state.user?.authorisedBrands[0]?.id);
+    const {data, error, loading, fetchMore, refetch, networkStatus} = useQuery(
+      GET_BRAND_ORDERS,
+      {
+        variables: {
+          endCursor: '',
+          brands: [brandID],
+        },
+        notifyOnNetworkStatusChange: true,
+        fetchPolicy: 'cache-and-network',
+      },
     );
+
     const [ordersPageInfo, setOrdersPageInfo] = useState({
       hasNextPage: true,
       endCursor: '',
@@ -155,8 +184,9 @@ const OrdersScreen = ({navigation}) => {
     const refreshing = networkStatus === NetworkStatus.refetch;
     useEffect(() => {
       if (data) {
-        setOrdersPageInfo(data.orders.pageInfo);
-        const orders = data.orders.edges.filter(
+        console.log('BRAND ORDERS:::', data);
+        setOrdersPageInfo(data.masterDashboard.pageInfo);
+        const orders = data.masterDashboard.edges.filter(
           ({node}) => node.lines.length !== 0,
         );
         let newOrders = orders.map(order => {
@@ -165,6 +195,7 @@ const OrdersScreen = ({navigation}) => {
             status: '',
           };
         });
+
         let allOrders = [],
           receivedOrders = [],
           inProcessOrders = [],
@@ -267,7 +298,7 @@ const OrdersScreen = ({navigation}) => {
               if (minStatusValue > currentStatusValue)
                 minStatusValue = currentStatusValue;
             }
-            console.log('Min Status Value:', minStatusValue);
+
             const fulfillmentOverallStatus = findStatusName(minStatusValue);
             sortByStatus(fulfillmentOverallStatus, value);
           }
@@ -427,12 +458,9 @@ const OrdersScreen = ({navigation}) => {
         endCursor: '',
       });
     };
-    console.log('ReFFlat::', ref?.current);
-    useEffect(() => {}, [category]);
-    const ref = useRef(null);
+
     return (
       <FlatList
-        ref={ref}
         data={category}
         contentContainerStyle={{
           flexGrow: 1,

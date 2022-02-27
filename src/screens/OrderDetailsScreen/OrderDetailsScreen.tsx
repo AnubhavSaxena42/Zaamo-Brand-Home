@@ -17,7 +17,7 @@ import {useMutation} from '@apollo/client';
 import {UPDATE_FULFILLMENT} from '../../api/mutations';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import toastService from '../../services/toast-service';
-import {GET_ORDERS} from '../../api/queries';
+import {GET_BRAND_ORDERS, GET_KEY_METRICS} from '../../api/queries';
 import {styles} from './styles';
 
 const OrderDetailsScreen = ({navigation, route}) => {
@@ -43,8 +43,6 @@ const OrderDetailsScreen = ({navigation, route}) => {
     }),
   );
 
-  const checkFulfillment = console.log('Check Fulfillment::', checkFulfillment);
-
   console.log('Fulfillment Data::', fulfillmentData);
   const dispatch = useDispatch();
   const [updateFulfillment, updateFulfillmentResponse] = useMutation(
@@ -57,7 +55,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
         shippingId: null,
         shippingProvider: null,
       },
-      refetchQueries: [GET_ORDERS],
+      refetchQueries: [GET_BRAND_ORDERS, GET_KEY_METRICS],
     },
   );
   console.log('lookey', fulfillmentData);
@@ -188,7 +186,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
                       shippingId: fulfillment.shippingId,
                       shippingProvider: fulfillment.shippingProvider,
                     },
-                    refetchQueries: [GET_ORDERS],
+                    refetchQueries: [GET_BRAND_ORDERS, GET_KEY_METRICS],
                   });
                 } else {
                   console.log(
@@ -203,7 +201,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
                       shippingId: null,
                       shippingProvider: null,
                     },
-                    refetchQueries: [GET_ORDERS],
+                    refetchQueries: [GET_KEY_METRICS, GET_BRAND_ORDERS],
                   });
                 }
               });

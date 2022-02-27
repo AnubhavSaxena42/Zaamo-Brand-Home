@@ -116,6 +116,7 @@ export const client = new ApolloClient({
           vouchers: relayStylePagination(),
           collections: relayStylePagination(),
           orders: relayStylePagination(),
+          masterDashboard: relayStylePagination(),
         },
       },
     },

@@ -16,7 +16,8 @@ export const styles = StyleSheet.create({
   value: {
     fontSize: 16,
     color: 'black',
-    fontFamily: 'Roboto-Bold',
+    fontFamily: 'Roboto-Regular',
+    fontWeight: '500',
   },
   key: {
     fontSize: 12,

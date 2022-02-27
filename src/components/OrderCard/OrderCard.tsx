@@ -35,7 +35,7 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
       else if (status === 'Fulfilled') return 'black';
     } else return 'pink';
   };
-  console.log('User:', order.user);
+
   return (
     <Pressable
       onPress={() => {
@@ -62,7 +62,7 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
           numberOfLines={1}
           ellipsizeMode="tail"
           style={styles.orderNumberUserText}>
-          {order ? `#${order.number}` : '#'}{' '}
+          {/*order ? `#${order.number}` : '#'*/}{' '}
           {order?.user ? order.shippingAddress?.firstName : ''}{' '}
           {order?.user ? order.shippingAddress?.lastName : ''}
         </Text>
@@ -103,7 +103,7 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
           numberOfLines={1}
           ellipsizeMode="tail"
           style={styles.totalPriceText}>
-          ₹{order ? order.total?.net.amount : '???'}
+          ₹{order ? order.lines[0]?.totalPrice?.net.amount : '???'}
         </Text>
         <Text
           numberOfLines={1}

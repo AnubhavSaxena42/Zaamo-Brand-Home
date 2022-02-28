@@ -24,19 +24,13 @@ const imageH = imageW * 1.2;
 const ProductPage = ({navigation, route}) => {
   const {product} = route.params;
   console.log('Product:', product);
-  const [initial, setInitial] = useState(false);
-  const [webView, setWebView] = useState(true);
+
   const [activeIndex, setActiveIndex] = useState(0);
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ['12%', '75%'], []);
+  const snapPoints = useMemo(() => [120, '75%'], []);
+
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
-  }, []);
-  useEffect(() => {
-    if (!webView) navigation.goBack();
-  }, [webView]);
-  useEffect(() => {
-    setTimeout(() => setInitial(true), 1000);
   }, []);
   useEffect(() => {
     handlePresentModalPress();
@@ -61,8 +55,7 @@ const ProductPage = ({navigation, route}) => {
         <View>
           <TouchableOpacity
             onPress={() => {
-              setWebView(false);
-              //navigation.goBack()
+              navigation.goBack();
             }}
             style={styles.backButton}>
             <Ionicons name="arrow-back-sharp" color={'black'} size={30} />
@@ -175,10 +168,6 @@ const ProductPage = ({navigation, route}) => {
               <Text style={styles.productDetailsLabel}>
                 Product Description
               </Text>
-              {/*<Text style={styles.productDescriptionText}>
-                {product.description}
-              </Text>*/}
-              {initial && webView && null}
               <HTMLView value={product.description} />
             </View>
           </BottomSheetScrollView>

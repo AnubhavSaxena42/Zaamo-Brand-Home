@@ -21,6 +21,7 @@ import ProductsTabScreen from '../screens/ProductsTabScreen/ProductsTabScreen';
 import SettingsScreen from '../screens/SettingsScreen/SettingsScreen';
 import MarketingScreen from '../screens/MarketingScreen/MarketingScreen';
 import ProductPage from '../screens/ProductDisplayPage/ProductPage';
+import CustomerSupportDetailsScreen from '../screens/CustomerSupportDetailsScreen/CustomerSupportDetailsScreen';
 import SplashScreen from '../screens/SplashScreen/SplashScreen';
 import InstaWorldScreen from '../screens/InstaWorldScreen/InstaWorldScreen';
 import ConnectMySocialScreen from '../screens/ConnectMySocialScreen/ConnectMySocialScreen';
@@ -94,6 +95,10 @@ export const StoreStackNavigator = () => {
       <StoreStack.Screen
         name="PrivacyPolicyScreen"
         component={PrivacyPolicyScreen}
+      />
+      <StoreStack.Screen
+        name="CustomerSupportDetailsScreen"
+        component={CustomerSupportDetailsScreen}
       />
       <StoreStack.Screen
         name="ShippingPolicyScreen"

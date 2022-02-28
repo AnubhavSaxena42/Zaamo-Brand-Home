@@ -272,8 +272,19 @@ export const GET_AUTHORISED_BRANDS = gql`
         id
         email
         brandName
+        brandOrderInfo
         brandContactName
         brandContactNumber
+        staffMembers(first: 10) {
+          edges {
+            node {
+              email
+              mobileNo
+              firstName
+              lastName
+            }
+          }
+        }
         zaamoCreatorsGuidelines
         shippingReturnPolicy
         warehouse

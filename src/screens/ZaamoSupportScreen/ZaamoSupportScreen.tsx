@@ -18,6 +18,10 @@ import {styles} from './styles';
 const ZaamoSupportScreen = ({navigation, route}) => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const brandName = useSelector(state => state.user.brandContactName);
+  const brandContactNumber = useSelector(
+    state => state.user.brandContactNumber,
+  );
   const mobileNumber = useSelector(state => state.user.mobileNumber);
   const [supportQueryCreate, {data, error, loading}] = useMutation(
     CREATE_SUPPORT_QUERY,
@@ -30,9 +34,7 @@ const ZaamoSupportScreen = ({navigation, route}) => {
     },
   );
   const onQueryCreate = () => {
-    toastService.showToast('In Development', true);
-    navigation.navigate('SettingsScreen');
-    //supportQueryCreate();
+    supportQueryCreate();
   };
   useEffect(() => {
     if (data) {
@@ -59,9 +61,15 @@ const ZaamoSupportScreen = ({navigation, route}) => {
           <Text style={styles.subHeaderText}>Get In touch</Text>
           <View style={styles.subHeaderUnderline} />
           <Text style={styles.subHeaderLabel}>Name</Text>
-          <Text style={styles.subHeaderValue}>Rachit Juneja</Text>
+          <Text style={styles.subHeaderValue}>
+            {brandName && brandName !== '' ? brandName : ''}
+          </Text>
           <Text style={styles.subHeaderLabel}>Phone</Text>
-          <Text style={styles.subHeaderValue}>+91 1234567890</Text>
+          <Text style={styles.subHeaderValue}>
+            {brandContactNumber && brandContactNumber !== ''
+              ? brandContactNumber
+              : ''}
+          </Text>
           <Text style={styles.inputLabel}>Your Email</Text>
           <TextInput
             value={email}

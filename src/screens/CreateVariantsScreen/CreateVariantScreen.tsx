@@ -84,6 +84,7 @@ const CreateVariantScreen = ({navigation, route}) => {
   } = route.params;
   const [newProduct, setNewProduct] = useState(false);
   console.log('Variations:', variations);
+  console.log('Editing this product::', product);
   const [variants, setVariants] = useState();
   const storeID = useSelector(state => state.store.storeInfo.id);
   console.log('product ID:', product.id);

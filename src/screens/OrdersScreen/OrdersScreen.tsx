@@ -31,6 +31,7 @@ import {
   setBrandContactName,
   setBrandContactNumber,
   setBrandEmail,
+  setBrandOrderInfo,
 } from '../../redux/reducers/userReducer';
 import {
   setStoreInfo,
@@ -125,24 +126,32 @@ const OrdersScreen = ({navigation}) => {
         ));
         dispatch(setShippingPolicy(policies.shipping_policy));
         dispatch(setReturnPolicy(policies.return_policy));
+        console.log('WEEKND:::', brandResponse.data);
         dispatch(
           setBrandContactName(
-            brandResponse.data.userByMobile.authorisedBrands[0]
-              .brandContactName,
+            brandResponse.data.userByMobile.authorisedBrands[0].staffMembers
+              .edges[0]?.node.firstName +
+              brandResponse.data.userByMobile.authorisedBrands[0].staffMembers
+                .edges[0]?.node.lastName,
           ),
         );
         dispatch(
           setBrandContactNumber(
-            brandResponse.data.userByMobile.authorisedBrands[0]
-              .brandContactNumber,
+            brandResponse.data.userByMobile.authorisedBrands[0].staffMembers
+              .edges[0]?.node.mobileNo,
           ),
         );
         dispatch(
           setBrandEmail(
-            brandResponse.data.userByMobile.authorisedBrands[0].email,
+            brandResponse.data.userByMobile.authorisedBrands[0].staffMembers
+              .edges[0]?.node.email,
           ),
         );
-
+        dispatch(
+          setBrandOrderInfo(
+            brandResponse.data.userByMobile.authorisedBrands[0].brandOrderInfo,
+          ),
+        );
         dispatch(setStoreProducts(newStoreProducts));
         const warehouseId =
           brandResponse.data.userByMobile.authorisedBrands[0].warehouse;

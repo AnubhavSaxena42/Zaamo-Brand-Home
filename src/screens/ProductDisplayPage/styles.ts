@@ -57,9 +57,9 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: '3%',
     alignItems: 'center',
+    height: 100,
     borderBottomWidth: 1,
     borderColor: 'rgba(0,0,0,0.1)',
-    paddingBottom: '5%',
   },
   bottomSheetHeadingContainer: {
     maxWidth: '75%',

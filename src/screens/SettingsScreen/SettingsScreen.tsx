@@ -125,6 +125,13 @@ const SettingsScreen = ({navigation, route}) => {
               setting={'Shipping Policy'}
               imageUrl={require('../../assets/icons/shippingPolicy.png')}
             />
+            <SettingOption
+              onPress={() => {
+                navigation.navigate('CustomerSupportDetailsScreen');
+              }}
+              setting={'Customer Support Details'}
+              imageUrl={require('../../assets/images/orderlist.png')}
+            />
             {/*<SettingOption
               onPress={() => {
                 console.log('Open the store bro');

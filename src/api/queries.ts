@@ -270,7 +270,12 @@ export const GET_AUTHORISED_BRANDS = gql`
     userByMobile(mobileNo: $mobileNo) {
       authorisedBrands {
         id
+        email
         brandName
+        brandContactName
+        brandContactNumber
+        zaamoCreatorsGuidelines
+        shippingReturnPolicy
         warehouse
         products(first: 20, after: $endCursor) {
           pageInfo {

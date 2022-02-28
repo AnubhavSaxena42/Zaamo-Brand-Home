@@ -24,7 +24,14 @@ import {
   GET_BRAND_ORDERS,
 } from '../../api/queries';
 import {useSelector, useDispatch} from 'react-redux';
-import {setAuthorisedBrands} from '../../redux/reducers/userReducer';
+import {
+  setAuthorisedBrands,
+  setShippingPolicy,
+  setReturnPolicy,
+  setBrandContactName,
+  setBrandContactNumber,
+  setBrandEmail,
+} from '../../redux/reducers/userReducer';
 import {
   setStoreInfo,
   setStoreCollections,
@@ -99,6 +106,43 @@ const OrdersScreen = ({navigation}) => {
               };
             },
           );
+
+        console.log(
+          brandResponse.data.userByMobile.authorisedBrands[0]
+            .brandContactNumber,
+        );
+        console.log(
+          brandResponse.data.userByMobile.authorisedBrands[0].brandContactName,
+        );
+        const policies = JSON.parse(
+          brandResponse.data.userByMobile.authorisedBrands[0]
+            .shippingReturnPolicy,
+        );
+
+        const guidelines = (zaamoGuidelines = JSON.parse(
+          brandResponse.data.userByMobile.authorisedBrands[0]
+            .zaamoCreatorsGuidelines,
+        ));
+        dispatch(setShippingPolicy(policies.shipping_policy));
+        dispatch(setReturnPolicy(policies.return_policy));
+        dispatch(
+          setBrandContactName(
+            brandResponse.data.userByMobile.authorisedBrands[0]
+              .brandContactName,
+          ),
+        );
+        dispatch(
+          setBrandContactNumber(
+            brandResponse.data.userByMobile.authorisedBrands[0]
+              .brandContactNumber,
+          ),
+        );
+        dispatch(
+          setBrandEmail(
+            brandResponse.data.userByMobile.authorisedBrands[0].email,
+          ),
+        );
+
         dispatch(setStoreProducts(newStoreProducts));
         const warehouseId =
           brandResponse.data.userByMobile.authorisedBrands[0].warehouse;
@@ -468,6 +512,7 @@ const OrdersScreen = ({navigation}) => {
           paddingBottom: '80%',
           justifyContent: category.length === 0 ? 'center' : 'flex-start',
         }}
+        showsVerticalScrollIndicator={false}
         onEndReached={() => {
           setOnEndReachedMomentum(true);
           handleOnEndReached;
@@ -530,7 +575,7 @@ const OrdersScreen = ({navigation}) => {
   };
   return (
     <SafeAreaView style={styles.ordersContainer}>
-      <Text style={styles.headingText}>Orders </Text>
+      <Text style={styles.headingText}>Orders</Text>
       <Image
         source={require('../../assets/images/DashboardEllipse.png')}
         style={styles.backgroundImageStyle}

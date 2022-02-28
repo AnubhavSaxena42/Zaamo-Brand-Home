@@ -10,6 +10,7 @@ import {
   View,
   TextInput,
 } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import toastService from '../../services/toast-service';
 import {styles} from './styles';
 const OrderItem = ({line, id, status, setData, fulfillment}) => {
@@ -156,9 +157,16 @@ const OrderItem = ({line, id, status, setData, fulfillment}) => {
         transparent={true}>
         <SafeAreaView style={styles.fulfillmentModalContainer}>
           <View style={styles.fulfillmentModalSubContainer}>
-            <Text style={styles.fulfillmentModalHeaderText}>
-              Select FulFillment Status
-            </Text>
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+              <TouchableOpacity
+                style={{position: 'absolute', left: 10}}
+                onPress={() => setIsFulfillmentModalOpen(false)}>
+                <Ionicons name="arrow-back-sharp" color={'black'} size={25} />
+              </TouchableOpacity>
+              <Text style={styles.fulfillmentModalHeaderText}>
+                Select FulFillment Status
+              </Text>
+            </View>
             <FlatList
               data={getAvailableFulfillmentOptions()}
               keyExtractor={item => item.id}

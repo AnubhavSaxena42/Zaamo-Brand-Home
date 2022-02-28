@@ -12,8 +12,8 @@ import toastService from '../../services/toast-service';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {styles} from './styles';
 import {useSelector} from 'react-redux';
-const ReturnPolicyScreen = ({navigation, route}) => {
-  const returnPolicy = useSelector(state => state.user.returnPolicy);
+const ShippingPolicyScreen = ({navigation, route}) => {
+  const shippingPolicy = useSelector(state => state.user.shippingPolicy);
   return (
     <SafeAreaView style={styles.returnPolicyContainer}>
       <View style={styles.headerContainer}>
@@ -26,11 +26,11 @@ const ReturnPolicyScreen = ({navigation, route}) => {
           style={styles.backButton}>
           <Ionicons name="arrow-back-sharp" color={'white'} size={35} />
         </TouchableOpacity>
-        <Text style={styles.headerText}>Return Policy</Text>
+        <Text style={styles.headerText}>Shipping Policy</Text>
       </View>
       <ScrollView style={styles.returnPolicyScrollViewContainer}>
         <View style={styles.subHeaderContainer}>
-          <Text style={styles.subHeaderText}>Return Policy</Text>
+          <Text style={styles.subHeaderText}>Shipping Policy</Text>
           <TouchableOpacity
             onPress={() => {
               toastService.showToast('Contact Zaamo Support', true);
@@ -40,7 +40,7 @@ const ReturnPolicyScreen = ({navigation, route}) => {
             <MaterialCommunityIcons name="pencil" size={16} color="black" />
           </TouchableOpacity>
         </View>
-        <Text style={styles.returnPolicyText}>{returnPolicy}</Text>
+        <Text style={styles.returnPolicyText}>{shippingPolicy}</Text>
         <TouchableOpacity
           onPress={() => {
             toastService.showToast('Contact Zaamo Support', true);
@@ -54,4 +54,4 @@ const ReturnPolicyScreen = ({navigation, route}) => {
   );
 };
 
-export default ReturnPolicyScreen;
+export default ShippingPolicyScreen;

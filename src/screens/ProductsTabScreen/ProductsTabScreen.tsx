@@ -380,21 +380,23 @@ const ProductsTabScreen = ({navigation}) => {
           {isViewing === 1 ? 'Products' : 'Collections'}
         </Text>
 
-        <TouchableOpacity
-          onPress={
-            isViewing === 1
-              ? () => {
-                  navigation.navigate('CreateProductScreen', {
-                    fromBrandHome: true,
-                  });
-                }
-              : () => {
-                  setIsNewCollectionModalVisible(true);
-                }
-          }
-          style={styles.headerButtonPosition}>
-          <Entypo name="plus" size={35} color={'white'} />
-        </TouchableOpacity>
+        {isViewing === 1 && (
+          <TouchableOpacity
+            onPress={
+              isViewing === 1
+                ? () => {
+                    navigation.navigate('CreateProductScreen', {
+                      fromBrandHome: true,
+                    });
+                  }
+                : () => {
+                    setIsNewCollectionModalVisible(true);
+                  }
+            }
+            style={styles.headerButtonPosition}>
+            <Entypo name="plus" size={35} color={'white'} />
+          </TouchableOpacity>
+        )}
       </View>
       <View style={styles.switchTabContainer}>
         <View style={styles.switchTabContainerStyle}>

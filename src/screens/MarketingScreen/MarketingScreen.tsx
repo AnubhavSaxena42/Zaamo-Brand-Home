@@ -56,11 +56,26 @@ const MarketingScreen = ({navigation}) => {
         fontSize={22}
         icon={true}
         onPress={() => {
-          toastService.showToast('In development', true);
+          toastService.showToast(
+            'Contact Zaamo Support for more Information',
+            true,
+          );
           //navigation.navigate('CreateCouponScreen')
         }}
       />
-      <FlatList
+      <View
+        style={{
+          flex: 1,
+          marginHorizontal: '5%',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <Text style={{textAlign: 'center', color: 'black', fontSize: 24}}>
+          Create Coupons to initiate barters with Zaamo influencers. Contact
+          Zaamo team to learn more.
+        </Text>
+      </View>
+      {/*<FlatList
         data={vouchers}
         onEndReached={handleOnEndReached}
         onEndReachedThreshold={0.5}
@@ -117,7 +132,7 @@ const MarketingScreen = ({navigation}) => {
         }
         keyExtractor={item => item.id}
         renderItem={memoizedVoucher}
-      />
+      />*/}
     </SafeAreaView>
   );
 };

@@ -8,6 +8,14 @@ export const styles = StyleSheet.create({
   headerContainer: {
     alignItems: 'center',
   },
+  animationContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  animation: {
+    height: 160,
+  },
   backgroundImage: {
     height: 400,
     width: width,
@@ -31,10 +39,8 @@ export const styles = StyleSheet.create({
     fontFamily: 'Roboto-Bold',
   },
   privacyPolicyScrollViewContainer: {
-    paddingHorizontal: '5%',
-    height: '90%',
-    marginTop: '15%',
-    width: '100%',
+    flex: 1,
+    justifyContent: 'center',
   },
   subHeaderContainer: {
     flexDirection: 'row',

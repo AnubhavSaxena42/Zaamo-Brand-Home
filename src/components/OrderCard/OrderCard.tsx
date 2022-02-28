@@ -1,14 +1,8 @@
 import React from 'react';
-import {
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  Text,
-  Pressable,
-  View,
-} from 'react-native';
+import {Image, Text, Pressable, View} from 'react-native';
 import {styles} from './styles';
 const OrderCard = ({navigation, status, isDetails, order}) => {
+  console.log(order);
   const getTheme = status => {
     if (status) {
       if (status === 'Received') return 'purple';

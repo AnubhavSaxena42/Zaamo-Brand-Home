@@ -39,6 +39,7 @@ import CreateCouponScreen from '../screens/CreateCouponScreen/CreateCouponScreen
 import CollectionViewScreen from '../screens/CollectionViewScreen/CollectionViewScreen';
 import CollectionProductsAddScreen from '../screens/CollectionProductsAddScreen/CollectionProductsAddScreen';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
+import ShippingPolicyScreen from '../screens/ShippingPolicyScreen/ShippingPolicyScreen';
 const TaggingStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 const HomeStack = createStackNavigator();
@@ -93,6 +94,10 @@ export const StoreStackNavigator = () => {
       <StoreStack.Screen
         name="PrivacyPolicyScreen"
         component={PrivacyPolicyScreen}
+      />
+      <StoreStack.Screen
+        name="ShippingPolicyScreen"
+        component={ShippingPolicyScreen}
       />
       <StoreStack.Screen
         name="ConnectMySocialScreen"

@@ -11,6 +11,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import toastService from '../../services/toast-service';
 import {styles} from './styles';
+import AnimatedLottieView from 'lottie-react-native';
 
 const TermsAndConditionsScreen = ({navigation, route}) => {
   return (
@@ -28,8 +29,17 @@ const TermsAndConditionsScreen = ({navigation, route}) => {
 
         <Text style={styles.headerText}>Terms And Conditions</Text>
       </View>
-      <ScrollView style={styles.termsAndConditionsScrollViewContainer}>
-        <View style={styles.subHeaderContainer}>
+      <ScrollView
+        contentContainerStyle={styles.termsAndConditionsScrollViewContainer}>
+        <View style={styles.animationContainer}>
+          <AnimatedLottieView
+            source={require('../../assets/animations/coming-soon.json')}
+            style={styles.animation}
+            loop
+            autoPlay
+          />
+        </View>
+        {/*<View style={styles.subHeaderContainer}>
           <Text style={styles.subHeaderText}>Terms And Conditions</Text>
           <TouchableOpacity
             onPress={() => {
@@ -84,7 +94,7 @@ const TermsAndConditionsScreen = ({navigation, route}) => {
           }}
           style={styles.button}>
           <Text style={styles.buttonText}>Save</Text>
-        </TouchableOpacity>
+        </TouchableOpacity>*/}
       </ScrollView>
     </SafeAreaView>
   );

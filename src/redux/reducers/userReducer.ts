@@ -6,6 +6,11 @@ const initialState = {
   token: {},
   mobileNumber: '',
   authorisedBrands: [],
+  shippingPolicy: '',
+  returnPolicy: '',
+  brandContactName: '',
+  brandContactNumber: '',
+  brandEmail: '',
 };
 
 export const userSlice = createSlice({
@@ -28,10 +33,39 @@ export const userSlice = createSlice({
       state.mobileNumber = action.payload;
       console.log('Mobile Number Set:', action.payload);
     },
+    setShippingPolicy: (state, action: PayloadAction<any>) => {
+      state.shippingPolicy = action.payload;
+      console.log('Shipping Policy Set:', action.payload);
+    },
+    setReturnPolicy: (state, action: PayloadAction<any>) => {
+      state.returnPolicy = action.payload;
+      console.log('Return Policy Set:', action.payload);
+    },
+    setBrandContactName: (state, action: PayloadAction<any>) => {
+      state.brandContactName = action.payload;
+      console.log('Brand Contact Name Set:', action.payload);
+    },
+    setBrandContactNumber: (state, action: PayloadAction<any>) => {
+      state.brandContactNumber = action.payload;
+      console.log('Brand Contact Number Set:', action.payload);
+    },
+    setBrandEmail: (state, action: PayloadAction<any>) => {
+      state.brandEmail = action.payload;
+      console.log('Brand Contact Email Set:', action.payload);
+    },
   },
 });
 
-export const {setUser, setToken, setMobileNumber, setAuthorisedBrands} =
-  userSlice.actions;
+export const {
+  setUser,
+  setShippingPolicy,
+  setReturnPolicy,
+  setToken,
+  setBrandEmail,
+  setMobileNumber,
+  setBrandContactName,
+  setBrandContactNumber,
+  setAuthorisedBrands,
+} = userSlice.actions;
 
 export default userSlice.reducer;

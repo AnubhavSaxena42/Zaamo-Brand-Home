@@ -118,6 +118,13 @@ const SettingsScreen = ({navigation, route}) => {
               setting={'Brand Guidelines'}
               imageUrl={require('../../assets/icons/brandguidelines.png')}
             />
+            <SettingOption
+              onPress={() => {
+                navigation.navigate('ShippingPolicyScreen');
+              }}
+              setting={'Shipping Policy'}
+              imageUrl={require('../../assets/icons/shippingPolicy.png')}
+            />
             {/*<SettingOption
               onPress={() => {
                 console.log('Open the store bro');

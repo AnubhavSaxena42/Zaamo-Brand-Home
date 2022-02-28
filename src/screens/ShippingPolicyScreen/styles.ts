@@ -1,8 +1,8 @@
-import {Dimensions, StyleSheet} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 const {width, height} = Dimensions.get('screen');
 
 export const styles = StyleSheet.create({
-  termsAndConditionsContainer: {
+  returnPolicyContainer: {
     flex: 1,
     backgroundColor: 'white',
   },
@@ -31,9 +31,11 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Roboto-Bold',
   },
-  termsAndConditionsScrollViewContainer: {
-    flex: 1,
-    justifyContent: 'center',
+  returnPolicyScrollViewContainer: {
+    paddingHorizontal: '5%',
+    height: '90%',
+    marginTop: '15%',
+    width: '100%',
   },
   subHeaderContainer: {
     flexDirection: 'row',
@@ -41,14 +43,6 @@ export const styles = StyleSheet.create({
   },
   subHeaderText: {
     color: 'gray',
-  },
-  animationContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  animation: {
-    height: 160,
   },
   editButton: {
     flexDirection: 'row',
@@ -61,7 +55,7 @@ export const styles = StyleSheet.create({
     borderRadius: 4,
     borderColor: 'rgba(0,0,0,0.2)',
   },
-  termsAndConditionsText: {
+  returnPolicyText: {
     color: 'gray',
     marginTop: '4%',
   },

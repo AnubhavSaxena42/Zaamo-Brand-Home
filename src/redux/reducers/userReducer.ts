@@ -12,6 +12,7 @@ const initialState = {
   brandContactNumber: '',
   brandEmail: '',
   brandOrderInfo: '',
+  creatorGuidelines: '',
 };
 
 export const userSlice = createSlice({
@@ -58,12 +59,17 @@ export const userSlice = createSlice({
       state.brandOrderInfo = action.payload;
       console.log('Brand Order Info Set:', action.payload);
     },
+    setCreatorGuidelines: (state, action: PayloadAction<any>) => {
+      state.creatorGuidelines = action.payload;
+      console.log('Creator Guidelines Set:', action.payload);
+    },
   },
 });
 
 export const {
   setUser,
   setShippingPolicy,
+  setCreatorGuidelines,
   setReturnPolicy,
   setBrandOrderInfo,
   setToken,

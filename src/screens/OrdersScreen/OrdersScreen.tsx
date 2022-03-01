@@ -13,7 +13,6 @@ import {
   FlatList,
   Pressable,
 } from 'react-native';
-
 import OrderCard from '../../components/OrderCard/OrderCard';
 import OrdersOverviewCard from '../../components/OrdersOverviewCard/OrdersOverviewCard';
 import {useQuery, NetworkStatus, useLazyQuery} from '@apollo/client';
@@ -84,7 +83,6 @@ const OrdersScreen = ({navigation}) => {
   });
   useEffect(() => {
     if (brandResponse.data) {
-      console.log('Look here:', brandResponse.data);
       if (
         brandResponse.data.userByMobile &&
         brandResponse.data.userByMobile.authorisedBrands[0] &&
@@ -124,9 +122,14 @@ const OrdersScreen = ({navigation}) => {
           brandResponse.data.userByMobile.authorisedBrands[0]
             .zaamoCreatorsGuidelines,
         ));
+        console.log(
+          brandResponse.data.userByMobile.authorisedBrands[0]
+            .zaamoCreatorsGuidelines,
+        );
+        console.log('Guidelines::', guidelines);
+
         dispatch(setShippingPolicy(policies.shipping_policy));
         dispatch(setReturnPolicy(policies.return_policy));
-        console.log('WEEKND:::', brandResponse.data);
         dispatch(
           setBrandContactName(
             brandResponse.data.userByMobile.authorisedBrands[0].staffMembers
@@ -170,7 +173,6 @@ const OrdersScreen = ({navigation}) => {
 
   useEffect(() => {
     if (storeResponse.data) {
-      console.log('RESPONSE::::', storeResponse.data);
       dispatch(
         setStoreInfo({
           id: storeResponse.data.store.id,
@@ -564,8 +566,8 @@ const OrdersScreen = ({navigation}) => {
                   ]}>
                   <Image
                     style={{
-                      width: 60,
-                      height: 55,
+                      width: 40,
+                      height: 40,
                     }}
                     source={require('../../assets/images/orderlist.png')}
                   />

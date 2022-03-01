@@ -27,6 +27,9 @@ const VariantRow = ({variant, edit}) => {
   const [price, setPrice] = useState(
     edit ? variant.price.amount.toString() : '',
   );
+  const [costPrice, setCostPrice] = useState(
+    edit ? variant.costPrice?.amount.toString() : '',
+  );
   console.log('Edit Variant:', variant);
 
   return (
@@ -43,7 +46,7 @@ const VariantRow = ({variant, edit}) => {
             else variant.stock = text;
           }}
           keyboardType={'number-pad'}
-          placeholder="Enter Stock here"
+          placeholder="Enter Stock"
           style={styles.stockInput}
         />
       </View>
@@ -53,10 +56,23 @@ const VariantRow = ({variant, edit}) => {
           onChangeText={text => {
             setPrice(text);
             if (edit) variant.price.amount = parseInt(text);
-            else variant.price = text;
+            else variant.price = parseInt(text);
           }}
           keyboardType={'number-pad'}
-          placeholder="Enter Price here"
+          placeholder="Enter Price"
+          style={styles.priceInput}
+        />
+      </View>
+      <View style={styles.inputContainer}>
+        <TextInput
+          value={costPrice}
+          onChangeText={text => {
+            setCostPrice(text);
+            if (edit) variant.costPrice.amount = parseInt(text);
+            else variant.costPrice = parseInt(text);
+          }}
+          keyboardType={'number-pad'}
+          placeholder="Enter Cost"
           style={styles.priceInput}
         />
       </View>
@@ -83,18 +99,15 @@ const CreateVariantScreen = ({navigation, route}) => {
     product,
   } = route.params;
   const [newProduct, setNewProduct] = useState(false);
-  console.log('Variations:', variations);
-  console.log('Editing this product::', product);
   const [variants, setVariants] = useState();
   const storeID = useSelector(state => state.store.storeInfo.id);
-  console.log('product ID:', product.id);
   console.log(storeID);
   console.log('Variants:', JSON.stringify(variants));
   const dispatch = useDispatch();
   const [error, setError] = useState(false);
   const [getProduct, productResponse] = useLazyQuery(GET_PRODUCT, {
     variables: {
-      productId: product.id,
+      productId: product?.id,
       stores: [storeID],
     },
   });
@@ -150,7 +163,7 @@ const CreateVariantScreen = ({navigation, route}) => {
         );
         getProduct({
           variables: {
-            productId: product.id,
+            productId: product?.id,
             stores: [storeID],
           },
         });
@@ -159,7 +172,6 @@ const CreateVariantScreen = ({navigation, route}) => {
           'Failed to update Variants,please try again later!',
           true,
         );
-        navigation.goBack();
       }
     }
   }, [variantsUpdateResponse.data]);
@@ -180,7 +192,7 @@ const CreateVariantScreen = ({navigation, route}) => {
   );
   const warehouseId = useSelector(state => state.store.warehouse);
   console.log(variations);
-  console.log({
+  console.log('Hi', {
     editVariants,
     products,
     productID,
@@ -204,6 +216,7 @@ const CreateVariantScreen = ({navigation, route}) => {
     setProducts(newProducts);*/
     let flag = false;
     let error = '';
+
     editVariants.forEach(variant => {
       if (!variant.stocks[0].quantity || variant.stocks[0].quantity === '') {
         error = 'Stock Values can not be empty!';
@@ -217,6 +230,10 @@ const CreateVariantScreen = ({navigation, route}) => {
         flag++;
         error = 'Stock Values can not exceed the limit of 50';
       }
+      if (!variant.costPrice.amount || variant.costPrice.amount === '') {
+        error = 'Price Values can not be empty!';
+        flag++;
+      }
     });
     if (flag) {
       toastService.showToast(error, true);
@@ -227,6 +244,7 @@ const CreateVariantScreen = ({navigation, route}) => {
         variantId: variant.id,
         stock: variant.stocks[0].quantity,
         sellingPrice: variant.price.amount,
+        costPrice: variant.costPrice.amount,
       };
     });
     bulkUpdateVariants({
@@ -240,10 +258,12 @@ const CreateVariantScreen = ({navigation, route}) => {
     const newVariants = variations.map(variant => {
       if (!variant.stock || variant.stock === '') flag++;
       if (!variant.price || variant.price === '') flag++;
+      if (!variant.costPrice || variant.costPrice === '') flag++;
       return {
         attributes: variant.attributes,
         stocks: [{warehouse: warehouseId, quantity: parseInt(variant.stock)}],
-        price: parseInt(variant.price),
+        price: variant.price,
+        costPrice: variant.costPrice,
         sku:
           variant.name +
           variant.attributes[0].id +
@@ -298,6 +318,9 @@ const CreateVariantScreen = ({navigation, route}) => {
           <View style={styles.variantPriceHeader}>
             <Text style={styles.headerText}>Price</Text>
           </View>
+          <View style={styles.variantPriceHeader}>
+            <Text style={styles.headerText}>Cost Price</Text>
+          </View>
         </View>
         <View>
           {!editInventory &&
@@ -347,28 +370,36 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   variantNameHeader: {
-    width: '33%',
+    width: '25%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   variantStockHeader: {
-    width: '33%',
+    width: '25%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   variantPriceHeader: {
-    width: '33%',
+    width: '25%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   variantRowContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    margin: '1%',
-    height: 90,
+    marginHorizontal: '2%',
+    height: 100,
     justifyContent: 'space-evenly',
   },
   inputContainer: {
-    width: '31%',
+    width: '25%',
     height: '100%',
     textAlign: 'center',
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
+    borderLeftWidth: 1,
+    borderColor: 'rgba(0,0,0,0.1)',
   },
   priceInput: {
     width: '100%',
@@ -382,7 +413,7 @@ const styles = StyleSheet.create({
   },
   variantNameText: {
     textAlign: 'center',
-    fontSize: 24,
+    fontSize: 18,
     color: 'black',
     fontWeight: '700',
   },

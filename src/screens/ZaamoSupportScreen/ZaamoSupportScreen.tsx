@@ -29,16 +29,26 @@ const ZaamoSupportScreen = ({navigation, route}) => {
       variables: {
         email: email,
         message: message,
-        mobileNo: '91' + mobileNumber,
+        mobileNo: '+91' + mobileNumber,
       },
     },
   );
   const onQueryCreate = () => {
+    if (!email || email === '' || !message || message === '') {
+      toastService.showToast(
+        'Please fill out the details before creating a support query request',
+        true,
+      );
+      return;
+    }
     supportQueryCreate();
   };
   useEffect(() => {
     if (data) {
-      console.log(data);
+      if (data.supportQueryCreate.SupportQuery) {
+        toastService.showToast('Support Query Created', true);
+        navigation.goBack();
+      }
     }
   }, [data]);
   console.log(data, error, loading);

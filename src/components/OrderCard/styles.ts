@@ -44,6 +44,7 @@ export const styles = StyleSheet.create({
     color: 'darkslateblue',
     backgroundColor: 'whitesmoke',
     borderRadius: 5,
+    paddingHorizontal: '3%',
     textShadowColor: 'rgba(0,0,0,0.1)',
     textShadowRadius: 2,
     textShadowOffset: {width: 1, height: 1},
@@ -52,9 +53,10 @@ export const styles = StyleSheet.create({
   },
   priceInfo: {
     height: '100%',
+    alignItems: 'flex-end',
     flex: 1,
     paddingTop: '3%',
-    paddingRight: '2%',
+    paddingRight: '3%',
   },
   totalPriceText: {
     fontSize: 14,

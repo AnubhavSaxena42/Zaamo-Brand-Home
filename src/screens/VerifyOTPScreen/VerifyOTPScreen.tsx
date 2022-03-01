@@ -14,7 +14,6 @@ import OTPInputView from '@twotalltotems/react-native-otp-input';
 import {useMutation} from '@apollo/client';
 import {VERIFY_OTP, GENERATE_OTP} from '../../api/mutations';
 import {useDispatch} from 'react-redux';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import PhoneSVG from '../MobileOTPScreen/phone';
 import toastService from '../../services/toast-service';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';

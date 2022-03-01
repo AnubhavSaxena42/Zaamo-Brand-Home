@@ -1,4 +1,3 @@
-import {Platform, ToastAndroid} from 'react-native';
 import Toast from 'react-native-toast-message';
 
 class ToastService {

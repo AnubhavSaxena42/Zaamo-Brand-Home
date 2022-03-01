@@ -6,26 +6,43 @@ import {TOKEN_CREATE, USER_REGISTER} from '../../api/mutations';
 import {useDispatch} from 'react-redux';
 import authService from '../../services/auth-service';
 import {
-  setUser,
-  setToken,
-  setMobileNumber,
-} from '../../redux/reducers/userReducer';
-import {
   getItemFromStorage,
   saveItemToStorage,
 } from '../../services/storage-service';
+import {
+  setUser,
+  setToken,
+  setMobileNumber,
+  setAuthorisedBrands,
+  setShippingPolicy,
+  setReturnPolicy,
+  setBrandContactName,
+  setBrandContactNumber,
+  setBrandEmail,
+  setBrandOrderInfo,
+} from '../../redux/reducers/userReducer';
+import {
+  setWarehouse,
+  setStoreInfo,
+  setStoreCollections,
+  setStoreProducts,
+} from '../../redux/reducers/storeReducer';
 import toastService from '../../services/toast-service';
 import {setLoaderStatus} from '../../redux/reducers/appVariablesReducer';
 import {request, PERMISSIONS, openSettings} from 'react-native-permissions';
 import {styles} from './styles';
-import {GET_USER_ACTIVE} from '../../api/queries';
+import {
+  GET_USER_ACTIVE,
+  GET_STORE,
+  GET_AUTHORISED_BRANDS,
+} from '../../api/queries';
 const LoginSuccessScreen = ({navigation, route}) => {
   const [createToken, {data, loading, error}] = useMutation(TOKEN_CREATE, {
     variables: {
       mobileNo: '91' + route.params.mobileNumber,
     },
   });
-
+  console.log('Token', data, error, loading);
   const [userRegister, registerResponse] = useMutation(USER_REGISTER, {
     variables: {
       mobileNo: '91' + route.params.mobileNumber,
@@ -37,6 +54,141 @@ const LoginSuccessScreen = ({navigation, route}) => {
       mobileNo: '91' + route.params.mobileNumber,
     },
   });
+  const [getBrand, brandResponse] = useLazyQuery(GET_AUTHORISED_BRANDS, {
+    variables: {
+      mobileNo: '91' + route.params.mobileNumber,
+      endCursor: '',
+    },
+    notifyOnNetworkStatusChange: true,
+  });
+  const [getStore, storeResponse] = useLazyQuery(GET_STORE, {
+    variables: {
+      collectionEndCursor: '',
+    },
+    notifyOnNetworkStatusChange: true,
+  });
+
+  useEffect(() => {
+    if (storeResponse.data) {
+      dispatch(
+        setStoreInfo({
+          id: storeResponse.data.store.id,
+          storeName: storeResponse.data.store.storeName,
+          storeType: storeResponse.data.store.storeType,
+          storeUrl: storeResponse.data.store.storeUrl,
+        }),
+      );
+      const storeCollections = storeResponse.data.store.collections.edges.map(
+        ({node}) => {
+          return {
+            id: node.id,
+            products: node.products ? node.products.edges : [],
+            imageUrl: node.imageUrl ? node.imageUrl : '',
+            name: node.name ? node.name : '',
+            slug: node?.slug,
+          };
+        },
+      );
+      dispatch(setStoreCollections(storeCollections));
+      console.log('STORE SET UP BOYOS');
+    }
+  }, [storeResponse.data]);
+  useEffect(() => {
+    if (brandResponse.data) {
+      if (
+        brandResponse.data.userByMobile &&
+        brandResponse.data.userByMobile.authorisedBrands[0] &&
+        brandResponse.data.userByMobile.authorisedBrands[0].products
+      ) {
+        const newStoreProducts =
+          brandResponse.data.userByMobile.authorisedBrands[0].products.edges.map(
+            ({node}) => {
+              return {
+                brandName: node.brand.brandName,
+                id: node.id,
+                name: node.name,
+                url: node.url,
+                thumbnail: node.thumbnail
+                  ? node.thumbnail.url
+                  : 'https://media-exp1.licdn.com/dms/image/C4E0BAQGymyKm7OE3wg/company-logo_200_200/0/1636442519943?e=2159024400&v=beta&t=19hHu3puobGsregS0-31D-KiANWe3NqrKZESktzQC30',
+                price: node.pricing.priceRange
+                  ? node.pricing.priceRange.start.net.amount
+                  : 0,
+              };
+            },
+          );
+
+        console.log(
+          brandResponse.data.userByMobile.authorisedBrands[0]
+            .brandContactNumber,
+        );
+        console.log(
+          brandResponse.data.userByMobile.authorisedBrands[0].brandContactName,
+        );
+        const policies = JSON.parse(
+          brandResponse.data.userByMobile.authorisedBrands[0]
+            .shippingReturnPolicy,
+        );
+
+        const guidelines = JSON.parse(
+          brandResponse.data.userByMobile.authorisedBrands[0]
+            .zaamoCreatorsGuidelines,
+        );
+        console.log(
+          brandResponse.data.userByMobile.authorisedBrands[0]
+            .zaamoCreatorsGuidelines,
+        );
+        console.log('Guidelines::', guidelines);
+
+        dispatch(setShippingPolicy(policies.shipping_policy));
+        dispatch(setReturnPolicy(policies.return_policy));
+        dispatch(
+          setBrandContactName(
+            brandResponse.data.userByMobile.authorisedBrands[0].staffMembers
+              .edges[0]?.node.firstName +
+              brandResponse.data.userByMobile.authorisedBrands[0].staffMembers
+                .edges[0]?.node.lastName,
+          ),
+        );
+        dispatch(
+          setBrandContactNumber(
+            brandResponse.data.userByMobile.authorisedBrands[0].staffMembers
+              .edges[0]?.node.mobileNo,
+          ),
+        );
+        dispatch(
+          setBrandEmail(
+            brandResponse.data.userByMobile.authorisedBrands[0].staffMembers
+              .edges[0]?.node.email,
+          ),
+        );
+        dispatch(
+          setBrandOrderInfo(
+            brandResponse.data.userByMobile.authorisedBrands[0].brandOrderInfo,
+          ),
+        );
+        dispatch(setStoreProducts(newStoreProducts));
+        const warehouseId =
+          brandResponse.data.userByMobile.authorisedBrands[0].warehouse;
+        dispatch(setWarehouse(warehouseId));
+        const authorisedBrands =
+          brandResponse.data.userByMobile.authorisedBrands.map(brand => {
+            return {
+              name: brand.brandName,
+              id: brand.id,
+            };
+          });
+        dispatch(setAuthorisedBrands(authorisedBrands));
+        navigation.replace('StoreStack');
+      }
+    }
+  }, [brandResponse.data]);
+  console.log(
+    'Status',
+    userQueryResponse.data,
+    userQueryResponse.loading,
+    userQueryResponse.error,
+  );
 
   const handlePermission = async () => {
     async function requestAll() {
@@ -76,7 +228,8 @@ const LoginSuccessScreen = ({navigation, route}) => {
         status.isPhotoLibrary == 'granted' &&
         status.isWritePhotoLibrary == 'granted'
       ) {
-        navigation.replace('StoreStack');
+        getBrand();
+        getStore();
       } else {
         Alert.alert(
           '',
@@ -120,6 +273,11 @@ const LoginSuccessScreen = ({navigation, route}) => {
     else toast that the account has not yet been activated
   }
 */
+  /*
+  After we succesfully log in and get the x-store-id 
+  I have to query authorisedBrands Request 
+  and storeResponse to set up shop before logging in
+*/
 
   const handleLogin = async () => {
     if (data && data.tokenCreate && data.tokenCreate.user) {
@@ -148,6 +306,7 @@ const LoginSuccessScreen = ({navigation, route}) => {
 
   useEffect(() => {
     if (userQueryResponse.data) {
+      console.log('1');
       if (userQueryResponse.data.userByMobile) {
         if (userQueryResponse.data.userByMobile.isActive) {
           createToken();

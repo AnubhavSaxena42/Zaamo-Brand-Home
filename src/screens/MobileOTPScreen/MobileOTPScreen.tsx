@@ -25,7 +25,7 @@ const MobileOTPScreen = ({navigation, route}) => {
       mobileNo: '91' + mobileNumber,
     },
   });
-  console.log(data, loading, error);
+
   useEffect(() => {
     if (data) {
       if (data.generateOtp.success) {

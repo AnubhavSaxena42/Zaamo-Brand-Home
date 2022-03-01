@@ -80,13 +80,22 @@ const OrderDetailsScreen = ({navigation, route}) => {
 
   return (
     <SafeAreaView style={styles.orderDetailsContainer}>
-      <ScrollView>
-        <Text style={styles.headingText}>Order Details</Text>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.backButton}>
-          <Ionicons name="arrow-back-sharp" color={'white'} size={35} />
-        </TouchableOpacity>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View
+          style={{
+            flexDirection: 'row',
+            marginTop: '5%',
+            width: '100%',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.backButton}>
+            <Ionicons name="arrow-back-sharp" color={'white'} size={35} />
+          </TouchableOpacity>
+          <Text style={styles.headingText}>Order Details</Text>
+        </View>
         <Image
           source={require('../../assets/images/DashboardEllipse.png')}
           style={styles.backgroundImageStyle}
@@ -132,8 +141,8 @@ const OrderDetailsScreen = ({navigation, route}) => {
             <View style={styles.userDetailsSubSection}>
               <Text style={styles.headerText}>User Details</Text>
               <Text style={styles.detailText}>
-                {' '}
-                {order.user?.firstName} {order.user?.lastName}
+                {order.shippingAddress?.firstName}{' '}
+                {order.shippingAddress?.lastName}
               </Text>
               <Text style={styles.detailText}>
                 {order ? order.lines?.length : '1'}{' '}
@@ -143,21 +152,30 @@ const OrderDetailsScreen = ({navigation, route}) => {
             <View style={styles.shippingDetailsSubSection}>
               <Text style={styles.headerText}>Shipping Details</Text>
               <Text style={styles.detailText}>
-                {order.user ? order.shippingAddress.streetAddress1 : ''}
-                {order.user ? order.shippinAddress?.streetAddress2 : ''}
+                {order.shippingAddress
+                  ? order.shippingAddress?.streetAddress1
+                  : ''}
+                {order.shippingAddress
+                  ? order.shippingAddress?.streetAddress2
+                  : ''}
               </Text>
               <Text style={styles.detailText}>
                 {order.shippingAddress?.city},
                 {order.shippingAddress?.countryArea},
-                {order.user ? order.shippingAddress?.postalCode : ''}
+                {order.shippingAddress ? order.shippingAddress?.postalCode : ''}
               </Text>
-              <Text style={styles.detailText}>{order.user?.mobileNo}</Text>
-              <Text style={styles.detailText}>{order.user?.email}</Text>
+              <Text style={styles.detailText}>
+                {order.shippingAddress?.phone}
+              </Text>
+              <Text style={styles.detailText}>
+                {order.shippingAddress?.email}
+              </Text>
             </View>
           </View>
           <TouchableOpacity
             onPress={() => {
-              let flag = false;
+              toastService.showToast('Disabled', true);
+              /* let flag = false;
               fulfillmentData.forEach(fulfillment => {
                 if (fulfillment.status === 'SHIPPED') {
                   if (
@@ -204,7 +222,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
                     refetchQueries: [GET_KEY_METRICS, GET_BRAND_ORDERS],
                   });
                 }
-              });
+              });*/
             }}
             style={styles.button}>
             <Text style={styles.updateButtonText}>Update</Text>

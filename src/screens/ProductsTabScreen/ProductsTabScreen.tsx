@@ -113,7 +113,12 @@ const ProductsTabScreen = ({navigation}) => {
     },
     notifyOnNetworkStatusChange: true,
   });
-
+  console.log(
+    'Brand::::',
+    brandResponse.data,
+    brandResponse.loading,
+    brandResponse.error,
+  );
   useEffect(() => {
     if (brandResponse.data) {
       if (

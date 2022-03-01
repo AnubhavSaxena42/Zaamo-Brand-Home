@@ -1,7 +1,8 @@
 import React from 'react';
-import {Image, Text, Pressable, View} from 'react-native';
+import {Image, Text, Dimensions, Pressable, View} from 'react-native';
 import {styles} from './styles';
 const OrderCard = ({navigation, status, isDetails, order}) => {
+  const {width, height} = Dimensions.get('window');
   console.log(order);
   const getTheme = status => {
     if (status) {
@@ -40,9 +41,13 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
       }}
       style={{
         ...styles.orderCardContainer,
+        justifyContent: isDetails ? 'space-between' : 'space-around',
         height: isDetails ? 100 : 120,
+        width: isDetails ? width - 30 : width - 10,
         borderRightWidth: !isDetails ? 10 : 0,
         borderRightColor: getTheme(status),
+        paddingTop: isDetails ? '1%' : 0,
+        paddingHorizontal: isDetails ? '5%' : 0,
       }}>
       {!isDetails && (
         <Image
@@ -51,12 +56,11 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
           resizeMode="contain"
         />
       )}
-      <View style={styles.orderInfo}>
+      <View style={{...styles.orderInfo, flex: isDetails ? 1 : 2}}>
         <Text
           numberOfLines={1}
           ellipsizeMode="tail"
           style={styles.orderNumberUserText}>
-          {/*order ? `#${order.number}` : '#'*/}{' '}
           {order?.user ? order.shippingAddress?.firstName : ''}{' '}
           {order?.user ? order.shippingAddress?.lastName : ''}
         </Text>
@@ -64,8 +68,7 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
         <View
           style={{
             flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginTop: isDetails ? '5%' : '20%',
+            marginTop: isDetails ? '10%' : '20%',
           }}>
           <Text
             style={{
@@ -73,7 +76,7 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
               color: getTextTheme(status),
               backgroundColor: getTheme(status),
               borderRadius: 5,
-              padding: '2%',
+              paddingVertical: '2%',
               paddingHorizontal: '3%',
               textShadowColor: 'rgba(0,0,0,0.1)',
               textShadowRadius: 2,
@@ -84,12 +87,11 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
             }}>
             {status ? status : 'NO STATUS'}
           </Text>
-          <Text style={styles.pinCodeText}>
-            {!isDetails &&
-              (order?.user
-                ? `${order.user.defaultBillingAddress.postalCode}`
-                : '110011-Saket')}
-          </Text>
+          {!isDetails && (
+            <Text style={styles.pinCodeText}>
+              {order.shippingAddress?.postalCode}
+            </Text>
+          )}
         </View>
       </View>
       <View style={styles.priceInfo}>

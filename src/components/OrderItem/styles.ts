@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     backgroundColor: 'white',
-    marginVertical: '2%',
+    marginVertical: '5%',
   },
   fulfillmentModalContainer: {
     flex: 1,
@@ -38,14 +38,15 @@ export const styles = StyleSheet.create({
     fontSize: 16,
   },
   imageStyle: {
-    height: 150,
+    height: 220,
     width: '30%',
     borderRadius: 10,
   },
   orderInfo: {
     flex: 1,
     paddingHorizontal: '2%',
-    paddingVertical: '2%',
+    paddingVertical: '4%',
+    justifyContent: 'space-between',
   },
   namePriceInfoContainer: {
     flexDirection: 'row',
@@ -65,9 +66,7 @@ export const styles = StyleSheet.create({
     fontFamily: 'Roboto-Bold',
   },
   statusContainer: {
-    position: 'absolute',
-    bottom: '0%',
-    marginLeft: '3%',
+    height: 50,
   },
   statusHeaderText: {
     fontSize: 14,
@@ -110,11 +109,12 @@ export const styles = StyleSheet.create({
   },
   shippingInputContainer: {
     flexDirection: 'row',
-    width: '80%',
+    width: '100%',
+    marginTop: '5%',
     justifyContent: 'space-between',
   },
   shippingInput: {
-    fontSize: 10,
+    fontSize: 12,
     color: 'black',
   },
 });

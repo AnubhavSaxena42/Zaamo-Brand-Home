@@ -12,14 +12,14 @@ export const styles = StyleSheet.create({
     color: 'white',
     fontSize: 22,
     textAlign: 'center',
-    marginTop: '5%',
     fontFamily: 'Roboto-Bold',
   },
   backButton: {
     zIndex: 2,
     position: 'absolute',
     left: 10,
-    top: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   backgroundImageStyle: {
     height: 400,
@@ -43,7 +43,7 @@ export const styles = StyleSheet.create({
     width: '100%',
     zIndex: 2,
     alignItems: 'center',
-    marginTop: '4%',
+    marginVertical: '4%',
   },
   orderItemsListContainer: {
     flex: 1,
@@ -53,6 +53,8 @@ export const styles = StyleSheet.create({
     backgroundColor: 'white',
     width: '100%',
     paddingHorizontal: '3%',
+    borderBottomWidth: 1,
+    borderColor: 'rgba(0,0,0,0.1) ',
   },
   headerText: {
     color: 'black',
@@ -65,17 +67,17 @@ export const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     paddingHorizontal: '3%',
+    marginTop: '5%',
   },
   userDetailsSubSection: {
-    paddingTop: '3%',
+    flex: 1,
   },
   detailText: {
     marginBottom: '5%',
     color: 'black',
   },
   shippingDetailsSubSection: {
-    paddingTop: '3%',
-    paddingHorizontal: '15%',
+    flex: 1,
   },
   updateButtonText: {
     color: 'white',

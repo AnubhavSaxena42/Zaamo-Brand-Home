@@ -224,6 +224,32 @@ const OrderItem = ({line, id, status, setData, fulfillment}) => {
             L
           </Text>
         </View>*/}
+        {fulfillmentStatus === 'SHIPPED' ? (
+          <View style={styles.shippingInputContainer}>
+            <View style={{flex: 1}}>
+              <Text style={styles.shippingInput}>Shipping ID:</Text>
+              <TextInput
+                value={shippingId}
+                keyboardType="number-pad"
+                onChangeText={text => {
+                  setShippingId(text);
+                }}
+                style={styles.inputStyle}
+                placeholder={''}
+              />
+            </View>
+            <View style={{flex: 1}}>
+              <Text style={styles.shippingInput}>Shipping Provider:</Text>
+              <TextInput
+                value={shippingProvider}
+                keyboardType="number-pad"
+                onChangeText={text => setShippingProvider(text)}
+                style={styles.inputStyle}
+                placeholder={''}
+              />
+            </View>
+          </View>
+        ) : null}
         {id !== undefined && (
           <View style={styles.statusContainer}>
             <Text style={styles.statusHeaderText}>Order Status</Text>
@@ -248,32 +274,6 @@ const OrderItem = ({line, id, status, setData, fulfillment}) => {
             </View>
           </View>
         )}
-        {fulfillmentStatus === 'SHIPPED' ? (
-          <View style={styles.shippingInputContainer}>
-            <View>
-              <Text style={styles.shippingInput}>Shipping ID:</Text>
-              <TextInput
-                value={shippingId}
-                keyboardType="number-pad"
-                onChangeText={text => {
-                  setShippingId(text);
-                }}
-                style={styles.inputStyle}
-                placeholder={''}
-              />
-            </View>
-            <View>
-              <Text style={styles.shippingInput}>Shipping Provider:</Text>
-              <TextInput
-                value={shippingProvider}
-                keyboardType="number-pad"
-                onChangeText={text => setShippingProvider(text)}
-                style={styles.inputStyle}
-                placeholder={''}
-              />
-            </View>
-          </View>
-        ) : null}
       </View>
     </View>
   );

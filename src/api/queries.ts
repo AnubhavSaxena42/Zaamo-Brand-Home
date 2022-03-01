@@ -650,11 +650,12 @@ export const GET_BRAND_ORDERS = gql`
             lastName
             streetAddress1
             streetAddress2
+            email
+            phone
             city
             countryArea
             postalCode
           }
-
           user {
             userId
             firstName

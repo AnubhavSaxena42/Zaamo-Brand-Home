@@ -59,31 +59,36 @@ const SettingsScreen = ({navigation, route}) => {
         <View style={styles.optionsHeadingContainer}>
           <Text style={styles.optionsHeading}>Store Settings</Text>
           <View style={styles.optionsContainer}>
-            <SettingOption
-              onPress={() => navigation.navigate('CustomiseLandingPageScreen')}
-              setting={'Customise Landing Page'}
-              imageUrl={require('../../assets/icons/customiseLandingPage.png')}
-            />
-            <SettingOption
+            {
+              <SettingOption
+                onPress={() =>
+                  navigation.navigate('CustomiseLandingPageScreen')
+                }
+                setting={'Customise Landing Page'}
+                imageUrl={require('../../assets/icons/customiseLandingPage.png')}
+              />
+            }
+            {/*<SettingOption
               onPress={() => navigation.navigate('StoreThemesScreen')}
               setting={'Store Themes'}
               imageUrl={require('../../assets/icons/storeThemes.png')}
-            />
+            />*/}
             <SettingOption
-              onPress={() => navigation.navigate('PaymentDetailsScreen')}
-              setting={'Payment Details'}
-              imageUrl={require('../../assets/icons/paymentdetails.png')}
+              onPress={() => navigation.navigate('PrivacyPolicyScreen')}
+              setting={'Privacy Policy'}
+              imageUrl={require('../../assets/icons/privacypolicy.png')}
             />
+
             <SettingOption
               onPress={() => navigation.navigate('ConnectMySocialScreen')}
               setting={'Connect my Social'}
               imageUrl={require('../../assets/icons/network.png')}
             />
-            <SettingOption
+            {/*<SettingOption
               onPress={() => navigation.navigate('RegisterAsCompanyScreen')}
               setting={'Register as Company'}
               imageUrl={require('../../assets/icons/registerCompany.png')}
-            />
+            />*/}
             <SettingOption
               onPress={() => {
                 navigation.navigate('TermsAndConditionsScreen');
@@ -92,9 +97,9 @@ const SettingsScreen = ({navigation, route}) => {
               imageUrl={require('../../assets/icons/termsandconditions.png')}
             />
             <SettingOption
-              onPress={() => navigation.navigate('PrivacyPolicyScreen')}
-              setting={'Privacy Policy'}
-              imageUrl={require('../../assets/icons/privacypolicy.png')}
+              onPress={() => navigation.navigate('PaymentDetailsScreen')}
+              setting={'Payment Details'}
+              imageUrl={require('../../assets/icons/paymentdetails.png')}
             />
             <SettingOption
               onPress={() => navigation.navigate('ReturnPolicyScreen')}

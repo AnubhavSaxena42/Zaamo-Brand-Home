@@ -19,9 +19,7 @@ const ZaamoSupportScreen = ({navigation, route}) => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const brandName = useSelector(state => state.user.brandContactName);
-  const brandContactNumber = useSelector(
-    state => state.user.brandContactNumber,
-  );
+  const brandContactEmail = useSelector(state => state.user.brandEmail);
   const mobileNumber = useSelector(state => state.user.mobileNumber);
   const [supportQueryCreate, {data, error, loading}] = useMutation(
     CREATE_SUPPORT_QUERY,
@@ -74,10 +72,10 @@ const ZaamoSupportScreen = ({navigation, route}) => {
           <Text style={styles.subHeaderValue}>
             {brandName && brandName !== '' ? brandName : ''}
           </Text>
-          <Text style={styles.subHeaderLabel}>Phone</Text>
+          <Text style={styles.subHeaderLabel}>Email</Text>
           <Text style={styles.subHeaderValue}>
-            {brandContactNumber && brandContactNumber !== ''
-              ? brandContactNumber
+            {brandContactEmail && brandContactEmail !== ''
+              ? brandContactEmail
               : ''}
           </Text>
           <Text style={styles.inputLabel}>Your Email</Text>

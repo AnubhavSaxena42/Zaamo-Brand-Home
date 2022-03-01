@@ -54,7 +54,7 @@ const MarketingScreen = ({navigation}) => {
       <Header
         tag={'Marketing'}
         fontSize={22}
-        icon={true}
+        icon={false}
         onPress={() => {
           toastService.showToast(
             'Contact Zaamo Support for more Information',

@@ -636,7 +636,7 @@ export const GET_PRODUCT = gql`
 
 export const GET_BRAND_ORDERS = gql`
   query ($brands: [ID], $endCursor: String) {
-    masterDashboard(filter: {brands: $brands}, first: 10, after: $endCursor) {
+    masterDashboard(filter: {brands: $brands}, first: 50, after: $endCursor) {
       pageInfo {
         startCursor
         endCursor

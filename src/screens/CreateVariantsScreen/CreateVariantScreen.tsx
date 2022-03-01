@@ -51,30 +51,32 @@ const VariantRow = ({variant, edit}) => {
         />
       </View>
       <View style={styles.inputContainer}>
-        <TextInput
+        {/*<TextInput
           value={price}
           onChangeText={text => {
-            setPrice(text);
-            if (edit) variant.price.amount = parseInt(text);
-            else variant.price = parseInt(text);
+            //setPrice(text);
+            //if (edit) variant.price.amount = parseInt(text);
+            //else variant.price = parseInt(text);
           }}
           keyboardType={'number-pad'}
           placeholder="Enter Price"
           style={styles.priceInput}
-        />
+        />*/}
+        <Text style={{...styles.priceInput, color: 'gray'}}>{price}</Text>
       </View>
       <View style={styles.inputContainer}>
-        <TextInput
+        {/*<TextInput
           value={costPrice}
           onChangeText={text => {
-            setCostPrice(text);
-            if (edit) variant.costPrice.amount = parseInt(text);
-            else variant.costPrice = parseInt(text);
+            //setCostPrice(text);
+            //if (edit) variant.costPrice.amount = parseInt(text);
+            //else variant.costPrice = parseInt(text);
           }}
           keyboardType={'number-pad'}
           placeholder="Enter Cost"
           style={styles.priceInput}
-        />
+        />*/}
+        <Text style={{...styles.priceInput, color: 'gray'}}>{costPrice}</Text>
       </View>
     </View>
   );

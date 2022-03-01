@@ -11,8 +11,11 @@ import toastService from '../../services/toast-service';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AnimatedLottieView from 'lottie-react-native';
 import {styles} from './styles';
+import {useSelector} from 'react-redux';
 
 const BrandGuidelinesScreen = ({navigation, route}) => {
+  const guidelines = useSelector(state => state.user.creatorGuidelines);
+  console.log(guidelines);
   return (
     <SafeAreaView style={styles.brandGuidelinesContainer}>
       <ScrollView contentContainerStyle={styles.brandGuidelinesContainer}>
@@ -30,13 +33,16 @@ const BrandGuidelinesScreen = ({navigation, route}) => {
 
           <Text style={styles.headerText}>Brand Guidelines</Text>
         </View>
-        <View style={styles.animationContainer}>
+        {/*<View style={styles.animationContainer}>
           <AnimatedLottieView
             source={require('../../assets/animations/coming-soon.json')}
             style={styles.animation}
             loop
             autoPlay
           />
+        </View>*/}
+        <View style={styles.animationContainer}>
+          <Text style={{color: 'black'}}>{guidelines}</Text>
         </View>
         {/* Dont delete the commented JSX below */}
         {/*<View

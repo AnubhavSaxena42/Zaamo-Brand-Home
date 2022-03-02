@@ -14,7 +14,6 @@ import toastService from '../../services/toast-service';
 import {CREATE_SUPPORT_QUERY} from '../../api/mutations';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {styles} from './styles';
-
 const ZaamoSupportScreen = ({navigation, route}) => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
@@ -53,11 +52,11 @@ const ZaamoSupportScreen = ({navigation, route}) => {
   return (
     <SafeAreaView style={styles.zaamoSupportContainer}>
       <ScrollView contentContainerStyle={styles.zaamoSupportContainer}>
+        <Image
+          source={require('../../assets/images/DashboardEllipse.png')}
+          style={styles.backgroundImage}
+        />
         <View style={styles.headerContainer}>
-          <Image
-            source={require('../../assets/images/DashboardEllipse.png')}
-            style={styles.backgroundImage}
-          />
           <TouchableOpacity
             onPress={() => navigation.goBack()}
             style={styles.backButton}>

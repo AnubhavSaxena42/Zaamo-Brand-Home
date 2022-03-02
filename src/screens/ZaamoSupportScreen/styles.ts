@@ -6,7 +6,10 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
+    marginTop: '7%',
   },
   backgroundImage: {
     height: 400,
@@ -17,14 +20,13 @@ export const styles = StyleSheet.create({
   },
   backButton: {
     zIndex: 2,
-    marginTop: '6%',
     position: 'absolute',
     left: 10,
   },
   headerText: {
     color: 'white',
     zIndex: 2,
-    marginTop: '7%',
+
     fontSize: 22,
     paddingHorizontal: '10%',
     textAlign: 'center',

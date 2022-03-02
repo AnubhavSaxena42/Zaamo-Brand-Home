@@ -103,7 +103,7 @@ const CreateProductScreen = ({navigation, route}) => {
         });
       setSizeAttributeId(newSizeAttributeId);
       setSizeAttributeValues(newSizeAttributeValues);*/
-      const newSizeAttributeValues = sizeResponse.data.attribute.values.map(
+      const newSizeAttributeValues = sizeResponse.data.attribute?.values.map(
         value => {
           console.log('Size attribute value is this:', value);
           return {
@@ -620,7 +620,7 @@ const CreateProductScreen = ({navigation, route}) => {
               </View>
             </View>
             <View style={styles.sizeValuesContainer}>
-              {sizeAttributeValues.slice(0, viewableItems).map(value => {
+              {sizeAttributeValues?.slice(0, viewableItems).map(value => {
                 return (
                   <Checkbox
                     key={value}

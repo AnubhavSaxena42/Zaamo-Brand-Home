@@ -18,7 +18,7 @@ import codePush from 'react-native-code-push';
 // Initialize Apollo Client
 
 const uploadLink = createUploadLink({
-  uri: 'https://prod.zaamo.co/graphql/',
+  uri: 'https://beta.zaamo.co/graphql/',
 });
 
 export const toastConfig = {

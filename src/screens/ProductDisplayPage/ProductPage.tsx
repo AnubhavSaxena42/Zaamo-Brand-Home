@@ -142,8 +142,8 @@ const ProductPage = ({navigation, route}) => {
           <BottomSheetScrollView style={styles.contentContainer}>
             <View style={styles.productOverview}>
               <View style={styles.bottomSheetHeadingContainer}>
-                <Text style={styles.brandNameText}>{product.brandName}</Text>
-                <Text style={styles.productNameText}>{product.name}</Text>
+                {/*<Text style={styles.brandNameText}>{product.brandName}</Text>*/}
+                <Text style={styles.brandNameText}>{product.name}</Text>
               </View>
               <View>
                 <Text style={styles.productPriceText}>₹{product.price}</Text>

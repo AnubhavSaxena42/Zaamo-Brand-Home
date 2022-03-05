@@ -44,6 +44,7 @@ export const styles = StyleSheet.create({
   bottomSheetHandleStyle: {
     backgroundColor: 'white',
     borderRadius: 100,
+    height: 5,
     zIndex: 5,
   },
   contentContainer: {
@@ -65,7 +66,7 @@ export const styles = StyleSheet.create({
     maxWidth: '75%',
   },
   brandNameText: {
-    fontSize: 20,
+    fontSize: 16,
     letterSpacing: 1,
     maxWidth: '100%',
     fontWeight: '400',

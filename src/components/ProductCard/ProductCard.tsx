@@ -56,20 +56,20 @@ const ProductCard = ({
         <View style={styles.productInfoContainer}>
           <View style={styles.row}>
             <Text
-              numberOfLines={1}
+              numberOfLines={2}
               ellipsizeMode="tail"
-              style={{...styles.rowOneText, width: '50%'}}>
-              {product.brandName}
+              style={{...styles.rowOneText, width: '60%'}}>
+              {product.name}
             </Text>
             <Text style={styles.rowOneText}>₹{product.price}</Text>
           </View>
           <View style={styles.row}>
-            <Text
+            {/*<Text
               numberOfLines={1}
               ellipsizeMode="tail"
               style={{...styles.rowTwoText, width: '70%'}}>
-              {product.name}
-            </Text>
+              
+            </Text>*/}
             {product.priceUndiscounted > product.price && (
               <Text
                 style={{

@@ -37,6 +37,9 @@ const PaymentDetailsScreen = ({navigation, route}) => {
   const [confirmBankAccountNumberError, setConfirmBankAccountNumberError] =
     useState(false);
   const [bankIfscCodeError, setBankIfscCodeError] = useState(false);
+  const brandBank = useSelector(state => state.user.bank);
+  const {acBankBranch, acBankName, acIfscCode, acName, acNumber} = brandBank;
+  console.log('Bank::', brandBank);
   const brandId = useSelector(state => {
     if (
       state.user.authorisedBrands &&
@@ -223,7 +226,7 @@ const PaymentDetailsScreen = ({navigation, route}) => {
       </View>
       {isViewing === 1 && (
         <ScrollView style={styles.paymentDetailsUPIFormContainer}>
-          <Text style={styles.paymentDetailsLabelText}>
+          {/*<Text style={styles.paymentDetailsLabelText}>
             Account Holder Name
           </Text>
           <TextInput
@@ -231,17 +234,20 @@ const PaymentDetailsScreen = ({navigation, route}) => {
             onChangeText={text => setAccountHolderName(text)}
             style={styles.inputStyle}
             placeholder={'Enter Account Holder Name'}
-          />
+      />*/}
           {accountHolderNameError && <ErrorMessage />}
           <Text style={styles.paymentDetailsLabelText}>UPI ID</Text>
-          <TextInput
+          {/*<TextInput
             value={upiId}
             onChangeText={text => setUpiId(text)}
             style={styles.inputStyle}
             placeholder={'Enter UPI ID'}
-          />
+          />*/}
+          <View style={styles.inputStyle}>
+            <Text>{''}</Text>
+          </View>
           {upiIdError && <ErrorMessage />}
-          <Text style={styles.paymentDetailsLabelText}>Address</Text>
+          {/*<Text style={styles.paymentDetailsLabelText}>Address</Text>
           <TextInput
             value={address}
             onChangeText={text => setAddress(text)}
@@ -273,7 +279,7 @@ const PaymentDetailsScreen = ({navigation, route}) => {
               style={styles.button}>
               <Text style={styles.buttonText}>Save</Text>
             </TouchableOpacity>
-          </View>
+          </View>*/}
         </ScrollView>
       )}
       {isViewing === 2 && (
@@ -286,24 +292,30 @@ const PaymentDetailsScreen = ({navigation, route}) => {
           <Text style={styles.paymentDetailsLabelText}>
             Account Holder Name
           </Text>
-          <TextInput
+          {/*<TextInput
             value={accountHolderName}
             onChangeText={text => setAccountHolderName(text)}
             style={styles.inputStyle}
             placeholder={'Enter Account Holder Name'}
-          />
+          />*/}
+          <View style={styles.inputStyle}>
+            <Text>{acName}</Text>
+          </View>
           {accountHolderNameError && <ErrorMessage />}
           <Text style={styles.paymentDetailsLabelText}>
             Bank Account Number
           </Text>
-          <TextInput
+          {/*<TextInput
             value={bankAccountNumber}
             onChangeText={text => setBankAccountNumber(text)}
             style={styles.inputStyle}
             placeholder={'Enter Bank Account Number'}
-          />
+          />*/}
+          <View style={styles.inputStyle}>
+            <Text>{acNumber}</Text>
+          </View>
           {bankAccountNumberError && <ErrorMessage />}
-          <Text style={{color: 'gray', marginVertical: '1%'}}>
+          {/*<Text style={{color: 'gray', marginVertical: '1%'}}>
             Confirm Account Number
           </Text>
           <TextInput
@@ -311,27 +323,34 @@ const PaymentDetailsScreen = ({navigation, route}) => {
             onChangeText={text => setConfirmBankAccountNumber(text)}
             style={styles.inputStyle}
             placeholder={'Re-Enter Bank Account Number'}
-          />
+          />*/}
           {confirmBankAccountNumberError && <ErrorMessage />}
           <Text style={{color: 'gray', marginVertical: '1%'}}>
             Bank IFSC Code
           </Text>
-          <TextInput
+          {/*<TextInput
             value={bankIfscCode}
             onChangeText={text => setBankIfscCode(text)}
             style={styles.inputStyle}
-            placeholder={'Enter Bank IFSC Code'}
-          />
+            placeh
+            older={'Enter Bank IFSC Code'}
+          />*/}
+          <View style={styles.inputStyle}>
+            <Text>{acIfscCode}</Text>
+          </View>
           {bankIfscCodeError && <ErrorMessage />}
-          <Text style={{color: 'gray', marginVertical: '1%'}}>Address</Text>
-          <TextInput
+          <Text style={{color: 'gray', marginVertical: '1%'}}>Bank Branch</Text>
+          {/*<TextInput
             value={address}
             onChangeText={text => setAddress(text)}
             style={styles.inputStyle}
             placeholder={'Enter Address'}
-          />
+          />*/}
+          <View style={styles.inputStyle}>
+            <Text>{acBankBranch}</Text>
+          </View>
           {addressError && <ErrorMessage />}
-          <Text style={{color: 'gray', marginVertical: '1%'}}>Email</Text>
+          {/*<Text style={{color: 'gray', marginVertical: '1%'}}>Email</Text>
           <TextInput
             value={email}
             onChangeText={text => setEmail(text)}
@@ -355,7 +374,7 @@ const PaymentDetailsScreen = ({navigation, route}) => {
               style={styles.button}>
               <Text style={styles.buttonText}>Save</Text>
             </TouchableOpacity>
-          </View>
+          </View>*/}
         </ScrollView>
       )}
     </SafeAreaView>

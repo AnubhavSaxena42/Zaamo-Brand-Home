@@ -38,14 +38,19 @@ const ConnectMySocialScreen = ({navigation, route}) => {
           <TextInput
             style={styles.inputStyle}
             placeholder={'@yourinstahandle'}
+            placeholderTextColor={'#a9a9a9'}
           />
           <Text style={styles.labelText}>Youtube</Text>
-          <TextInput style={styles.inputStyle} placeholder={'@yourythandle'} />
+          <TextInput
+            style={styles.inputStyle}
+            placeholderTextColor={'#a9a9a9'}
+            placeholder={'@yourythandle'}
+          />
         </View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             onPress={() => {
-              toastService.showToast('Feature in development', true);
+              toastService.showToast('Contact Zaamo Support', true);
               navigation.navigate('SettingsScreen');
             }}
             style={styles.button}>

@@ -275,6 +275,16 @@ export const GET_AUTHORISED_BRANDS = gql`
         brandOrderInfo
         brandContactName
         brandContactNumber
+        bankAccount {
+          acNumber
+          acName
+          acBankName
+          acBankBranch
+          acIfscCode
+        }
+        upiIds {
+          id
+        }
         staffMembers(first: 10) {
           edges {
             node {
@@ -325,7 +335,7 @@ export const GET_AUTHORISED_BRANDS = gql`
               brand {
                 brandName
               }
-              thumbnail(size: 480) {
+              thumbnail(size: 1080) {
                 url
                 alt
               }

@@ -41,14 +41,14 @@ const ShippingPolicyScreen = ({navigation, route}) => {
           </TouchableOpacity>
         </View>
         <Text style={styles.returnPolicyText}>{shippingPolicy}</Text>
-        <TouchableOpacity
+        {/*<TouchableOpacity
           onPress={() => {
             toastService.showToast('Contact Zaamo Support', true);
             navigation.navigate('SettingsScreen');
           }}
           style={styles.button}>
           <Text style={styles.buttonText}>Save</Text>
-        </TouchableOpacity>
+        </TouchableOpacity>*/}
       </ScrollView>
     </SafeAreaView>
   );

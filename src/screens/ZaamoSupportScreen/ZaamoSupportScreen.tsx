@@ -24,14 +24,13 @@ const ZaamoSupportScreen = ({navigation, route}) => {
     CREATE_SUPPORT_QUERY,
     {
       variables: {
-        email: email,
         message: message,
         mobileNo: '+91' + mobileNumber,
       },
     },
   );
   const onQueryCreate = () => {
-    if (!email || email === '' || !message || message === '') {
+    if (!message || message === '') {
       toastService.showToast(
         'Please fill out the details before creating a support query request',
         true,
@@ -77,13 +76,13 @@ const ZaamoSupportScreen = ({navigation, route}) => {
               ? brandContactEmail
               : ''}
           </Text>
-          <Text style={styles.inputLabel}>Your Email</Text>
+          {/*<Text style={styles.inputLabel}>Your Email</Text>
           <TextInput
             value={email}
             onChangeText={text => setEmail(text)}
             style={styles.inputStyle}
             placeholder={'Enter Your Email'}
-          />
+          />*/}
           <Text style={styles.inputLabel}>Your Message</Text>
           <TextInput
             value={message}
@@ -96,7 +95,7 @@ const ZaamoSupportScreen = ({navigation, route}) => {
           <TouchableOpacity
             onPress={() => onQueryCreate()}
             style={styles.button}>
-            <Text style={styles.buttonText}>Save</Text>
+            <Text style={styles.buttonText}>Send</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

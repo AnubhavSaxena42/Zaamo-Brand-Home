@@ -90,9 +90,13 @@ const LoginSuccessScreen = ({navigation, route}) => {
         },
       );
       dispatch(setStoreCollections(storeCollections));
-      console.log('STORE SET UP BOYOS');
+      console.log('STORE SET UP');
     }
   }, [storeResponse.data]);
+  useEffect(() => {
+    if (brandResponse.loading) dispatch(setLoaderStatus(true));
+    else dispatch(setLoaderStatus(false));
+  }, [brandResponse.loading]);
   useEffect(() => {
     if (brandResponse.data) {
       if (
@@ -179,6 +183,7 @@ const LoginSuccessScreen = ({navigation, route}) => {
             };
           });
         dispatch(setAuthorisedBrands(authorisedBrands));
+        console.log('BRAND INFO SET');
         navigation.replace('StoreStack');
       }
     }

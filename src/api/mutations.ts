@@ -395,13 +395,13 @@ export const VERIFY_OTP = gql`
 `;
 
 export const CREATE_SUPPORT_QUERY = gql`
-  mutation supportQueryCreate(
-    $email: String
-    $message: String
-    $mobileNo: String
-  ) {
+  mutation supportQueryCreate($message: String, $mobileNo: String) {
     supportQueryCreate(
-      input: {email: $email, message: $message, mobileNo: $mobileNo}
+      input: {
+        email: "brandsupport@zaamo.co"
+        message: $message
+        mobileNo: $mobileNo
+      }
     ) {
       SupportQuery {
         email

@@ -1,5 +1,4 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {Post} from '../../types';
 
 const initialState = {
   user: {},
@@ -13,6 +12,14 @@ const initialState = {
   brandEmail: '',
   brandOrderInfo: '',
   creatorGuidelines: '',
+  bank: {
+    acBankBranch: '',
+    acBankName: '',
+    acIfscCode: '',
+    acName: '',
+    acNumber: '',
+  },
+  upi: '',
 };
 
 export const userSlice = createSlice({
@@ -63,6 +70,14 @@ export const userSlice = createSlice({
       state.creatorGuidelines = action.payload;
       console.log('Creator Guidelines Set:', action.payload);
     },
+    setBrandBank: (state, action: PayloadAction<any>) => {
+      state.bank = action.payload;
+      console.log('Bank Set:', action.payload);
+    },
+    setBrandUpi: (state, action: PayloadAction<any>) => {
+      state.bank = action.payload;
+      console.log('Upi Set:', action.payload);
+    },
   },
 });
 
@@ -78,6 +93,8 @@ export const {
   setBrandContactName,
   setBrandContactNumber,
   setAuthorisedBrands,
+  setBrandBank,
+  setBrandUpi,
 } = userSlice.actions;
 
 export default userSlice.reducer;

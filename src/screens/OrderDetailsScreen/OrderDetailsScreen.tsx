@@ -174,8 +174,8 @@ const OrderDetailsScreen = ({navigation, route}) => {
           </View>
           <TouchableOpacity
             onPress={() => {
-              toastService.showToast('Disabled', true);
-              /* let flag = false;
+              //toastService.showToast('Disabled', true);
+              let flag = false;
               fulfillmentData.forEach(fulfillment => {
                 if (fulfillment.status === 'SHIPPED') {
                   if (
@@ -222,7 +222,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
                     refetchQueries: [GET_KEY_METRICS, GET_BRAND_ORDERS],
                   });
                 }
-              });*/
+              });
             }}
             style={styles.button}>
             <Text style={styles.updateButtonText}>Update</Text>

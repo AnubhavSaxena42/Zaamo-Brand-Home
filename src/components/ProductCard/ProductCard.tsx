@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ImageBackground,
   StyleSheet,
@@ -25,7 +25,14 @@ const ProductCard = ({
 }) => {
   const storeUrl = useSelector(state => state.store.storeInfo.storeUrl);
   const dispatch = useDispatch();
-
+  const [isOutOfStock, setIsOutOfStock] = useState(false);
+  useEffect(() => {
+    let totalStock = 0;
+    product.variant.forEach(
+      variant => (totalStock += variant?.stocks[0]?.quantity),
+    );
+    if (totalStock === 0) setIsOutOfStock(true);
+  }, []);
   return (
     <Pressable
       onPress={() => {
@@ -88,15 +95,21 @@ const ProductCard = ({
             numberOfLines={1}
             ellipsizeMode="tail"
             style={styles.inventoryText}>
-            {product.variants.map(variant => (
-              <Text>
-                {variant.name}:
-                <Text
-                  style={{fontSize: 12, color: 'black', fontWeight: 'bold'}}>
-                  {variant?.stocks[0]?.quantity}
-                </Text>{' '}
+            {isOutOfStock ? (
+              <Text style={{fontSize: 12, color: 'black', fontWeight: 'bold'}}>
+                Out Of Stock
               </Text>
-            ))}
+            ) : (
+              product.variants.map(variant => (
+                <Text style={{color: 'black'}}>
+                  {variant.name}:
+                  <Text
+                    style={{fontSize: 12, color: 'black', fontWeight: 'bold'}}>
+                    {variant?.stocks[0]?.quantity}
+                  </Text>{' '}
+                </Text>
+              ))
+            )}
           </Text>
           <TouchableOpacity
             activeOpacity={0}

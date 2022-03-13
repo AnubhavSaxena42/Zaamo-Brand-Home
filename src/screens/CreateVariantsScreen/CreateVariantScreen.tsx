@@ -383,7 +383,6 @@ const styles = StyleSheet.create({
   },
   variantPriceHeader: {
     width: '23%',
-    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
   },

@@ -91,6 +91,7 @@ const ZaamoSupportScreen = ({navigation, route}) => {
             multiline={true}
             textAlignVertical={'top'}
             placeholder={'Enter your Message'}
+            placeholderTextColor={'gray'}
           />
           <TouchableOpacity
             onPress={() => onQueryCreate()}

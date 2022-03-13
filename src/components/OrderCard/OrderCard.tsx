@@ -3,31 +3,31 @@ import {Image, Text, Dimensions, Pressable, View} from 'react-native';
 import {styles} from './styles';
 const OrderCard = ({navigation, status, isDetails, order}) => {
   const {width, height} = Dimensions.get('window');
-  console.log(order);
+  console.log({order});
   const getTheme = status => {
     if (status) {
-      if (status === 'Received') return 'rgba(214, 130, 34,0.2)';
-      else if (status === 'In Process') return '#f8cece';
-      else if (status === 'Shipped') return '#eee6a1';
-      else if (status === 'Delivered') return '#ddfcb6';
-      else if (status === 'Cancelled') return '#b5cbed';
-      else if (status === 'Return Requested') return 'rgba(180,7,182,0.4)';
-      else if (status === 'Return Initiated') return 'rgba(254,72,24,0.4)';
-      else if (status == 'Return Completed') return 'rgba(0,163,98,0.5)';
-      else if (status === 'Fulfilled') return 'rgba(0,0,0,0.3)';
+      if (status === 'Received') return '#D8EAFF';
+      else if (status === 'In Process') return '#D8EAFF';
+      else if (status === 'Shipped') return '#D8EAFF';
+      else if (status === 'Delivered') return '#E2F5DC';
+      else if (status === 'Cancelled') return '#FFD9DA';
+      else if (status === 'Return Requested') return '#D8EAFF';
+      else if (status === 'Return Initiated') return '#D8EAFF';
+      else if (status == 'Return Completed') return '#D8EAFF';
+      else if (status === 'Fulfilled') return '#E2F5DC';
     } else return 'pink';
   };
   const getTextTheme = status => {
     if (status) {
-      if (status === 'Received') return 'orange';
-      else if (status === 'In Process') return '#ef3b3b';
-      else if (status === 'Shipped') return '#d29f4b';
-      else if (status === 'Delivered') return '#4c8305';
-      else if (status === 'Cancelled') return '#3b5998';
-      else if (status === 'Return Requested') return '#660066';
-      else if (status === 'Return Initiated') return 'rgb(254,72,24)';
-      else if (status == 'Return Completed') return 'rgb(0,163,98)';
-      else if (status === 'Fulfilled') return 'black';
+      if (status === 'Received') return '#2F8CFF';
+      else if (status === 'In Process') return '#2F8CFF';
+      else if (status === 'Shipped') return '#2F8CFF';
+      else if (status === 'Delivered') return '#6ED150';
+      else if (status === 'Cancelled') return '#FF6563';
+      else if (status === 'Return Requested') return '#2F8CFF';
+      else if (status === 'Return Initiated') return '#2F8CFF';
+      else if (status == 'Return Completed') return '#2F8CFF';
+      else if (status === 'Fulfilled') return '#6ED150';
     } else return 'pink';
   };
 

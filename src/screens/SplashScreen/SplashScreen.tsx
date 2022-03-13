@@ -44,28 +44,18 @@ const SplashScreen = ({navigation}) => {
     },
     notifyOnNetworkStatusChange: true,
   });
-  //So messy refactor it !!
-  /* Fetch the token,user,mobileNumber,firstTimeUser
-    if we have the token user and mobileNumber redirect to StoreStack
-    if we dont have token or user {
-      if we have mobileNumber,redirect to LoginSuccessScreen
-      if we dont have mobileNumber{
-        if we have FirstTimeUser, redirect to mobileOTPScreen
-        if we dont have FirstTimeUser, redirect to Carousel
-      }
-    }
-  */
+
   useEffect(() => {
     if (storeResponse.data) {
       dispatch(
         setStoreInfo({
-          id: storeResponse.data.store.id,
-          storeName: storeResponse.data.store.storeName,
-          storeType: storeResponse.data.store.storeType,
-          storeUrl: storeResponse.data.store.storeUrl,
+          id: storeResponse.data.store?.id,
+          storeName: storeResponse.data.store?.storeName,
+          storeType: storeResponse.data.store?.storeType,
+          storeUrl: storeResponse.data.store?.storeUrl,
         }),
       );
-      const storeCollections = storeResponse.data.store.collections.edges.map(
+      const storeCollections = storeResponse.data.store?.collections?.edges.map(
         ({node}) => {
           return {
             id: node.id,
@@ -80,6 +70,7 @@ const SplashScreen = ({navigation}) => {
       console.log('STORE SET UP');
     }
   }, [storeResponse.data]);
+  console.log('Error::', brandResponse.error);
   useEffect(() => {
     if (brandResponse.loading) dispatch(setLoaderStatus(true));
     else dispatch(setLoaderStatus(false));

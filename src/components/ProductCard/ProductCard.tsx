@@ -26,9 +26,10 @@ const ProductCard = ({
   const storeUrl = useSelector(state => state.store.storeInfo.storeUrl);
   const dispatch = useDispatch();
   const [isOutOfStock, setIsOutOfStock] = useState(false);
+  console.log({product});
   useEffect(() => {
     let totalStock = 0;
-    product.variant.forEach(
+    product.variants?.forEach(
       variant => (totalStock += variant?.stocks[0]?.quantity),
     );
     if (totalStock === 0) setIsOutOfStock(true);

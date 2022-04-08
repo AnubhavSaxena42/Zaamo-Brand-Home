@@ -42,7 +42,7 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
       style={{
         ...styles.orderCardContainer,
         justifyContent: isDetails ? 'space-between' : 'space-around',
-        height: isDetails ? 100 : 120,
+        height: isDetails ? 100 : 180,
         width: isDetails ? width - 30 : width - 10,
         borderRightWidth: !isDetails ? 10 : 0,
         borderRightColor: getTheme(status),

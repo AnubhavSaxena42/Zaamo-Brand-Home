@@ -216,6 +216,7 @@ export const HomeTabNavigator = () => {
         style: {
           height: Platform.OS === 'ios' ? '12%' : '8%',
           maxHeight: 110,
+          minHeight: 60,
           paddingVertical: 8,
         },
       }}>

@@ -90,7 +90,7 @@ const OrdersScreen = ({navigation}) => {
           returnCompletedOrders = [],
           fulfilledOrders = [];
         const fulfillmentSortItems = [
-          {id: 'RECEIVED', name: 'Received', value: 0},
+          {id: 'PLACED', name: 'Placed', value: 0},
           {id: 'IN_PROCESS', name: 'In Process', value: 1},
           {id: 'SHIPPED', name: 'Shipped', value: 2},
           {id: 'DELIVERED', name: 'Delivered', value: 3},
@@ -115,7 +115,7 @@ const OrdersScreen = ({navigation}) => {
           }
         };
         const sortByStatus = (status, order) => {
-          if (status === 'Received') {
+          if (status === 'Placed') {
             order.status = status;
             receivedOrders.push(order);
             allOrders.push(order);
@@ -212,7 +212,7 @@ const OrdersScreen = ({navigation}) => {
     let category;
     if (label === 'All Orders')
       category = useSelector(state => state.orders.allOrders);
-    else if (label === 'Received')
+    else if (label === 'Placed')
       category = useSelector(state => state.orders.receivedOrders);
     else if (label === 'In Process')
       category = useSelector(state => state.orders.inProcessOrders);
@@ -326,7 +326,7 @@ const OrdersScreen = ({navigation}) => {
             tabLabel={{label: 'All orders'}}
             label="All Orders"
           />
-          <OrderCategoryTab tabLabel={{label: 'Received '}} label="Received" />
+          <OrderCategoryTab tabLabel={{label: 'Placed'}} label="Placed" />
           <OrderCategoryTab
             tabLabel={{label: 'In Process'}}
             label="In Process"

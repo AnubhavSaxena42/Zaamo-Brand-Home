@@ -38,7 +38,7 @@ const OrdersOverviewCard = () => {
       </View>
       <View style={styles.metricContainer}>
         <Text style={styles.value}>{loading ? '-' : receivedOrders}</Text>
-        <Text style={styles.key}>Received</Text>
+        <Text style={styles.key}>Placed</Text>
       </View>
       <View style={styles.metricContainer}>
         <Text style={styles.value}>{loading ? '-' : shippedOrders}</Text>

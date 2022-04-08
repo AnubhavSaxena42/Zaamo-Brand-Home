@@ -116,6 +116,13 @@ const VerifyOTPScreen = ({navigation, route}) => {
               otp: parseInt(code),
             },
           });
+          //setOtp(code);
+          //verifyOtp({
+          //  variables: {
+          //    mobileNo: '91' + route.params.mobileNumber,
+          //    otp: parseInt(code),
+          //  },
+          //});
         }}
       />
       <Text style={styles.infoText}>

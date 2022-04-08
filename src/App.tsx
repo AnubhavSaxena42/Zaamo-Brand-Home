@@ -15,7 +15,6 @@ import {useSelector} from 'react-redux';
 import {setContext} from '@apollo/client/link/context';
 import {getItemFromStorage} from './services/storage-service';
 import codePush from 'react-native-code-push';
-// Initialize Apollo Client
 
 const uploadLink = createUploadLink({
   uri: 'https://prod.zaamo.co/graphql/',

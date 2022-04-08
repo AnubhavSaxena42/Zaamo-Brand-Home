@@ -262,28 +262,6 @@ const LoginSuccessScreen = ({navigation, route}) => {
     });
   };
 
-  /* Whats going on uptill now
-  Basically
-  Run the token Create Mutation
-  if it returns the user and the token save them to the storage and redux and then log the user in
-  if the token or user is returned null,run the userByMobile Query and if the user isActive is false then run the userRegister Mutation and handle its response gracefully
-  if the token and user is returned but there are no authorised brands prevent the user from logging in with a toast
-
-  Instead what i should do maybe is check if the user exists before even running the tokenCreate Mutation for the user 
-  So the userByMobile Query comes into play over here 
-  ==> First hit the userByMobile Query
-  if the user is null, run the userRegister Mutation, handle response
-  if the user is not null{
-    if isActive, run the token create mutation and follow what you were doing before
-    else toast that the account has not yet been activated
-  }
-*/
-  /*
-  After we succesfully log in and get the x-store-id 
-  I have to query authorisedBrands Request 
-  and storeResponse to set up shop before logging in
-*/
-
   const handleLogin = async () => {
     if (data && data.tokenCreate && data.tokenCreate.user) {
       if (data.tokenCreate.user.authorisedBrands.length === 0) {

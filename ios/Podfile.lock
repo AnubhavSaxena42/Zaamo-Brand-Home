@@ -686,7 +686,7 @@ SPEC CHECKSUMS:
   Flipper-RSocket: d9d9ade67cbecf6ac10730304bf5607266dd2541
   FlipperKit: d8d346844eca5d9120c17d441a2f38596e8ed2b9
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
-  glog: 5337263514dd6f09803962437687240c5dc39aa4
+  glog: 85ecdd10ee8d8ec362ef519a6a45ff9aa27b2e85
   hermes-engine: bf7577d12ac6ccf53ab8b5af3c6ccf0dd8458c5c
   JWT: ef71dfb03e1f842081e64dc42eef0e164f35d251
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
@@ -699,7 +699,7 @@ SPEC CHECKSUMS:
   Permission-Notifications: bb420c3d28328df24de1b476b41ed8249ccf2537
   Permission-PhotoLibrary: 7bec836dcdd04a0bfb200c314f1aae06d4476357
   Permission-PhotoLibraryAddOnly: 06fb0cdb1d35683b235ad8c464ef0ecc88859ea3
-  RCT-Folly: a21c126816d8025b547704b777a2ba552f3d9fa9
+  RCT-Folly: 803a9cfd78114b2ec0f140cfa6fa2a6bafb2d685
   RCTRequired: 3c77b683474faf23920fbefc71c4e13af21470c0
   RCTTypeSafety: 720b1841260dac692444c2822b27403178da8b28
   React: 25970dd74abbdac449ca66dec4107652cacc606d
@@ -748,4 +748,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 20d4aef79d6c76aa0457e51a8f3cd8f8702d109d
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3

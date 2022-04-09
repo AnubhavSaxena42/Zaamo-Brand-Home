@@ -85,7 +85,7 @@ const MobileOTPScreen = ({navigation, route}) => {
             navigation.navigate('VerifyOTPScreen', {
               mobileNumber: mobileNumber,
             });
-            //generateOtp();
+            generateOtp();
           }
         }}
         style={styles.button}>

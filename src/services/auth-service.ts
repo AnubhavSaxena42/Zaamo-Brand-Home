@@ -1,7 +1,7 @@
 import {Get, Put, Post, Delete} from './api.service';
 
 class AuthService {
-  _apiUrl = `https://prod.zaamo.co/mapper/fetch_store_id_by_user`;
+  _apiUrl = `https://beta.zaamo.co/mapper/fetch_store_id_by_user`;
 
   //Get filters(Content Format, Content Source, Content Type)
   getStoreId(userId) {

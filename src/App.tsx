@@ -17,7 +17,7 @@ import {getItemFromStorage} from './services/storage-service';
 import codePush from 'react-native-code-push';
 
 const uploadLink = createUploadLink({
-  uri: 'https://beta.zaamo.co/graphql/',
+  uri: 'https://production.zaamo.co/graphql/',
 });
 
 export const toastConfig = {

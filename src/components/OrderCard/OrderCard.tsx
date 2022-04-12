@@ -6,20 +6,20 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
   console.log({order});
   const getTheme = status => {
     if (status) {
-      if (status === 'Received') return '#D8EAFF';
+      if (status === 'Placed') return '#D8EAFF';
       else if (status === 'In Process') return '#D8EAFF';
       else if (status === 'Shipped') return '#D8EAFF';
       else if (status === 'Delivered') return '#E2F5DC';
-      else if (status === 'Cancelled') return '#FFD9DA';
+      else if (status === 'Cancelled') return '#FFDADA';
       else if (status === 'Return Requested') return '#D8EAFF';
       else if (status === 'Return Initiated') return '#D8EAFF';
       else if (status == 'Return Completed') return '#D8EAFF';
-      else if (status === 'Fulfilled') return '#E2F5DC';
-    } else return 'pink';
+      else if (status === 'Fulfilled') return '#E2F6DC';
+    } else return '#D8EAFF';
   };
   const getTextTheme = status => {
     if (status) {
-      if (status === 'Received') return '#2F8CFF';
+      if (status === 'Placed') return '#2F8CFF';
       else if (status === 'In Process') return '#2F8CFF';
       else if (status === 'Shipped') return '#2F8CFF';
       else if (status === 'Delivered') return '#6ED150';
@@ -28,7 +28,7 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
       else if (status === 'Return Initiated') return '#2F8CFF';
       else if (status == 'Return Completed') return '#2F8CFF';
       else if (status === 'Fulfilled') return '#6ED150';
-    } else return 'pink';
+    } else return '#2F8CFF';
   };
 
   return (
@@ -42,7 +42,7 @@ const OrderCard = ({navigation, status, isDetails, order}) => {
       style={{
         ...styles.orderCardContainer,
         justifyContent: isDetails ? 'space-between' : 'space-around',
-        height: isDetails ? 100 : 180,
+        height: isDetails ? 100 : 130,
         width: isDetails ? width - 30 : width - 10,
         borderRightWidth: !isDetails ? 10 : 0,
         borderRightColor: getTheme(status),

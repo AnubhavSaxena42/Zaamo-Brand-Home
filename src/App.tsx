@@ -17,7 +17,7 @@ import {getItemFromStorage} from './services/storage-service';
 import codePush from 'react-native-code-push';
 
 const uploadLink = createUploadLink({
-  uri: 'https://production.zaamo.co/graphql/',
+  uri: 'https://beta.zaamo.co/graphql/',
 });
 
 export const toastConfig = {
@@ -147,6 +147,7 @@ const App = () => {
   );
 };
 
-let codePushOptions = {checkFrequency: codePush.CheckFrequency.ON_APP_START};
+//let codePushOptions = {checkFrequency: codePush.CheckFrequency.ON_APP_START};
 
-export default codePush(codePushOptions)(App);
+//export default codePush(codePushOptions)(App);
+export default App;

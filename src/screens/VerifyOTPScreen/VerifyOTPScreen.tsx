@@ -106,7 +106,7 @@ const VerifyOTPScreen = ({navigation, route}) => {
         codeInputHighlightStyle={styles.borderStyleHighLighted}
         onCodeFilled={code => {
           console.log('Go go go');
-      
+
           saveItemToStorage('Mobile Number', route.params.mobileNumber);
           setOtp(code);
           if (route.params.mobileNumber === '9289458005' && code === '1111') {
@@ -148,16 +148,16 @@ const VerifyOTPScreen = ({navigation, route}) => {
       )}
       <TouchableOpacity
         onPress={() => {
-          //saveItemToStorage('Mobile Number', route.params.mobileNumber);
-          //navigation.navigate('LoginSuccessScreen', {
-          // mobileNumber: route.params.mobileNumber,
-          //});
+          saveItemToStorage('Mobile Number', route.params.mobileNumber);
+          navigation.navigate('LoginSuccessScreen', {
+            mobileNumber: route.params.mobileNumber,
+          });
 
-          if (otp.length < 4) {
-            setErrorMessage(true);
-            return;
-          }
-          verifyOtp();
+          //if (otp.length < 4) {
+          //  setErrorMessage(true);
+          //  return;
+          //}
+          //verifyOtp();
         }}
         style={styles.button}>
         <Text style={styles.buttonText}>VERIFY & PROCEED</Text>

@@ -30,7 +30,8 @@ import {
   setReturnRequestedOrders,
 } from '../../redux/reducers/ordersReducer';
 import {BarIndicator} from 'react-native-indicators';
-var ScrollableTabView = require('react-native-scrollable-tab-view-forked');
+import ScrollableTabView from '../../components/react-native-scrollable-tab-view-forked';
+//var ScrollableTabView = require('react-native-scrollable-tab-view-forked');
 const {width, height} = Dimensions.get('screen');
 const OrdersScreen = ({navigation}) => {
   const dispatch = useDispatch();

@@ -3,7 +3,7 @@ const {width, height} = Dimensions.get('window');
 export const styles = StyleSheet.create({
   orderCardContainer: {
     flexDirection: 'row',
-    height: 500,
+    height: 200,
     width: width - 10,
     justifyContent: 'space-around',
     alignItems: 'center',

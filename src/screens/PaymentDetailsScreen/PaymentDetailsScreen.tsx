@@ -38,8 +38,12 @@ const PaymentDetailsScreen = ({navigation, route}) => {
     useState(false);
   const [bankIfscCodeError, setBankIfscCodeError] = useState(false);
   const brandBank = useSelector(state => state.user.bank);
-  const {acBankBranch, acBankName, acIfscCode, acName, acNumber} = brandBank;
-  console.log('Bank::', brandBank);
+  const acBankBranch = brandBank?.acBankBranch ? brandBank?.acBankBranch : '';
+  const acBankName = brandBank?.acBankName ? brandBank?.acBankName : '';
+  const acIfscCode = brandBank?.acIfscCode ? brandBank?.acIfscCode : '';
+  const acName = brandBank?.acName ? brandBank?.acName : '';
+  const acNumber = brandBank?.acNumber ? brandBank?.acNumber : '';
+
   const brandId = useSelector(state => {
     if (
       state.user.authorisedBrands &&

@@ -72,8 +72,8 @@ const SplashScreen = ({navigation}) => {
   }, [storeResponse.data]);
   console.log('Error::', brandResponse.error);
   useEffect(() => {
-    if (brandResponse.loading) dispatch(setLoaderStatus(true));
-    else dispatch(setLoaderStatus(false));
+    //if (brandResponse.loading) dispatch(setLoaderStatus(true));
+    //else dispatch(setLoaderStatus(false));
   }, [brandResponse.loading]);
   useEffect(() => {
     if (brandResponse.data) {

@@ -88,6 +88,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
             width: '100%',
             alignItems: 'center',
             justifyContent: 'center',
+            zIndex: 2,
           }}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}

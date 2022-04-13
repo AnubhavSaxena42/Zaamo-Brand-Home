@@ -10,6 +10,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: '7%',
+    zIndex: 2,
   },
   backgroundImage: {
     height: 400,

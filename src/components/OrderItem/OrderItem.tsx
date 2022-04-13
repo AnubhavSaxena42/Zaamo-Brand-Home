@@ -28,7 +28,7 @@ const OrderItem = ({line, id, status, setData, fulfillment}) => {
     let flag = false;
     let availableFulfillmentOptions = [];
     const fulfillmentDataItems = [
-      {id: 'RECEIVED', name: 'Received'},
+      {id: 'PLACED', name: 'Placed'},
       {id: 'IN_PROCESS', name: 'In Process'},
       {id: 'SHIPPED', name: 'Shipped'},
       {id: 'DELIVERED', name: 'Delivered'},
@@ -69,7 +69,7 @@ const OrderItem = ({line, id, status, setData, fulfillment}) => {
     setData(newData);
   };
   const getFulfillmentStatusDisplay = () => {
-    if (fulfillmentStatus === 'RECEIVED') return 'Received';
+    if (fulfillmentStatus === 'PLACED') return 'Placed';
     else if (fulfillmentStatus === 'IN_PROCESS') return 'In Process';
     else if (fulfillmentStatus === 'SHIPPED') return 'Shipped';
     else if (fulfillmentStatus === 'DELIVERED') return 'Delivered';
